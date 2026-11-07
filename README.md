@@ -12,9 +12,11 @@ same 62 source packs.
 > One gap remains: usda-fna's three PDF endpoints need a PDF text reader, and return `not_supported`.
 > The package is not published to npm yet.
 
-## Install
+## Quick start
 
-Requires Node.js 22 or later.
+Requires Node.js 22 or later. Most sources need no key, so steps 2 and 3 are optional.
+
+### 1. Add the server to your client
 
 **Claude Code**
 
@@ -22,22 +24,126 @@ Requires Node.js 22 or later.
 claude mcp add data-analyst -- npx -y data-analyst-mcp
 ```
 
-**Claude Desktop, Cursor, VS Code and other clients** (`mcpServers` config):
+Add `--scope user` to make it available in every project. To pass a key here, put `-e` before the `--`, for example
+`claude mcp add data-analyst -e DATA_GOV_API_KEY=your-key -- npx -y data-analyst-mcp`.
+
+**Claude Desktop**: `claude_desktop_config.json`, in `~/Library/Application Support/Claude/` (macOS) or
+`%APPDATA%\Claude\` (Windows). Settings → Developer → Edit Config opens it. Restart Claude Desktop after editing.
 
 ```json
-{ "mcpServers": { "data-analyst": { "command": "npx", "args": ["-y", "data-analyst-mcp"] } } }
+{
+  "mcpServers": {
+    "data-analyst": {
+      "command": "npx",
+      "args": ["-y", "data-analyst-mcp"],
+      "env": { "DATA_GOV_API_KEY": "your-key" }
+    }
+  }
+}
 ```
 
-**Codex** (`~/.codex/config.toml`):
+**Cursor**: the same `mcpServers` block in `~/.cursor/mcp.json` (every project) or `.cursor/mcp.json` (one project).
+
+**VS Code**: `.vscode/mcp.json` uses `servers` instead of `mcpServers`. An `inputs` entry makes VS Code ask for the key
+once and store it, so the key is not written into a file you might commit.
+
+```json
+{
+  "inputs": [
+    { "type": "promptString", "id": "data-gov-key", "description": "api.data.gov API key", "password": true }
+  ],
+  "servers": {
+    "data-analyst": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "data-analyst-mcp"],
+      "env": { "DATA_GOV_API_KEY": "${input:data-gov-key}" }
+    }
+  }
+}
+```
+
+**Codex**: `~/.codex/config.toml`
 
 ```toml
 [mcp_servers.data-analyst]
 command = "npx"
 args = ["-y", "data-analyst-mcp"]
+
+[mcp_servers.data-analyst.env]
+DATA_GOV_API_KEY = "your-key"
 ```
 
-Until the package is published to npm, point the client at a local build instead:
-`node <path>/data-analyst-mcp/dist/bin/cli.js` (after `npm install && npm run build`).
+Leave out the `env` block if you have no keys, or if you store them with `setup` (step 2).
+
+**Until the package is published to npm**, build it and point the client at the build:
+
+```bash
+git clone https://github.com/zsu/data-analyst-mcp.git
+```
+
+```bash
+cd data-analyst-mcp && npm install && npm run build
+```
+
+Then use `"command": "node", "args": ["<path>/data-analyst-mcp/dist/bin/cli.js"]` in the configs above, and
+`node dist/bin/cli.js setup <source>` in place of `npx -y data-analyst-mcp setup <source>` below.
+
+### 2. Add keys (optional)
+
+Each key is free. Without a key, a source either falls back to a keyless route with lower limits, or offers a
+manual download (`manual_bundle`): the user downloads the files in a browser, and the server packages them.
+
+| Variable | Sources | Without it | Free key |
+|---|---|---|---|
+| `AQS_API_KEY` + `AQS_EMAIL` | epa-aqs | manual download only | [aqs.epa.gov](https://aqs.epa.gov/data/api/signup?email=YOUR_EMAIL) |
+| `BEA_API_KEY` | bea | bulk files for the main tables; the API-only datasets need the key | [apps.bea.gov](https://apps.bea.gov/API/signup/) |
+| `BLS_API_KEY` | bls | 25 queries a day, 25 series and 10 years each; no annual averages or catalog titles | [data.bls.gov](https://data.bls.gov/registrationEngine/) |
+| `CENSUS_API_KEY` | census | manual download only | [api.census.gov](https://api.census.gov/data/key_signup.html) |
+| `DATA_GOV_API_KEY` | college-scorecard, congress, fbi, fda, fec, govinfo, nrel, regulations, usda-fooddata, usgs | `DEMO_KEY` or keyless, at a few requests an hour (fda: 1,000 a day; usgs earthquakes never need a key) | [api.data.gov](https://api.data.gov/signup/) |
+| `DOL_API_KEY` | dol | catalog and field lists only; data queries need the key | [dataportal.dol.gov](https://dataportal.dol.gov/registration) |
+| `EIA_API_KEY` | eia | `DEMO_KEY`, about 10 requests an hour | [eia.gov](https://www.eia.gov/opendata/register.php) |
+| `FRED_API_KEY` | fred | observations only; search, vintages, revision history and GeoFRED need the key | [fredaccount.stlouisfed.org](https://fredaccount.stlouisfed.org/apikeys) |
+| `HUD_USER_TOKEN` | hud | manual download only | [huduser.gov](https://www.huduser.gov/hudapi/public/register) |
+| `IPUMS_API_KEY` | ipums | build the extract on the IPUMS website (free account) | [account.ipums.org](https://account.ipums.org/api_keys) |
+| `LDA_API_KEY` | senate-lobbying | 15 requests a minute instead of 120 | [lda.gov](https://lda.gov/api/register/) |
+| `NOAA_API_KEY` | noaa | the keyless data and station-search endpoints; Climate Data Online v2 needs the key | [ncei.noaa.gov](https://www.ncei.noaa.gov/cdo-web/token) |
+| `USDA_NASS_API_KEY` | usda-nass | manual download only | [quickstats.nass.usda.gov](https://quickstats.nass.usda.gov/api) |
+| `USPTO_API_KEY` | uspto | manual download only | [data.uspto.gov](https://data.uspto.gov/apis/getting-started) |
+
+Two settings are not keys. SEC asks every client to identify itself, so set `SEC_USER_AGENT` to your name and email
+(`"Jane Doe jane@example.com"`). `NWS_USER_AGENT` is optional and does the same for the weather service.
+
+**Store a key with `setup` (recommended).** It shows the signup link, reads the key with hidden input, and writes
+it to `~/.config/data-analyst/keys.json`. The key stays out of client config files, and every client reads it. It
+works mid-session, with no restart.
+
+```bash
+npx -y data-analyst-mcp setup congress
+```
+
+`setup` takes any source that uses the key: `setup congress` stores `DATA_GOV_API_KEY`, and all 10 api.data.gov
+sources use it. `setup epa-aqs` also asks for `AQS_EMAIL`. Or put the variables in the client's `env` block, as in step 1.
+[API keys](#api-keys) lists every place the server looks.
+
+### 3. Check it
+
+Ask your assistant: *"Is my api.data.gov key set up?"* The `check_key` tool reports whether the key was found and where,
+never its value. To list only the sources you can use, start the server with `--hide-unconfigured` (see
+[Options](#options)).
+
+### 4. Try it
+
+- *"How has the unemployment rate compared with CPI inflation since 2020?"*
+- *"What is the median household income in each county of Ohio?"*
+- *"Which drugs had the most reported adverse events last year?"*
+- *"How much did each federal agency spend in fiscal year 2024?"*
+- *"How many unhealthy air-quality days did Phoenix have in 2023?"*
+
+The assistant asks the questions that change the answer first (which measure, which years, which population),
+then fetches, computes and cites.
+
+To host the server for claude.ai or a team, see [docs/hosting.md](docs/hosting.md).
 
 ## How it works
 
@@ -115,17 +221,24 @@ console.log(r.summary.tables[0].rows, r.citation.text);
 
 ## API keys
 
-Most sources need no key. For one that does, `fetch` returns `key_missing` with a command for **you** to
-run in your own terminal. The model never asks for a key in chat.
+[Quick start](#2-add-keys-optional) lists the keys and how to get them. When a fetch needs a key that is not set up,
+`fetch` returns `key_missing` with a `setup` command for **you** to run in your own terminal. The model never asks
+for a key in chat. `setup` writes `~/.config/data-analyst/keys.json`, the same file the Python skill uses.
 
-```bash
-npx -y data-analyst-mcp setup fred
-```
+The local (stdio) server looks for a key in this order. `DATA_GOV_API_KEY` is the example; each source's variable is named in
+its `source_brief`.
 
-`setup` reads the key with hidden input and stores it in `~/.config/data-analyst/keys.json`, the same file the
-Python skill uses. Keys can also come from environment variables (for example `FRED_API_KEY`) set in the MCP
-client's `env` block. No key value ever appears in a tool result: every output is redacted, and a test checks
-this.
+1. The `DATA_GOV_API_KEY` environment variable, for example in the MCP client's `env` block.
+2. The file named by `DATA_GOV_API_KEY_FILE` (for secret managers and mounted secrets).
+3. `"env": {"DATA_GOV_API_KEY": "..."}` in `~/.config/data-analyst/keys.json` (or `$DATA_ANALYST_CONFIG_DIR/keys.json`).
+   `setup` writes this file.
+4. `"env": {"DATA_GOV_API_KEY": "..."}` in Claude Code's `~/.claude/settings.json` (or `$CLAUDE_CONFIG_DIR/settings.json`).
+5. `~/.data-gov/api_key`, a file that holds only the key.
+
+The files are read again on each lookup, so a key stored during a session works without a restart.
+
+No key value ever appears in a tool result: every output is redacted, and a test checks this. The hosted server
+reads keys only from its environment and from each user's encrypted store (see [docs/hosting.md](docs/hosting.md)).
 
 ## Hosted mode (claude.ai connector)
 

@@ -30,6 +30,36 @@ proxy or a platform's TLS). A claude.ai connector needs a public HTTPS URL that 
   error gives them its link. Keys are encrypted with AES-256-GCM and used only inside that user's tool calls.
 - **Shared token** (`DATA_ANALYST_AUTH_TOKEN`), for private deployments and clients that send an `Authorization` header.
 
+### Why it refuses to start without one
+On an address other than loopback, an open server lets anyone who reaches it spend three things: the operator's
+keys, the agencies' rate limits on the server's IP, and its disk (workspaces and uploads). So `serve --http`
+exits with an error unless you pick a mode. On `127.0.0.1` it starts without one.
+
+A container has to listen on `0.0.0.0` to receive traffic, even when Docker publishes the port to your own
+machine only. The image sets `HOST=0.0.0.0`, so the check applies there too. For a server only you can reach, publish
+on loopback and say so:
+
+```bash
+docker run -p 127.0.0.1:8080:8080 -e DATA_ANALYST_OPEN=1 data-analyst-mcp
+```
+
+## When a source needs a key
+For each fetch, the server uses the first of these that applies:
+
+1. **The user's own stored key** (accounts mode only).
+2. **The operator's key** from the environment (`FRED_API_KEY` ...). It is shared by everyone who has none stored.
+3. **The source's public demo key**, where the agency has one (api.data.gov's `DEMO_KEY`: a few requests an hour).
+4. **The source's keyless or bulk-file route**, when it has one and the request needs no key-only feature.
+5. **Otherwise `key_missing`.** Its fix depends on the mode:
+   - **Accounts:** a one-hour link to the user's write-only keys page. The user stores the key there, never in
+     chat, and the model calls the tool again.
+   - **Open or shared token:** no per-user store exists. The fix points to a keyless source, or to `manual_bundle`:
+     the user runs the download script on their own computer (with their own key if they have one), then uploads
+     the files on the session's upload page, and the model calls `ingest`.
+
+A host that refuses scripts goes to the manual bundle the same way, in every mode. To keep sources that will only
+return `key_missing` out of listings, set `DATA_ANALYST_HIDE_UNCONFIGURED=1`.
+
 ## Where keys live, and who can see them
 - **The model never sees a key.** Tools return statuses ("stored", "not set"), never values, and every result is
   redacted again before it leaves the server.

@@ -64,16 +64,34 @@ async function setup(source?: string): Promise<number> {
     console.error("No key entered; nothing stored.");
     return 2;
   }
+  // the values a source sends with its key (epa-aqs: AQS_EMAIL); not secret, so typed visibly
+  const stored: Record<string, string> = { [env]: key };
+  for (const [param, extraEnv] of Object.entries(p.policy.auth.extra || {})) {
+    const v = await askVisible(`Your ${extraEnv} (the ${param} your key is registered to): `);
+    if (!v) {
+      console.error(`No ${extraEnv} entered; nothing stored (${source} needs it with the key).`);
+      return 2;
+    }
+    stored[extraEnv] = v;
+  }
   const file = configPath();
   let data: any = {};
   try {
     data = JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, ""));
   } catch { /* new file */ }
-  data.env = { ...(data.env || {}), [env]: key };
+  data.env = { ...(data.env || {}), ...stored };
   fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
   fs.writeFileSync(file, JSON.stringify(data, null, 2), { mode: 0o600 });
-  console.log(`Stored ${env} in ${file}. Your assistant can fetch ${source} now.`);
+  console.log(`Stored ${Object.keys(stored).join(" and ")} in ${file}. Your assistant can fetch ${source} now.`);
   return 0;
+}
+
+function askVisible(prompt: string): Promise<string> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
+  return new Promise((resolve) => rl.question(prompt, (answer) => {
+    rl.close();
+    resolve(answer.trim());
+  }));
 }
 
 /**
@@ -133,7 +151,8 @@ async function serve(args: string[]): Promise<number | undefined> {
   if (!LOOPBACK.has(host) && !accounts && !token && process.env.DATA_ANALYST_OPEN !== "1") {
     console.error(`refusing to serve on ${host} without authentication: anyone who can reach it could use the operator's ` +
       "keys and quotas. Choose one: DATA_ANALYST_ACCOUNTS=1 (OAuth sign-in, per-user keys; needs DATA_ANALYST_SECRET), " +
-      "DATA_ANALYST_AUTH_TOKEN=<token> (one shared bearer token), or DATA_ANALYST_OPEN=1 (open on purpose).");
+      "DATA_ANALYST_AUTH_TOKEN=<token> (one shared bearer token), or DATA_ANALYST_OPEN=1 (open on purpose). " +
+      "For local Docker, publish on loopback (-p 127.0.0.1:8080:8080) and set DATA_ANALYST_OPEN=1.");
     return 2;
   }
   const { createApp } = await import("../remote/app.js");

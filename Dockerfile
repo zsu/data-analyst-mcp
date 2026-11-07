@@ -2,6 +2,9 @@
 # Build:  docker build -t data-analyst-mcp .
 # Run:    docker run -p 8080:8080 -e DATA_ANALYST_PUBLIC_URL=https://data.example.org \
 #           -e DATA_ANALYST_ACCOUNTS=1 -e DATA_ANALYST_SECRET=... -v da-state:/state data-analyst-mcp
+# Local only (no auth, reachable from this machine only):
+#         docker run -p 127.0.0.1:8080:8080 -e DATA_ANALYST_OPEN=1 data-analyst-mcp
+# Without an auth mode the server refuses to start, because the image listens on 0.0.0.0 (see docs/hosting.md).
 FROM node:22-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.json ./
