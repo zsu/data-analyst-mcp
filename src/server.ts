@@ -15,7 +15,7 @@ import * as T from "./tools.js";
 import { TOOLS as ANALYSIS_TOOLS } from "./analysis/tools.js";
 import { TOOLS as REPORT_TOOLS } from "./report/tools.js";
 
-export const VERSION = "0.3.0";
+export const VERSION = "0.3.1";
 
 export const INSTRUCTIONS = `Live U.S. government data, fetched from the agency at call time; every result is cited.
 Never answer a U.S. government data question from memory, and never estimate, simulate or "illustrate" a number:
