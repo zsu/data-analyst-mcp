@@ -11,7 +11,10 @@
  *   - for sources whose API echoes keys in error text (policy auth.echoes_key: BLS, BEA), any 32-hex token, except
  *     inside data/<id>/ of a source that does not echo keys (its own identifiers) and inside references/ (saved
  *     pages: cache hashes, script ids); a PDF's /ID document ids are not keys either.
+ * A page the cite tool downloaded itself (no key sent, no credential in its URL, unchanged since: references/opened.json)
+ * is what every visitor gets, so a site key in its own script is not a secret: only the key values are looked for there.
  */
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { unzipSync } from "fflate";
@@ -68,11 +71,11 @@ function lineCount(s: string): number {
 }
 
 /** Scan a stream of chunks (latin1 text). */
-function scanChunks(chunks: Iterable<string>, name: string, keys: string[], hex32 = false): string[] {
+function scanChunks(chunks: Iterable<string>, name: string, keys: string[], hex32 = false, patterns = true): string[] {
   const hits: string[] = [];
   const overlap = Math.max(...keys.map((k) => k.length), 200);
   let prev = "", offsetLine = 1;
-  const pats = hex32 ? [...BASE_PATTERNS, HEX32] : BASE_PATTERNS;
+  const pats = !patterns ? [] : hex32 ? [...BASE_PATTERNS, HEX32] : BASE_PATTERNS;
   for (const chunk of chunks) {
     if (!chunk) break;
     const buf = prev + chunk;
@@ -139,6 +142,29 @@ export function referencePage(rel: string): boolean {
 
 const hexRule = (rel: string, quiet: Set<string>) => !otherSourceData(rel, quiet) && !referencePage(rel);
 
+/** The files under references/ that the cite tool downloaded itself, from a URL with no credential in it, and that
+ *  still have the hash it recorded (references/opened.json): public pages as served to anyone. */
+export function publicSnapshots(root: string): Set<string> {
+  const out = new Set<string>();
+  let log: Record<string, any>;
+  try {
+    log = JSON.parse(fs.readFileSync(path.join(root, "references", "opened.json"), "utf8"));
+  } catch {
+    return out;
+  }
+  for (const r of Object.values(log || {})) {
+    if (r?.via !== "download" || typeof r.file !== "string" || typeof r.url !== "string" || !referencePage(r.file)) continue;
+    if (scanText(r.url).length) continue;
+    const f = path.resolve(root, r.file);
+    try {
+      if (crypto.createHash("sha256").update(fs.readFileSync(f)).digest("hex") === r.sha256) out.add(f);
+    } catch {
+      // gone or unreadable: scanned (or skipped) as any other file
+    }
+  }
+  return out;
+}
+
 /** zipfile.is_zipfile: an end-of-central-directory record near the end. */
 function isZip(p: string): boolean {
   try {
@@ -155,14 +181,15 @@ function isZip(p: string): boolean {
   }
 }
 
-export function scanFile(p: string, keys: string[] | string = [], hex32 = false, quiet = new Set<string>(), rel = ""): string[] {
+export function scanFile(p: string, keys: string[] | string = [], hex32 = false, quiet = new Set<string>(), rel = "",
+  patterns = true): string[] {
   const ks = (typeof keys === "string" ? [keys] : keys).filter((k) => k).map(asciiLower);
   const head = Buffer.alloc(5);
   const fd = fs.openSync(p, "r");
   fs.readSync(fd, head, 0, 5, 0);
   fs.closeSync(fd);
   const pdf = head.toString("latin1") === "%PDF-";         // a PDF's trailer /ID holds two 32-hex document ids
-  let hits = scanChunks(fileChunks(p), p, ks, hex32 && !pdf && hexRule(rel || p, quiet));
+  let hits = scanChunks(fileChunks(p), p, ks, hex32 && !pdf && hexRule(rel || p, quiet), patterns);
   if (isZip(p)) {                                          // members are compressed: scan them decompressed too
     try {
       const z = unzipSync(fs.readFileSync(p));
@@ -201,11 +228,12 @@ export function scanTree(paths: string[], keys: string[], hex32 = false): [strin
   for (const root of paths) {
     const isFile = fs.existsSync(root) && fs.statSync(root).isFile();
     const files = isFile ? [root] : fs.existsSync(root) ? walk(root) : [];
+    const pub = isFile ? new Set<string>() : publicSnapshots(root);
     for (const p of files) {
       n++;
       try {
         const rel = isFile ? p : path.relative(root, p);
-        found = found.concat(scanFile(p, keys, hex32, quiet, rel));
+        found = found.concat(scanFile(p, keys, hex32, quiet, rel, !pub.has(path.resolve(p))));
       } catch {
         // unreadable: skipped (as the Python scan does, with a note on stderr)
       }
