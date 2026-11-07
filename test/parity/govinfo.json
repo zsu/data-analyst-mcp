@@ -1,0 +1,54 @@
+{
+ "sample": {
+  "description": "Stablecoin bills in the 118th Congress, recent budget office publications, and the text of one law",
+  "requests": [
+   {
+    "name": "stablecoin_bills",
+    "endpoint": "search",
+    "params": {
+     "collection": "BILLS",
+     "congress": 118,
+     "phrase": "payment stablecoin",
+     "sort": "newest"
+    }
+   },
+   {
+    "name": "cbo_recent",
+    "endpoint": "search",
+    "params": {
+     "collection": "GOVPUB",
+     "publisher": "Congressional Budget Office",
+     "date_from": "2026-06-01",
+     "sort": "newest"
+    }
+   },
+   {
+    "name": "law_text",
+    "endpoint": "text",
+    "params": {
+     "packageId": "PLAW-118publ201"
+    }
+   }
+  ]
+ },
+ "sections": {
+  "description": "Sections of two 2024 laws and the U.S. Code sections the first amends",
+  "requests": [
+   {
+    "name": "performance_act",
+    "endpoint": "sections",
+    "params": {
+     "packageId": "PLAW-118publ190"
+    }
+   },
+   {
+    "name": "clinic_naming",
+    "endpoint": "sections",
+    "params": {
+     "packageId": "PLAW-118publ200",
+     "max_chars": 200
+    }
+   }
+  ]
+ }
+}

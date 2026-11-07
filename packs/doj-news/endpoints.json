@@ -1,0 +1,59 @@
+{
+  "base_url": "https://www.justice.gov/api/v1",
+  "endpoints": {
+    "press_releases": {
+      "path": "/press_releases.json",
+      "description": "DOJ press releases (Office of Public Affairs and all 94 U.S. Attorney's Offices, FBI, DEA, ATF, ...): title, date, component, topic, teaser, HTML body, URL.",
+      "params": {
+        "parameters[title]": {"desc": "title words: \"fentanyl trafficking\" in double quotes = phrase; without quotes = all words; case-insensitive"},
+        "parameters[date]": {"desc": "one day: YYYY-MM-DD or a Unix timestamp (no ranges; use since/until)"},
+        "since": {"desc": "pack option, not sent: keep releases dated on or after YYYY-MM-DD (pages newest first and stops early)"},
+        "until": {"desc": "pack option, not sent: keep releases dated on or before YYYY-MM-DD"},
+        "fields": {"desc": "comma-separated: uuid,title,date,created,changed,url,component,topic,teaser,body,number,attachment,image"},
+        "sort": {"enum": ["date", "created", "changed"], "desc": "sort field (default order is not by date: set it)"},
+        "direction": {"enum": ["ASC", "DESC"], "desc": "DESC = newest first"}
+      },
+      "defaults": {"sort": "date", "direction": "DESC", "fields": "uuid,title,date,component,topic,url,number,teaser"},
+      "records": "results", "total": "metadata.resultset.count",
+      "paging": {"type": "page", "page_param": "page", "size_param": "pagesize", "size": 50, "start": 0},
+      "max_rows": 20000
+    },
+    "press_release": {
+      "path": "/press_releases/{uuid}.json",
+      "description": "One press release with its full HTML body.",
+      "params": {"uuid": {"in": "path", "required": true, "desc": "uuid from press_releases"},
+                 "fields": {"desc": "fields to return (default all)"}},
+      "records": "results", "paging": {"type": "none"}
+    },
+    "blog_entries": {
+      "path": "/blog_entries.json",
+      "description": "DOJ blog entries (Justice Blog, about 3,300 since 2009). No title or date filter upstream; since/until filter locally.",
+      "params": {
+        "since": {"desc": "pack option, not sent: keep entries dated on or after YYYY-MM-DD"},
+        "until": {"desc": "pack option, not sent: keep entries dated on or before YYYY-MM-DD"},
+        "fields": {"desc": "uuid,title,date,created,changed,url,component,topic,teaser,body,image,attachments"},
+        "sort": {"enum": ["date", "created", "changed"], "desc": "sort field"},
+        "direction": {"enum": ["ASC", "DESC"], "desc": "DESC = newest first"}
+      },
+      "defaults": {"sort": "date", "direction": "DESC", "fields": "uuid,title,date,component,topic,url,teaser"},
+      "records": "results", "total": "metadata.resultset.count",
+      "paging": {"type": "page", "page_param": "page", "size_param": "pagesize", "size": 50, "start": 0},
+      "max_rows": 5000
+    },
+    "blog_entry": {
+      "path": "/blog_entries/{uuid}.json",
+      "description": "One blog entry with its full body.",
+      "params": {"uuid": {"in": "path", "required": true, "desc": "uuid from blog_entries"},
+                 "fields": {"desc": "fields to return (default all)"}},
+      "records": "results", "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "components": {"id": "component", "name": "DOJ components",
+                   "description": "Office of the Attorney General, Office of Public Affairs, Civil Rights Division, Civil Division, Criminal Division, National Security Division, Antitrust Division, Environment and Natural Resources Division, Tax Division, DEA, FBI, ATF, U.S. Marshals Service, Bureau of Prisons, Office of Justice Programs, U.S. Attorneys (USAO - <state, district>)",
+                   "endpoint": "press_releases"},
+    "topics": {"id": "topic", "name": "Press release topics",
+               "description": "Antitrust, Civil Rights, Cybercrime, Disability Rights, Drug Trafficking, Elder Justice, Environment, Firearms Offenses, Financial Fraud, Foreign Agents Registration Act, Health Care Fraud, Human Trafficking, Identity Theft, Immigration, National Security, Opioids, Project Safe Childhood, Public Corruption, Tax, Terrorism, Violent Crime, Voting, White Collar Crime",
+               "endpoint": "press_releases"}
+  }
+}

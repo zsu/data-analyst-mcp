@@ -1,0 +1,330 @@
+{
+    "bill": {
+        "actions": {
+            "count": 58,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/actions?format=json"
+        },
+        "amendments": {
+            "count": 295,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/amendments?format=json"
+        },
+        "cboCostEstimates": [
+            {
+                "description": "As reported on September 27, 2021\n",
+                "pubDate": "2021-10-19T18:35:00Z",
+                "title": "Provisions in Reconciliation Legislation That Would Affect Health Insurance Coverage of People Under Age 65",
+                "url": "https://www.cbo.gov/publication/57561"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on\nNovember 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-10T16:01:00Z",
+                "title": "Estimated Budgetary Effects of Title X, Committee on Small Business, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57605"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-10T16:01:00Z",
+                "title": "Estimated Budgetary Effects of Title XII, Committee on Veterans Affairs, H.R. 5376, Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57604"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-10T18:46:00Z",
+                "title": "Estimated Budgetary Effects of Title V, Committee on Homeland Security, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57607"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-10T19:45:00Z",
+                "title": "Estimated Budgetary Effects of Title IX, Committee on Science, Space, and Technology, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57608"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on\nNovember 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-12T20:22:12Z",
+                "title": "Estimated Budgetary Effects of Title XI, Committee on Transportation and Infrastructure, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57490"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-12T22:12:00Z",
+                "title": "Estimated Budgetary Effects of Title VIII, Committee on Oversight and Reform, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57611"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-15T19:53:00Z",
+                "title": "Estimated Budgetary Effects of Title I, Committee on Agriculture, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57618"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-15T21:05:00Z",
+                "title": "Estimated Budgetary Effects of Title IV, Committee on Financial Services, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57619"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-17T21:29:46Z",
+                "title": "Estimated Budgetary Effects of Title VII, Committee on Natural Resources, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57621"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-17T23:51:57Z",
+                "title": "Estimated Budgetary Effects of Title II, Committee on Education and Labor, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57622"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-18T15:50:00Z",
+                "title": "Estimated Budgetary Effects of Title III, Committee on Energy and Commerce, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57623"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-18T20:02:00Z",
+                "title": "Estimated Budgetary Effects of Title VI, Committee on the Judiciary, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57625"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-18T21:25:00Z",
+                "title": "Estimated Budgetary Effects of Title XIII, Committee on Ways and Means, H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57626"
+            },
+            {
+                "description": "As Posted on the Website of the House Committee on Rules on November 3, 2021 (Rules Committee Print 117-18), as Amended by Yarmuth Amendment 112\n",
+                "pubDate": "2021-11-18T22:46:00Z",
+                "title": "Summary of Cost Estimate for H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57627"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021",
+                "pubDate": "2021-12-08T18:34:45Z",
+                "title": "Estimated Budgetary Effects of Title VIII, Committee on Commerce, Science, and Transportation, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57678"
+            },
+            {
+                "description": "Letter to the Honorable John Yarmuth\n",
+                "pubDate": "2021-12-08T19:00:00Z",
+                "title": "Budgetary Effects of H.R. 5376 as Passed by the House of Representatives",
+                "url": "https://www.cbo.gov/publication/57676"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021",
+                "pubDate": "2021-12-08T19:51:40Z",
+                "title": "Estimated Budgetary Effects of Title XI, Committee on Veterans’ Affairs, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57679"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021\n",
+                "pubDate": "2021-12-08T22:59:00Z",
+                "title": "Estimated Budgetary Effects of Title VIII, Committee on Commerce, Science, and Transportation, for the Senate Amendment to\t\t\t\t\t\t\t\t\t\t\t\t\t\t H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57678"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021\n",
+                "pubDate": "2021-12-08T23:02:00Z",
+                "title": "Estimated Budgetary Effects of Title IV, Committee on Banking, Housing, and Urban Affairs, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57681"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021\n",
+                "pubDate": "2021-12-08T23:05:00Z",
+                "title": "Estimated Budgetary Effects of Title X, Committee on Small Business and Entrepreneurship, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57680"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 8, 2021\n",
+                "pubDate": "2021-12-08T23:07:00Z",
+                "title": "Estimated Budgetary Effects of Title XI, Committee on Veterans’ Affairs, for the Senate Amendment to\t\t\t\t\t\t\t\t\t\t\t\t\t\t H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57679"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 9, 2021\n",
+                "pubDate": "2021-12-09T22:00:00Z",
+                "title": "Estimated Budgetary Effects of Title IX, Committee on Indian Affairs, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57686"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 9, 2021",
+                "pubDate": "2021-12-10T18:29:23Z",
+                "title": "Estimated Budgetary Effects of Title IX, Committee on Indian Affairs, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/system/files/2021-12/sen_title%20IX_Indian_Affairs.pdf"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 10, 2021\n",
+                "pubDate": "2021-12-10T21:08:00Z",
+                "title": "Estimated Budgetary Effects of Title V, Committee on Homeland Security and Governmental Affairs, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57687"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 10, 2021\n",
+                "pubDate": "2021-12-10T22:46:00Z",
+                "title": "Estimated Budgetary Effects of Title I, Committee on Agriculture, Nutrition, and Forestry, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57689"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 15, 2021\n",
+                "pubDate": "2021-12-16T16:54:00Z",
+                "title": "Estimated Budgetary Effects of Title III, Committee on Environment and Public Works, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57688"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 17, 2021\n",
+                "pubDate": "2021-12-17T21:25:00Z",
+                "title": "Estimated Budgetary Effects of Title VII, Committee on Energy and Natural Resources, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57703"
+            },
+            {
+                "description": "As Posted on the Website of the Senate Democratic Leadership on December 11, 2021\n",
+                "pubDate": "2021-12-20T19:09:00Z",
+                "title": "Estimated Budgetary Effects of Title II, Committee on Health, Education, Labor, and Pensions, for the Senate Amendment to H.R. 5376, the Build Back Better Act",
+                "url": "https://www.cbo.gov/publication/57704"
+            },
+            {
+                "description": "As Amended in the Nature of a Substitute (ERN22335) and Posted on the Website of the Senate Majority Leader on July 27, 2022\n",
+                "pubDate": "2022-08-03T18:42:00Z",
+                "title": "Estimated Budgetary Effects of H.R. 5376, the Inflation Reduction Act of 2022",
+                "url": "https://www.cbo.gov/publication/58366"
+            },
+            {
+                "description": "As amended in the nature of a substitute (ERN22410) and posted on the website of the Senate Majority Leader on August 6, 2022\n",
+                "pubDate": "2022-08-06T22:02:00Z",
+                "title": "Information About H.R. 5376, the Inflation Reduction Act of 2022",
+                "url": "https://www.cbo.gov/publication/58367"
+            },
+            {
+                "description": "As amended in the nature of a substitute (ERN22410) and posted on the website of the Senate Majority Leader on August 6, 2022\n",
+                "pubDate": "2022-08-06T22:02:00Z",
+                "title": "Letter to the Honorable Chuck Schumer regarding H.R. 5376, the Inflation Reduction Act of 2022",
+                "url": "https://www.cbo.gov/publication/58367"
+            },
+            {
+                "description": "As Passed by the Senate on August 7, 2022\n",
+                "pubDate": "2022-08-11T17:38:00Z",
+                "title": "Information About Reconciliation Legislation",
+                "url": "https://www.cbo.gov/publication/58387"
+            },
+            {
+                "description": "As Passed by the Senate on August 7, 2022\n",
+                "pubDate": "2022-08-11T17:38:00Z",
+                "title": "Letter to the Honorable Bernie Sanders About Reconciliation Legislation Passed by the Senate",
+                "url": "https://www.cbo.gov/publication/58387"
+            },
+            {
+                "description": "As Passed by the Senate on August 7, 2022\n",
+                "pubDate": "2022-08-12T12:30:00Z",
+                "title": "Information About Reconciliation Legislation for Several Committees of the House of Representatives",
+                "url": "https://www.cbo.gov/publication/58389"
+            },
+            {
+                "description": "As Passed by the Senate on August 7, 2022\n",
+                "pubDate": "2022-08-12T12:30:00Z",
+                "title": "Letter to the Honorable John Yarmuth regarding Reconciliation Legislation for Several Committees of the House of Representatives",
+                "url": "https://www.cbo.gov/publication/58389"
+            },
+            {
+                "description": "Public Law 117-169 as enacted on August 16, 2022\n",
+                "pubDate": "2022-09-07T20:39:00Z",
+                "title": "Estimated Budgetary Effects of Public Law 117-169,  to Provide for Reconciliation Pursuant to Title II of S. Con. Res. 14",
+                "url": "https://www.cbo.gov/publication/58455"
+            }
+        ],
+        "committeeReports": [
+            {
+                "citation": "H. Rept. 117-130,Book 1",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            },
+            {
+                "citation": "H. Rept. 117-130,Book 3",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            },
+            {
+                "citation": "H. Rept. 117-130,Book 2",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            },
+            {
+                "citation": "H. Rept. 117-130,Errata",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            },
+            {
+                "citation": "H. Rept. 117-130,Errata",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            },
+            {
+                "citation": "H. Rept. 117-130",
+                "url": "https://api.congress.gov/v3/committee-report/117/HRPT/130?format=json"
+            }
+        ],
+        "committees": {
+            "count": 3,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/committees?format=json"
+        },
+        "congress": 117,
+        "introducedDate": "2021-09-27",
+        "latestAction": {
+            "actionDate": "2022-08-16",
+            "text": "Became Public Law No: 117-169."
+        },
+        "laws": [
+            {
+                "number": "117-169",
+                "type": "Public Law"
+            }
+        ],
+        "legislationUrl": "https://www.congress.gov/bill/117th-congress/house-bill/5376",
+        "number": "5376",
+        "originChamber": "House",
+        "originChamberCode": "H",
+        "policyArea": {
+            "name": "Economics and Public Finance"
+        },
+        "relatedBills": {
+            "count": 74,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/relatedbills?format=json"
+        },
+        "sponsors": [
+            {
+                "bioguideId": "Y000062",
+                "district": 3,
+                "firstName": "John",
+                "fullName": "Rep. Yarmuth, John A. [D-KY-3]",
+                "isByRequest": "N",
+                "lastName": "Yarmuth",
+                "middleName": "A.",
+                "party": "D",
+                "state": "KY",
+                "url": "https://api.congress.gov/v3/member/Y000062?format=json"
+            }
+        ],
+        "subjects": {
+            "count": 280,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/subjects?format=json"
+        },
+        "summaries": {
+            "count": 5,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/summaries?format=json"
+        },
+        "textVersions": {
+            "count": 6,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/text?format=json"
+        },
+        "title": "An act to provide for reconciliation pursuant to title II of S. Con. Res. 14.",
+        "titles": {
+            "count": 11,
+            "url": "https://api.congress.gov/v3/bill/117/hr/5376/titles?format=json"
+        },
+        "type": "HR",
+        "updateDate": "2026-09-08T19:31:27Z",
+        "updateDateIncludingText": "2026-09-08T19:31:27Z"
+    },
+    "request": {
+        "billNumber": "5376",
+        "billType": "hr",
+        "congress": "117",
+        "contentType": "application/json",
+        "format": "json"
+    }
+}

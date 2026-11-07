@@ -1,0 +1,11 @@
+{
+ "GET https://www.cms.gov/data-research/statistics-trends-and-reports/trustees-report-trust-funds": "cms_trustees_page.html",
+ "GET https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical": "cms_nhe_historical_page.html",
+ "GET https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected": "cms_nhe_projected_page.html",
+ "GET https://www.cms.gov/files/zip/2026-expanded-supplementary-tables-figures.zip": "medicare_tr_2026_trimmed.zip",
+ "GET https://www.cms.gov/files/zip/nhe-tables.zip": "nhe_tables_trimmed.zip",
+ "GET https://www.cms.gov/files/zip/nhe-projections-tables.zip": "nhe_projections_tables_trimmed.zip",
+ "GET https://www.cms.gov/files/zip/nhe-summary-including-share-gdp-cy-1960-2024.zip": "nhe-summary-including-share-gdp-cy-1960-2024.zip",
+ "GET https://www.cms.gov/files/zip/national-health-expenditures-type-service-source-funds-cy-1960-2024.zip": "national-health-expenditures-type-service-source-funds-cy-1960-2024.zip",
+ "GET https://www.cms.gov/files/zip/nhe-historical-projections-data.zip": "nhe-historical-projections-data.zip"
+}

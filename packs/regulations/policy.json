@@ -1,0 +1,86 @@
+{
+  "id": "regulations",
+  "title": "Regulations.gov (API v4)",
+  "agency": "General Services Administration (eRulemaking Program), for participating federal agencies",
+  "depth": "standard",
+  "domains": [
+    "legislation",
+    "regulation",
+    "rulemaking"
+  ],
+  "keywords": [
+    "regulations.gov",
+    "public comment",
+    "public comments",
+    "comments",
+    "docket",
+    "dockets",
+    "rulemaking",
+    "proposed rule",
+    "final rule",
+    "comment period",
+    "notice and comment",
+    "erulemaking"
+  ],
+  "questions": [
+    "how many public comments did a proposed rule receive",
+    "proposed rules open for comment at EPA",
+    "dockets an agency opened this year",
+    "comments on a docket over time"
+  ],
+  "homepage": "https://www.regulations.gov/",
+  "terms_url": "https://open.gsa.gov/api/regulationsgov/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "demo_key": "DEMO_KEY",
+    "key_only": [
+      "more than about 10 requests an hour (DEMO_KEY limit); a free key allows 1,000 an hour"
+    ]
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 4,
+    "daily_quota": null,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.regulations.gov/v4",
+      "probe": "https://api.regulations.gov/v4/documents?page%5Bsize%5D=5",
+      "hosts": [
+        "api.regulations.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in INSTRUCTIONS.md in a browser (they carry the public DEMO_KEY, about 10 requests an hour; put your own api.data.gov key in its place for more) and save the JSON under the given name; or search on https://www.regulations.gov, open the docket's 'Browse Comments' or 'Browse Documents' list, use 'Download' (CSV export of up to the first results), and upload the file."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Dockets gain documents and comments daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Federal agency documents and the metadata are U.S. government works (17 U.S.C. 105). Public submissions are posted as received: attachments can contain third-party copyrighted material and personal information the submitter chose to include; share counts and metadata, and quote comment text sparingly."
+  },
+  "notices": [
+    "Public comments on Regulations.gov are posted by the agencies as received; posted counts can differ from comments received (agencies may withhold duplicates, mass-mail campaigns or sensitive submissions)."
+  ],
+  "retention": null,
+  "citation": "Regulations.gov API v4 (eRulemaking Program, GSA), {dataset}, api.regulations.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Comments posted or comments received? The API counts posted comments only; agencies may post a sample or one copy of a mass-mail campaign.",
+    "Which document or docket? Comments filed on a docket (filter[docketId]) include every document in it; on one document use filter[commentOnId] with its objectId."
+  ],
+  "formats": [
+    "json"
+  ]
+}

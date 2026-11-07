@@ -1,0 +1,1426 @@
+{
+  "base_url": "https://snapqcdata.net",
+  "timeout": 120,
+  "listing": {
+    "path": "/datafiles",
+    "page_param": "page",
+    "max_pages": 20,
+    "verified": "2026-10-31: 7 pages, one 'Year YYYY' heading per fiscal year (a year can continue on the next page), rows Resource Type | Data format | File"
+  },
+  "csv_first_year": 2014,
+  "id_columns": [
+    "HHLDNO",
+    "STATE",
+    "STATENAME",
+    "YRMONTH",
+    "HWGT",
+    "FYWGT"
+  ],
+  "required_columns": [
+    "HHLDNO",
+    "STATE",
+    "YRMONTH",
+    "HWGT",
+    "FYWGT",
+    "FSUSIZE",
+    "FSBEN"
+  ],
+  "default_variables": [
+    "FSUSIZE",
+    "CERTHHSZ",
+    "CTPRHH",
+    "FSBEN",
+    "RAWBEN",
+    "FSGRINC",
+    "FSNETINC",
+    "FSEARN",
+    "FSUNEARN",
+    "TPOV",
+    "FSKID",
+    "FSNKID",
+    "FSELDER",
+    "FSNELDER",
+    "FSDIS",
+    "FSNONCIT",
+    "COMPOSITION",
+    "WRK_POOR",
+    "TANF_IND",
+    "CAT_ELIG",
+    "HOMEDED",
+    "REP_SYS",
+    "STATUS",
+    "AMTERR",
+    "REGIONCD"
+  ],
+  "default_person_variables": [
+    "FSAFIL",
+    "REL",
+    "AGE",
+    "SEX",
+    "RACETH",
+    "CTZN",
+    "DIS",
+    "WORK"
+  ],
+  "csv_files": {
+    "_verified": "2026-10-31 from the /datafiles listing; used for manual download links only (a fetch reads the listing, so a reissued file is picked up)",
+    "qcfy2014": "/sites/default/files/2020-06/qcfy2014_csv.zip",
+    "qcfy2015": "/sites/default/files/2020-06/qcfy2015_csv.zip",
+    "qcfy2016": "/sites/default/files/2020-06/qcfy2016_csv.zip",
+    "qcfy2017": "/sites/default/files/2020-06/qcfy2017_csv.zip",
+    "qcfy2018": "/sites/default/files/2020-08/qcfy2018_csv_0.zip",
+    "qcfy2019": "/sites/default/files/2020-11/qcfy2019_csv.zip",
+    "qcfy2020": "/sites/default/files/2022-12/qcfy2020_csv.zip",
+    "qcfy2020_per1": "/sites/default/files/2022-12/qcfy2020_per1_csv.zip",
+    "qcfy2020_per2": "/sites/default/files/2022-12/qcfy2020_per2_csv.zip",
+    "qcfy2021": "/sites/default/files/2024-05/qcfy2021_csv.zip",
+    "qcfy2022": "/sites/default/files/2024-05/qcfy2022_csv.zip",
+    "qcfy2023": "/sites/default/files/2025-03/qcfy2023_csv.zip",
+    "qcfy2024": "/sites/default/files/2026-08/qcfy2024_csv.zip"
+  },
+  "verified_totals": {
+    "qcfy2024": {
+      "units": 21594587,
+      "persons": 40168146,
+      "benefits": 7366534428,
+      "source": "FY 2024 Technical Documentation (August 2026), Table II.3, 'Edited SNAP QC database' row (average monthly values); reproduced from qcfy2024_csv.zip on 2026-10-31"
+    }
+  },
+  "endpoints": {
+    "units": {
+      "path": "/datafiles",
+      "description": "SNAP QC public-use microdata: one row per sampled SNAP unit (household), with the weights FYWGT (fiscal-year average) and HWGT (one month) and the chosen variables, from the CSV zip of a fiscal year (FY 2014 on). Columns fiscal_year, database and state_abbr are added; every other value is as published.",
+      "params": {
+        "fiscal_year": {
+          "in": "spec",
+          "required": true,
+          "desc": "fiscal year(s), 2014 to the latest (CSV files; one or a list; FY 1996-2013 are SAS/Stata/SPSS only)"
+        },
+        "period": {
+          "in": "spec",
+          "enum": [
+            "full",
+            "per1",
+            "per2"
+          ],
+          "desc": "FY 2020 only: full (default; Oct 2019-Feb 2020 and Jun-Sep 2020, no Mar-May), per1 (Oct 2019-Feb 2020) or per2 (Jun-Sep 2020)"
+        },
+        "variables": {
+          "in": "spec",
+          "desc": "unit-level variables: names (FSBEN), stems with * for numbered columns (AGE* = AGE1 to AGE18; ELEMENT* = error findings 1 to 9), or \"all\" (1,177 columns in FY 2024). Default: a core set (source.md). The id columns are always kept. --search finds names"
+        },
+        "state": {
+          "in": "spec",
+          "desc": "optional: states or territories to keep (USPS codes, FIPS codes or names)"
+        },
+        "month": {
+          "in": "spec",
+          "desc": "optional: one sample month, YYYYMM (202401), within the fiscal year"
+        }
+      },
+      "paging": {
+        "type": "none"
+      }
+    },
+    "persons": {
+      "path": "/datafiles",
+      "description": "The same file reshaped to one row per person listed in the unit's household (person number 1 to 16 or 18): person-level variables (AGE, SEX, FSAFIL...) by stem, with the unit's ids and weights. FSAFIL = 1 marks a SNAP participant.",
+      "params": {
+        "fiscal_year": {
+          "in": "spec",
+          "required": true,
+          "desc": "fiscal year(s), 2014 to the latest (CSV files; one or a list; FY 1996-2013 are SAS/Stata/SPSS only)"
+        },
+        "period": {
+          "in": "spec",
+          "enum": [
+            "full",
+            "per1",
+            "per2"
+          ],
+          "desc": "FY 2020 only: full (default; Oct 2019-Feb 2020 and Jun-Sep 2020, no Mar-May), per1 (Oct 2019-Feb 2020) or per2 (Jun-Sep 2020)"
+        },
+        "state": {
+          "in": "spec",
+          "desc": "optional: states or territories to keep (USPS codes, FIPS codes or names)"
+        },
+        "month": {
+          "in": "spec",
+          "desc": "optional: one sample month, YYYYMM (202401), within the fiscal year"
+        },
+        "person_variables": {
+          "in": "spec",
+          "desc": "person-level stems (AGE, SEX, WAGES; without the number). Default: FSAFIL REL AGE SEX RACETH CTZN DIS WORK"
+        },
+        "variables": {
+          "in": "spec",
+          "desc": "unit-level variables to carry on each person row (default: FSUSIZE FSBEN)"
+        },
+        "participants_only": {
+          "in": "spec",
+          "desc": "true: keep only persons with FSAFIL = 1 (default false)"
+        }
+      },
+      "paging": {
+        "type": "none"
+      }
+    },
+    "summary": {
+      "path": "/datafiles",
+      "description": "Weighted totals computed from the file by state and for the U.S.: SNAP units, persons (FSUSIZE) and benefits (FSBEN), average monthly over the file's months (or one month), with averages per unit and per person and the unweighted sample count. A quick check against FNA's published totals; FY 2024 is compared with its tech doc.",
+      "params": {
+        "fiscal_year": {
+          "in": "spec",
+          "required": true,
+          "desc": "fiscal year(s), 2014 to the latest (CSV files; one or a list; FY 1996-2013 are SAS/Stata/SPSS only)"
+        },
+        "period": {
+          "in": "spec",
+          "enum": [
+            "full",
+            "per1",
+            "per2"
+          ],
+          "desc": "FY 2020 only: full (default; Oct 2019-Feb 2020 and Jun-Sep 2020, no Mar-May), per1 (Oct 2019-Feb 2020) or per2 (Jun-Sep 2020)"
+        },
+        "state": {
+          "in": "spec",
+          "desc": "optional: states or territories to keep (USPS codes, FIPS codes or names)"
+        },
+        "month": {
+          "in": "spec",
+          "desc": "optional: one sample month, YYYYMM (202401), within the fiscal year"
+        }
+      },
+      "paging": {
+        "type": "none"
+      }
+    }
+  },
+  "catalog": {
+    "ACTNTYPE": {
+      "id": "ACTNTYPE",
+      "name": "Type of action",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "ALLADJ": {
+      "id": "ALLADJ",
+      "name": "Allotment adjustment",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "AMTADJ": {
+      "id": "AMTADJ",
+      "name": "Amount of allotment adjustment",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "AUTHREP": {
+      "id": "AUTHREP",
+      "name": "Authorized representative",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "BENFIX": {
+      "id": "BENFIX",
+      "name": "Benefit allotment (SNAP benefit) adjusted for errors",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "CASE": {
+      "id": "CASE",
+      "name": "Case classification",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "CAT_ELIG": {
+      "id": "CAT_ELIG",
+      "name": "Indicator of categorical eligibility status",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "CERTMTH": {
+      "id": "CERTMTH",
+      "name": "Months in certification period",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "EXPEDSER": {
+      "id": "EXPEDSER",
+      "name": "Received expedited service",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "HHLDNO": {
+      "id": "HHLDNO",
+      "name": "SNAP household identification number",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "LASTCERT": {
+      "id": "LASTCERT",
+      "name": "Months since last SNAP certification",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "MED_DED_DEMO": {
+      "id": "MED_DED_DEMO",
+      "name": "Indicator of standard medical deduction demonstration eligibility",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "MN_FIP": {
+      "id": "MN_FIP",
+      "name": "Indicator of Minnesota Family Investment Program participation",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "PURE_PA": {
+      "id": "PURE_PA",
+      "name": "Indicator of pure cash public assistance status",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "RCNTACTN": {
+      "id": "RCNTACTN",
+      "name": "Most recent action on case",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "REP_SYS": {
+      "id": "REP_SYS",
+      "name": "Reporting requirement",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "SSI_CAP": {
+      "id": "SSI_CAP",
+      "name": "Indicator of SSI-CAP participation",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; constructed"
+    },
+    "STATUS": {
+      "id": "STATUS",
+      "name": "Status of case error findings",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "TIMELINESS": {
+      "id": "TIMELINESS",
+      "name": "Timeliness of application processing",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "YRMONTH": {
+      "id": "YRMONTH",
+      "name": "Sample year and month",
+      "endpoint": "units",
+      "description": "unit: QC review administrative data; reported"
+    },
+    "CERTHHSZ": {
+      "id": "CERTHHSZ",
+      "name": "Certified unit size",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; reported"
+    },
+    "COMPOSITION": {
+      "id": "COMPOSITION",
+      "name": "Unit composition",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "CTPRHH": {
+      "id": "CTPRHH",
+      "name": "Number of people in household",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSDIS": {
+      "id": "FSDIS",
+      "name": "Indicator of individual age 59 or younger with a disability in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSDIS_64": {
+      "id": "FSDIS_64",
+      "name": "Indicator of individual age 64 or younger with a disability in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSELDER": {
+      "id": "FSELDER",
+      "name": "Indicator of elderly individual in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSKID": {
+      "id": "FSKID",
+      "name": "Indicator of child in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNDIS": {
+      "id": "FSNDIS",
+      "name": "Number of individuals ages 59 and younger with a disability in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNDIS_64": {
+      "id": "FSNDIS_64",
+      "name": "Number of individuals ages 64 and younger with a disability in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNDISCA": {
+      "id": "FSNDISCA",
+      "name": "Number of adults ages 18 to 52 without a disability in a childless unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNDISCA_64": {
+      "id": "FSNDISCA_64",
+      "name": "Number of adults ages 18 to 64 without a disability in a unit without a child younger than age 14",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNELDER": {
+      "id": "FSNELDER",
+      "name": "Number of elderly individuals in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNGMOM": {
+      "id": "FSNGMOM",
+      "name": "Indicator of single-female–headed unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNK0T4": {
+      "id": "FSNK0T4",
+      "name": "Number of preschool-age children in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNK5T17": {
+      "id": "FSNK5T17",
+      "name": "Number of school-age children in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNKID": {
+      "id": "FSNKID",
+      "name": "Number of children in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSNONCIT": {
+      "id": "FSNONCIT",
+      "name": "Number of noncitizens in unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSUSIZE": {
+      "id": "FSUSIZE",
+      "name": "Constructed certified unit size",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FYWGT": {
+      "id": "FYWGT",
+      "name": "Weight used for full-year calculations",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "HWGT": {
+      "id": "HWGT",
+      "name": "Monthly sample weight",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "NONCIT_HEAD": {
+      "id": "NONCIT_HEAD",
+      "name": "Unit head citizenship indicator",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "RAWHSIZE": {
+      "id": "RAWHSIZE",
+      "name": "Reported number of people in household",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; reported"
+    },
+    "REGION": {
+      "id": "REGION",
+      "name": "Constructed census region code",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "REGIONCD": {
+      "id": "REGIONCD",
+      "name": "FNA region code",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; reported"
+    },
+    "STATE": {
+      "id": "STATE",
+      "name": "FIPS code for State or territory",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; reported"
+    },
+    "STATENAME": {
+      "id": "STATENAME",
+      "name": "State or territory",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "STRATUM": {
+      "id": "STRATUM",
+      "name": "Stratum identification",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; reported"
+    },
+    "TANF_IND": {
+      "id": "TANF_IND",
+      "name": "Indicator of TANF receipt for unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "TPOV": {
+      "id": "TPOV",
+      "name": "Gross income/poverty level ratio",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "WRK_POOR": {
+      "id": "WRK_POOR",
+      "name": "Indicator of working poor unit",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; constructed"
+    },
+    "FSALIMNY": {
+      "id": "FSALIMNY",
+      "name": "Countable unit income from alimony",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSANNUITY": {
+      "id": "FSANNUITY",
+      "name": "Countable unit income from annuities",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSCONT": {
+      "id": "FSCONT",
+      "name": "Countable unit income from contributions",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSCSUPRT": {
+      "id": "FSCSUPRT",
+      "name": "Countable unit child support payment income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSDEEM": {
+      "id": "FSDEEM",
+      "name": "Countable unit deemed income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSDIVER": {
+      "id": "FSDIVER",
+      "name": "Countable unit State diversion payments",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSEARN": {
+      "id": "FSEARN",
+      "name": "Countable unit earned income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSEDLOAN": {
+      "id": "FSEDLOAN",
+      "name": "Countable unit income from educational grants and loans",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSENERGY": {
+      "id": "FSENERGY",
+      "name": "Countable unit energy assistance income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSFOSTER": {
+      "id": "FSFOSTER",
+      "name": "Countable unit foster care income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSGA": {
+      "id": "FSGA",
+      "name": "Countable unit General Assistance benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSGOVDIV": {
+      "id": "FSGOVDIV",
+      "name": "Countable unit government-sponsored dividends",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSGOVINTER": {
+      "id": "FSGOVINTER",
+      "name": "Countable unit government-sponsored interest",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSGOVROY": {
+      "id": "FSGOVROY",
+      "name": "Countable unit government-sponsored royalties",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSGRINC": {
+      "id": "FSGRINC",
+      "name": "Final gross countable unit income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSINTER": {
+      "id": "FSINTER",
+      "name": "Countable unit interest income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSNETINC": {
+      "id": "FSNETINC",
+      "name": "Final net countable unit income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSOLDAGE": {
+      "id": "FSOLDAGE",
+      "name": "Countable unit income from old age benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSOTHERN": {
+      "id": "FSOTHERN",
+      "name": "Countable unit other earned income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSOTHGOV": {
+      "id": "FSOTHGOV",
+      "name": "Countable unit income from other government benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSOTHUN": {
+      "id": "FSOTHUN",
+      "name": "Countable unit other unearned income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSPENSION": {
+      "id": "FSPENSION",
+      "name": "Countable unit income from pensions",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSRENTMINC": {
+      "id": "FSRENTMINC",
+      "name": "Countable unit rental income when managing property for an average of at least 20 hours per week",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSRENTINC": {
+      "id": "FSRENTINC",
+      "name": "Countable unit rental income when not managing property for an average of at least 20 hours per week",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSSLFEMP": {
+      "id": "FSSLFEMP",
+      "name": "Countable unit self-employment income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSSOCSEC": {
+      "id": "FSSOCSEC",
+      "name": "Countable unit Social Security income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSSSI": {
+      "id": "FSSSI",
+      "name": "Countable unit SSI benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSTANF": {
+      "id": "FSTANF",
+      "name": "Countable unit TANF payments",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSSTRIKE": {
+      "id": "FSSTRIKE",
+      "name": "Countable unit striker benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSUNEARN": {
+      "id": "FSUNEARN",
+      "name": "Countable unit unearned income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSUNEMP": {
+      "id": "FSUNEMP",
+      "name": "Countable unit unemployment compensation benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSSURV": {
+      "id": "FSSURV",
+      "name": "Countable unit survivor’s benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSTRUST": {
+      "id": "FSTRUST",
+      "name": "Countable unit trust fund monies",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSUNK": {
+      "id": "FSUNK",
+      "name": "Countable unit income from an unknown source",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSVET": {
+      "id": "FSVET",
+      "name": "Countable unit veterans benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSWAGES": {
+      "id": "FSWAGES",
+      "name": "Countable unit wages and salaries",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSWCOMP": {
+      "id": "FSWCOMP",
+      "name": "Countable unit workers’ compensation benefits",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "FSWGESUP": {
+      "id": "FSWGESUP",
+      "name": "Countable unit wage supplementation income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); constructed"
+    },
+    "RAWGROSS": {
+      "id": "RAWGROSS",
+      "name": "Reported gross countable unit income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); reported"
+    },
+    "RAWNET": {
+      "id": "RAWNET",
+      "name": "Reported net countable unit income",
+      "endpoint": "units",
+      "description": "unit: countable income (monthly dollars); reported"
+    },
+    "FSASSET": {
+      "id": "FSASSET",
+      "name": "Total countable assets under State rules",
+      "endpoint": "units",
+      "description": "unit: assets; constructed"
+    },
+    "FSVEHAST": {
+      "id": "FSVEHAST",
+      "name": "Countable non-excluded vehicles’ value under State rules",
+      "endpoint": "units",
+      "description": "unit: assets; constructed"
+    },
+    "LIQRESOR": {
+      "id": "LIQRESOR",
+      "name": "Countable liquid assets under State rules",
+      "endpoint": "units",
+      "description": "unit: assets; constructed"
+    },
+    "OTHNLRES": {
+      "id": "OTHNLRES",
+      "name": "Countable other nonliquid assets under State rules",
+      "endpoint": "units",
+      "description": "unit: assets; constructed"
+    },
+    "RAWLQRES": {
+      "id": "RAWLQRES",
+      "name": "Reported liquid assets",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "RAWOTRES": {
+      "id": "RAWOTRES",
+      "name": "Reported other nonliquid assets",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "RAWRPROP": {
+      "id": "RAWRPROP",
+      "name": "Reported real property",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "RAWVHAST": {
+      "id": "RAWVHAST",
+      "name": "Reported non-excluded vehicles’ value",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "REALPROP": {
+      "id": "REALPROP",
+      "name": "Countable real property under State rules",
+      "endpoint": "units",
+      "description": "unit: assets; constructed"
+    },
+    "VEHICLEA": {
+      "id": "VEHICLEA",
+      "name": "Reported category for first vehicle",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "VEHICLEB": {
+      "id": "VEHICLEB",
+      "name": "Reported category for second vehicle",
+      "endpoint": "units",
+      "description": "unit: assets; reported"
+    },
+    "ERN_INC_DED_PCT": {
+      "id": "ERN_INC_DED_PCT",
+      "name": "Percentage used to calculate earned income deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "EXCL_FSCSDED": {
+      "id": "EXCL_FSCSDED",
+      "name": "Child support excluded from gross income",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSCSDED": {
+      "id": "FSCSDED",
+      "name": "Child support payment deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSCSEXP": {
+      "id": "FSCSEXP",
+      "name": "Reported child support payment deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "FSDEPDED": {
+      "id": "FSDEPDED",
+      "name": "Reported dependent care deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "FSDEPDE2": {
+      "id": "FSDEPDE2",
+      "name": "Marginal effectiveness of dependent care deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSERNDED": {
+      "id": "FSERNDED",
+      "name": "Calculated earned income deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSERNDE2": {
+      "id": "FSERNDE2",
+      "name": "Marginal effectiveness of earned income deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSMEDDED": {
+      "id": "FSMEDDED",
+      "name": "Calculated medical expense deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSMEDDE2": {
+      "id": "FSMEDDE2",
+      "name": "Marginal effectiveness of medical expense deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSMEDEXP": {
+      "id": "FSMEDEXP",
+      "name": "Reported medical expenses",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "FSSLTDED": {
+      "id": "FSSLTDED",
+      "name": "Calculated excess shelter expense deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSSLTDE2": {
+      "id": "FSSLTDE2",
+      "name": "Marginal effectiveness of excess shelter expense deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSSLTEXP": {
+      "id": "FSSLTEXP",
+      "name": "Calculated shelter expenses",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSSTDDED": {
+      "id": "FSSTDDED",
+      "name": "Standard deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSSTDDE2": {
+      "id": "FSSTDDE2",
+      "name": "Marginal effectiveness of standard deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSTOTDED": {
+      "id": "FSTOTDED",
+      "name": "Total deductions",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "FSTOTDE2": {
+      "id": "FSTOTDE2",
+      "name": "Marginal effectiveness of total deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "HOMEDED": {
+      "id": "HOMEDED",
+      "name": "Indicator of homelessness",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "HOMELESS_DED": {
+      "id": "HOMELESS_DED",
+      "name": "Amount of homeless household shelter deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "RAWERND": {
+      "id": "RAWERND",
+      "name": "Reported earned income deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "RENT": {
+      "id": "RENT",
+      "name": "Rent/mortgage amount",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "SHELCAP": {
+      "id": "SHELCAP",
+      "name": "Maximum allowable shelter expense deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; constructed"
+    },
+    "SHELDED": {
+      "id": "SHELDED",
+      "name": "Reported shelter deduction",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "SUA1": {
+      "id": "SUA1",
+      "name": "Standard utility allowance–usage and entitlement",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "SUA2": {
+      "id": "SUA2",
+      "name": "Standard utility allowance–prorated",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "UTIL": {
+      "id": "UTIL",
+      "name": "Utility amount",
+      "endpoint": "units",
+      "description": "unit: expenses and deductions; reported"
+    },
+    "AMTERR": {
+      "id": "AMTERR",
+      "name": "Amount of benefit in error",
+      "endpoint": "units",
+      "description": "unit: benefits; reported"
+    },
+    "ASSLIM": {
+      "id": "ASSLIM",
+      "name": "Asset limit",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "BENMAX": {
+      "id": "BENMAX",
+      "name": "Maximum benefit amount",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "FSASTEST": {
+      "id": "FSASTEST",
+      "name": "Indicator of passing asset test",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "FSBEN": {
+      "id": "FSBEN",
+      "name": "Final calculated benefit",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "FSGRTEST": {
+      "id": "FSGRTEST",
+      "name": "Indicator of passing gross income test",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "FSMINBEN": {
+      "id": "FSMINBEN",
+      "name": "Received minimum benefit",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "FSNETEST": {
+      "id": "FSNETEST",
+      "name": "Indicator of passing net income test",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "GROSSCRN": {
+      "id": "GROSSCRN",
+      "name": "Gross income screen",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "MINIMUM_BEN": {
+      "id": "MINIMUM_BEN",
+      "name": "Minimum benefit amount",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "NETSCRN": {
+      "id": "NETSCRN",
+      "name": "Net income screen",
+      "endpoint": "units",
+      "description": "unit: benefits; constructed"
+    },
+    "RAWBEN": {
+      "id": "RAWBEN",
+      "name": "Reported SNAP benefit received",
+      "endpoint": "units",
+      "description": "unit: benefits; reported"
+    },
+    "ABWDST": {
+      "id": "ABWDST*",
+      "name": "ABAWD status",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns ABWDST1 to ABWDST18 (FY 2024)"
+    },
+    "AGE": {
+      "id": "AGE*",
+      "name": "Age",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns AGE1 to AGE18 (FY 2024)"
+    },
+    "CTZN": {
+      "id": "CTZN*",
+      "name": "Citizenship status",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns CTZN1 to CTZN18 (FY 2024)"
+    },
+    "DIS": {
+      "id": "DIS*",
+      "name": "Disability status of individuals age 59 and younger",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns DIS1 to DIS18 (FY 2024)"
+    },
+    "DIS64": {
+      "id": "DIS64_*",
+      "name": "Disability status of individuals age 64 and younger",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns DIS64_1 to DIS64_18 (FY 2024)"
+    },
+    "DPCOST": {
+      "id": "DPCOST*",
+      "name": "Reported dependent care cost",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns DPCOST1 to DPCOST18 (FY 2024)"
+    },
+    "EMPRG": {
+      "id": "EMPRG*",
+      "name": "SNAP Employment and Training program status",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns EMPRG1 to EMPRG18 (FY 2024)"
+    },
+    "EMPSTA": {
+      "id": "EMPSTA*",
+      "name": "Employment status–type",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns EMPSTA1 to EMPSTA18 (FY 2024)"
+    },
+    "EMPSTB": {
+      "id": "EMPSTB*",
+      "name": "Employment status–amount",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns EMPSTB1 to EMPSTB18 (FY 2024)"
+    },
+    "FSAFIL": {
+      "id": "FSAFIL*",
+      "name": "SNAP case affiliation",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns FSAFIL1 to FSAFIL18 (FY 2024)"
+    },
+    "FSUN": {
+      "id": "FSUN*",
+      "name": "Position of head of SNAP unit",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns FSUN1 to FSUN18 (FY 2024)"
+    },
+    "NDISCA": {
+      "id": "NDISCA*",
+      "name": "Disability and child in home status of adults age 18 to 52",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns NDISCA1 to NDISCA18 (FY 2024)"
+    },
+    "NDISCA64": {
+      "id": "NDISCA64_*",
+      "name": "Disability and child in home status of adults age 18 to 64",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns NDISCA64_1 to NDISCA64_18 (FY 2024)"
+    },
+    "RACETH": {
+      "id": "RACETH*",
+      "name": "Race/ethnicity",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns RACETH1 to RACETH18 (FY 2024)"
+    },
+    "REL": {
+      "id": "REL*",
+      "name": "Relationship to head of household",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns REL1 to REL18 (FY 2024)"
+    },
+    "SEX": {
+      "id": "SEX*",
+      "name": "Sex",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns SEX1 to SEX18 (FY 2024)"
+    },
+    "WORK": {
+      "id": "WORK*",
+      "name": "Person-level working indicator",
+      "endpoint": "persons",
+      "description": "person: characteristics; constructed; columns WORK1 to WORK18 (FY 2024)"
+    },
+    "WRKREG": {
+      "id": "WRKREG*",
+      "name": "Work registration status",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns WRKREG1 to WRKREG18 (FY 2024)"
+    },
+    "YRSED": {
+      "id": "YRSED*",
+      "name": "Highest educational level completed",
+      "endpoint": "persons",
+      "description": "person: characteristics; reported; columns YRSED1 to YRSED18 (FY 2024)"
+    },
+    "ALIMNY": {
+      "id": "ALIMNY*",
+      "name": "Countable income from alimony",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns ALIMNY1 to ALIMNY18 (FY 2024)"
+    },
+    "ANNUITY": {
+      "id": "ANNUITY*",
+      "name": "Countable income from annuities",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns ANNUITY1 to ANNUITY18 (FY 2024)"
+    },
+    "CONT": {
+      "id": "CONT*",
+      "name": "Countable income from contributions",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns CONT1 to CONT18 (FY 2024)"
+    },
+    "CSUPRT": {
+      "id": "CSUPRT*",
+      "name": "Countable child support payment income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns CSUPRT1 to CSUPRT18 (FY 2024)"
+    },
+    "DEEM": {
+      "id": "DEEM*",
+      "name": "Countable deemed income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns DEEM1 to DEEM18 (FY 2024)"
+    },
+    "DIVER": {
+      "id": "DIVER*",
+      "name": "Countable State diversion payments",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns DIVER1 to DIVER18 (FY 2024)"
+    },
+    "EDLOAN": {
+      "id": "EDLOAN*",
+      "name": "Countable income from educational grants and loans",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns EDLOAN1 to EDLOAN18 (FY 2024)"
+    },
+    "ENERGY": {
+      "id": "ENERGY*",
+      "name": "Countable energy assistance income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns ENERGY1 to ENERGY18 (FY 2024)"
+    },
+    "FOSTER": {
+      "id": "FOSTER*",
+      "name": "Countable foster care income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns FOSTER1 to FOSTER18 (FY 2024)"
+    },
+    "GA": {
+      "id": "GA*",
+      "name": "Countable General Assistance benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns GA1 to GA18 (FY 2024)"
+    },
+    "GOVDIV": {
+      "id": "GOVDIV*",
+      "name": "Countable government-sponsored dividends",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns GOVDIV1 to GOVDIV18 (FY 2024)"
+    },
+    "GOVINTER": {
+      "id": "GOVINTER*",
+      "name": "Countable government-sponsored interest",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns GOVINTER1 to GOVINTER18 (FY 2024)"
+    },
+    "GOVROY": {
+      "id": "GOVROY*",
+      "name": "Countable government-sponsored royalties",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns GOVROY1 to GOVROY18 (FY 2024)"
+    },
+    "INTER": {
+      "id": "INTER*",
+      "name": "Countable interest income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns INTER1 to INTER18 (FY 2024)"
+    },
+    "OLDAGE": {
+      "id": "OLDAGE*",
+      "name": "Countable old age benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns OLDAGE1 to OLDAGE18 (FY 2024)"
+    },
+    "OTHERN": {
+      "id": "OTHERN*",
+      "name": "Countable other earned income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns OTHERN1 to OTHERN18 (FY 2024)"
+    },
+    "OTHGOV": {
+      "id": "OTHGOV*",
+      "name": "Countable income from other government benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns OTHGOV1 to OTHGOV18 (FY 2024)"
+    },
+    "OTHUN": {
+      "id": "OTHUN*",
+      "name": "Countable other unearned income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns OTHUN1 to OTHUN18 (FY 2024)"
+    },
+    "PENSION": {
+      "id": "PENSION*",
+      "name": "Countable income from pensions",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns PENSION1 to PENSION18 (FY 2024)"
+    },
+    "RENTMINC": {
+      "id": "RENTMINC*",
+      "name": "Countable rental income when managing property for an average of at least 20 hours per week",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns RENTMINC1 to RENTMINC18 (FY 2024)"
+    },
+    "RENTINC": {
+      "id": "RENTINC*",
+      "name": "Countable rental income when not managing property for an average of at least 20 hours per week",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns RENTINC1 to RENTINC18 (FY 2024)"
+    },
+    "SLFEMP": {
+      "id": "SLFEMP*",
+      "name": "Countable self-employment income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns SLFEMP1 to SLFEMP18 (FY 2024)"
+    },
+    "SOCSEC": {
+      "id": "SOCSEC*",
+      "name": "Countable Social Security income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns SOCSEC1 to SOCSEC18 (FY 2024)"
+    },
+    "SSI": {
+      "id": "SSI*",
+      "name": "Countable SSI benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns SSI1 to SSI18 (FY 2024)"
+    },
+    "STRIKE": {
+      "id": "STRIKE*",
+      "name": "Countable striker benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns STRIKE1 to STRIKE18 (FY 2024)"
+    },
+    "SURV": {
+      "id": "SURV*",
+      "name": "Countable survivor’s benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns SURV1 to SURV18 (FY 2024)"
+    },
+    "TANF": {
+      "id": "TANF*",
+      "name": "Countable TANF payments",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns TANF1 to TANF18 (FY 2024)"
+    },
+    "TRUST": {
+      "id": "TRUST*",
+      "name": "Countable trust fund monies",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns TRUST1 to TRUST18 (FY 2024)"
+    },
+    "UNEMP": {
+      "id": "UNEMP*",
+      "name": "Countable unemployment compensation benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns UNEMP1 to UNEMP18 (FY 2024)"
+    },
+    "UNK": {
+      "id": "UNK*",
+      "name": "Countable income from an unknown source",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns UNK1 to UNK18 (FY 2024)"
+    },
+    "VET": {
+      "id": "VET*",
+      "name": "Countable veterans’ benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns VET1 to VET18 (FY 2024)"
+    },
+    "WAGES": {
+      "id": "WAGES*",
+      "name": "Countable wages and salaries",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns WAGES1 to WAGES18 (FY 2024)"
+    },
+    "WCOMP": {
+      "id": "WCOMP*",
+      "name": "Countable workers’ compensation benefits",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns WCOMP1 to WCOMP18 (FY 2024)"
+    },
+    "WGESUP": {
+      "id": "WGESUP*",
+      "name": "Countable wage supplementation income",
+      "endpoint": "persons",
+      "description": "person: countable income (monthly dollars); reported; columns WGESUP1 to WGESUP18 (FY 2024)"
+    },
+    "AGENCY": {
+      "id": "AGENCY*",
+      "name": "Agency or client responsibility",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns AGENCY1 to AGENCY9 (FY 2024)"
+    },
+    "AMOUNT": {
+      "id": "AMOUNT*",
+      "name": "Variance dollar amount",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns AMOUNT1 to AMOUNT9 (FY 2024)"
+    },
+    "DISCOV": {
+      "id": "DISCOV*",
+      "name": "Variance discovery",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns DISCOV1 to DISCOV9 (FY 2024)"
+    },
+    "E_FINDG": {
+      "id": "E_FINDG*",
+      "name": "Error finding",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns E_FINDG1 to E_FINDG9 (FY 2024)"
+    },
+    "ELEMENT": {
+      "id": "ELEMENT*",
+      "name": "Variance element",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns ELEMENT1 to ELEMENT9 (FY 2024)"
+    },
+    "NATURE": {
+      "id": "NATURE*",
+      "name": "Nature of variance",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns NATURE1 to NATURE9 (FY 2024)"
+    },
+    "OCCDATE": {
+      "id": "OCCDATE*",
+      "name": "Variance occurrence date",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns OCCDATE1 to OCCDATE9 (FY 2024)"
+    },
+    "TIMEPER": {
+      "id": "TIMEPER*",
+      "name": "Variance time period",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns TIMEPER1 to TIMEPER9 (FY 2024)"
+    },
+    "VERIF": {
+      "id": "VERIF*",
+      "name": "Variance verification",
+      "endpoint": "units",
+      "description": "error findings (i = 1 to 9); reported; columns VERIF1 to VERIF9 (FY 2024)"
+    },
+    "FYWGT_OLD": {
+      "id": "FYWGT_OLD",
+      "name": "fiscal year weight before the August 2026 correction (FY 2024 file only): do not use",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; in the CSV, not in the codebook"
+    },
+    "HWGT_OLD": {
+      "id": "HWGT_OLD",
+      "name": "monthly weight before the August 2026 correction (FY 2024 file only): do not use",
+      "endpoint": "units",
+      "description": "unit: demographics and sample weights; in the CSV, not in the codebook"
+    }
+  }
+}

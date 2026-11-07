@@ -1,0 +1,313 @@
+{
+ "base_url": "https://api.waterdata.usgs.gov/ogcapi/v1",
+ "endpoints": {
+  "earthquakes": {
+   "path": "https://earthquake.usgs.gov/fdsnws/event/1/query",
+   "description": "Earthquake catalog search (ComCat, FDSN event service): one row per event.",
+   "params": {
+    "starttime": {
+     "desc": "YYYY-MM-DD or ISO time (UTC); default 30 days ago"
+    },
+    "endtime": {
+     "desc": "YYYY-MM-DD (UTC); default now"
+    },
+    "minmagnitude": {
+     "desc": "e.g. 2.5"
+    },
+    "maxmagnitude": {},
+    "mindepth": {
+     "desc": "km"
+    },
+    "maxdepth": {
+     "desc": "km"
+    },
+    "latitude": {
+     "desc": "circle center"
+    },
+    "longitude": {},
+    "maxradiuskm": {
+     "desc": "circle radius, km (max 20001.6)"
+    },
+    "minlatitude": {
+     "desc": "box"
+    },
+    "maxlatitude": {},
+    "minlongitude": {},
+    "maxlongitude": {},
+    "alertlevel": {
+     "desc": "PAGER level: green, yellow, orange, red"
+    },
+    "eventtype": {
+     "desc": "earthquake (default all: also quarry blast, explosion ...)"
+    },
+    "minfelt": {
+     "desc": "minimum Did You Feel It? reports"
+    },
+    "reviewstatus": {
+     "desc": "automatic or reviewed"
+    },
+    "orderby": {
+     "desc": "time (default), time-asc, magnitude, magnitude-asc"
+    },
+    "eventid": {
+     "desc": "one event id"
+    }
+   },
+   "defaults": {
+    "format": "geojson",
+    "orderby": "time",
+    "offset": 1
+   },
+   "records": "features",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 20000
+   },
+   "max_rows": 100000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "earthquake_count": {
+   "path": "https://earthquake.usgs.gov/fdsnws/event/1/count",
+   "description": "Number of events matching the same filters (one row: count, maxAllowed).",
+   "params": {
+    "starttime": {
+     "desc": "YYYY-MM-DD or ISO time (UTC); default 30 days ago"
+    },
+    "endtime": {
+     "desc": "YYYY-MM-DD (UTC); default now"
+    },
+    "minmagnitude": {
+     "desc": "e.g. 2.5"
+    },
+    "maxmagnitude": {},
+    "mindepth": {
+     "desc": "km"
+    },
+    "maxdepth": {
+     "desc": "km"
+    },
+    "latitude": {
+     "desc": "circle center"
+    },
+    "longitude": {},
+    "maxradiuskm": {
+     "desc": "circle radius, km (max 20001.6)"
+    },
+    "minlatitude": {
+     "desc": "box"
+    },
+    "maxlatitude": {},
+    "minlongitude": {},
+    "maxlongitude": {},
+    "alertlevel": {
+     "desc": "PAGER level: green, yellow, orange, red"
+    },
+    "eventtype": {
+     "desc": "earthquake (default all: also quarry blast, explosion ...)"
+    },
+    "minfelt": {
+     "desc": "minimum Did You Feel It? reports"
+    },
+    "reviewstatus": {
+     "desc": "automatic or reviewed"
+    },
+    "orderby": {
+     "desc": "time (default), time-asc, magnitude, magnitude-asc"
+    },
+    "eventid": {
+     "desc": "one event id"
+    }
+   },
+   "defaults": {
+    "format": "geojson"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "earthquake_feed": {
+   "path": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{feed}.geojson",
+   "description": "Real-time summary feeds: significant_month, 4.5_week, 2.5_day, all_hour ...",
+   "params": {
+    "feed": {
+     "in": "path",
+     "required": true,
+     "desc": "{significant|4.5|2.5|1.0|all}_{hour|day|week|month}"
+    }
+   },
+   "records": "features",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "water": {
+   "path": "/collections/{collection}/items",
+   "description": "USGS Water Data OGC API (v1): daily values, continuous (15-minute) values, latest values, monitoring locations, field measurements, annual peaks.",
+   "params": {
+    "collection": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "daily, continuous, latest-continuous, latest-daily, monitoring-locations, field-measurements, peaks, time-series-metadata, parameter-codes ..."
+    },
+    "monitoring_location_id": {
+     "desc": "USGS-01646500 (bare site numbers get the USGS- prefix); comma-separated"
+    },
+    "parameter_code": {
+     "desc": "00060 discharge, 00065 gage height, 00010 water temperature, 72019 depth to water ..."
+    },
+    "statistic_id": {
+     "desc": "daily: 00003 mean, 00001 max, 00002 min"
+    },
+    "time": {
+     "desc": "ISO 8601 interval: 2024-01-01/2024-12-31, 2024-01-01/.., or a duration such as P7D"
+    },
+    "state_code": {
+     "desc": "state FIPS (VT or Vermont are converted)"
+    },
+    "county_code": {
+     "desc": "3-digit county FIPS"
+    },
+    "site_type_code": {
+     "desc": "ST stream, GW well, LK lake, SP spring, AT atmosphere ..."
+    },
+    "hydrologic_unit_code": {
+     "desc": "HUC"
+    },
+    "bbox": {
+     "desc": "west,south,east,north"
+    },
+    "approval_status": {
+     "desc": "Approved or Provisional"
+    },
+    "properties": {
+     "desc": "comma-separated columns to return"
+    },
+    "skipGeometry": {
+     "desc": "true drops coordinates (default true except for monitoring-locations)"
+    },
+    "filter": {
+     "desc": "CQL2 text filter"
+    }
+   },
+   "defaults": {
+    "f": "json"
+   },
+   "records": "features",
+   "paging": {
+    "type": "link",
+    "next": "$ogc_next",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "daily": {
+   "id": "daily",
+   "name": "daily",
+   "description": "daily values (one per day: mean/max/min by statistic_id), since a site's start",
+   "endpoint": "water"
+  },
+  "continuous": {
+   "id": "continuous",
+   "name": "continuous",
+   "description": "continuous sensor values, usually every 15 minutes (recent years; large)",
+   "endpoint": "water"
+  },
+  "latest-continuous": {
+   "id": "latest-continuous",
+   "name": "latest-continuous",
+   "description": "the latest continuous value of every time series (use state_code for a whole state)",
+   "endpoint": "water"
+  },
+  "latest-daily": {
+   "id": "latest-daily",
+   "name": "latest-daily",
+   "description": "the latest daily value of every time series",
+   "endpoint": "water"
+  },
+  "monitoring-locations": {
+   "id": "monitoring-locations",
+   "name": "monitoring-locations",
+   "description": "site metadata: name, type, state, county, HUC, drainage area, coordinates",
+   "endpoint": "water"
+  },
+  "field-measurements": {
+   "id": "field-measurements",
+   "name": "field-measurements",
+   "description": "discrete field measurements (streamflow, groundwater levels)",
+   "endpoint": "water"
+  },
+  "latest-field-measurements": {
+   "id": "latest-field-measurements",
+   "name": "latest-field-measurements",
+   "description": "the latest field measurement of every series (gage height, discharge, groundwater level)",
+   "endpoint": "water"
+  },
+  "channel-measurements": {
+   "id": "channel-measurements",
+   "name": "channel-measurements",
+   "description": "channel geometry and velocity taken with streamflow field measurements (width, area, velocity)",
+   "endpoint": "water"
+  },
+  "peaks": {
+   "id": "peaks",
+   "name": "peaks",
+   "description": "annual peak streamflow and gage height",
+   "endpoint": "water"
+  },
+  "time-series-metadata": {
+   "id": "time-series-metadata",
+   "name": "time-series-metadata",
+   "description": "which parameters and statistics a site has, with begin/end dates",
+   "endpoint": "water"
+  },
+  "parameter-codes": {
+   "id": "parameter-codes",
+   "name": "parameter-codes",
+   "description": "parameter code reference table",
+   "endpoint": "water"
+  },
+  "statistic-codes": {
+   "id": "statistic-codes",
+   "name": "statistic-codes",
+   "description": "statistic code reference table",
+   "endpoint": "water"
+  },
+  "streamflow_daily": {
+   "id": "daily",
+   "name": "Daily mean streamflow",
+   "description": "daily with parameter_code 00060, statistic_id 00003 (cubic feet per second)",
+   "endpoint": "water"
+  },
+  "groundwater_levels": {
+   "id": "field-measurements",
+   "name": "Groundwater levels",
+   "description": "field-measurements with parameter_code 72019 (depth to water, feet below land surface)",
+   "endpoint": "water"
+  }
+ }
+}

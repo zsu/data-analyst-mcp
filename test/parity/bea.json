@@ -1,0 +1,3 @@
+{
+ "api_nipa_t20305": {"description": "PCE by type of product (documented example)", "requests": [{"id": "pce", "dataset": "NIPA", "table": "T20305", "frequency": "Q", "years": "2015"}]}
+}

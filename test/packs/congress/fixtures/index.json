@@ -1,0 +1,16 @@
+{
+ "GET https://api.congress.gov/v3/bill/119/s/5?format=json": "r001.json",
+ "GET https://api.congress.gov/v3/bill/119/s/5/cosponsors?format=json&limit=250&offset=0": "r002.json",
+ "GET https://api.congress.gov/v3/bill/119/s/5/actions?format=json&limit=250&offset=0": "r003.json",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00001.xml": "r004.xml",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00002.xml": "r005.xml",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00005.xml": "r006.xml",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00007.xml": "r007.xml",
+ "GET https://clerk.house.gov/evs/2025/roll023.xml": "r008.xml",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_votes/vote1172/vote_117_2_00325.xml": "r009.xml",
+ "GET https://clerk.house.gov/evs/2022/roll420.xml": "r010.xml",
+ "GET https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_1.xml": "r011.xml",
+ "GET https://api.congress.gov/v3/bill/117/hr/5376?format=json": "r012.json",
+ "GET https://api.congress.gov/v3/crsreport?format=json&limit=5&offset=0": "r013.json",
+ "GET https://api.congress.gov/v3/member/congress/118/MD?format=json&currentMember=false&limit=250&offset=0": "r014.json"
+}

@@ -1,0 +1,1842 @@
+{
+ "base_url": "https://api.usa.gov/crime/fbi/cde",
+ "endpoints": {
+  "agencies_by_state": {
+   "path": "/agency/byStateAbbr/{state}",
+   "description": "Every law enforcement agency in a state (ORI, name, type, county, NIBRS status and start date).",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "none",
+   "shape": "agencies"
+  },
+  "summarized_national": {
+   "path": "/summarized/national/{offense}",
+   "description": "Monthly offenses and clearances (counts and rates per 100,000), participating population and coverage, United States.",
+   "params": {
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "summarized offense: V, P, HOM, RPE, ROB, ASS, BUR, LAR, MVT, ARS",
+     "enum": [
+      "V",
+      "P",
+      "HOM",
+      "RPE",
+      "ROB",
+      "ASS",
+      "BUR",
+      "LAR",
+      "MVT",
+      "ARS"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "summarized_state": {
+   "path": "/summarized/state/{state}/{offense}",
+   "description": "Monthly offenses and clearances (counts and rates per 100,000), participating population and coverage, one state.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "summarized offense: V, P, HOM, RPE, ROB, ASS, BUR, LAR, MVT, ARS",
+     "enum": [
+      "V",
+      "P",
+      "HOM",
+      "RPE",
+      "ROB",
+      "ASS",
+      "BUR",
+      "LAR",
+      "MVT",
+      "ARS"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "summarized_agency": {
+   "path": "/summarized/agency/{ori}/{offense}",
+   "description": "Monthly offenses and clearances (counts and rates per 100,000), participating population and coverage, one agency.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "summarized offense: V, P, HOM, RPE, ROB, ASS, BUR, LAR, MVT, ARS",
+     "enum": [
+      "V",
+      "P",
+      "HOM",
+      "RPE",
+      "ROB",
+      "ASS",
+      "BUR",
+      "LAR",
+      "MVT",
+      "ARS"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "arrest_national": {
+   "path": "/arrest/national/{offense}",
+   "description": "Arrests, United States: type=counts monthly arrests and rates; type=totals breakdowns by sex, race, age, offense.",
+   "params": {
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "arrest offense code: all, 11 (murder), 30 (robbery), 150 (drug abuse) ... (catalog arrest_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "arrest_state": {
+   "path": "/arrest/state/{state}/{offense}",
+   "description": "Arrests, one state: type=counts monthly arrests and rates; type=totals breakdowns by sex, race, age, offense.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "arrest offense code: all, 11 (murder), 30 (robbery), 150 (drug abuse) ... (catalog arrest_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "arrest_agency": {
+   "path": "/arrest/agency/{ori}/{offense}",
+   "description": "Arrests, one agency: type=counts monthly arrests and rates; type=totals breakdowns by sex, race, age, offense.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "arrest offense code: all, 11 (murder), 30 (robbery), 150 (drug abuse) ... (catalog arrest_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "nibrs_national": {
+   "path": "/nibrs/national/{offense}",
+   "description": "NIBRS incidents, United States: type=counts monthly offenses/clearances; type=totals victim, offender, location and weapon breakdowns.",
+   "params": {
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NIBRS offense code: 09A, 13A, 120, 23*, 35A ... (catalog nibrs_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "nibrs_state": {
+   "path": "/nibrs/state/{state}/{offense}",
+   "description": "NIBRS incidents, one state: type=counts monthly offenses/clearances; type=totals victim, offender, location and weapon breakdowns.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NIBRS offense code: 09A, 13A, 120, 23*, 35A ... (catalog nibrs_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "nibrs_agency": {
+   "path": "/nibrs/agency/{ori}/{offense}",
+   "description": "NIBRS incidents, one agency: type=counts monthly offenses/clearances; type=totals victim, offender, location and weapon breakdowns.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NIBRS offense code: 09A, 13A, 120, 23*, 35A ... (catalog nibrs_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "shr_national": {
+   "path": "/shr/national",
+   "description": "Expanded homicide (Supplementary Homicide Reports), United States: type=counts monthly victims; type=totals victim/offender age, sex, race, weapon, circumstance, relationship.",
+   "params": {
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "shr_state": {
+   "path": "/shr/state/{state}",
+   "description": "Expanded homicide (Supplementary Homicide Reports), one state: type=counts monthly victims; type=totals victim/offender age, sex, race, weapon, circumstance, relationship.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "shr_agency": {
+   "path": "/shr/agency/{ori}",
+   "description": "Expanded homicide (Supplementary Homicide Reports), one agency: type=counts monthly victims; type=totals victim/offender age, sex, race, weapon, circumstance, relationship.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "supplemental_national": {
+   "path": "/supplemental/national/{offense}",
+   "description": "Expanded property crime offenses (monthly counts and rates), United States.",
+   "params": {
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NB (burglary), NL (larceny), NMVT (motor vehicle theft), NROB (robbery)",
+     "enum": [
+      "NB",
+      "NL",
+      "NMVT",
+      "NROB"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "supplemental_state": {
+   "path": "/supplemental/state/{state}/{offense}",
+   "description": "Expanded property crime offenses (monthly counts and rates), one state.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NB (burglary), NL (larceny), NMVT (motor vehicle theft), NROB (robbery)",
+     "enum": [
+      "NB",
+      "NL",
+      "NMVT",
+      "NROB"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "supplemental_agency": {
+   "path": "/supplemental/agency/{ori}/{offense}",
+   "description": "Expanded property crime offenses (monthly counts and rates), one agency.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "offense": {
+     "in": "path",
+     "required": true,
+     "desc": "NB (burglary), NL (larceny), NMVT (motor vehicle theft), NROB (robbery)",
+     "enum": [
+      "NB",
+      "NL",
+      "NMVT",
+      "NROB"
+     ]
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "counts"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_national": {
+   "path": "/hate-crime/national",
+   "description": "Hate crime incidents, United States: totals by bias, bias category, offense type, location, offender race/ethnicity over the period.",
+   "params": {
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {
+    "type": "totals"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_bias_national": {
+   "path": "/hate-crime/national/{bias}",
+   "description": "Hate crime incidents for one bias code, United States.",
+   "params": {
+    "bias": {
+     "in": "path",
+     "required": true,
+     "desc": "bias code: 12 (anti-Black), 21 (anti-Jewish) ... (catalog bias_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_state": {
+   "path": "/hate-crime/state/{state}",
+   "description": "Hate crime incidents, one state: totals by bias, bias category, offense type, location, offender race/ethnicity over the period.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_bias_state": {
+   "path": "/hate-crime/state/{state}/{bias}",
+   "description": "Hate crime incidents for one bias code, one state.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "bias": {
+     "in": "path",
+     "required": true,
+     "desc": "bias code: 12 (anti-Black), 21 (anti-Jewish) ... (catalog bias_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_agency": {
+   "path": "/hate-crime/agency/{ori}",
+   "description": "Hate crime incidents, one agency: totals by bias, bias category, offense type, location, offender race/ethnicity over the period.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "hate_crime_bias_agency": {
+   "path": "/hate-crime/agency/{ori}/{bias}",
+   "description": "Hate crime incidents for one bias code, one agency.",
+   "params": {
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "bias": {
+     "in": "path",
+     "required": true,
+     "desc": "bias code: 12 (anti-Black), 21 (anti-Jewish) ... (catalog bias_*)"
+    },
+    "from": {
+     "required": true,
+     "desc": "first month: MM-YYYY (01-2019) or a year (2019 = 01-2019)"
+    },
+    "to": {
+     "required": true,
+     "desc": "last month: MM-YYYY (12-2023) or a year (2023 = 12-2023)"
+    },
+    "type": {
+     "enum": [
+      "counts",
+      "totals"
+     ],
+     "desc": "counts = monthly series; totals = breakdowns (sex, race, age, offense) summed over the period"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "mm-yyyy",
+   "shape": "long"
+  },
+  "pe_national": {
+   "path": "/pe",
+   "description": "Law enforcement employees (officers and civilians by sex, employees per 1,000 people), United States, yearly.",
+   "params": {
+    "from": {
+     "required": true,
+     "desc": "first year YYYY"
+    },
+    "to": {
+     "required": true,
+     "desc": "last year YYYY"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "yyyy",
+   "shape": "long"
+  },
+  "pe_state": {
+   "path": "/pe/{state}",
+   "description": "Law enforcement employees, one state, yearly.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "from": {
+     "required": true,
+     "desc": "first year YYYY"
+    },
+    "to": {
+     "required": true,
+     "desc": "last year YYYY"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "yyyy",
+   "shape": "long"
+  },
+  "pe_agency": {
+   "path": "/pe/{state}/{ori}",
+   "description": "Law enforcement employees, one agency, yearly.",
+   "params": {
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, upper case: CA"
+    },
+    "ori": {
+     "in": "path",
+     "required": true,
+     "desc": "agency ORI (9 characters, e.g. DE0010100); find it with agencies_by_state"
+    },
+    "from": {
+     "required": true,
+     "desc": "first year YYYY"
+    },
+    "to": {
+     "required": true,
+     "desc": "last year YYYY"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "yyyy",
+   "shape": "long"
+  },
+  "lesdc": {
+   "path": "/lesdc",
+   "description": "Law Enforcement Suicide Data Collection: one chart for one year (small counts; voluntary reporting).",
+   "params": {
+    "chartType": {
+     "required": true,
+     "desc": "race, demographics, manner, location, employment, occupation, military, totals, duty, exp, expfollowing, experience, suffered, prior, investigation, wellness"
+    },
+    "year": {
+     "required": true,
+     "desc": "YYYY"
+    }
+   },
+   "defaults": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false,
+   "date_format": "none",
+   "shape": "long"
+  }
+ },
+ "catalog": {
+  "summarized_V": {
+   "id": "V",
+   "name": "Violent crime",
+   "description": "summarized offense code V: Violent crime",
+   "endpoint": "summarized_national"
+  },
+  "summarized_P": {
+   "id": "P",
+   "name": "Property crime",
+   "description": "summarized offense code P: Property crime",
+   "endpoint": "summarized_national"
+  },
+  "summarized_HOM": {
+   "id": "HOM",
+   "name": "Homicide (murder and nonnegligent manslaughter)",
+   "description": "summarized offense code HOM: Homicide (murder and nonnegligent manslaughter)",
+   "endpoint": "summarized_national"
+  },
+  "summarized_RPE": {
+   "id": "RPE",
+   "name": "Rape",
+   "description": "summarized offense code RPE: Rape",
+   "endpoint": "summarized_national"
+  },
+  "summarized_ROB": {
+   "id": "ROB",
+   "name": "Robbery",
+   "description": "summarized offense code ROB: Robbery",
+   "endpoint": "summarized_national"
+  },
+  "summarized_ASS": {
+   "id": "ASS",
+   "name": "Aggravated assault",
+   "description": "summarized offense code ASS: Aggravated assault",
+   "endpoint": "summarized_national"
+  },
+  "summarized_BUR": {
+   "id": "BUR",
+   "name": "Burglary",
+   "description": "summarized offense code BUR: Burglary",
+   "endpoint": "summarized_national"
+  },
+  "summarized_LAR": {
+   "id": "LAR",
+   "name": "Larceny-theft",
+   "description": "summarized offense code LAR: Larceny-theft",
+   "endpoint": "summarized_national"
+  },
+  "summarized_MVT": {
+   "id": "MVT",
+   "name": "Motor vehicle theft",
+   "description": "summarized offense code MVT: Motor vehicle theft",
+   "endpoint": "summarized_national"
+  },
+  "summarized_ARS": {
+   "id": "ARS",
+   "name": "Arson",
+   "description": "summarized offense code ARS: Arson",
+   "endpoint": "summarized_national"
+  },
+  "arrest_all": {
+   "id": "all",
+   "name": "All Offenses",
+   "description": "arrest offense code all: All Offenses",
+   "endpoint": "arrest_national"
+  },
+  "arrest_11": {
+   "id": "11",
+   "name": "Murder",
+   "description": "arrest offense code 11: Murder",
+   "endpoint": "arrest_national"
+  },
+  "arrest_12": {
+   "id": "12",
+   "name": "Simple Assault",
+   "description": "arrest offense code 12: Simple Assault",
+   "endpoint": "arrest_national"
+  },
+  "arrest_20": {
+   "id": "20",
+   "name": "Rape",
+   "description": "arrest offense code 20: Rape",
+   "endpoint": "arrest_national"
+  },
+  "arrest_23": {
+   "id": "23",
+   "name": "Larceny-Theft",
+   "description": "arrest offense code 23: Larceny-Theft",
+   "endpoint": "arrest_national"
+  },
+  "arrest_30": {
+   "id": "30",
+   "name": "Robbery",
+   "description": "arrest offense code 30: Robbery",
+   "endpoint": "arrest_national"
+  },
+  "arrest_50": {
+   "id": "50",
+   "name": "Aggravated Assault",
+   "description": "arrest offense code 50: Aggravated Assault",
+   "endpoint": "arrest_national"
+  },
+  "arrest_55": {
+   "id": "55",
+   "name": "Other Assaults",
+   "description": "arrest offense code 55: Other Assaults",
+   "endpoint": "arrest_national"
+  },
+  "arrest_60": {
+   "id": "60",
+   "name": "Burglary",
+   "description": "arrest offense code 60: Burglary",
+   "endpoint": "arrest_national"
+  },
+  "arrest_70": {
+   "id": "70",
+   "name": "Motor Vehicle Theft",
+   "description": "arrest offense code 70: Motor Vehicle Theft",
+   "endpoint": "arrest_national"
+  },
+  "arrest_90": {
+   "id": "90",
+   "name": "Arson",
+   "description": "arrest offense code 90: Arson",
+   "endpoint": "arrest_national"
+  },
+  "arrest_101": {
+   "id": "101",
+   "name": "Forgery/Counterfeiting",
+   "description": "arrest offense code 101: Forgery/Counterfeiting",
+   "endpoint": "arrest_national"
+  },
+  "arrest_102": {
+   "id": "102",
+   "name": "Fraud",
+   "description": "arrest offense code 102: Fraud",
+   "endpoint": "arrest_national"
+  },
+  "arrest_110": {
+   "id": "110",
+   "name": "Embezzlement",
+   "description": "arrest offense code 110: Embezzlement",
+   "endpoint": "arrest_national"
+  },
+  "arrest_140": {
+   "id": "140",
+   "name": "Vandalism",
+   "description": "arrest offense code 140: Vandalism",
+   "endpoint": "arrest_national"
+  },
+  "arrest_141": {
+   "id": "141",
+   "name": "Weapons Violations",
+   "description": "arrest offense code 141: Weapons Violations",
+   "endpoint": "arrest_national"
+  },
+  "arrest_142": {
+   "id": "142",
+   "name": "Sex Offenses",
+   "description": "arrest offense code 142: Sex Offenses",
+   "endpoint": "arrest_national"
+  },
+  "arrest_143": {
+   "id": "143",
+   "name": "Drug Abuse - Grand Total",
+   "description": "arrest offense code 143: Drug Abuse - Grand Total",
+   "endpoint": "arrest_national"
+  },
+  "arrest_150": {
+   "id": "150",
+   "name": "Drug Abuse Violations",
+   "description": "arrest offense code 150: Drug Abuse Violations",
+   "endpoint": "arrest_national"
+  },
+  "arrest_151": {
+   "id": "151",
+   "name": "Drug Sale - Opium/Cocaine",
+   "description": "arrest offense code 151: Drug Sale - Opium/Cocaine",
+   "endpoint": "arrest_national"
+  },
+  "arrest_152": {
+   "id": "152",
+   "name": "Drug Sale - Marijuana",
+   "description": "arrest offense code 152: Drug Sale - Marijuana",
+   "endpoint": "arrest_national"
+  },
+  "arrest_153": {
+   "id": "153",
+   "name": "Drug Sale - Synthetic",
+   "description": "arrest offense code 153: Drug Sale - Synthetic",
+   "endpoint": "arrest_national"
+  },
+  "arrest_154": {
+   "id": "154",
+   "name": "Drug Sale - Other",
+   "description": "arrest offense code 154: Drug Sale - Other",
+   "endpoint": "arrest_national"
+  },
+  "arrest_155": {
+   "id": "155",
+   "name": "Drug Possession - Opium/Cocaine",
+   "description": "arrest offense code 155: Drug Possession - Opium/Cocaine",
+   "endpoint": "arrest_national"
+  },
+  "arrest_156": {
+   "id": "156",
+   "name": "Drug Possession - Marijuana",
+   "description": "arrest offense code 156: Drug Possession - Marijuana",
+   "endpoint": "arrest_national"
+  },
+  "arrest_157": {
+   "id": "157",
+   "name": "Drug Possession - Synthetic",
+   "description": "arrest offense code 157: Drug Possession - Synthetic",
+   "endpoint": "arrest_national"
+  },
+  "arrest_158": {
+   "id": "158",
+   "name": "Drug Possession - Other",
+   "description": "arrest offense code 158: Drug Possession - Other",
+   "endpoint": "arrest_national"
+  },
+  "arrest_159": {
+   "id": "159",
+   "name": "Drug Sale Subtotal",
+   "description": "arrest offense code 159: Drug Sale Subtotal",
+   "endpoint": "arrest_national"
+  },
+  "arrest_160": {
+   "id": "160",
+   "name": "Drug Possession Subtotal",
+   "description": "arrest offense code 160: Drug Possession Subtotal",
+   "endpoint": "arrest_national"
+  },
+  "arrest_170": {
+   "id": "170",
+   "name": "Gambling Total",
+   "description": "arrest offense code 170: Gambling Total",
+   "endpoint": "arrest_national"
+  },
+  "arrest_171": {
+   "id": "171",
+   "name": "Bookmaking",
+   "description": "arrest offense code 171: Bookmaking",
+   "endpoint": "arrest_national"
+  },
+  "arrest_172": {
+   "id": "172",
+   "name": "Numbers/Lottery",
+   "description": "arrest offense code 172: Numbers/Lottery",
+   "endpoint": "arrest_national"
+  },
+  "arrest_173": {
+   "id": "173",
+   "name": "Other Gambling",
+   "description": "arrest offense code 173: Other Gambling",
+   "endpoint": "arrest_national"
+  },
+  "arrest_180": {
+   "id": "180",
+   "name": "Offenses Against Family",
+   "description": "arrest offense code 180: Offenses Against Family",
+   "endpoint": "arrest_national"
+  },
+  "arrest_190": {
+   "id": "190",
+   "name": "DUI",
+   "description": "arrest offense code 190: DUI",
+   "endpoint": "arrest_national"
+  },
+  "arrest_200": {
+   "id": "200",
+   "name": "Liquor Laws",
+   "description": "arrest offense code 200: Liquor Laws",
+   "endpoint": "arrest_national"
+  },
+  "arrest_210": {
+   "id": "210",
+   "name": "Drunkenness",
+   "description": "arrest offense code 210: Drunkenness",
+   "endpoint": "arrest_national"
+  },
+  "arrest_220": {
+   "id": "220",
+   "name": "Disorderly Conduct",
+   "description": "arrest offense code 220: Disorderly Conduct",
+   "endpoint": "arrest_national"
+  },
+  "arrest_230": {
+   "id": "230",
+   "name": "Vagrancy",
+   "description": "arrest offense code 230: Vagrancy",
+   "endpoint": "arrest_national"
+  },
+  "arrest_240": {
+   "id": "240",
+   "name": "Suspicion",
+   "description": "arrest offense code 240: Suspicion",
+   "endpoint": "arrest_national"
+  },
+  "arrest_250": {
+   "id": "250",
+   "name": "Curfew/Loitering",
+   "description": "arrest offense code 250: Curfew/Loitering",
+   "endpoint": "arrest_national"
+  },
+  "arrest_260": {
+   "id": "260",
+   "name": "Prostitution",
+   "description": "arrest offense code 260: Prostitution",
+   "endpoint": "arrest_national"
+  },
+  "arrest_270": {
+   "id": "270",
+   "name": "All Other Offenses",
+   "description": "arrest offense code 270: All Other Offenses",
+   "endpoint": "arrest_national"
+  },
+  "arrest_280": {
+   "id": "280",
+   "name": "Stolen Property",
+   "description": "arrest offense code 280: Stolen Property",
+   "endpoint": "arrest_national"
+  },
+  "arrest_290": {
+   "id": "290",
+   "name": "Runaways",
+   "description": "arrest offense code 290: Runaways",
+   "endpoint": "arrest_national"
+  },
+  "arrest_300": {
+   "id": "300",
+   "name": "Human Trafficking - Sex",
+   "description": "arrest offense code 300: Human Trafficking - Sex",
+   "endpoint": "arrest_national"
+  },
+  "arrest_310": {
+   "id": "310",
+   "name": "Human Trafficking - Servitude",
+   "description": "arrest offense code 310: Human Trafficking - Servitude",
+   "endpoint": "arrest_national"
+  },
+  "arrest_330": {
+   "id": "330",
+   "name": "Negligent Manslaughter",
+   "description": "arrest offense code 330: Negligent Manslaughter",
+   "endpoint": "arrest_national"
+  },
+  "nibrs_09A": {
+   "id": "09A",
+   "name": "Murder/Nonnegligent Manslaughter",
+   "description": "NIBRS offense code 09A: Murder/Nonnegligent Manslaughter",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_09B": {
+   "id": "09B",
+   "name": "Negligent Manslaughter",
+   "description": "NIBRS offense code 09B: Negligent Manslaughter",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_09C": {
+   "id": "09C",
+   "name": "Justifiable Homicide",
+   "description": "NIBRS offense code 09C: Justifiable Homicide",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_100": {
+   "id": "100",
+   "name": "Kidnapping/Abduction",
+   "description": "NIBRS offense code 100: Kidnapping/Abduction",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_11A": {
+   "id": "11A",
+   "name": "Rape",
+   "description": "NIBRS offense code 11A: Rape",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_11B": {
+   "id": "11B",
+   "name": "Sodomy",
+   "description": "NIBRS offense code 11B: Sodomy",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_11C": {
+   "id": "11C",
+   "name": "Sexual Assault With Object",
+   "description": "NIBRS offense code 11C: Sexual Assault With Object",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_11D": {
+   "id": "11D",
+   "name": "Fondling",
+   "description": "NIBRS offense code 11D: Fondling",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_120": {
+   "id": "120",
+   "name": "Robbery",
+   "description": "NIBRS offense code 120: Robbery",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_13A": {
+   "id": "13A",
+   "name": "Aggravated Assault",
+   "description": "NIBRS offense code 13A: Aggravated Assault",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_13B": {
+   "id": "13B",
+   "name": "Simple Assault",
+   "description": "NIBRS offense code 13B: Simple Assault",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_13C": {
+   "id": "13C",
+   "name": "Intimidation",
+   "description": "NIBRS offense code 13C: Intimidation",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_200": {
+   "id": "200",
+   "name": "Arson",
+   "description": "NIBRS offense code 200: Arson",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_210": {
+   "id": "210",
+   "name": "Extortion/Blackmail",
+   "description": "NIBRS offense code 210: Extortion/Blackmail",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_220": {
+   "id": "220",
+   "name": "Burglary/Breaking & Entering",
+   "description": "NIBRS offense code 220: Burglary/Breaking & Entering",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23*": {
+   "id": "23*",
+   "name": "Larceny/Theft (Aggregate)",
+   "description": "NIBRS offense code 23*: Larceny/Theft (Aggregate)",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23A": {
+   "id": "23A",
+   "name": "Pocket-picking",
+   "description": "NIBRS offense code 23A: Pocket-picking",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23B": {
+   "id": "23B",
+   "name": "Purse-snatching",
+   "description": "NIBRS offense code 23B: Purse-snatching",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23C": {
+   "id": "23C",
+   "name": "Shoplifting",
+   "description": "NIBRS offense code 23C: Shoplifting",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23D": {
+   "id": "23D",
+   "name": "Theft From Building",
+   "description": "NIBRS offense code 23D: Theft From Building",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23E": {
+   "id": "23E",
+   "name": "Theft From Coin Machine",
+   "description": "NIBRS offense code 23E: Theft From Coin Machine",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23F": {
+   "id": "23F",
+   "name": "Theft From Motor Vehicle",
+   "description": "NIBRS offense code 23F: Theft From Motor Vehicle",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23G": {
+   "id": "23G",
+   "name": "Theft of Motor Vehicle Parts",
+   "description": "NIBRS offense code 23G: Theft of Motor Vehicle Parts",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_23H": {
+   "id": "23H",
+   "name": "All Other Larceny",
+   "description": "NIBRS offense code 23H: All Other Larceny",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_240": {
+   "id": "240",
+   "name": "Motor Vehicle Theft",
+   "description": "NIBRS offense code 240: Motor Vehicle Theft",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_250": {
+   "id": "250",
+   "name": "Counterfeiting/Forgery",
+   "description": "NIBRS offense code 250: Counterfeiting/Forgery",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26A": {
+   "id": "26A",
+   "name": "False Pretenses/Swindle",
+   "description": "NIBRS offense code 26A: False Pretenses/Swindle",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26B": {
+   "id": "26B",
+   "name": "Credit Card/ATM Fraud",
+   "description": "NIBRS offense code 26B: Credit Card/ATM Fraud",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26C": {
+   "id": "26C",
+   "name": "Impersonation",
+   "description": "NIBRS offense code 26C: Impersonation",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26D": {
+   "id": "26D",
+   "name": "Welfare Fraud",
+   "description": "NIBRS offense code 26D: Welfare Fraud",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26E": {
+   "id": "26E",
+   "name": "Wire Fraud",
+   "description": "NIBRS offense code 26E: Wire Fraud",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26F": {
+   "id": "26F",
+   "name": "Identity Theft",
+   "description": "NIBRS offense code 26F: Identity Theft",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26G": {
+   "id": "26G",
+   "name": "Hacking/Computer Invasion",
+   "description": "NIBRS offense code 26G: Hacking/Computer Invasion",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_26H": {
+   "id": "26H",
+   "name": "Money Laundering",
+   "description": "NIBRS offense code 26H: Money Laundering",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_270": {
+   "id": "270",
+   "name": "Embezzlement",
+   "description": "NIBRS offense code 270: Embezzlement",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_280": {
+   "id": "280",
+   "name": "Stolen Property Offenses",
+   "description": "NIBRS offense code 280: Stolen Property Offenses",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_290": {
+   "id": "290",
+   "name": "Vandalism/Destruction of Property",
+   "description": "NIBRS offense code 290: Vandalism/Destruction of Property",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_35A": {
+   "id": "35A",
+   "name": "Drug/Narcotic Violations",
+   "description": "NIBRS offense code 35A: Drug/Narcotic Violations",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_35B": {
+   "id": "35B",
+   "name": "Drug Equipment Violations",
+   "description": "NIBRS offense code 35B: Drug Equipment Violations",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_36A": {
+   "id": "36A",
+   "name": "Incest",
+   "description": "NIBRS offense code 36A: Incest",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_36B": {
+   "id": "36B",
+   "name": "Statutory Rape",
+   "description": "NIBRS offense code 36B: Statutory Rape",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_370": {
+   "id": "370",
+   "name": "Pornography/Obscene Material",
+   "description": "NIBRS offense code 370: Pornography/Obscene Material",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_39A": {
+   "id": "39A",
+   "name": "Betting/Wagering",
+   "description": "NIBRS offense code 39A: Betting/Wagering",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_39B": {
+   "id": "39B",
+   "name": "Operating/Promoting Gambling",
+   "description": "NIBRS offense code 39B: Operating/Promoting Gambling",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_39C": {
+   "id": "39C",
+   "name": "Gambling Equipment Violations",
+   "description": "NIBRS offense code 39C: Gambling Equipment Violations",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_39D": {
+   "id": "39D",
+   "name": "Sports Tampering",
+   "description": "NIBRS offense code 39D: Sports Tampering",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_40A": {
+   "id": "40A",
+   "name": "Prostitution",
+   "description": "NIBRS offense code 40A: Prostitution",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_40B": {
+   "id": "40B",
+   "name": "Assisting/Promoting Prostitution",
+   "description": "NIBRS offense code 40B: Assisting/Promoting Prostitution",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_40C": {
+   "id": "40C",
+   "name": "Purchasing Prostitution",
+   "description": "NIBRS offense code 40C: Purchasing Prostitution",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_510": {
+   "id": "510",
+   "name": "Bribery",
+   "description": "NIBRS offense code 510: Bribery",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_520": {
+   "id": "520",
+   "name": "Weapon Law Violations",
+   "description": "NIBRS offense code 520: Weapon Law Violations",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_64A": {
+   "id": "64A",
+   "name": "Human Trafficking - Commercial Sex Acts",
+   "description": "NIBRS offense code 64A: Human Trafficking - Commercial Sex Acts",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_64B": {
+   "id": "64B",
+   "name": "Human Trafficking - Involuntary Servitude",
+   "description": "NIBRS offense code 64B: Human Trafficking - Involuntary Servitude",
+   "endpoint": "nibrs_national"
+  },
+  "nibrs_720": {
+   "id": "720",
+   "name": "Animal Cruelty",
+   "description": "NIBRS offense code 720: Animal Cruelty",
+   "endpoint": "nibrs_national"
+  },
+  "supplemental_NB": {
+   "id": "NB",
+   "name": "Burglary",
+   "description": "supplemental (expanded property) offense code NB: Burglary",
+   "endpoint": "supplemental_national"
+  },
+  "supplemental_NL": {
+   "id": "NL",
+   "name": "Larceny",
+   "description": "supplemental (expanded property) offense code NL: Larceny",
+   "endpoint": "supplemental_national"
+  },
+  "supplemental_NMVT": {
+   "id": "NMVT",
+   "name": "Motor Vehicle Theft",
+   "description": "supplemental (expanded property) offense code NMVT: Motor Vehicle Theft",
+   "endpoint": "supplemental_national"
+  },
+  "supplemental_NROB": {
+   "id": "NROB",
+   "name": "Robbery",
+   "description": "supplemental (expanded property) offense code NROB: Robbery",
+   "endpoint": "supplemental_national"
+  },
+  "bias_11": {
+   "id": "11",
+   "name": "Anti-White",
+   "description": "hate crime bias code 11: Anti-White",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_12": {
+   "id": "12",
+   "name": "Anti-Black or African American",
+   "description": "hate crime bias code 12: Anti-Black or African American",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_13": {
+   "id": "13",
+   "name": "Anti-American Indian or Alaska Native",
+   "description": "hate crime bias code 13: Anti-American Indian or Alaska Native",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_14": {
+   "id": "14",
+   "name": "Anti-Asian",
+   "description": "hate crime bias code 14: Anti-Asian",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_15": {
+   "id": "15",
+   "name": "Anti-Multiple Races, Group",
+   "description": "hate crime bias code 15: Anti-Multiple Races, Group",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_16": {
+   "id": "16",
+   "name": "Anti-Native Hawaiian or Other Pacific Islander",
+   "description": "hate crime bias code 16: Anti-Native Hawaiian or Other Pacific Islander",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_31": {
+   "id": "31",
+   "name": "Anti-Arab",
+   "description": "hate crime bias code 31: Anti-Arab",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_32": {
+   "id": "32",
+   "name": "Anti-Hispanic or Latino",
+   "description": "hate crime bias code 32: Anti-Hispanic or Latino",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_33": {
+   "id": "33",
+   "name": "Anti-Other Race/Ethnicity/Ancestry",
+   "description": "hate crime bias code 33: Anti-Other Race/Ethnicity/Ancestry",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_21": {
+   "id": "21",
+   "name": "Anti-Jewish",
+   "description": "hate crime bias code 21: Anti-Jewish",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_22": {
+   "id": "22",
+   "name": "Anti-Catholic",
+   "description": "hate crime bias code 22: Anti-Catholic",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_23": {
+   "id": "23",
+   "name": "Anti-Protestant",
+   "description": "hate crime bias code 23: Anti-Protestant",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_24": {
+   "id": "24",
+   "name": "Anti-Islamic (Muslim)",
+   "description": "hate crime bias code 24: Anti-Islamic (Muslim)",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_25": {
+   "id": "25",
+   "name": "Anti-Other Religion",
+   "description": "hate crime bias code 25: Anti-Other Religion",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_26": {
+   "id": "26",
+   "name": "Anti-Multiple Religions, Group",
+   "description": "hate crime bias code 26: Anti-Multiple Religions, Group",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_27": {
+   "id": "27",
+   "name": "Anti-Atheism/Agnosticism",
+   "description": "hate crime bias code 27: Anti-Atheism/Agnosticism",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_28": {
+   "id": "28",
+   "name": "Anti-Church of Jesus Christ",
+   "description": "hate crime bias code 28: Anti-Church of Jesus Christ",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_29": {
+   "id": "29",
+   "name": "Anti-Jehovah's Witness",
+   "description": "hate crime bias code 29: Anti-Jehovah's Witness",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_81": {
+   "id": "81",
+   "name": "Anti-Eastern Orthodox",
+   "description": "hate crime bias code 81: Anti-Eastern Orthodox",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_82": {
+   "id": "82",
+   "name": "Anti-Other Christian",
+   "description": "hate crime bias code 82: Anti-Other Christian",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_83": {
+   "id": "83",
+   "name": "Anti-Buddhist",
+   "description": "hate crime bias code 83: Anti-Buddhist",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_84": {
+   "id": "84",
+   "name": "Anti-Hindu",
+   "description": "hate crime bias code 84: Anti-Hindu",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_85": {
+   "id": "85",
+   "name": "Anti-Sikh",
+   "description": "hate crime bias code 85: Anti-Sikh",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_41": {
+   "id": "41",
+   "name": "Anti-Gay (Male)",
+   "description": "hate crime bias code 41: Anti-Gay (Male)",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_42": {
+   "id": "42",
+   "name": "Anti-Lesbian (Female)",
+   "description": "hate crime bias code 42: Anti-Lesbian (Female)",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_43": {
+   "id": "43",
+   "name": "Anti-LGBT (Mixed Group)",
+   "description": "hate crime bias code 43: Anti-LGBT (Mixed Group)",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_44": {
+   "id": "44",
+   "name": "Anti-Heterosexual",
+   "description": "hate crime bias code 44: Anti-Heterosexual",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_45": {
+   "id": "45",
+   "name": "Anti-Bisexual",
+   "description": "hate crime bias code 45: Anti-Bisexual",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_51": {
+   "id": "51",
+   "name": "Anti-Physical Disability",
+   "description": "hate crime bias code 51: Anti-Physical Disability",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_52": {
+   "id": "52",
+   "name": "Anti-Mental Disability",
+   "description": "hate crime bias code 52: Anti-Mental Disability",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_61": {
+   "id": "61",
+   "name": "Anti-Male",
+   "description": "hate crime bias code 61: Anti-Male",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_62": {
+   "id": "62",
+   "name": "Anti-Female",
+   "description": "hate crime bias code 62: Anti-Female",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_71": {
+   "id": "71",
+   "name": "Anti-Transgender",
+   "description": "hate crime bias code 71: Anti-Transgender",
+   "endpoint": "hate_crime_bias_national"
+  },
+  "bias_72": {
+   "id": "72",
+   "name": "Anti-Gender Non-Conforming",
+   "description": "hate crime bias code 72: Anti-Gender Non-Conforming",
+   "endpoint": "hate_crime_bias_national"
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "POST https://api.usaspending.gov/api/v2/search/spending_by_category/awarding_agency/ eb95729821d6": "r001.json",
+ "POST https://api.usaspending.gov/api/v2/search/spending_over_time/ a20dfd33b56c": "r002.json",
+ "GET https://api.usaspending.gov/api/v2/agency/075/budgetary_resources/": "r003.json",
+ "POST https://api.usaspending.gov/api/v2/search/spending_by_award/ 0127608a3edc": "r004.json",
+ "GET https://api.usaspending.gov/api/v2/agency/999/budgetary_resources/": {
+  "file": "r005.json",
+  "status": 404
+ }
+}

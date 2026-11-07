@@ -1,0 +1,30 @@
+{
+ "GET https://fred.stlouisfed.org/graph/fredgraph.xlsx?id=GDPC1%2CGDPPOT%2CUSREC": "graph_meta_GDPC1_GDPPOT_USREC.xlsx",
+ "GET https://fred.stlouisfed.org/graph/fredgraph.csv?id=GDPC1&cosd=2007-01-01": "graph_GDPC1_2007.csv",
+ "GET https://fred.stlouisfed.org/graph/fredgraph.csv?id=GDPPOT&cosd=2007-01-01": "graph_GDPPOT_2007.csv",
+ "GET https://fred.stlouisfed.org/graph/fredgraph.csv?id=USREC&cosd=2007-01-01": "graph_USREC_2007.csv",
+ "GET https://api.stlouisfed.org/fred/series?series_id=GNPCA&file_type=json": "api_series_GNPCA.json",
+ "GET https://api.stlouisfed.org/fred/series?series_id=GDPC1&file_type=json": "api_series_GDPC1.json",
+ "GET https://api.stlouisfed.org/fred/series/release?series_id=GDPC1&file_type=json": "api_series_release_GDPC1.json",
+ "GET https://api.stlouisfed.org/fred/release/sources?release_id=53&file_type=json": "api_release_sources_53.json",
+ "GET https://api.stlouisfed.org/fred/series/observations?series_id=GDPC1&limit=100000&offset=0&observation_start=2024-01-01&observation_end=2025-12-31&file_type=json": "api_obs_GDPC1_2024_2025.json",
+ "GET https://api.stlouisfed.org/fred/series/observations?series_id=GDPC1&limit=100000&offset=0&observation_start=2020-04-01&observation_end=2020-04-01&output_type=4&realtime_start=1776-07-04&realtime_end=9999-12-31&file_type=json": "api_obs_GDPC1_first_release_2020Q2.json",
+ "GET https://api.stlouisfed.org/fred/series/observations?series_id=GDPC1&limit=100000&offset=0&observation_start=2020-04-01&observation_end=2020-07-01&vintage_dates=2020-08-27%2C2021-07-29&file_type=json": "api_obs_GDPC1_asof.json",
+ "GET https://api.stlouisfed.org/geofred/series/group?series_id=CAUR&file_type=json": "geofred_group_CAUR.json",
+ "GET https://api.stlouisfed.org/geofred/regional/data?region_type=state&date=2025-01-01&series_group=1224&season=SA&units=Percent&frequency=m&file_type=json": "geofred_regional_1224_2025-01.json",
+ "GET https://api.stlouisfed.org/fred/release/dates?release_id=50&realtime_start=2026-10-01&realtime_end=2026-12-31&include_release_dates_with_no_data=true&sort_order=asc&limit=5&file_type=json": "api_release_dates_50.json",
+ "GET https://api.stlouisfed.org/fred/v2/release/observations?release_id=53&format=json&limit=5": "v2_release_obs_53_p1.json",
+ "GET https://api.stlouisfed.org/fred/v2/release/observations?release_id=53&format=json&limit=5&next_cursor=A001RD3A086NBEA%2C1934-01-01": "v2_release_obs_53_p2.json",
+ "GET https://fred.stlouisfed.org/graph/fredgraph.xlsx?id=GDPC1": "graph_meta_GDPC1.xlsx",
+ "GET https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=GDPC1%2CGDPC1&cosd=2020-04-01%2C2020-04-01&coed=2020-07-01%2C2020-07-01&vintage_date=2020-08-27%2C2021-07-29": "alfred_GDPC1_asof.csv",
+ "GET https://fred.stlouisfed.org/graph/fredgraph.xlsx?id=NOSUCHSERIESXYZ": {
+  "file": "graph_404_page.html",
+  "status": 404
+ },
+ "GET https://fred.stlouisfed.org/graph/fredgraph.csv?id=NOSUCHSERIESXYZ&cosd=2024-01-01": {
+  "file": "graph_404_page.html",
+  "status": 404
+ },
+ "GET https://api.stlouisfed.org/fred/series/tags?series_id=GDPC1&file_type=json": "r001.json",
+ "GET https://api.stlouisfed.org/fred/release?release_id=50&file_type=json": "r002.json"
+}

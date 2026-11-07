@@ -1,0 +1,17 @@
+{
+  "name": "PRTAGE",
+  "label": "Demographics - age topcoded at 85, 90 or 80 (see full description)",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWSSWGT",
+  "values": {
+    "range": [
+      {
+        "min": "0",
+        "max": "90",
+        "description": "Range"
+      }
+    ]
+  }
+}

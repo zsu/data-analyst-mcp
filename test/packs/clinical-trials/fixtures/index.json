@@ -1,0 +1,4 @@
+{
+ "GET https://clinicaltrials.gov/api/v2/studies?countTotal=true&fields=NCTId%7CBriefTitle%7COverallStatus%7CPhase%7CStudyType%7CLeadSponsorName%7CLeadSponsorClass%7CCondition%7CInterventionType%7CInterventionName%7CEnrollmentCount%7CEnrollmentType%7CStartDate%7CPrimaryCompletionDate%7CCompletionDate%7CHasResults&query.cond=sickle+cell&filter.overallStatus=RECRUITING&aggFilters=phase%3A3&pageSize=1000": "r001.json",
+ "GET https://clinicaltrials.gov/api/v2/stats/field/values?fields=Phase": "r002.json"
+}

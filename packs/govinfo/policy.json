@@ -1,0 +1,116 @@
+{
+  "id": "govinfo",
+  "title": "GovInfo (Government Publishing Office API)",
+  "agency": "U.S. Government Publishing Office",
+  "depth": "standard",
+  "domains": [
+    "legislation",
+    "regulation",
+    "government publications"
+  ],
+  "keywords": [
+    "govinfo",
+    "compilation of presidential documents",
+    "presidential documents",
+    "daily compilation",
+    "court opinions",
+    "appellate court",
+    "court of appeals",
+    "circuit court",
+    "uscourts",
+    "federal court opinions",
+    "bill text",
+    "full text",
+    "public law",
+    "statute",
+    "united states code",
+    "congressional record",
+    "committee report",
+    "hearing",
+    "code of federal regulations",
+    "cfr",
+    "federal register text",
+    "budget of the united states",
+    "economic report of the president",
+    "gao report",
+    "cost estimate",
+    "gpo",
+    "committee print",
+    "committee prints",
+    "cprt",
+    "crpt",
+    "committee reports",
+    "house reports",
+    "senate reports",
+    "printed hearings",
+    "uslm",
+    "sections of a law",
+    "amends the united states code"
+  ],
+  "questions": [
+    "full text of a bill or law",
+    "the sections of a law and the U.S. Code sections it amends",
+    "which bills mention a phrase",
+    "public laws enacted in a year",
+    "committee reports on a bill",
+    "hearings on a topic",
+    "agency publications on a topic"
+  ],
+  "homepage": "https://www.govinfo.gov/",
+  "terms_url": "https://www.govinfo.gov/about/policies",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "demo_key": "DEMO_KEY",
+    "key_only": [
+      "more than about 10 requests an hour (DEMO_KEY limit); a free key allows far more"
+    ]
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 6,
+    "daily_quota": null,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.govinfo.gov",
+      "probe": "https://api.govinfo.gov/collections",
+      "hosts": [
+        "api.govinfo.gov",
+        "www.govinfo.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the links in INSTRUCTIONS.md (GET links carry the public DEMO_KEY; text links need no key) and save each file under the given name; searches are POST requests, so run download_data.sh / download_data.ps1 (one command) or search on https://www.govinfo.gov/app/search and download the results (CSV/JSON under the result list), then upload."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Published documents rarely change, but searches gain new packages daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "GovInfo content is U.S. government works in the public domain (17 U.S.C. 105) unless a document notes otherwise (GPO policies: some agency publications include copyrighted material, which is marked)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Government Publishing Office, GovInfo, {dataset}, api.govinfo.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which document set: bill text versions (BILLS), enacted laws (PLAW), committee reports (CRPT), hearings (CHRG), the Congressional Record (CREC), regulations (CFR/FR) or agency publications (GOVPUB)?",
+    "Count distinct bills or every printed version? BILLS has one package per version (introduced, reported, engrossed, enrolled)."
+  ],
+  "formats": [
+    "json",
+    "html",
+    "xml",
+    "pdf"
+  ]
+}

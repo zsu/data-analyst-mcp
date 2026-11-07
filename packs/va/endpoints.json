@@ -1,0 +1,414 @@
+{
+ "base_url": "https://www.data.va.gov/resource",
+ "timeout": 60,
+ "endpoints": {
+  "query": {
+   "path": "/{dataset}.json",
+   "method": "GET",
+   "description": "SODA query against any www.data.va.gov dataset (catalog alias or 4x4 id): VetPop veteran population, compensation and pension recipients and expenditures.",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (vetpop_state) or dataset id (f43c-vb9n)"
+    },
+    "$select": {
+     "desc": "SoQL columns, e.g. 'date, state, sum(veterans)'"
+    },
+    "$where": {
+     "desc": "SoQL filter; quote text and dates: state = 'Texas' AND date = '2025-09-30'"
+    },
+    "$group": {
+     "desc": "SoQL group by"
+    },
+    "$order": {
+     "desc": "SoQL order; default :id gives stable paging"
+    },
+    "$q": {
+     "desc": "full-text search"
+    }
+   },
+   "defaults": {
+    "$order": ":id"
+   },
+   "records": "",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$limit",
+    "offset_param": "$offset",
+    "size": 5000,
+    "manual_size": 50000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "csv": {
+   "path": "/{dataset}.csv",
+   "method": "GET",
+   "description": "Same SODA query as CSV (for manual download in a browser).",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (vetpop_state) or dataset id (f43c-vb9n)"
+    },
+    "$select": {},
+    "$where": {},
+    "$order": {}
+   },
+   "defaults": {
+    "$order": ":id"
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$limit",
+    "offset_param": "$offset",
+    "size": 50000
+   },
+   "max_rows": 200000
+  },
+  "gdx_state_direct": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "Geographic Distribution of VA Expenditures (GDX) workbook, sheet State Direct Exp: direct benefit expenditures by state (compensation & pension, DIC and survivors pension, insurance, specially adapted housing), dollars, FY25 layout",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": "State Direct Exp",
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "gdx_state_indirect": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "GDX workbook, third sheet (State Indirect Exp): indirect expenditures by state (medical care: VA and community care, education, readiness & employment, loan guaranty, construction, memorial benefits, autos), dollars, FY25 layout",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": 3,
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "gdx_county_direct": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "GDX workbook, sheet County Direct Exp: direct benefit expenditures by county, dollars",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": "County Direct Exp",
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "gdx_county_indirect": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "GDX workbook, sheet County Indirect Exp: indirect expenditures (medical care, education, loan guaranty, ...) by county, dollars",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": "County Indirect Exp",
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "gdx_cd_direct": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "GDX workbook, sheet CD Direct Exp: direct benefit expenditures by congressional district (119th Congress in FY25), dollars",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": "CD Direct Exp",
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "gdx_cd_indirect": {
+   "path": "https://www.va.gov/vetdata/docs/GDX/GDX_FY{fy}.xlsx",
+   "method": "GET",
+   "description": "GDX workbook, sheet CD Indirect Exp: indirect expenditures by congressional district (119th Congress in FY25), dollars",
+   "params": {
+    "fy": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    }
+   },
+   "defaults": {
+    "fy": "25"
+   },
+   "records": "$xlsx",
+   "sheet": "CD Indirect Exp",
+   "header_row": 3,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  }
+ },
+ "catalog": {
+  "vetpop_national": {
+   "id": "wubk-nag4",
+   "name": "VetPop2023 National Data, 1L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; national living veterans by sex and 15 age groups (date, age_group, sex, veterans)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/wubk-nag4"
+  },
+  "vetpop_national_pos": {
+   "id": "weu6-zpb9",
+   "name": "VetPop2023 National Period of Service Data, 2L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; national veterans by sex and period of service (period_of_service holds overlapping groups (a)-(x): never sum them)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/weu6-zpb9"
+  },
+  "vetpop_national_race": {
+   "id": "8zhc-knsi",
+   "name": "VetPop2023 National Race/Ethnicity Data, 3L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; national veterans by sex and race/ethnicity",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/8zhc-knsi"
+  },
+  "vetpop_state": {
+   "id": "f43c-vb9n",
+   "name": "VetPop2023 State Data, 6L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by state (full names, plus Puerto Rico and 'Island Areas & Foreign'), sex and 15 age groups (date, state, age_group, sex, veterans); sum the rows for a state total",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/f43c-vb9n"
+  },
+  "vetpop_state_pos": {
+   "id": "6kr5-skza",
+   "name": "VetPop2023 State Period of Service Data, 7L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by state, sex and period of service (column pos: overlapping groups (a)-(x); '(a) All Veterans (b+c)' is the total)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/6kr5-skza"
+  },
+  "vetpop_state_race": {
+   "id": "ig48-b5dn",
+   "name": "VetPop2023 State Race/Ethnicity Data, 8L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by state, sex and race/ethnicity (race_ethnicity 'All Veterans' is the total)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/ig48-b5dn"
+  },
+  "vetpop_county": {
+   "id": "jrjd-qghv",
+   "name": "VetPop2023 County Data, 9L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by county (5-digit fips, county_state 'Autauga, AL'), sex and 4 age groups; 781,200 rows: always filter",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/jrjd-qghv"
+  },
+  "vetpop_cd118": {
+   "id": "vggh-gqm3",
+   "name": "VetPop2023 118th Congressional Districts, 10L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by 118th-Congress district (congressional_district_cd 'CD 1'), sex and age (<65, 65+); value column is veteran (singular)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/vggh-gqm3"
+  },
+  "vetpop_cd119": {
+   "id": "tggd-2yxt",
+   "name": "VetPop2023 Veteran Population by 119th Congressional Districts: FY 2025 to 2028",
+   "description": "VetPop2023 projection by 119th-Congress district (cd 'CD 01'), FY2025-2028 only, totals (no sex or age), unrounded decimals",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/tggd-2yxt"
+  },
+  "vetpop_visn": {
+   "id": "3aej-m45q",
+   "name": "VetPop2023 Veterans Integrated Services Networks (VISNs), 11L",
+   "description": "VetPop2023 projection (base 2023-09-30), one row per September 30, 2023-2053, integers rounded per cell; veterans by VA health care network (visn, visn_description), sex and 4 age groups; value column is veteran",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/3aej-m45q"
+  },
+  "vetpop_state_fy2026": {
+   "id": "w6fb-7dn4",
+   "name": "Veteran Population by State: FY2026",
+   "description": "VetPop2023 projected veterans by state for FY2026 only (state, number); 51 rows: 50 states and Puerto Rico, no DC",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/w6fb-7dn4"
+  },
+  "vetpop_deaths_county": {
+   "id": "5wjp-xu42",
+   "name": "VetPop2023 Projected Deaths by County, FY2024-2075",
+   "description": "VetPop2023 projected veteran deaths by county, wide: one fy2024 ... fy2075 column per fiscal year (county_fips, county_state)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/5wjp-xu42"
+  },
+  "vetpop_est_national": {
+   "id": "6xz6-j7yi",
+   "name": "VetPop2023 National Estimates 2000 to 2023",
+   "description": "VetPop2023 back-cast estimates 2000-2023, national, by sex and 4 age groups, wide: one fy2000 ... fy2023 column per fiscal year",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/6xz6-j7yi"
+  },
+  "vetpop_est_national_age": {
+   "id": "y4w4-egzx",
+   "name": "VetPop2023 National Estimates by Sex and Age Groups 2000 to 2023",
+   "description": "VetPop2023 estimates 2000-2023, national, by sex and 15 age groups, wide fy2000 ... fy2023 columns",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/y4w4-egzx"
+  },
+  "vetpop_est_state": {
+   "id": "ii4k-rqz2",
+   "name": "VetPop2023 State Estimates 2000 to 2023",
+   "description": "VetPop2023 estimates 2000-2023 by state, sex and 4 age groups, wide fy2000 ... fy2023 columns",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/ii4k-rqz2"
+  },
+  "vetpop_est_state_age": {
+   "id": "yhrg-r4u8",
+   "name": "VetPop2023 Estimates by State, 15 Age Groups, and Sex: 2000 to 2023",
+   "description": "VetPop2023 estimates 2000-2023 by state, sex and 15 age groups, wide fy2000 ... fy2023 columns",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/yhrg-r4u8"
+  },
+  "vetpop_est_state_race": {
+   "id": "a2rs-k43v",
+   "name": "Veteran Estimates by State, Sex, and Race/Ethnicity: FY 2005 to 2023",
+   "description": "VetPop2023 with ACS 1-year shares: veterans by state (fips, state), sex (F/M), race_ethnicity ('Total' row) and date, FY2005-2023, unrounded decimals",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/a2rs-k43v"
+  },
+  "comp_recipients_county_fy2025": {
+   "id": "95an-zhhy",
+   "name": "FY 2025 Disability Compensation Recipients by County",
+   "description": "veterans receiving disability compensation as of 2025-09-30 by county (fips_code), with service-connected rating groups, age groups and sex; blank = suppressed small count",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/95an-zhhy"
+  },
+  "comp_recipients_county_fy2024": {
+   "id": "74ts-jsvb",
+   "name": "FY 2024 Disability Compensation Recipients by County",
+   "description": "same as comp_recipients_county_fy2025 for the close of FY2024",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/74ts-jsvb"
+  },
+  "comp_recipients_county_fy2023": {
+   "id": "5uqy-ph6a",
+   "name": "FY 2023 Disability Compensation Recipients by County",
+   "description": "same as comp_recipients_county_fy2025 for FY2023",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/5uqy-ph6a"
+  },
+  "pension_recipients_state_fy2025": {
+   "id": "bm86-dmni",
+   "name": "FY 2025 Pension Recipients by State",
+   "description": "veterans receiving VA pension as of 2025-09-30 by state, total and by sex; blank = suppressed",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/bm86-dmni"
+  },
+  "pension_recipients_state_fy2024": {
+   "id": "vp34-vuw8",
+   "name": "FY 2024 Pension Recipients by State",
+   "description": "same as pension_recipients_state_fy2025 for the close of FY2024",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/vp34-vuw8"
+  },
+  "comp_expenditures_state_fy2024": {
+   "id": "ibas-uwj3",
+   "name": "Veteran Compensation Expenditures By State of Residence and Age Group FY 2024",
+   "description": "VBA: compensation recipients on the rolls and estimated monthly and annual compensation dollars by state and foreign residence, FY2024, ending with a 'Grand Total' row; dollar columns are text like '[$$]3,729,011,236'; age columns compensation_veterans_age (34 and under), _age_1 (35-54), _age_2 (55-74), _age_3 (75+), _age_4 (unknown)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/ibas-uwj3"
+  },
+  "comp_expenditures_state_fy2023": {
+   "id": "2sc2-zyk7",
+   "name": "Veteran Compensation Expenditures By State of Residence and Age Group FY 2023",
+   "description": "same as comp_expenditures_state_fy2024 for FY2023 (last age column is compensation_age_unknown)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/2sc2-zyk7"
+  },
+  "pension_expenditures_state_fy2024": {
+   "id": "sbtk-kfnm",
+   "name": "Veteran Pension Expenditures By State of Residence and Age Group FY 2024",
+   "description": "VBA: veterans pension recipients and estimated monthly and annual pension dollars by state, FY2024, ending with a 'Grand Total' row; dollar columns are text like '[$$]51,471,499.32'; age groups 34 and under, 35-64, 65-74, 75+, unknown",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/sbtk-kfnm"
+  },
+  "pension_expenditures_state_fy2023": {
+   "id": "ik8k-96ns",
+   "name": "Veteran Pension Expenditures By State of Residence and Age Group FY 2023",
+   "description": "same as pension_expenditures_state_fy2024 for FY2023 (first age column is veterans_pension_age_age)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/ik8k-96ns"
+  },
+  "comp_rolls_pos_state": {
+   "id": "y326-jukp",
+   "name": "Veterans Receiving Compensation Service Benefits On the Rolls by Period of Service and Residence FY22-FY24",
+   "description": "compensation recipients by period of service and state or country of residence, FY2022-FY2024 (text values with commas, 'Not included')",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/y326-jukp"
+  },
+  "pension_pct_state": {
+   "id": "n849-uby9",
+   "name": "VA Pension Recipients as a Percentage of Veteran Population by State",
+   "description": "percent of veterans receiving VA pension by state, FY2019, 2020, 2021 and 2023 (no FY2022)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/n849-uby9"
+  },
+  "hc_comp_users_trend": {
+   "id": "ygu4-bebf",
+   "name": "Trend in Percent of Health Care & Disability Compensation Users vs Other Users: FY2010-2025",
+   "description": "share of VA benefit users who use health care or disability compensation vs other programs, FY2010-2025 (fractions, 0.743 = 74.3%)",
+   "endpoint": "query",
+   "page": "https://www.data.va.gov/d/ygu4-bebf"
+  }
+ }
+}

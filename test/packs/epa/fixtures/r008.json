@@ -1,0 +1,197 @@
+{
+"Results":{
+"Message":"Working",
+"QueryRows":"17",
+"QueryID":"192",
+"PageNo":"1",
+"Facilities":[
+{
+"AIRName":"BURLINGTON (CITY OF) BED JOSEPH C MCNEIL ELECTRIC GENERATING STATION",
+"SourceID":"VT0000005000700037",
+"AIRCity":"BURLINGTON",
+"AIRState":"VT",
+"RegistryID":"110005293592",
+"FacSICDescs":"4911: Electric Services",
+"AIRNAICS":"221112",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"COVENTRY CLEAN ENERGY CORPORATION",
+"SourceID":"VT0005001900014",
+"AIRCity":"COVENTRY",
+"AIRState":"VT",
+"RegistryID":"110069223708",
+"FacSICDescs":null,
+"AIRNAICS":"221117",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"ETHAN ALLEN OPERATIONS INC (BEECHER FALLS)",
+"SourceID":"VT0000005000900004",
+"AIRCity":"CANAAN",
+"AIRState":"VT",
+"RegistryID":"110000871156",
+"FacSICDescs":"2421: Sawmills And Planing Mills, General, 2511: Wood Household Furniture",
+"AIRNAICS":"337122",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"ETHAN ALLEN OPERATIONS INC (ORLEANS)",
+"SourceID":"VT0000005001900004",
+"AIRCity":"BARTON",
+"AIRState":"VT",
+"RegistryID":"110012499787",
+"FacSICDescs":"2511: Wood Household Furniture",
+"AIRNAICS":"337122",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"ETHAN ALLEN OPERATIONS INC (RANDOLPH)",
+"SourceID":"VT0000005001709002",
+"AIRCity":"RANDOLPH",
+"AIRState":"VT",
+"RegistryID":"110000498220",
+"FacSICDescs":"2511: Wood Household Furniture, 2519: Household Furniture",
+"AIRNAICS":"321999",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"HALE CO.",
+"SourceID":"VT0000005000300005",
+"AIRCity":"EAST ARLINGTON",
+"AIRState":"VT",
+"RegistryID":"110062698246",
+"FacSICDescs":"2511: Wood Household Furniture",
+"AIRNAICS":"337122",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"MORAN GENERATING STATION",
+"SourceID":"VT0000005000700036",
+"AIRCity":"BURLINGTON",
+"AIRState":"VT",
+"RegistryID":"110038781716",
+"FacSICDescs":"4911: Electric Services",
+"AIRNAICS":"221112",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"NEW ENGLAND WASTE SERVICES OF VERMONT INC",
+"SourceID":"VT0000005001900012",
+"AIRCity":"COVENTRY",
+"AIRState":"VT",
+"RegistryID":"110006537051",
+"FacSICDescs":null,
+"AIRNAICS":"562212",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"OMYA INC (FLORENCE VERPOL AND EAST PLANT)",
+"SourceID":"VT0000005002190001",
+"AIRCity":"PITTSFORD",
+"AIRState":"VT",
+"RegistryID":"110009766805",
+"FacSICDescs":null,
+"AIRNAICS":"212312",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"OMYA INC (PROCTOR)",
+"SourceID":"VT0000005002100011",
+"AIRCity":"PROCTOR",
+"AIRState":"VT",
+"RegistryID":"110005299596",
+"FacSICDescs":null,
+"AIRNAICS":"221111",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"PHOENIX PAPER CO",
+"SourceID":"VT0000005000500001",
+"AIRCity":"RYEGATE",
+"AIRState":"VT",
+"RegistryID":"110038781672",
+"FacSICDescs":null,
+"AIRNAICS":"322121",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"PIKE INDUSTRIES INC (WALLINGFORD)",
+"SourceID":"VT0000005002100020",
+"AIRCity":"WALLINGFORD",
+"AIRState":"VT",
+"RegistryID":"110062725582",
+"FacSICDescs":null,
+"AIRNAICS":"324121",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"POWNAL TANNING CO",
+"SourceID":"VT0000005000300007",
+"AIRCity":"BENNINGTON",
+"AIRState":"VT",
+"RegistryID":"110062725564",
+"FacSICDescs":"2649: Legacy Docket Conv",
+"AIRNAICS":"316110",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"QUESTECH CORPORATION (MIDDLEBURY)",
+"SourceID":"VT0000005000100008",
+"AIRCity":"MIDDLEBURY",
+"AIRState":"VT",
+"RegistryID":"110005299088",
+"FacSICDescs":null,
+"AIRNAICS":"326199",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"RYEGATE ASSOCIATES",
+"SourceID":"VT0000005000500004",
+"AIRCity":"RYEGATE",
+"AIRState":"VT",
+"RegistryID":"110028047398",
+"FacSICDescs":null,
+"AIRNAICS":"221119",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"SMITH INC",
+"SourceID":"VT0000005002500002",
+"AIRCity":"LONDONDERRY",
+"AIRState":"VT",
+"RegistryID":"110038782797",
+"FacSICDescs":null,
+"AIRNAICS":"321211",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+,{
+"AIRName":"WESTROCK CONVERTING LLC",
+"SourceID":"VT0000005001100005",
+"AIRCity":"SHELDON",
+"AIRState":"VT",
+"RegistryID":"110007328490",
+"FacSICDescs":"2631: Paperboard Mills",
+"AIRNAICS":"322130",
+"FacMapFlg":"Y",
+"NaaPollutants":null
+}
+]
+}
+}

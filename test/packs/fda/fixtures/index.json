@@ -1,0 +1,15 @@
+{
+ "GET https://api.fda.gov/drug/event.json?limit=10&search=patient.drug.openfda.generic_name.exact%3A%22METFORMIN+HYDROCHLORIDE%22+AND+receivedate%3A%5B20240101+TO+20241231%5D&count=patient.reaction.reactionmeddrapt.exact": "r001.json",
+ "GET https://api.fda.gov/food/enforcement.json?search=classification%3A%22Class+I%22+AND+report_date%3A%5B20240101+TO+20240131%5D&sort=report_date%3Aasc&limit=5&skip=0": "r002.json",
+ "GET https://api.fda.gov/drug/enforcement.json?search=recalling_firm%3A%22ZZQXNOFIRM%22&limit=5&skip=0": {
+  "file": "r003.json",
+  "status": 404
+ },
+ "GET https://api.fda.gov/device/event.json?limit=999&search=date_received%3A%5B20240101+TO+20240131%5D&count=device.generic_name.exact": "r004.json",
+ "GET https://api.fda.gov/drug/shortages.json?limit=999&count=therapeutic_category": "r005.json",
+ "GET https://api.fda.gov/drug/shortages.json?limit=999&count=therapeutic_category.exact": {
+  "file": "r006.json",
+  "status": 404
+ },
+ "GET https://api.fda.gov/drug/event.json?limit=999&search=receivedate%3A%5B20200101+TO+20251231%5D+AND+patient.drug.openfda.generic_name%3A%22metformin+hydrochloride%22&count=receivedate": "r007.json"
+}

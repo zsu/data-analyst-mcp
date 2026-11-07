@@ -1,0 +1,96 @@
+{
+  "id": "epa-aqs",
+  "title": "EPA Air Quality System (AQS) Data Mart API",
+  "agency": "U.S. Environmental Protection Agency, Office of Air Quality Planning and Standards",
+  "depth": "standard",
+  "domains": [
+    "environment",
+    "air quality",
+    "health"
+  ],
+  "keywords": [
+    "air quality",
+    "air pollution",
+    "ozone",
+    "pm2.5",
+    "pm25",
+    "fine particulate",
+    "particulate matter",
+    "pm10",
+    "sulfur dioxide",
+    "so2",
+    "nitrogen dioxide",
+    "no2",
+    "carbon monoxide",
+    "lead",
+    "criteria pollutant",
+    "aqs",
+    "air monitor",
+    "monitoring site",
+    "naaqs",
+    "smog"
+  ],
+  "questions": [
+    "annual mean PM2.5 by county in a state",
+    "ozone levels at monitors in a state over the last decade",
+    "daily PM2.5 during a wildfire smoke episode",
+    "air quality monitors in a county"
+  ],
+  "homepage": "https://aqs.epa.gov/aqsweb/documents/data_api.html",
+  "terms_url": "https://aqs.epa.gov/aqsweb/documents/data_api.html#terms",
+  "auth": {
+    "env": "AQS_API_KEY",
+    "required": "required",
+    "placement": "query",
+    "param": "key",
+    "prefix": "",
+    "home": "aqs",
+    "signup_url": "https://aqs.epa.gov/data/api/signup?email=YOUR_EMAIL",
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {
+      "email": "AQS_EMAIL"
+    }
+  },
+  "limits": {
+    "rps": 0.2,
+    "burst": 1,
+    "daily_quota": null,
+    "max_rows": 1000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://aqs.epa.gov/data/api",
+      "probe": "https://aqs.epa.gov/data/api/metaData/isAvailable",
+      "hosts": [
+        "aqs.epa.gov"
+      ]
+    },
+    "manual": {
+      "keyless_citation": "U.S. Environmental Protection Agency, Air Quality System (AQS) pre-generated AirData files, {dataset}, aqs.epa.gov/aqsweb/airdata, retrieved {retrieved_long}.",
+      "keyless_file": "annualData and dailyData without a key: EPA's AirData yearly file, https://aqs.epa.gov/aqsweb/airdata/annual_conc_by_monitor_<year>.zip (every parameter, about 4 MB) or https://aqs.epa.gov/aqsweb/airdata/daily_<parameter code>_<year>.zip (one parameter, 2-10 MB), one file per year of the request; pass the .zip as downloaded to ingest_command, which keeps the request's rows (state, county, site or box, parameter, dates). One parameter code per daily request; not for quarterlyData, sampleData, monitors or byCBSA.",
+      "how": "Without a key: download EPA's pre-generated files at https://aqs.epa.gov/aqsweb/airdata/download_files.html (annual_conc_by_monitor_<year>.zip, daily_<param>_<year>.zip) and upload the .zip as downloaded (or its CSV): --ingest keeps the rows the request asks for. Or use https://www.epa.gov/outdoor-air-quality-data (Download Daily Data). With a key: the links in manual_download/INSTRUCTIONS.md, after replacing {API_KEY} with the key and {AQS_EMAIL} with the email it is registered to (or run the download script with both variables set)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Data are revised as agencies certify them; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "AQS data are U.S. government works in the public domain (17 U.S.C. 105); the AQS API terms limit request volume, not reuse of the data."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Environmental Protection Agency, Air Quality System (AQS) Data Mart, {dataset}, aqs.epa.gov/data/api, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which pollutant and statistic (annual mean, 98th percentile, 4th-highest 8-hour ozone)? Each standard uses its own statistic.",
+    "All monitors or one value per county? Counties often have several monitors and POCs; say how they are combined.",
+    "Certified data only? The latest months are not yet certified and arrive about 6 months late."
+  ],
+  "formats": [
+    "json"
+  ]
+}

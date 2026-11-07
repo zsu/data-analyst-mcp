@@ -1,0 +1,5 @@
+{
+ "GET https://aqs.epa.gov/data/api/sampleData/bySite?param=88101&bdate=20170401&edate=20170401&state=01&county=073&site=0023": "doc_sampleData.json",
+ "GET https://aqs.epa.gov/data/api/annualData/byState?param=44201&bdate=20220101&edate=20221231&state=50": "doc_nodata.json",
+ "GET https://aqs.epa.gov/data/api/annualData/byState?param=44201&bdate=20230101&edate=20231231&state=50": "doc_nodata.json"
+}

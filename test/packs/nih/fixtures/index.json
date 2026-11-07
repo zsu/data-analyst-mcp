@@ -1,0 +1,5 @@
+{
+ "POST https://api.reporter.nih.gov/v2/publications/search ade9cfc5c2d0": "r003.json",
+ "POST https://api.reporter.nih.gov/v2/projects/search 969002d9a192": "r004.json",
+ "POST https://api.reporter.nih.gov/v2/projects/search c5792c5b22c0": "r005.json"
+}

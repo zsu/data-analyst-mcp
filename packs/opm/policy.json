@@ -1,0 +1,142 @@
+{
+  "id": "opm",
+  "title": "OPM Federal Workforce Data (FWD / EHRI)",
+  "agency": "U.S. Office of Personnel Management",
+  "depth": "deep",
+  "domains": [
+    "federal workforce",
+    "government employment",
+    "public sector pay",
+    "personnel"
+  ],
+  "keywords": [
+    "opm",
+    "federal workforce",
+    "federal employees",
+    "federal workers",
+    "civil service",
+    "fedscope",
+    "ehri",
+    "fwd",
+    "headcount",
+    "agency headcount",
+    "hires",
+    "accessions",
+    "separations",
+    "attrition",
+    "quits",
+    "retirements",
+    "rif",
+    "reduction in force",
+    "layoffs",
+    "deferred resignation",
+    "hiring freeze",
+    "probationary",
+    "gs pay",
+    "general schedule",
+    "federal salaries", "federal pay", "cabinet departments",
+    "grade",
+    "occupation",
+    "it workforce",
+    "stem workforce",
+    "veterans in government",
+    "duty station",
+    "nsftp"
+  ],
+  "questions": [
+    "how many federal employees work at each department",
+    "federal separations by type in fiscal year 2025",
+    "hiring and separation rates by agency",
+    "median GS pay by occupation or state",
+    "change in federal headcount since January 2025",
+    "share of federal workers eligible to retire"
+  ],
+  "homepage": "https://data.opm.gov/",
+  "terms_url": "https://data.opm.gov/get-data/api-access",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 4,
+    "burst": 8,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": null
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.opm.gov/api/v1/files",
+      "probe": "https://data.opm.gov/api/v1/files/accessions?current=true&year=2025&month=1",
+      "hosts": [
+        "data.opm.gov"
+      ]
+    },
+    "manual": {
+      "how": "Follow manual_download/opm/INSTRUCTIONS.md: run the bundled fetch.py on your own computer and upload the small data/ folder as a ZIP (best), or download the raw Parquet files listed in urls.txt, or on https://data.opm.gov/get-data/data-downloads click Download > .TXT (or .JSON) for each month needed; upload them and --ingest. No account or key is needed."
+    }
+  },
+  "cache": {
+    "mode": "persistent",
+    "ttl_hours": 720,
+    "why": "Raw files are large (employment 26-75 MB a month), public and versioned by file name (employment_202509_4), so a cached copy of a version never changes; kept in <cache root>/opm-fwd ($OPM_CACHE_DIR overrides) for up to 30 days and reused across analyses. --no-cache deletes them after use."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "OPM releases the FWD files as public data under its Public Data Release Policy (U.S. government work, 17 U.S.C. 105); the filtered files may ship with a report. OPM itself withholds pay, duty station and related fields for DoD and security-sensitive agencies and occupations (published as REDACTED) to protect privacy and security: products must disclose that coverage, and nothing should try to infer withheld values."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Office of Personnel Management, Federal Workforce Data (FWD), Enterprise Human Resources Integration (EHRI) {dataset} files, accessed {retrieved_long} through the FWD API (https://data.opm.gov/get-data/api-access).",
+  "audit_hooks": [
+    {
+      "id": "opm_coverage",
+      "kind": "require_file",
+      "when_columns": ["basic_pay", "duty_station", "location", "state"],
+      "glob": "coverage*.csv",
+      "why": "Pay and location are REDACTED for about 45 to 48 percent of employment records: run stats.redaction_coverage() by the groups reported and save <out>/coverage.csv."
+    },
+    {
+      "id": "opm_redaction_text",
+      "kind": "require_text",
+      "when_columns": ["basic_pay", "duty_station", "location", "state"],
+      "any": [
+        "redact",
+        "withheld",
+        "withhold"
+      ],
+      "why": "Data and Methods must say which records have pay or location withheld and how the estimates handle them."
+    },
+    {
+      "id": "opm_coverage_scope",
+      "kind": "require_text",
+      "any": [
+        "covered by opm",
+        "usps",
+        "postal service",
+        "intelligence"
+      ],
+      "why": "EHRI excludes USPS and the intelligence agencies: the product must say the counts cover employees in OPM's data."
+    }
+  ],
+  "clarify": [
+    "Pay or location: OPM withholds both for all DoD employees and for security-sensitive agencies and occupations (about 45 to 48 percent of records). Report pay where published (with coverage), exclude DoD explicitly, or limit to agencies with near-full coverage?",
+    "Counting actions: by the month they took effect (complete only after late reports arrive) or by the month OPM processed them?",
+    "Universe: all employees on board or the permanent full-time workforce (NSFTP)? For flows, do transfers between agencies count as separations, and transfers in (AA/AB) as accessions or new hires? OPM's dashboards count all accessions; fields.md calls only AC/AD/AE new hires.",
+    "Period: fiscal years (October-September) with September snapshots, or calendar years with December snapshots; how far back (monthly from 2011, quarterly to 2005)?"
+  ],
+  "formats": [
+    "parquet",
+    "txt",
+    "json",
+    "csv"
+  ]
+}

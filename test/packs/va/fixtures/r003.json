@@ -1,0 +1,54 @@
+[{"state":"Alabama","total_pension_recipients":"3229","male":"3007","female":"221"}
+,{"state":"Alaska","total_pension_recipients":"142"}
+,{"state":"Arizona","total_pension_recipients":"3025","male":"2817","female":"203"}
+,{"state":"Arkansas","total_pension_recipients":"1909","male":"1812","female":"97"}
+,{"state":"California","total_pension_recipients":"11454","male":"10895","female":"547"}
+,{"state":"Colorado","total_pension_recipients":"1735","male":"1628","female":"103"}
+,{"state":"Connecticut","total_pension_recipients":"739","male":"707","female":"30"}
+,{"state":"Delaware","total_pension_recipients":"208","male":"194","female":"13"}
+,{"state":"District Of Columbia","total_pension_recipients":"306","male":"293","female":"11"}
+,{"state":"Florida","total_pension_recipients":"10833","male":"10239","female":"578"}
+,{"state":"Georgia","total_pension_recipients":"4295","male":"4022","female":"268"}
+,{"state":"Hawaii","total_pension_recipients":"353","male":"333","female":"20"}
+,{"state":"Idaho","total_pension_recipients":"712","male":"664","female":"44"}
+,{"state":"Illinois","total_pension_recipients":"3439","male":"3292","female":"143"}
+,{"state":"Indiana","total_pension_recipients":"2108","male":"1979","female":"127"}
+,{"state":"Iowa","total_pension_recipients":"1194","male":"1119","female":"73"}
+,{"state":"Kansas","total_pension_recipients":"1024","male":"966","female":"58"}
+,{"state":"Kentucky","total_pension_recipients":"2050","male":"1926","female":"122"}
+,{"state":"Louisiana","total_pension_recipients":"2597","male":"2480","female":"116"}
+,{"state":"Maine","total_pension_recipients":"649","male":"617","female":"31"}
+,{"state":"Maryland","total_pension_recipients":"1503","male":"1407","female":"95"}
+,{"state":"Massachusetts","total_pension_recipients":"1385","male":"1299","female":"83"}
+,{"state":"Michigan","total_pension_recipients":"4148","male":"3935","female":"206"}
+,{"state":"Minnesota","total_pension_recipients":"1483","male":"1404","female":"75"}
+,{"state":"Mississippi","total_pension_recipients":"1423","male":"1340","female":"83"}
+,{"state":"Missouri","total_pension_recipients":"2969","male":"2799","female":"165"}
+,{"state":"Montana","total_pension_recipients":"588","male":"557","female":"31"}
+,{"state":"Nebraska","total_pension_recipients":"582","male":"553","female":"29"}
+,{"state":"Nevada","total_pension_recipients":"1368","male":"1296","female":"70"}
+,{"state":"New Hampshire","total_pension_recipients":"334","male":"306","female":"28"}
+,{"state":"New Jersey","total_pension_recipients":"1509","male":"1448","female":"53"}
+,{"state":"New Mexico","total_pension_recipients":"1053","male":"992","female":"61"}
+,{"state":"New York","total_pension_recipients":"4637","male":"4432","female":"197"}
+,{"state":"North Carolina","total_pension_recipients":"3384","male":"3148","female":"233"}
+,{"state":"North Dakota","total_pension_recipients":"235","male":"217","female":"18"}
+,{"state":"Ohio","total_pension_recipients":"6165","male":"5795","female":"367"}
+,{"state":"Oklahoma","total_pension_recipients":"1625","male":"1541","female":"84"}
+,{"state":"Oregon","total_pension_recipients":"2335","male":"2193","female":"141"}
+,{"state":"Other Foreign Countries","total_pension_recipients":"288"}
+,{"state":"Pennsylvania","total_pension_recipients":"4952","male":"4686","female":"256"}
+,{"state":"Puerto Rico","total_pension_recipients":"3110","male":"3080","female":"27"}
+,{"state":"Rhode Island","total_pension_recipients":"300","male":"289","female":"11"}
+,{"state":"South Carolina","total_pension_recipients":"2364","male":"2209","female":"151"}
+,{"state":"South Dakota","total_pension_recipients":"388","male":"362","female":"26"}
+,{"state":"Tennessee","total_pension_recipients":"3206","male":"3031","female":"170"}
+,{"state":"Texas","total_pension_recipients":"9561","male":"8980","female":"568"}
+,{"state":"US Territories (excluding Puerto Rico)","total_pension_recipients":"65"}
+,{"state":"Utah","total_pension_recipients":"757","male":"709","female":"47"}
+,{"state":"Vermont","total_pension_recipients":"171"}
+,{"state":"Virginia","total_pension_recipients":"2508","male":"2345","female":"161"}
+,{"state":"Washington","total_pension_recipients":"2587","male":"2405","female":"177"}
+,{"state":"West Virginia","total_pension_recipients":"1013","male":"967","female":"45"}
+,{"state":"Wisconsin","total_pension_recipients":"1946","male":"1837","female":"106"}
+,{"state":"Wyoming","total_pension_recipients":"196"}]

@@ -1,0 +1,1 @@
+{"took":132,"timed_out":false,"_shards":{"total":5,"successful":5,"skipped":0,"failed":0},"hits":{"total":{"value":5,"relation":"eq"},"max_score":null,"hits":[]},"_meta":{"license":"CC0","last_updated":"2026-10-20T12:00:00-05:00","last_indexed":"2026-10-20T12:00:00-05:00","total_record_count":18531443,"is_data_stale":false,"has_data_issue":false,"break_points":{}}}

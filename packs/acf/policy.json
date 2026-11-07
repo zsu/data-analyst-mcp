@@ -1,0 +1,104 @@
+{
+  "id": "acf",
+  "title": "HHS Administration for Children and Families program data (TANF financial and caseload data, CCDF expenditures)",
+  "agency": "U.S. Department of Health and Human Services, Administration for Children and Families (Office of Family Assistance and Office of Child Care)",
+  "depth": "standard",
+  "domains": [
+    "welfare",
+    "cash assistance",
+    "child care",
+    "safety net",
+    "state spending",
+    "federal grants to states"
+  ],
+  "keywords": [
+    "tanf",
+    "temporary assistance for needy families",
+    "welfare",
+    "cash assistance",
+    "basic assistance",
+    "maintenance of effort",
+    "moe",
+    "state moe",
+    "tanf block grant",
+    "state family assistance grant",
+    "sfag",
+    "tanf contingency fund",
+    "tanf transfers",
+    "transfer to ccdf",
+    "transfer to ssbg",
+    "tanf spending by category",
+    "acf-196r",
+    "tanf caseload",
+    "tanf recipients",
+    "tanf families",
+    "separate state programs",
+    "ssp-moe",
+    "child-only cases",
+    "ccdf",
+    "child care and development fund",
+    "child care subsidies",
+    "child care spending",
+    "ccdbg",
+    "acf-696",
+    "office of family assistance",
+    "office of child care"
+  ],
+  "questions": [
+    "how much each state spends of federal TANF and state MOE funds on basic cash assistance",
+    "share of TANF spending going to child care, work activities or administration by state",
+    "TANF funds transferred to the Child Care and Development Fund and the Social Services Block Grant",
+    "number of families and recipients on TANF by state and month",
+    "TANF caseload trend: average monthly families, adult and child recipients",
+    "CCDF expenditures by state and funding stream (mandatory, matching, discretionary, ARP)"
+  ],
+  "homepage": "https://acf.gov/ofa/programs/tanf/data-reports",
+  "terms_url": "https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/index.html",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "daily_quota": null,
+    "max_rows": 100000
+  },
+  "routes": {
+    "manual": {
+      "browser_hosts": [
+        "acf.gov"
+      ],
+      "how": "Always this route: acf.gov (acf.hhs.gov redirects there) answers every script, direct .xlsx links included, with an AWS WAF JavaScript challenge (HTTP 202, empty body), so nothing is fetched from here. In a web browser open the page named in INSTRUCTIONS.md and click the XLSX link: TANF financial data https://acf.gov/ofa/data/tanf-financial-data-fy-<year> ('FY <year> TANF Financial Data Tables (XLSX)'); TANF caseload https://acf.gov/ofa/data/tanf-caseload-data-<year> (the TANF, SSP-MOE or TANF & SSP-MOE caseload XLSX; the '15 Months' file when there are two); CCDF expenditures https://acf.gov/occ/data/child-care-and-development-fund-expenditure-data-list-all-years, then 'FY <year> CCDF Expenditure Data', then 'CCDF Expenditures for FY <year> (all appropriation years)' or a grant-year 'Tables 1b-...' page, then its XLSX link. Save the workbook and upload it as saved; --ingest reads the table named in the request."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small workbooks saved by the user; ACF replaces files in place when it revises them, so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "TANF financial and caseload data and CCDF expenditure data are compiled and published by HHS/ACF, a U.S. government agency: works of the U.S. government are in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Health and Human Services, Administration for Children and Families, {dataset} (acf.gov, workbook saved from the agency's site), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which money: federal TANF funds, state MOE funds, or both? ACF tables show federal funds, state MOE (in TANF and in separate state programs) and all funds separately; transfers to CCDF and SSBG are federal TANF funds counted as used but not spent in TANF. The default is all funds (federal + MOE) with transfers reported apart.",
+    "Which caseload: families or recipients, and TANF only or TANF plus separate state programs (SSP-MOE)? The default is TANF families (average monthly number for the fiscal year).",
+    "Fiscal year or calendar year? All three datasets are by federal fiscal year (October-September); the 15-month caseload files also give calendar-year averages. CCDF is reported by fiscal year of spending (all appropriation years) or by grant year; the default is the fiscal year."
+  ],
+  "formats": [
+    "xlsx",
+    "xls"
+  ]
+}

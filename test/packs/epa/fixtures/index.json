@@ -1,0 +1,10 @@
+{
+ "GET https://data.epa.gov/dmapservice/ghg.ghg_emitter_sector/state/equals/VT/year/equals/2022/1:3/JSON": "r001.json",
+ "GET https://data.epa.gov/dmapservice/sems.envirofacts_site/fk_ref_state_code/equals/VT/npl_status_code/equals/F/1:3/JSON": "r002.json",
+ "GET https://echodata.epa.gov/echo/air_rest_services.get_facilities?output=JSON&p_st=VT&p_maj=Y&responseset=1000": "r003.json",
+ "GET https://echodata.epa.gov/echo/air_rest_services.get_qid?output=JSON&qid=932&pageno=1": "r004.json",
+ "GET https://echodata.epa.gov/echo/case_rest_services.get_case_info?output=JSON&p_state=VT&p_law=CAA&responseset=1000": "r005.json",
+ "GET https://echodata.epa.gov/echo/case_rest_services.get_qid?output=JSON&qid=937&pageno=1": "r006.json",
+ "GET https://echodata.epa.gov/echo/air_rest_services.get_facilities?output=JSON&p_st=VT&p_maj=Y&qcolumns=1%2C2%2C4%2C5&responseset=1000": "r007.json",
+ "GET https://echodata.epa.gov/echo/air_rest_services.get_qid?output=JSON&qid=192&pageno=1&qcolumns=1%2C2%2C4%2C5": "r008.json"
+}

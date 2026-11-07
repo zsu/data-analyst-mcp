@@ -1,0 +1,39 @@
+{
+  "Header": [
+    {
+      "status": "success",
+      "request_time": "2018-06-13T07:45:01-04:00",
+      "url": "https://...",
+      "rows": 1
+    }
+  ],
+  "Body": [
+    {
+      "state_code": "01",
+      "county_code": "073",
+      "site_number": "0023",
+      "parameter_code": "88101",
+      "poc": 1.0,
+      "latitude": 33.0,
+      "longitude": -86.0,
+      "datum": "WGS84",
+      "parameter_name": "PM2.5 - Local Conditions",
+      "date_local": "2017-04-01",
+      "time_local": "00:00",
+      "date_gmt": "2017-04-01",
+      "time_gmt": "06:00",
+      "sample_measurement": 6.2,
+      "unit_of_measure": "Micrograms/cubic meter (LC)",
+      "detection_limit": 2.0,
+      "uncertainty": null,
+      "qualifiers": null,
+      "method_type": "FRM",
+      "method_code": "142",
+      "method_name": "BGI Models PQ200-VSCC or PQ200A-VSCC - Gravimetric",
+      "state_name": "Alabama",
+      "county_name": "Jefferson",
+      "date_of_last_change": "2017-05-30",
+      "cbsa_code": "13820"
+    }
+  ]
+}

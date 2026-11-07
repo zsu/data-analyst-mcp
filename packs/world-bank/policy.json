@@ -1,0 +1,101 @@
+{
+  "id": "world-bank",
+  "title": "World Bank Indicators API (World Development Indicators and other databases)",
+  "agency": "World Bank Group (Development Data Group)",
+  "depth": "standard",
+  "domains": [
+    "international",
+    "economy",
+    "development",
+    "population",
+    "health",
+    "education"
+  ],
+  "keywords": [
+    "world bank",
+    "international",
+    "country comparison",
+    "countries",
+    "gdp",
+    "gdp per capita",
+    "population",
+    "life expectancy",
+    "inflation",
+    "unemployment",
+    "gini",
+    "inequality",
+    "health expenditure",
+    "education expenditure",
+    "debt",
+    "exports",
+    "imports",
+    "co2",
+    "emissions",
+    "r&d",
+    "internet",
+    "migration",
+    "fertility",
+    "ppp",
+    "oecd",
+    "g7",
+    "peer countries",
+    "wdi"
+  ],
+  "questions": [
+    "how does US GDP per capita compare with other G7 countries",
+    "health spending as a share of GDP across countries",
+    "life expectancy in the US versus peer countries",
+    "government debt to GDP internationally",
+    "US share of world GDP"
+  ],
+  "homepage": "https://data.worldbank.org/",
+  "terms_url": "https://www.worldbank.org/ext/en/legal/terms-conditions/datasets",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.worldbank.org/v2",
+      "probe": "https://api.worldbank.org/v2/country/US/indicator/SP.POP.TOTL?format=json&mrv=1",
+      "hosts": [
+        "api.worldbank.org"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each returns one JSON page; save it under the name shown) and upload the files. Without the links: open https://data.worldbank.org/indicator/<INDICATOR>?locations=<ISO2 codes joined with ->, e.g. https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?locations=US-GB-DE, choose Download > CSV, unzip, and upload the API_<indicator>_DS2_*.csv file (wide format: one column per year)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small JSON queries; WDI is revised several times a year, so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "World Bank datasets are licensed under Creative Commons Attribution 4.0 (CC BY 4.0) unless a dataset says otherwise (World Bank Terms of Use for Datasets); redistribution is allowed with attribution. Some indicators carry third-party terms noted in their metadata (sourceOrganization)."
+  },
+  "notices": [
+    "Data from the World Bank, licensed under CC BY 4.0 (https://www.worldbank.org/ext/en/legal/terms-conditions/datasets)."
+  ],
+  "retention": null,
+  "citation": "World Bank, {dataset}, World Bank Indicators API (api.worldbank.org/v2), licensed CC BY 4.0, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Current US dollars, constant dollars or PPP? Cross-country level comparisons usually need PPP (e.g. NY.GDP.PCAP.PP.CD); growth uses constant-price series (...KD.ZG); current US$ (...CD) moves with exchange rates.",
+    "Which comparison countries (G7, OECD members, income group or region aggregate) and which years? The latest year is often missing for many countries."
+  ],
+  "formats": [
+    "json",
+    "xml",
+    "csv (website bulk download)"
+  ]
+}

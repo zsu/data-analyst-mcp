@@ -1,0 +1,8 @@
+{
+  "name": "PWCMPWGT",
+  "label": "Weight-composited final weight",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true
+}

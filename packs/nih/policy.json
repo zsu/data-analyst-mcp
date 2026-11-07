@@ -1,0 +1,86 @@
+{
+  "id": "nih",
+  "title": "NIH RePORTER (research grants)",
+  "agency": "National Institutes of Health",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "research funding",
+    "science"
+  ],
+  "keywords": [
+    "nih",
+    "reporter",
+    "nih grants",
+    "research grants",
+    "grant",
+    "grants",
+    "r01",
+    "funding",
+    "research funding",
+    "principal investigator",
+    "national cancer institute",
+    "nci",
+    "nia",
+    "niaid",
+    "rcdc",
+    "spending category",
+    "medical research",
+    "publications",
+    "university research"
+  ],
+  "questions": [
+    "NIH funding for Alzheimer's research by year",
+    "NIH grants to universities in a state",
+    "which institutions get the most NIH money",
+    "NIH projects on opioids",
+    "grants of a named investigator"
+  ],
+  "homepage": "https://reporter.nih.gov/",
+  "terms_url": "https://api.reporter.nih.gov/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 1,
+    "max_rows": 15000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.reporter.nih.gov/v2",
+      "probe": "https://api.reporter.nih.gov/",
+      "hosts": [
+        "api.reporter.nih.gov"
+      ]
+    },
+    "manual": {
+      "how": "The API takes POST requests, so a browser link cannot fetch them: run download_data.sh / download_data.ps1 from the bundle (one command, no Python), or search at https://reporter.nih.gov/advanced-search (same criteria), click Export, choose CSV and the fields, and upload the file. Whole fiscal years: https://reporter.nih.gov/exporter (bulk CSV files)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Searches are small; RePORTER adds awards weekly. data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "RePORTER data describe federal awards and are U.S. government works in the public domain (17 U.S.C. 105). Abstracts are written by applicants; quote them sparingly."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "National Institutes of Health, RePORTER: {dataset}, api.reporter.nih.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Fiscal year of the award (fiscal_years) or project period? RePORTER rows are project-year awards by federal fiscal year (October-September).",
+    "Topic by RCDC spending category (NIH's official categorization) or by text search (broader, noisier)? Official RCDC totals are at report.nih.gov and are not the sum of this search.",
+    "NIH only? RePORTER also holds AHRQ, CDC (its centers: NCEH, NIOSH, ...), FDA and VA awards (FY2024: AHRQ 497, FDA 560, VA 2,181 projects); list the NIH institutes in agencies, and check agency_ic_admin, to exclude them."
+  ],
+  "formats": [
+    "json"
+  ]
+}

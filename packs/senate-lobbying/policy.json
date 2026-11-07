@@ -1,0 +1,99 @@
+{
+  "id": "senate-lobbying",
+  "title": "Lobbying Disclosure (LDA.gov API)",
+  "agency": "Secretary of the Senate (Office of Public Records) and Clerk of the House",
+  "depth": "standard",
+  "domains": [
+    "legislation",
+    "lobbying",
+    "influence"
+  ],
+  "keywords": [
+    "lobbying",
+    "lobbyist",
+    "lobbyists",
+    "lobbying spending",
+    "lobbying disclosure",
+    "lda",
+    "ld-2",
+    "ld-203",
+    "registrant",
+    "lobbying client",
+    "issue code",
+    "lobbying firm",
+    "revolving door",
+    "covered position",
+    "foreign entity",
+    "lobbyist contributions"
+  ],
+  "questions": [
+    "how much did a company spend on lobbying each year",
+    "who lobbied on a bill",
+    "lobbying on an issue such as tax or health by a company",
+    "lobbyists who held government jobs",
+    "campaign contributions reported by lobbyists"
+  ],
+  "homepage": "https://lda.gov/",
+  "terms_url": "https://lda.gov/api/tos/",
+  "auth": {
+    "env": "LDA_API_KEY",
+    "required": "optional",
+    "placement": "header",
+    "param": "Authorization",
+    "prefix": "Token ",
+    "home": "lda",
+    "signup_url": "https://lda.gov/api/register/",
+    "echoes_key": false,
+    "key_only": [
+      "120 requests a minute instead of 15 (large downloads finish 8 times faster)"
+    ]
+  },
+  "limits": {
+    "rps": 0.24,
+    "burst": 3,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://lda.gov/api/v1",
+      "probe": "https://lda.gov/api/v1/constants/filing/filingtypes/",
+      "hosts": [
+        "lda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each JSON link in INSTRUCTIONS.md in a browser (no key needed; 25 filings per page, at most 15 pages a minute) and save it under the given name; or use the search forms at https://lda.gov/filings/public/filing/search/ (LD-1/LD-2) and https://lda.gov/filings/public/contribution/search/ (LD-203) and download the result list, then upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Filings and amendments post continuously; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The Lobbying Disclosure Act requires the Secretary of the Senate and the Clerk of the House to make filings public; the LDA.gov terms set no controls on end use but require the access date, the Office of Public Records disclaimer, and no modified or misrepresented content cited as LDA.gov."
+  },
+  "notices": [
+    "Senate Office of Public Records cannot vouch for the data or analyses derived from these data after the data have been retrieved from LDA.gov."
+  ],
+  "retention": null,
+  "citation": "U.S. Senate Office of Public Records, Lobbying Disclosure Act database (LDA.gov API), {dataset}, data accessed {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "lda-disclaimer",
+      "kind": "require_text",
+      "any": [
+        "cannot vouch for the data"
+      ],
+      "why": "LDA.gov terms of service: users must state that the Senate Office of Public Records cannot vouch for data or analyses after retrieval"
+    }
+  ],
+  "clarify": [
+    "Spending of the client itself (in-house expenses) or also outside firms' income from that client? Adding both double counts when the client's own report includes payments to firms.",
+    "Original reports or amended ones? Default: the latest amendment replaces the original for the same registrant, client and period."
+  ],
+  "formats": [
+    "json"
+  ]
+}

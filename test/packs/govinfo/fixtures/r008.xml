@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?xml-stylesheet type="text/css" href="uslm.css"?><pLaw xmlns="http://schemas.gpo.gov/xml/uslm" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en" xsi:schemaLocation="http://schemas.gpo.gov/xml/uslm https://www.govinfo.gov/schemas/xml/uslm/uslm-2.0.17.xsd">
+
+<?I97 138 STAT. ?>
+<?I98 138 STAT. ?>
+<?I99 138 STAT. ?>
+<?I50 PUBLIC LAW 118–200—DEC. 23, 2024?>
+<?I51 PUBLIC LAW 118–200—DEC. 23, 2024?>
+<?I52 PUBLIC LAW 118–200—DEC. 23, 2024?>
+
+
+<!--Disclaimer: Legislative measures that include compacts or other non-standard data structures will require additional modeling and may contain inconsistencies in the converted USLM XML.-->
+<meta><dc:title>Public Law 118–200: To designate the community-based outpatient clinic of the Department of Veterans Affairs in Lynchburg, Virginia, as the “Private First Class Desmond T. Doss VA Clinic”.</dc:title>
+<dc:type>Public Law</dc:type><docNumber>200</docNumber>
+<citableAs>Public Law 118–200</citableAs><citableAs>138 Stat. 2686</citableAs>
+<approvedDate>2024-12-23</approvedDate>
+<dc:date>2024-12-23</dc:date>
+<dc:publisher>United States Government Publishing Office</dc:publisher><dc:creator>National Archives and Records Administration</dc:creator><dc:creator>Office of the Federal Register</dc:creator><dc:format>text/xml</dc:format><dc:language>EN</dc:language><dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+<processedBy>GPO Locator to USLM Converter 4.15.31;Stage2.20250702</processedBy><processedDate>2026-01-02</processedDate>
+<congress>118</congress><publicPrivate>public</publicPrivate>
+</meta>
+<preface><centerRunningHead>PUBLIC LAW 118–200—DEC. 23, 2024</centerRunningHead>
+<page identifier="/us/stat/138/2686">138 STAT. 2686</page>
+<dc:type>Public Law</dc:type><docNumber>118–200</docNumber>
+<congress value="118">118th Congress</congress>
+</preface>
+<main>
+<longTitle>
+<docTitle class="centered fontsize12" style="-uslm-lc:I658005">An Act</docTitle>
+<officialTitle class="indentUp0 firstIndent1 fontsize8" style="-uslm-lc:I658011">To designate the community-based outpatient clinic of the Department of Veterans Affairs in Lynchburg, Virginia, as the “Private First Class Desmond T. Doss VA Clinic”.<sidenote><p class="centered fontsize8" id="x6a614169-e80e-11f0-a1e4-69761a48a15a" style="-uslm-lc:I658076"><approvedDate date="2024-12-23">Dec. 23, 2024</approvedDate></p><p class="centered fontsize8" id="x6a61416a-e80e-11f0-a1e4-69761a48a15a" style="-uslm-lc:I658076">[<ref href="/us/bill/118/s/3938">S. 3938</ref>]<?GPOvSpace 08?></p></sidenote></officialTitle>
+</longTitle>
+<enactingFormula style="-uslm-lc:I658120"><i>  Be it enacted by the Senate and House of Representa­tives of the United States of America in Congress assembled,</i></enactingFormula>
+<section id="d21610e85" identifier="/us/pl/118/200/s1" style="-uslm-lc:I658146"><num class="bold" value="1">SECTION 1. </num><heading>DESIGNATION OF PRIVATE FIRST CLASS DESMOND T. DOSS VA CLINIC IN LYNCHBURG, VIRGINIA.</heading><subsection class="firstIndent0 fontsize10" id="y6a61687b-e80e-11f0-a1e4-69761a48a15a" identifier="/us/pl/118/200/s1/a" style="-uslm-lc:I658120"><num class="fontsize10" style="-uslm-lc:emspace2" value="a">(a) </num><heading class="fontsize10"><inline class="smallCaps">In General</inline>.—</heading><content> The community-based outpatient clinic of the Department of Veterans Affairs in Lynchburg, Virginia, shall after the date of the enactment of this Act be known and designated as the “Private First Class Desmond T. Doss VA Clinic”.</content></subsection>
+<subsection class="firstIndent0 fontsize10" id="y6a61687c-e80e-11f0-a1e4-69761a48a15a" identifier="/us/pl/118/200/s1/b" style="-uslm-lc:I658120"><num class="fontsize10" style="-uslm-lc:emspace2" value="b">(b) </num><heading class="fontsize10"><inline class="smallCaps">Reference</inline>.—</heading><content>Any reference in any law, regulation, map, document, paper, or other record of the United States to the clinic referred to in subsection (a) shall be considered to be a reference to the Private First Class Desmond T. Doss VA Clinic.</content></subsection>
+</section>
+<action>
+<actionDescription style="-uslm-lc:I658030">Approved</actionDescription> <date date="2024-12-23">December 23, 2024</date>.</action>
+</main>
+<legislativeHistory>
+<heading style="-uslm-lc:I658031"><inline class="underline">LEGISLATIVE HISTORY</inline>—<ref href="/us/bill/118/s/3938">S. 3938</ref>:</heading>
+<note>
+<heading style="-uslm-lc:I658032">CONGRESSIONAL RECORD, Vol. 170 (2024):</heading>
+<p class="indentUp4 firstIndent-1" id="x6a61687d-e80e-11f0-a1e4-69761a48a15a" style="-uslm-lc:I658035">Aug. 1, considered and passed Senate.</p><p class="indentUp4 firstIndent-1" id="x6a61687e-e80e-11f0-a1e4-69761a48a15a" style="-uslm-lc:I658035">Dec. 16, considered and passed House.</p></note>
+</legislativeHistory>
+<endMarker>○</endMarker>
+</pLaw>

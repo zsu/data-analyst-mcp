@@ -1,0 +1,9 @@
+{
+ "sample": {"description": "FMRs for Wallingford town VT (FY2017) and the Washington DC metro; Autauga County AL income limits; Massachusetts FMRs; Virginia counties", "requests": [
+  {"name": "wallingford_2017", "endpoint": "fmr", "params": {"entityid": "5002175925", "year": 2017}},
+  {"name": "dc_metro", "endpoint": "fmr", "params": {"entityid": "METRO47900M47900"}},
+  {"name": "autauga_il", "endpoint": "income_limits", "params": {"entityid": "0100199999"}},
+  {"name": "ma_fmr", "endpoint": "fmr_state", "params": {"statecode": "ma"}},
+  {"name": "va_counties", "endpoint": "list_counties", "params": {"statecode": "VA"}}]},
+ "states": {"requests": [{"name": "states", "endpoint": "list_states"}]}
+}

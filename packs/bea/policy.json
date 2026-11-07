@@ -1,0 +1,170 @@
+{
+  "id": "bea",
+  "title": "Bureau of Economic Analysis (BEA) Data API and bulk files",
+  "agency": "U.S. Bureau of Economic Analysis",
+  "depth": "deep",
+  "domains": [
+    "economy",
+    "national accounts",
+    "income",
+    "regional economy",
+    "international trade"
+  ],
+  "keywords": [
+    "gdp",
+    "real gdp",
+    "gross domestic product",
+    "personal income",
+    "per capita income",
+    "pce",
+    "personal consumption expenditures",
+    "pce inflation",
+    "core pce",
+    "saving rate",
+    "corporate profits",
+    "nipa",
+    "state gdp",
+    "county income",
+    "regional price parities",
+    "rpp",
+    "gdp by industry",
+    "value added",
+    "gross output",
+    "trade balance",
+    "current account",
+    "international transactions",
+    "investment position",
+    "foreign direct investment",
+    "multinational",
+    "fixed assets",
+    "input-output",
+    "services trade",
+    "gdi",
+    "share of gdp", "wages per full-time equivalent", "compensation per employee",
+    "percent of gdp",
+    "gdp deflator"
+  ],
+  "questions": [
+    "real GDP growth by quarter",
+    "which states grew fastest",
+    "per capita personal income by state",
+    "core PCE inflation",
+    "personal saving rate",
+    "GDP by industry",
+    "U.S. goods trade balance with China",
+    "county personal income"
+  ],
+  "homepage": "https://www.bea.gov/",
+  "terms_url": "https://apps.bea.gov/API/_pdf/bea_api_tos.pdf",
+  "auth": {
+    "env": "BEA_API_KEY",
+    "required": "required",
+    "placement": "query",
+    "param": "UserID",
+    "prefix": "",
+    "home": "bea",
+    "signup_url": "https://apps.bea.gov/API/signup/",
+    "echoes_key": true,
+    "key_only": [
+      "ITA, IIP, MNE, IntlServTrade, IntlServSTA, InputOutput, FixedAssets and UnderlyingGDPbyIndustry datasets",
+      "GDPbyIndustry API TableIDs and Industry filters (the TVA/TGO/TII workbook tables need no key)",
+      "Regional metro, micropolitan, port and division areas (MSA, MIC, PORT, DIV, CSA)",
+      "live metadata lookups (--values, --params, --datasets)"
+    ],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1.33,
+    "burst": 1,
+    "requests_per_min": 100,
+    "daily_quota": null,
+    "errors_per_min": 30,
+    "bytes_per_min": 100000000,
+    "max_rows": null
+  },
+  "routes": {
+    "api": {
+      "base": "https://apps.bea.gov/api/data",
+      "probe": "https://apps.bea.gov/api/data?method=GETDATASETLIST&ResultFormat=JSON",
+      "hosts": [
+        "apps.bea.gov"
+      ]
+    },
+    "bulk": {
+      "base": "https://apps.bea.gov/",
+      "probe": "https://apps.bea.gov/national/Release/TXT/TablesRegister.txt",
+      "hosts": [
+        "apps.bea.gov"
+      ]
+    },
+    "manual": {
+      "how": "Run --manual-bundle (or follow --check): OUT/manual_download/bea/ holds download_bea.sh and download_bea.ps1 (one script each: public bulk files without a key, API replies with the key asked for on the user's own computer and removed from every reply) and INSTRUCTIONS.md with the same links and curl steps. Upload the files unchanged, then run --ingest."
+    }
+  },
+  "cache": {
+    "mode": "persistent",
+    "ttl_hours": 24,
+    "why": "BEA's bulk files (NIPA flat files 12-37 MB, Regional zips up to 50 MB, GDP-by-industry workbooks) are public domain and change only at releases: they are kept in <cache_root>/bea/bulk and revalidated by Last-Modified on every use; API metadata (table and line lists) is cached for a day. GetData replies are not cached (data/bea/ is reused per run)."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "BEA data are U.S. government works in the public domain (17 U.S.C. 105); BEA asks to be cited as the source, and the API terms require the attribution notice and forbid implying endorsement."
+  },
+  "notices": [
+    "This product uses the Bureau of Economic Analysis (BEA) Data API but is not endorsed or certified by BEA."
+  ],
+  "retention": null,
+  "citation": "U.S. Bureau of Economic Analysis, {dataset} (accessed {retrieved_long}).",
+  "audit_hooks": [
+    {
+      "id": "bea_api_notice",
+      "kind": "require_text",
+      "when_route": ["api"],
+      "any": [
+        "not endorsed or certified by BEA"
+      ],
+      "why": "BEA's API terms of service require this notice in any product that uses the API (data/bea/README.md says when the API was used)."
+    }
+  ],
+  "clarify": [
+    "Real or nominal? Growth \"of GDP\" is real (chained 2017 dollars); dollar shares need nominal (current dollars).",
+    "Which growth measure: quarterly at an annual rate (BEA's headline), year over year, fourth quarter over fourth quarter, or annual average? They differ by a point or more in turning years.",
+    "Geography: the nation, the 50 states and D.C., counties, or metro areas (BEA stopped metro GDP and income in 2026)? Per capita or price-adjusted (RPPs)?",
+    "Vintage: BEA serves only its latest estimates; when updating an earlier product, the old numbers came from an older vintage."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "txt",
+    "zip",
+    "xlsx"
+  ],
+  "use_instead": [
+    {
+      "question": "CPI, jobs, unemployment, wages by occupation",
+      "source": "bls",
+      "terms": [
+        "CPI",
+        "OEWS"
+      ],
+      "why": "BLS produces these."
+    },
+    {
+      "question": "Budget data by fiscal year",
+      "source": "treasury",
+      "terms": [
+        "Monthly Treasury Statement"
+      ],
+      "why": "Treasury Fiscal Data."
+    },
+    {
+      "question": "Market interest rates",
+      "source": "treasury-yields",
+      "terms": [
+        "par yield"
+      ],
+      "why": "Daily Treasury yields."
+    }
+  ]
+}

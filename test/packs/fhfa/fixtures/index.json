@@ -1,0 +1,15 @@
+{
+ "GET https://www.fhfa.gov/hpi/download/quarterly_datasets/hpi_at_state.csv": "r001.csv",
+ "GET https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx": "r002.xml",
+ "GET https://www.fhfa.gov/hpi/download/monthly/hpi_master.csv": "hpi_master_trimmed.csv",
+ "GET https://www.fhfa.gov/document/d/cll/fullcountyloanlimitlist2026_hera-based_final_flat.csv": "cll2026_trimmed.csv",
+ "GET https://www.fhfa.gov/document/d/cll/fullcountyloanlimitlist2025_hera-based_final_flat.csv": "cll2025_trimmed.csv",
+ "GET https://www.fhfa.gov/document/d/pud/2025-pudb.csv": "pudb2025_trimmed.csv",
+ "GET https://www.fhfa.gov/document/d/cll/fullcountyloanlimitlist2027_hera-based_final_flat.csv": {
+  "file": "notfound_2027.html",
+  "status": 404,
+  "headers": {
+   "content-type": "text/html; charset=utf-8"
+  }
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "documented_example": {
+  "description": "Application 18045436 (documented example)",
+  "requests": [
+   {
+    "name": "app_18045436",
+    "endpoint": "applications_search",
+    "params": {
+     "q": "applicationNumberText:18045436"
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,96 @@
+{
+  "id": "doj-news",
+  "title": "Department of Justice News (justice.gov press releases and blog)",
+  "agency": "U.S. Department of Justice",
+  "depth": "standard",
+  "domains": [
+    "justice",
+    "law enforcement",
+    "news releases"
+  ],
+  "keywords": [
+    "doj",
+    "justice department",
+    "press release",
+    "press releases",
+    "indictment",
+    "indicted",
+    "sentenced",
+    "guilty plea",
+    "settlement",
+    "prosecution",
+    "enforcement action",
+    "u.s. attorney",
+    "usao",
+    "antitrust",
+    "fraud",
+    "health care fraud",
+    "fentanyl",
+    "civil rights division",
+    "doj blog"
+  ],
+  "questions": [
+    "DOJ press releases about fentanyl trafficking in 2025",
+    "recent antitrust enforcement announcements",
+    "how often U.S. Attorney offices announced health care fraud cases",
+    "full text of a DOJ press release"
+  ],
+  "homepage": "https://www.justice.gov/news",
+  "terms_url": "https://www.justice.gov/legalpolicies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 4,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.justice.gov/api/v1",
+      "probe": "https://www.justice.gov/api/v1/blog_entries.json?pagesize=1&fields=uuid",
+      "hosts": [
+        "www.justice.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (JSON, 50 records per page; save under the name shown) and upload the files. Without the links: search https://www.justice.gov/news (filters for type, component, topic and date), then copy the titles, dates and URLs into a CSV with columns title,date_iso,component_names,url and upload it."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "New releases appear daily; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Press releases are U.S. government works in the public domain (17 U.S.C. 105; justice.gov legal policies, https://www.justice.gov/legalpolicies); photos or quoted third-party material in a release may not be."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Justice, {dataset}, justice.gov News API (api/v1), retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "doj_text_not_statistics",
+      "kind": "require_text",
+      "any": [
+        "press release",
+        "announcement",
+        "not official statistics",
+        "not statistics"
+      ],
+      "why": "DOJ News is a set of announcements, not a statistical series; a report that counts releases must say it counts announcements."
+    }
+  ],
+  "clarify": [
+    "Which period and which title words? The API filters by title words and by single day only; a range is filtered after download.",
+    "Press releases or blog entries? Releases cover enforcement actions; the blog covers policy and programs."
+  ],
+  "formats": [
+    "json"
+  ]
+}

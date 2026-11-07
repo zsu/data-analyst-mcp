@@ -1,0 +1,238 @@
+{
+ "base_url": "https://api.fda.gov",
+ "endpoints": {
+  "search": {
+   "path": "/{category}/{noun}.json",
+   "method": "GET",
+   "description": "Records of one openFDA dataset matching a search (1,000 a page; at most 26,000 rows: skip may not exceed 25,000).",
+   "params": {
+    "dataset": {
+     "catalog": true,
+     "desc": "catalog alias (drug_event) or openFDA path (drug/event) (required; checked by the adapter)"
+    },
+    "search": {
+     "desc": "openFDA query: field:value, field:\"exact phrase\", date ranges [20240101 TO 20241231], AND / OR / NOT, _exists_:field"
+    },
+    "sort": {
+     "desc": "field:asc or field:desc, e.g. report_date:desc"
+    }
+   },
+   "records": "results",
+   "total": "meta.results.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "skip",
+    "size": 1000
+   },
+   "max_rows": 26000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "count": {
+   "path": "/{category}/{noun}.json",
+   "method": "GET",
+   "description": "Counts of records by the values of one field (top 1,000 terms, or a daily time series for a date field).",
+   "params": {
+    "dataset": {
+     "catalog": true,
+     "desc": "catalog alias (drug_event) or openFDA path (drug/event) (required; checked by the adapter)"
+    },
+    "search": {
+     "desc": "openFDA query: field:value, field:\"exact phrase\", date ranges [20240101 TO 20241231], AND / OR / NOT, _exists_:field"
+    },
+    "count": {
+     "required": true,
+     "desc": "field to count, with .exact for whole phrases (patient.reaction.reactionmeddrapt.exact); a date field gives daily counts"
+    },
+    "limit": {
+     "desc": "number of terms, at most 1000; default 1000 (all the API returns); without a key the pack sends at most 999 (limit=1000 answers HTTP 403 on some datasets). Ignored by date-field counts"
+    }
+   },
+   "defaults": {
+    "limit": 1000
+   },
+   "records": "results",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 40000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "drug_event": {
+   "id": "drug/event",
+   "name": "Drug adverse event reports (FAERS)",
+   "description": "Reports submitted to FDA about adverse events and medication errors; 20.7M reports, 2004-present, updated quarterly",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/event/"
+  },
+  "drug_label": {
+   "id": "drug/label",
+   "name": "Drug labeling (SPL)",
+   "description": "Structured product labels: indications, warnings, boxed warnings, dosage",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/label/"
+  },
+  "drug_ndc": {
+   "id": "drug/ndc",
+   "name": "NDC Directory",
+   "description": "National Drug Code directory: products, packages, active ingredients, pharm class, DEA schedule",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/ndc/"
+  },
+  "drug_enforcement": {
+   "id": "drug/enforcement",
+   "name": "Drug recall enforcement reports",
+   "description": "Drug recalls with classification (I, II, III), firm, reason, status; enforcement reports from 2012-06-20 on (report_date)",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/enforcement/"
+  },
+  "drugsfda": {
+   "id": "drug/drugsfda",
+   "name": "Drugs@FDA",
+   "description": "Approved drug applications (NDA, ANDA, BLA) with submissions and products",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/drugsfda/"
+  },
+  "drug_shortages": {
+   "id": "drug/shortages",
+   "name": "Drug shortages",
+   "description": "Current, to-be-discontinued and resolved drug shortages: status, therapeutic category, availability; count fields status and therapeutic_category (no .exact); dates are MM/DD/YYYY text",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/drug/drugshortages/"
+  },
+  "device_event": {
+   "id": "device/event",
+   "name": "Device adverse events (MAUDE)",
+   "description": "Medical device reports of deaths, injuries and malfunctions; 26.5M reports",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/event/"
+  },
+  "device_510k": {
+   "id": "device/510k",
+   "name": "510(k) clearances",
+   "description": "Premarket notification decisions",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/510k/"
+  },
+  "device_classification": {
+   "id": "device/classification",
+   "name": "Device classification",
+   "description": "Device product codes, class (1, 2, 3), medical specialty, regulation number",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/classification/"
+  },
+  "device_enforcement": {
+   "id": "device/enforcement",
+   "name": "Device recall enforcement reports",
+   "description": "Device recalls with classification, firm and reason; enforcement reports from 2012-06-20 on (report_date)",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/enforcement/"
+  },
+  "device_recall": {
+   "id": "device/recall",
+   "name": "Device recalls (RES)",
+   "description": "Device recall records from the Recall Enterprise System, with root cause",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/recall/"
+  },
+  "device_pma": {
+   "id": "device/pma",
+   "name": "Premarket approval (PMA)",
+   "description": "PMA decisions for class III devices, including supplements",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/pma/"
+  },
+  "device_registration": {
+   "id": "device/registrationlisting",
+   "name": "Device registration and listing",
+   "description": "Establishments and the devices they list",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/registrationlisting/"
+  },
+  "device_udi": {
+   "id": "device/udi",
+   "name": "Unique Device Identifier (GUDID)",
+   "description": "Device identification records: brand, model, company, sterilization, MRI safety",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/udi/"
+  },
+  "device_covid19serology": {
+   "id": "device/covid19serology",
+   "name": "COVID-19 serology test evaluations",
+   "description": "Independent evaluations of antibody tests (archived 2022)",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/device/covid19serology/"
+  },
+  "food_enforcement": {
+   "id": "food/enforcement",
+   "name": "Food recall enforcement reports",
+   "description": "Food (and cosmetics) recalls with classification, firm, reason, distribution; enforcement reports from 2012-06-20 on (report_date)",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/food/enforcement/"
+  },
+  "food_event": {
+   "id": "food/event",
+   "name": "Food, supplement and cosmetic adverse events (CAERS)",
+   "description": "Adverse event reports for foods, dietary supplements and cosmetics",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/food/event/"
+  },
+  "animal_event": {
+   "id": "animalandveterinary/event",
+   "name": "Animal and veterinary adverse events",
+   "description": "Adverse event reports for animal drugs and devices",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/animalandveterinary/event/"
+  },
+  "tobacco_problem": {
+   "id": "tobacco/problem",
+   "name": "Tobacco product problem reports",
+   "description": "Reports of health and product problems with tobacco and e-cigarette products",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/tobacco/problem/"
+  },
+  "historical_document": {
+   "id": "other/historicaldocument",
+   "name": "Historical FDA documents",
+   "description": "Press releases and reports, 1913-2014, with OCR text",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/other/historicaldocument/"
+  },
+  "nsde": {
+   "id": "other/nsde",
+   "name": "NDC SPL Data Elements",
+   "description": "NDC package-level data elements from SPL files",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/other/nsde/"
+  },
+  "substance": {
+   "id": "other/substance",
+   "name": "Substance data (GSRS)",
+   "description": "Substance records: names, codes, structures, relationships",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/other/substance/"
+  },
+  "unii": {
+   "id": "other/unii",
+   "name": "UNII",
+   "description": "Unique Ingredient Identifiers and names",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/other/unii/"
+  },
+  "crl": {
+   "id": "transparency/crl",
+   "name": "Complete response letters",
+   "description": "FDA complete response letters to drug and biologic applicants",
+   "endpoint": "search",
+   "page": "https://open.fda.gov/apis/transparency/completeresponseletters/"
+  }
+ }
+}

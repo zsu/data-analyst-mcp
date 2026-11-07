@@ -1,0 +1,70 @@
+{
+  "base_url": "https://geocoding.geo.census.gov/geocoder",
+  "timeout": 30,
+  "endpoints": {
+    "address": {
+      "path": "/geographies/onelineaddress",
+      "method": "GET",
+      "description": "An address to its match(es): matched address, longitude and latitude, and the GEOID and NAME of every census geography it falls in (state, county, tract, block, place, congressional and legislative districts, ...). One row per match; no row when the address does not match.",
+      "params": {
+        "address": {"required": true, "desc": "one-line address, e.g. \"1600 Pennsylvania Ave NW, Washington, DC 20500\""},
+        "benchmark": {"desc": "address-range benchmark (default Public_AR_Current; list: the benchmarks endpoint)"},
+        "vintage": {"desc": "geography vintage (default Current_Current; e.g. Census2020_Current, ACS2025_Current; list: the vintages endpoint)"},
+        "layers": {"desc": "optional: which geography layers, by id or name (default: the vintage's standard set)"}
+      },
+      "defaults": {"benchmark": "Public_AR_Current", "vintage": "Current_Current", "format": "json"},
+      "records": "result.addressMatches",
+      "paging": {"type": "none"},
+      "flatten": false,
+      "missing": [""]
+    },
+    "address_location": {
+      "path": "/locations/onelineaddress",
+      "method": "GET",
+      "description": "An address to its match(es) with coordinates and the TIGER line it lies on, without geographies (faster).",
+      "params": {
+        "address": {"required": true, "desc": "one-line address"},
+        "benchmark": {"desc": "address-range benchmark (default Public_AR_Current)"}
+      },
+      "defaults": {"benchmark": "Public_AR_Current", "format": "json"},
+      "records": "result.addressMatches",
+      "paging": {"type": "none"},
+      "flatten": false,
+      "missing": [""]
+    },
+    "coordinates": {
+      "path": "/geographies/coordinates",
+      "method": "GET",
+      "description": "A point to the GEOID and NAME of every census geography it falls in. One row.",
+      "params": {
+        "x": {"required": true, "desc": "longitude, decimal degrees (negative west)"},
+        "y": {"required": true, "desc": "latitude, decimal degrees"},
+        "benchmark": {"desc": "default Public_AR_Current"},
+        "vintage": {"desc": "default Current_Current"},
+        "layers": {"desc": "optional: which geography layers"}
+      },
+      "defaults": {"benchmark": "Public_AR_Current", "vintage": "Current_Current", "format": "json"},
+      "records": "result",
+      "paging": {"type": "none"},
+      "flatten": false,
+      "missing": [""]
+    },
+    "benchmarks": {
+      "path": "/benchmarks",
+      "method": "GET",
+      "description": "The address-range benchmarks the geocoder serves (name, description, default).",
+      "params": {},
+      "records": "benchmarks",
+      "paging": {"type": "none"}
+    },
+    "vintages": {
+      "path": "/vintages",
+      "method": "GET",
+      "description": "The geography vintages available for a benchmark.",
+      "params": {"benchmark": {"required": true, "desc": "a benchmark name, e.g. Public_AR_Current"}},
+      "records": "vintages",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {}
+}

@@ -1,0 +1,25 @@
+{
+ "data": [
+  {
+   "state_code": "VA",
+   "fips_code": "5100199999",
+   "county_name": "Accomack County",
+   "town_name": "",
+   "category": "County"
+  },
+  {
+   "state_code": "VA",
+   "fips_code": "5100399999",
+   "county_name": "Albemarle County",
+   "town_name": "",
+   "category": "County"
+  },
+  {
+   "state_code": "VA",
+   "fips_code": "5151099999",
+   "county_name": "Alexandria city",
+   "town_name": "",
+   "category": "County"
+  }
+ ]
+}

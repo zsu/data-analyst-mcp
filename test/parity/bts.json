@@ -1,0 +1,28 @@
+{
+ "fetch": {
+  "description": "TSI freight, gasoline price and airline passengers, first half of 2024; Texas truck crossings, January 2025",
+  "requests": [
+   {
+    "name": "tsi_2024h1",
+    "endpoint": "query",
+    "params": {
+     "dataset": "monthly_stats",
+     "$select": "date, transportation_services_index_freight, highway_fuel_prices_regular, u_s_airline_traffic_total_non_seasonally_adjusted",
+     "$where": "date >= '2024-01-01' AND date <= '2024-06-01'",
+     "$order": "date"
+    }
+   },
+   {
+    "name": "tx_trucks_2025_01",
+    "endpoint": "query",
+    "params": {
+     "dataset": "border_crossings",
+     "$select": "port_name, sum(value) AS trucks",
+     "$where": "state = 'Texas' AND measure = 'Trucks' AND date = '2025-01-01T00:00:00'",
+     "$group": "port_name",
+     "$order": "trucks DESC"
+    }
+   }
+  ]
+ }
+}

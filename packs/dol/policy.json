@@ -1,0 +1,135 @@
+{
+  "id": "dol",
+  "title": "Department of Labor (DOL Open Data API: OSHA, WHD, ETA unemployment claims, MSHA; OUI unemployment insurance trust fund files)",
+  "agency": "U.S. Department of Labor",
+  "depth": "standard",
+  "domains": [
+    "workplace safety",
+    "labor enforcement",
+    "unemployment insurance",
+    "labor",
+    "unemployment trust fund"
+  ],
+  "keywords": [
+    "osha",
+    "workplace safety",
+    "inspections",
+    "violations",
+    "penalties",
+    "workplace injuries",
+    "fatalities",
+    "accidents",
+    "wage theft",
+    "back wages",
+    "wage and hour",
+    "whd",
+    "flsa",
+    "overtime",
+    "minimum wage",
+    "child labor",
+    "fmla",
+    "davis-bacon",
+    "unemployment insurance",
+    "ui claims",
+    "initial claims",
+    "continued claims",
+    "jobless claims",
+    "weekly claims",
+    "insured unemployment",
+    "msha",
+    "mine safety",
+    "mines",
+    "apprenticeship",
+    "trade adjustment assistance",
+    "unemployment trust fund",
+    "ui trust fund",
+    "trust fund balance",
+    "trust fund solvency",
+    "ui tax",
+    "unemployment insurance tax",
+    "employer contributions",
+    "benefits paid",
+    "title xii",
+    "title xii advances",
+    "federal unemployment loans",
+    "eta 2112",
+    "average high cost multiple",
+    "reserve ratio",
+    "taxable wage base"
+  ],
+  "questions": [
+    "OSHA inspections and penalties for a company",
+    "serious OSHA violations in a state",
+    "back wages recovered by the Wage and Hour Division in an industry",
+    "weekly initial unemployment claims trend",
+    "continued claims by state",
+    "workplace fatality investigations in construction",
+    "a state's unemployment trust fund balance, latest month",
+    "which states have outstanding Title XII loans for unemployment benefits",
+    "state UI tax contributions and benefits paid by month",
+    "unemployment trust fund solvency (average high cost multiple) by state"
+  ],
+  "homepage": "https://dataportal.dol.gov/",
+  "terms_url": "https://www.dol.gov/general/aboutdol/copyright",
+  "auth": {
+    "env": "DOL_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "X-API-KEY",
+    "prefix": "",
+    "home": "dol",
+    "signup_url": "https://dataportal.dol.gov/registration",
+    "echoes_key": false,
+    "key_only": [
+      "every data query (only the dataset catalog and field dictionaries are keyless)"
+    ]
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://apiprod.dol.gov/v4",
+      "probe": "https://apiprod.dol.gov/v4/datasets",
+      "hosts": [
+        "apiprod.dol.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser after replacing {API_KEY} with your own DOL API key (free: register at https://dataportal.dol.gov/registration, then copy a key from https://dataportal.dol.gov/api-keys), or run download_data.sh / download_data.ps1 (one command; asks for the key with hidden input); save each JSON file under the name shown, upload them, then --ingest. Without the bundle: open the dataset in the Data Catalog (https://dataportal.dol.gov/datasets), use the API Query Builder at the bottom of the page (signed in) to set filters and download the response, or use the agency's own downloads (OSHA: https://www.osha.gov/data; WHD: https://enforcedata.dol.gov; weekly claims: https://oui.doleta.gov/unemploy/claims.asp); upload the file and say which it is. The unemployment insurance trust fund files need no key: download https://oui.doleta.gov/unemploy/csv/ar2112.csv (ETA 2112, listed on https://oui.doleta.gov/unemploy/DataDownloads.asp) or https://oui.doleta.gov/unemploy/data_summary/SummaryTables.xlsx (https://oui.doleta.gov/unemploy/data_summary/DataSum.asp) and upload it unchanged."
+    },
+    "bulk": {
+      "base": "https://oui.doleta.gov/unemploy",
+      "probe": "https://oui.doleta.gov/unemploy/DataDownloads.asp",
+      "hosts": [
+        "oui.doleta.gov"
+      ]
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Enforcement datasets are reloaded daily to quarterly, claims weekly, the ETA 2112 file monthly; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "DOL data are U.S. government works in the public domain (17 U.S.C. 105). Enforcement records name employers (public records); the DOL API terms forbid sharing API keys, not data."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Labor, {dataset}, DOL Open Data API (apiprod.dol.gov/v4) or Office of Unemployment Insurance data (oui.doleta.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Seasonally adjusted or not seasonally adjusted claims? The weekly national table has both (c5/c7 adjusted, c4/c6 not); state tables are not seasonally adjusted.",
+    "Enforcement counts measure enforcement activity, not violations in the economy: report them as inspections or cases found, by the date field used (open date, issuance date, findings end date).",
+    "Trust fund balance from the state's monthly ETA 2112 report (ui_trust_fund, dollars) or the quarterly Data Summary (ui_data_summary, Treasury account balances in thousands, with Title XII loan balances and solvency measures)? Default: the 2112 for monthly detail, the Data Summary for loans and solvency."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "xml",
+    "xlsx"
+  ]
+}

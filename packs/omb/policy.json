@@ -1,0 +1,106 @@
+{
+  "id": "omb",
+  "title": "OMB President's Budget data (Historical Tables, Public Budget Database, Federal Credit Supplement) via GovInfo",
+  "agency": "Office of Management and Budget (published by the U.S. Government Publishing Office, GovInfo)",
+  "depth": "standard",
+  "domains": [
+    "federal budget",
+    "public finance",
+    "federal debt",
+    "federal credit"
+  ],
+  "keywords": [
+    "omb",
+    "office of management and budget",
+    "president's budget",
+    "budget of the united states government",
+    "historical tables",
+    "public budget database",
+    "budget authority",
+    "outlays",
+    "receipts",
+    "deficit",
+    "surplus",
+    "federal spending",
+    "federal revenue",
+    "outlays by function",
+    "outlays by agency",
+    "budget function",
+    "subfunction",
+    "mandatory spending",
+    "discretionary spending",
+    "net interest",
+    "on-budget",
+    "off-budget",
+    "percent of gdp",
+    "federal debt held by the public",
+    "debt limit",
+    "grants to state and local governments",
+    "payments for individuals",
+    "federal employment",
+    "fte",
+    "federal credit supplement",
+    "credit subsidy rate",
+    "loan guarantees",
+    "direct loans",
+    "subsidy reestimates",
+    "budget account"
+  ],
+  "questions": [
+    "total federal outlays, receipts and the deficit since 1940 in dollars and as a percent of GDP",
+    "federal outlays by budget function or by agency over time",
+    "mandatory versus discretionary outlays history",
+    "budget authority or outlays for one budget account from the Public Budget Database",
+    "credit subsidy rates of federal direct loan and loan guarantee programs",
+    "federal debt held by the public as a percent of GDP history"
+  ],
+  "homepage": "https://www.govinfo.gov/app/collection/budget",
+  "terms_url": "https://www.govinfo.gov/about/policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.govinfo.gov/content/pkg",
+      "probe": "https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB/xls/BUDGET-2027-TAB-2-1.xlsx",
+      "hosts": [
+        "www.govinfo.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (GovInfo files, no sign-in) and save the file under the name shown, then upload it. If a Historical Tables link opens GovInfo's error page, download the edition's package zip (https://www.govinfo.gov/content/pkg/BUDGET-<FY>-TAB.zip) and upload that instead. The same files are on whitehouse.gov: Historical Tables at https://www.whitehouse.gov/omb/information-resources/budget/historical-tables/ (hist01z1_fy2027.xlsx ...), the Public Budget Database and Federal Credit Supplement at https://www.whitehouse.gov/omb/information-resources/budget/supplemental-materials/ (outlays_fy2027.xlsx, budauth_fy2027.xlsx, receipts_fy2027.xlsx, cr_supp_fy2027.xlsx); whitehouse.gov keeps only recent editions."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Each edition is fixed once published, but files are a few MB at most; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The Budget of the U.S. Government is a U.S. government work (17 U.S.C. 105), in the public domain; GovInfo content is free to reuse."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Office of Management and Budget, Budget of the U.S. Government, {dataset}, GovInfo (www.govinfo.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which budget edition (fy)? Each edition revises history and adds the President's estimates; the default is the newest edition on GovInfo (FY2027 as of October 2026), and a comparison across years should come from one edition.",
+    "Actual years only, or also the budget's estimates (the current year and the President's proposals for the budget year and beyond)? Default: actuals only, with estimates labelled if used.",
+    "Nominal dollars, constant (FY 2017) dollars, or percent of GDP? Default: nominal, with percent of GDP from Tables 1.2, 2.3, 3.1 or 7.1 when shares are asked."
+  ],
+  "formats": [
+    "xlsx",
+    "csv",
+    "zip"
+  ]
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+</head>
+<body>
+
+<h1>404 Error: The requested page could not be found</h1>
+<p>We are sorry, but the page you are looking for may not exist, may have been removed, had its name changed, or is temporarily unavailable.</p>
+<p>To help you find what you are looking for, please try one or more of the following:</p>
+<ol>
+    <li>Check the URL (Web address) for proper spelling and completeness. </li>
+    <li><a href="mailto:fiscaldata@fiscal.treasury.gov?subject=Contact Us" class="primary" data-testid="mail-to link">Contact Us for help</a> </li>
+    <li><a href="https://fiscaldata.treasury.gov/api-documentation/ " target="_blank">Read API Documentation</a></li>
+</ol>
+
+</body>
+</html>

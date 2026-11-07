@@ -1,0 +1,238 @@
+{
+  "id": "bls",
+  "title": "Bureau of Labor Statistics Public Data API",
+  "agency": "U.S. Bureau of Labor Statistics",
+  "depth": "deep",
+  "domains": [
+    "labor",
+    "employment",
+    "prices",
+    "inflation",
+    "wages",
+    "productivity"
+  ],
+  "keywords": [
+    "unemployment",
+    "unemployment rate",
+    "jobs",
+    "payrolls",
+    "jobs report",
+    "employment situation",
+    "participation",
+    "labor force",
+    "job openings",
+    "jolts",
+    "quits",
+    "layoffs",
+    "cpi",
+    "inflation",
+    "consumer price index",
+    "ppi",
+    "producer prices",
+    "import prices",
+    "export prices",
+    "import price index",
+    "export price index",
+    "wages",
+    "earnings",
+    "hourly earnings",
+    "average hourly earnings",
+    "cpi-w",
+    "cola",
+    "cost-of-living adjustment",
+    "real wages",
+    "employment cost index",
+    "eci",
+    "productivity",
+    "unit labor costs",
+    "laus",
+    "state unemployment",
+    "county unemployment",
+    "qcew",
+    "oews",
+    "occupational wages",
+    "u-6",
+    "bls",
+    "ces",
+    "cps",
+    "union membership",
+    "union members",
+    "union density",
+    "medical care prices",
+    "car insurance prices",
+    "auto insurance inflation",
+    "rent inflation",
+    "used car prices",
+    "average weekly hours",
+    "weekly hours",
+    "workweek",
+    "hours worked",
+    "weekly earnings",
+    "median weekly earnings",
+    "usual weekly earnings",
+    "earnings by education",
+    "federal employment",
+    "federal government employment",
+    "government jobs"
+  ],
+  "questions": [
+    "how has unemployment changed since 2019",
+    "compare wage growth with inflation",
+    "brief on the latest jobs report",
+    "state unemployment rates ranked",
+    "median wage for software developers by state",
+    "CPI inflation by component",
+    "productivity across business cycles"
+  ],
+  "homepage": "https://www.bls.gov/developers/",
+  "terms_url": "https://www.bls.gov/developers/termsOfService.htm",
+  "auth": {
+    "env": "BLS_API_KEY",
+    "required": "optional",
+    "placement": "body",
+    "param": "registrationkey",
+    "prefix": "",
+    "home": "bls",
+    "signup_url": "https://data.bls.gov/registrationEngine/",
+    "echoes_key": true,
+    "key_only": [
+      "500 queries a day instead of 25",
+      "50 series and 20 years per query instead of 25 and 10",
+      "BLS-published annual averages",
+      "series titles from the catalog",
+      "BLS's own net and percent changes (calculations)"
+    ],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 4,
+    "burst": 5,
+    "daily_quota": 500,
+    "daily_quota_keyless": 25,
+    "max_series": 50,
+    "max_series_keyless": 25,
+    "max_years": 20,
+    "max_years_keyless": 10,
+    "note": "v2 with a key: 500 queries a day, 50 series and 20 years per query; v1 without: 25, 25 and 10; 50 requests per 10 seconds either way. fetch.py splits requests and counts queries in ~/.bls/usage.json."
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+      "probe": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+      "hosts": [
+        "api.bls.gov",
+        "data.bls.gov"
+      ]
+    },
+    "api_keyless": {
+      "base": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+      "probe": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+      "hosts": [
+        "api.bls.gov"
+      ]
+    },
+    "manual": {
+      "how": "Run --manual-bundle (or follow --check): it writes INSTRUCTIONS.md, spec.json and the self-contained download_bls.sh / .ps1 (the requests built in) into <out>/manual_download/bls/. On a computer with internet access run one script with one command (it asks for a key with hidden input only when the request needs one), then upload the response_NN.json files and run --ingest. Without the scripts: https://data.bls.gov/dataQuery/find or a series page https://data.bls.gov/timeseries/<ID> lets you download one series at a time as XLSX, but --ingest reads only API JSON responses."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small queries under a daily quota; <out>/data/bls/ is reused within a run (route reuse_existing). Data are revised monthly, so no cross-run cache."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "BLS data are U.S. government works in the public domain (17 U.S.C. 105). The API terms of service (https://www.bls.gov/developers/termsOfService.htm) require stating the retrieval date and the statement in notices, and forbid using the BLS logo; the data and raw responses may go in a replication package."
+  },
+  "notices": [
+    "BLS.gov cannot vouch for the data or analyses derived from these data after the data have been retrieved from BLS.gov."
+  ],
+  "retention": null,
+  "citation": "U.S. Bureau of Labor Statistics, {dataset}, retrieved {retrieved_long} through the BLS Public Data API (https://www.bls.gov/developers/).",
+  "audit_hooks": [
+    {
+      "id": "bls_vintage",
+      "kind": "require_text",
+      "any": [
+        "retrieved",
+        "data vintage"
+      ],
+      "why": "BLS terms of service: state the date the data were retrieved; BLS revises CES, LAUS and seasonal factors."
+    },
+    {
+      "id": "bls_terms_statement",
+      "kind": "require_text",
+      "any": [
+        "cannot vouch for the data"
+      ],
+      "why": "BLS terms of service require the statement in notices wherever BLS data are published."
+    },
+    {
+      "id": "bls_preliminary",
+      "kind": "require_text",
+      "when_data": {"glob": "data/bls/bls_series.csv", "column": "preliminary"},
+      "any": [
+        "preliminary",
+        "subject to revision"
+      ],
+      "why": "BLS flags recent CES, JOLTS and LAUS values preliminary (footnote P); a product citing them must say so."
+    },
+    {
+      "id": "bls_partial_year",
+      "kind": "require_text",
+      "when_data": {"glob": "data/bls/bls_series.csv", "column": "footnotes", "pattern": "\\d+-month average|exclude[sd]? (?:october|november)|lapse in appropriations"},
+      "when_facts": "\\b2025\\b|fy ?2026|fiscal_year\\W+2026",
+      "any": [
+        "11-month",
+        "11 months",
+        "exclude october",
+        "excludes october",
+        "without october",
+        "october 2025"
+      ],
+      "why": "BLS footnotes some annual averages as covering fewer months (2025 CPS-based averages exclude October 2025, which was not collected); a product citing them must say so."
+    },
+    {
+      "id": "bls_request",
+      "kind": "require_file",
+      "glob": "data/bls/request.json",
+      "why": "The retrieval date, API version and exact queries are needed to state the data vintage and to reproduce the pull."
+    }
+  ],
+  "clarify": [
+    "Which measure? Unemployment: U-3 (official, LNS14000000) or U-6 (LNS13327709). Wages: average hourly earnings (CES), median weekly earnings (CPS) or the ECI. Inflation: CPI-U headline or core, CPI-W, chained CPI-U. Default: the measure BLS leads with in its news release (U-3, CES payrolls, CPI-U headline).",
+    "Seasonally adjusted or not? Default: SA for monthly changes and charts; NSA for 12-month CPI changes and annual averages (BLS's own convention).",
+    "Which period and baseline (since February 2020, the last 10 years, calendar years)? Default: the business-cycle peak before the event asked about, otherwise the latest 10 years; show one alternative baseline as a sensitivity.",
+    "Nominal or real, and which deflator? Default: real, deflated as BLS does it: CPI-W for production and nonsupervisory employees (CES0500000032), CPI-U for all employees (CES0500000013) and other groups, in dollars of the latest full year; say which."
+  ],
+  "formats": [
+    "json"
+  ],
+  "use_instead": [
+    {
+      "question": "PCE prices, GDP, personal income",
+      "source": "bea",
+      "terms": [
+        "PCE"
+      ],
+      "why": "BEA produces the national accounts."
+    },
+    {
+      "question": "Worker microdata for custom groups",
+      "source": "ipums",
+      "terms": [
+        "CPS"
+      ],
+      "why": "IPUMS CPS with weights and SEs."
+    },
+    {
+      "question": "Federal civilian employees",
+      "source": "opm",
+      "terms": [
+        "FedScope"
+      ],
+      "why": "OPM's Federal Workforce Data."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+ "GET https://api.uspto.gov/api/v1/patent/applications/search?q=applicationNumberText%3A14412875&limit=1&fields=applicationNumberText": {
+  "file": "live_probe_401.json",
+  "status": 401
+ },
+ "GET https://api.uspto.gov/api/v1/patent/applications/search?q=applicationNumberText%3A18045436&limit=100&offset=0": "doc_applications_search.json"
+}

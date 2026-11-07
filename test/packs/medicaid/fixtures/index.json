@@ -1,0 +1,12 @@
+{
+ "GET https://data.medicaid.gov/api/1/datastore/query/6165f45b-ca93-5bb5-9d06-db29c692a360/0?schema=false&conditions%5B0%5D%5Bproperty%5D=reporting_period&conditions%5B0%5D%5Bvalue%5D=202607&properties%5B0%5D=state_abbreviation&properties%5B1%5D=reporting_period&properties%5B2%5D=preliminary_or_updated&properties%5B3%5D=final_report&properties%5B4%5D=total_medicaid_and_chip_enrollment&properties%5B5%5D=total_medicaid_enrollment&properties%5B6%5D=total_chip_enrollment&properties%5B7%5D=total_medicaid_and_chip_enrollment__footnotes&limit=5000&offset=0": "r001.json",
+ "GET https://data.medicaid.gov/api/1/datastore/query/6165f45b-ca93-5bb5-9d06-db29c692a360/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state_abbreviation&conditions%5B0%5D%5Boperator%5D=in&conditions%5B0%5D%5Bvalue%5D%5B0%5D=VT&conditions%5B0%5D%5Bvalue%5D%5B1%5D=NH&conditions%5B1%5D%5Bproperty%5D=reporting_period&conditions%5B1%5D%5Boperator%5D=%3E%3D&conditions%5B1%5D%5Bvalue%5D=202601&conditions%5B2%5D%5Bproperty%5D=preliminary_or_updated&conditions%5B2%5D%5Bvalue%5D=U&sorts%5B0%5D%5Bproperty%5D=reporting_period&sorts%5B0%5D%5Border%5D=desc&properties%5B0%5D=state_abbreviation&properties%5B1%5D=reporting_period&properties%5B2%5D=preliminary_or_updated&properties%5B3%5D=total_medicaid_and_chip_enrollment&limit=5000&offset=0": "r002.json",
+ "GET https://data.medicaid.gov/api/1/datastore/query/158a1baa-5506-400a-8ec3-97756f0b0536/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state&conditions%5B0%5D%5Bvalue%5D=XX&conditions%5B1%5D%5Bproperty%5D=product_name&conditions%5B1%5D%5Boperator%5D=like&conditions%5B1%5D%5Bvalue%5D=TRULICITY%25&conditions%5B2%5D%5Bproperty%5D=quarter&conditions%5B2%5D%5Bvalue%5D=4&limit=5000&offset=0": "r003.json",
+ "GET https://data.medicaid.gov/api/1/datastore/query/00505e90-f8ac-5921-b12f-5e23ba7ffcf3/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state&conditions%5B0%5D%5Bvalue%5D=Vermont&limit=5000&offset=0": "r004.json",
+ "GET https://data.medicaid.gov/api/1/metastore/schemas/dataset/items/6165f45b-ca93-5bb5-9d06-db29c692a360": "r005.json",
+ "GET https://data.medicaid.gov/api/1/metastore/schemas/dataset/items": "catalog_trimmed.json",
+ "GET https://data.medicaid.gov/api/1/datastore/query/6165f45b-ca93-5bb5-9d06-db29c692a360/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state&conditions%5B0%5D%5Bvalue%5D=VT&limit=5000&offset=0": {
+  "file": "r006.json",
+  "status": 400
+ }
+}

@@ -1,0 +1,718 @@
+{
+ "base_url": "https://api.eia.gov/v2",
+ "endpoints": {
+  "data": {
+   "path": "/{route}/data/",
+   "method": "GET",
+   "description": "Rows of one leaf route of the v2 tree: period, facet columns, the requested data columns and their units.",
+   "params": {
+    "route": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "route path (electricity/retail-sales, seds, petroleum/pri/spt) or catalog alias"
+    },
+    "data": {
+     "desc": "data columns, list (default [\"value\"] or the route's main column, e.g. price for retail-sales)"
+    },
+    "facets": {
+     "desc": "{facet id: [values]}, e.g. {\"sectorid\": [\"RES\"], \"stateid\": [\"CA\", \"TX\"]}"
+    },
+    "state": {
+     "desc": "state USPS code, name or FIPS (or a list, or US): fills the route's state facet"
+    },
+    "msn": {
+     "desc": "SEDS series codes (TETCB, TETCD, ...): fills seriesId"
+    },
+    "frequency": {
+     "desc": "annual, quarterly, monthly, weekly, daily, hourly (what the route offers; default its default)"
+    },
+    "start": {
+     "desc": "first period: YYYY, YYYY-MM, YYYY-MM-DD or YYYY-QN, matching the frequency"
+    },
+    "end": {
+     "desc": "last period"
+    },
+    "sort": {
+     "desc": "[{\"column\": \"period\", \"direction\": \"asc\"}] or \"period:asc\" (default period desc)"
+    }
+   },
+   "records": "response.data",
+   "total": "response.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "length",
+    "offset_param": "offset",
+    "size": 5000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "routes": {
+   "path": "/{route}/",
+   "method": "GET",
+   "description": "Child routes of a route ('' = the top of the tree): id, name, description.",
+   "params": {
+    "route": {
+     "in": "path",
+     "catalog": true,
+     "desc": "route path; empty for the root"
+    }
+   },
+   "records": "response.routes",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "facets": {
+   "path": "/{route}/",
+   "method": "GET",
+   "description": "Facets (filters) a leaf route offers: id, description.",
+   "params": {
+    "route": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "leaf route"
+    }
+   },
+   "records": "response.facets",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "metadata": {
+   "path": "/{route}/",
+   "method": "GET",
+   "description": "One row: name, description, frequencies, facets, data columns with units, start and end period.",
+   "params": {
+    "route": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "leaf route"
+    }
+   },
+   "records": "response",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "facet_values": {
+   "path": "/{route}/facet/{facet}/",
+   "method": "GET",
+   "description": "Values one facet takes on a route (stateid -> CA, TX, ...; sectorid -> RES, COM, ...).",
+   "params": {
+    "route": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "leaf route"
+    },
+    "facet": {
+     "in": "path",
+     "required": true,
+     "desc": "facet id from the facets endpoint"
+    }
+   },
+   "records": "response.facets",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "retail_sales": {
+   "id": "electricity/retail-sales",
+   "kind": "route",
+   "name": "Electricity sales to ultimate customers",
+   "description": "electricity retail price (cents per kWh), sales (million kWh), revenue (million dollars), customers by state and sector (RES, COM, IND, TRA, OTH, ALL); 2001-",
+   "frequency": [
+    "monthly",
+    "quarterly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "stateid",
+    "sectorid"
+   ],
+   "state_facet": "stateid",
+   "data_default": [
+    "price"
+   ],
+   "endpoint": "data"
+  },
+  "power_operations": {
+   "id": "electricity/electric-power-operational-data",
+   "kind": "route",
+   "name": "Electric power operations (annual and monthly)",
+   "description": "generation, fuel consumption, stocks, receipts, cost by location (state), sector and fuel type",
+   "frequency": [
+    "monthly",
+    "quarterly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "location",
+    "sectorid",
+    "fueltypeid"
+   ],
+   "state_facet": "location",
+   "data_default": [
+    "generation"
+   ],
+   "endpoint": "data"
+  },
+  "power_emissions_by_state": {
+   "id": "electricity/state-electricity-profiles/emissions-by-state-by-fuel",
+   "kind": "route",
+   "name": "Emissions from power plants by state and fuel",
+   "description": "SO2, NOx, CO2 (thousand metric tons) and rates (lbs per MWh) from conventional and CHP plants; 1990-",
+   "frequency": [
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "stateid",
+    "fuelid"
+   ],
+   "state_facet": "stateid",
+   "data_default": [
+    "co2-thousand-metric-tons"
+   ],
+   "endpoint": "data"
+  },
+  "seds": {
+   "id": "seds",
+   "kind": "route",
+   "name": "State Energy Data System (SEDS)",
+   "description": "state energy production, consumption, prices and expenditures by source and sector, annual 1960-; series by MSN code (seriesId), state by stateId",
+   "frequency": [
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "seriesId",
+    "stateId"
+   ],
+   "state_facet": "stateId",
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "total_energy": {
+   "id": "total-energy",
+   "kind": "route",
+   "name": "Total energy (Monthly Energy Review)",
+   "description": "U.S. totals: production, consumption, prices, emissions by MSN series",
+   "frequency": [
+    "annual",
+    "monthly"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "msn"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "steo": {
+   "id": "steo",
+   "kind": "route",
+   "name": "Short-Term Energy Outlook",
+   "description": "forecasts and history, monthly to two years ahead (seriesId)",
+   "frequency": [
+    "annual",
+    "quarterly",
+    "monthly"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "seriesId"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "aeo_2026": {
+   "id": "aeo/2026",
+   "kind": "route",
+   "name": "Annual Energy Outlook 2026",
+   "description": "long-term projections to 2050 by scenario, table, series and region (other editions: aeo/2025, aeo/2023 ...)",
+   "frequency": [
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "history",
+    "scenario",
+    "tableId",
+    "seriesId",
+    "regionId"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "spot_prices": {
+   "id": "petroleum/pri/spt",
+   "kind": "route",
+   "name": "Petroleum spot prices",
+   "description": "crude oil (WTI RWTC, Brent RBRTE) and product spot prices; daily, weekly, monthly, annual; 1986-",
+   "frequency": [
+    "monthly",
+    "weekly",
+    "annual",
+    "daily"
+   ],
+   "default_frequency": "weekly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "gasoline_diesel_retail": {
+   "id": "petroleum/pri/gnd",
+   "kind": "route",
+   "name": "Retail gasoline and diesel prices",
+   "description": "weekly pump prices by area and grade (series EMM_EPMR_PTE_NUS_DPG regular U.S., EMD_EPD2D_PTE_NUS_DPG diesel U.S.); 1990-",
+   "frequency": [
+    "monthly",
+    "weekly",
+    "annual"
+   ],
+   "default_frequency": "weekly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "crude_production": {
+   "id": "petroleum/crd/crpdn",
+   "kind": "route",
+   "name": "Crude oil production",
+   "description": "field production by state and PAD district",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "petroleum_supply": {
+   "id": "petroleum/sum/snd",
+   "kind": "route",
+   "name": "Petroleum supply and disposition",
+   "description": "supply, disposition, product supplied",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "petroleum_stocks_weekly": {
+   "id": "petroleum/stoc/wstk",
+   "kind": "route",
+   "name": "Weekly petroleum stocks",
+   "description": "crude and product inventories",
+   "frequency": [
+    "weekly"
+   ],
+   "default_frequency": "weekly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "petroleum_imports": {
+   "id": "petroleum/move/imp",
+   "kind": "route",
+   "name": "Petroleum imports",
+   "description": "imports by product and area",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "crude_imports_by_origin": {
+   "id": "crude-oil-imports",
+   "kind": "route",
+   "name": "Crude oil imports by origin and destination",
+   "description": "quantity (thousand barrels) by origin country, destination, grade; 2009-",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "originId",
+    "originType",
+    "destinationId",
+    "destinationType",
+    "gradeId"
+   ],
+   "data_default": [
+    "quantity"
+   ],
+   "endpoint": "data"
+  },
+  "natural_gas_prices": {
+   "id": "natural-gas/pri/sum",
+   "kind": "route",
+   "name": "Natural gas prices",
+   "description": "wellhead, citygate, residential, commercial, industrial, electric power prices by area (process, duoarea)",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "natural_gas_supply": {
+   "id": "natural-gas/sum/snd",
+   "kind": "route",
+   "name": "Natural gas supply and disposition",
+   "description": "supply and disposition balances",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "natural_gas_production": {
+   "id": "natural-gas/prod/sum",
+   "kind": "route",
+   "name": "Natural gas production",
+   "description": "gross withdrawals and production by area",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "coal_consumption_quality": {
+   "id": "coal/consumption-and-quality",
+   "kind": "route",
+   "name": "Coal consumption and quality",
+   "description": "receipts, consumption, stocks (short tons), price (dollars per short ton), heat, sulfur and ash content by location and sector",
+   "frequency": [
+    "quarterly",
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "location",
+    "sector"
+   ],
+   "state_facet": "location",
+   "data_default": [
+    "consumption"
+   ],
+   "endpoint": "data"
+  },
+  "co2_emissions_aggregates": {
+   "id": "co2-emissions/co2-emissions-aggregates",
+   "kind": "route",
+   "name": "State CO2 emissions by sector and fuel (deprecated: see SEDS)",
+   "description": "energy-related CO2, million metric tons, 1970-2022; EIA marks it deprecated",
+   "frequency": [
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "sectorId",
+    "fuelId",
+    "stateId"
+   ],
+   "state_facet": "stateId",
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "international": {
+   "id": "international",
+   "kind": "route",
+   "name": "International energy data",
+   "description": "production, consumption, reserves by product, activity and country",
+   "frequency": [
+    "monthly",
+    "quarterly",
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "productId",
+    "activityId",
+    "countryRegionId",
+    "countryRegionTypeId",
+    "dataFlagId",
+    "unit"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  },
+  "TETCB": {
+   "id": "TETCB",
+   "kind": "seds_msn",
+   "name": "Total energy consumption",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "TETPB": {
+   "id": "TETPB",
+   "kind": "seds_msn",
+   "name": "Total energy consumption per capita",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "TEPRB": {
+   "id": "TEPRB",
+   "kind": "seds_msn",
+   "name": "Total primary energy production",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "TETCD": {
+   "id": "TETCD",
+   "kind": "seds_msn",
+   "name": "Total energy average price",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "TETXB": {
+   "id": "TETXB",
+   "kind": "seds_msn",
+   "name": "Total end-use sector energy consumption",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "TPOPP": {
+   "id": "TPOPP",
+   "kind": "seds_msn",
+   "name": "Resident population including Armed Forces",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "ESTCB": {
+   "id": "ESTCB",
+   "kind": "seds_msn",
+   "name": "Electricity total consumption (electricity sales to ultimate customers)",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "CLTCB": {
+   "id": "CLTCB",
+   "kind": "seds_msn",
+   "name": "Coal total consumption",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "NNTCB": {
+   "id": "NNTCB",
+   "kind": "seds_msn",
+   "name": "Natural gas total consumption (excluding supplemental gaseous fuels)",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "PATCB": {
+   "id": "PATCB",
+   "kind": "seds_msn",
+   "name": "All petroleum products total consumption",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "RETCB": {
+   "id": "RETCB",
+   "kind": "seds_msn",
+   "name": "Renewable energy total consumption",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "NUETB": {
+   "id": "NUETB",
+   "kind": "seds_msn",
+   "name": "Nuclear energy consumed for electricity generation, total",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "ELISB": {
+   "id": "ELISB",
+   "kind": "seds_msn",
+   "name": "Net interstate flow of electricity and associated losses (negative indicates flow out of state)",
+   "description": "SEDS seriesId (route seds, param msn); units are in the rows' unit column"
+  },
+  "coal_production": {
+   "id": "coal/aggregate-production",
+   "kind": "route",
+   "name": "Coal aggregate production",
+   "description": "coal production (short tons), mines, labor hours, employees, productivity by state or region, rank, mine type; 2001-",
+   "frequency": [
+    "annual"
+   ],
+   "default_frequency": "annual",
+   "facets": [
+    "stateRegionId",
+    "coalRankId",
+    "mineTypeId"
+   ],
+   "data_default": [
+    "production"
+   ],
+   "endpoint": "data"
+  },
+  "generator_capacity": {
+   "id": "electricity/operating-generator-capacity",
+   "kind": "route",
+   "name": "Inventory of operable generators",
+   "description": "generator-level nameplate and net summer/winter capacity (MW) by state, technology, energy source, status; monthly",
+   "frequency": [
+    "monthly"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "stateid",
+    "sector",
+    "entityid",
+    "plantid",
+    "generatorid",
+    "unit",
+    "technology",
+    "energy_source_code",
+    "prime_mover_code",
+    "balancing_authority_code",
+    "status"
+   ],
+   "state_facet": "stateid",
+   "data_default": [
+    "nameplate-capacity-mw"
+   ],
+   "endpoint": "data"
+  },
+  "nuclear_outages": {
+   "id": "nuclear-outages/us-nuclear-outages",
+   "kind": "route",
+   "name": "U.S. nuclear outages",
+   "description": "daily capacity and outage (MW, percent); 2007-",
+   "frequency": [
+    "daily"
+   ],
+   "default_frequency": "daily",
+   "facets": [],
+   "data_default": [
+    "capacity",
+    "outage",
+    "percentOutage"
+   ],
+   "endpoint": "data"
+  },
+  "natural_gas_consumption": {
+   "id": "natural-gas/cons/sum",
+   "kind": "route",
+   "name": "Natural gas consumption by end use",
+   "description": "consumption by sector and area (process, duoarea)",
+   "frequency": [
+    "monthly",
+    "annual"
+   ],
+   "default_frequency": "monthly",
+   "facets": [
+    "duoarea",
+    "product",
+    "process",
+    "series"
+   ],
+   "data_default": [
+    "value"
+   ],
+   "endpoint": "data"
+  }
+ },
+ "sectors": {
+  "retail_sales": {
+   "RES": "residential",
+   "COM": "commercial",
+   "IND": "industrial",
+   "TRA": "transportation",
+   "OTH": "other",
+   "ALL": "all sectors"
+  }
+ }
+}

@@ -1,0 +1,417 @@
+{
+ "base_url": "https://api.fdic.gov/banks",
+ "endpoints": {
+  "institutions": {
+   "path": "/institutions",
+   "method": "GET",
+   "description": "Institutions (open and closed): name, location, charter, regulator, latest assets/deposits. One row per institution (CERT).",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "search": {
+     "desc": "flexible text search, e.g. NAME:Wells"
+    }
+   },
+   "defaults": {
+    "sort_by": "ASSET",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "failures": {
+   "path": "/failures",
+   "method": "GET",
+   "description": "Every FDIC-insured institution failure since 1934: NAME, CERT, FAILDATE, FAILYR, COST (estimated loss to the Deposit Insurance Fund), QBFASSET, QBFDEP, RESTYPE, RESTYPE1, SAVR, PSTALP.",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "agg_by": {
+     "desc": "field to aggregate by, e.g. FAILYR: one row per value with count (and sum_<field>, count_<field>_<value>) instead of records"
+    },
+    "agg_sum_fields": {
+     "desc": "fields to sum per bucket, e.g. QBFASSET,QBFDEP,COST"
+    },
+    "agg_term_fields": {
+     "desc": "fields whose values are counted per bucket, e.g. RESTYPE"
+    },
+    "agg_limit": {
+     "desc": "number of aggregation buckets"
+    }
+   },
+   "defaults": {
+    "sort_by": "FAILDATE",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "financials": {
+   "path": "/financials",
+   "method": "GET",
+   "description": "Quarterly Call Report financials per institution (CERT, REPDTE YYYYMMDD) from 1984: ASSET, DEP, NETINC, ROA, ROE, LNLSNET, INTINC, EINTEXP, NONII, ... (over 1,000 fields).",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "agg_by": {
+     "desc": "field to aggregate by, e.g. STALP: one row per value with count (and sum_<field>, count_<field>_<value>) instead of records"
+    },
+    "agg_sum_fields": {
+     "desc": "fields to sum per bucket, e.g. ASSET,DEP"
+    },
+    "agg_term_fields": {
+     "desc": "fields whose values are counted per bucket, e.g. BKCLASS"
+    },
+    "agg_limit": {
+     "desc": "number of aggregation buckets"
+    }
+   },
+   "defaults": {
+    "sort_by": "REPDTE",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "summary": {
+   "path": "/summary",
+   "method": "GET",
+   "description": "Annual aggregates by state (STNAME) and charter group (CB_SI: CB commercial banks, SI savings institutions) since 1934: BANKS, ASSET, DEP, NETINC, ... Includes aggregate rows 'All States and Territories', 'U.S. States and DC', 'U.S. Territories'.",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "agg_by": {
+     "desc": "field to aggregate by, e.g. YEAR"
+    },
+    "agg_sum_fields": {
+     "desc": "fields to sum, e.g. ASSET,DEP"
+    },
+    "agg_term_fields": {
+     "desc": "fields to count terms of"
+    },
+    "agg_limit": {
+     "desc": "number of aggregation buckets"
+    }
+   },
+   "defaults": {
+    "sort_by": "YEAR",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "sod": {
+   "path": "/sod",
+   "method": "GET",
+   "description": "Summary of Deposits: one row per branch per year (as of June 30, 1994-): CERT, NAMEFULL, BRNUM, CITYBR, STALPBR, CNTYNAMB, DEPSUMBR (branch deposits), YEAR.",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "agg_by": {
+     "desc": "field to aggregate by, e.g. STALPBR: one row per value with count (and sum_<field>, count_<field>_<value>) instead of records"
+    },
+    "agg_sum_fields": {
+     "desc": "fields to sum per bucket, e.g. DEPSUMBR"
+    },
+    "agg_term_fields": {
+     "desc": "fields whose values are counted per bucket, e.g. BKCLASS"
+    },
+    "agg_limit": {
+     "desc": "number of aggregation buckets"
+    }
+   },
+   "defaults": {
+    "sort_by": "DEPSUMBR",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "history": {
+   "path": "/history",
+   "method": "GET",
+   "description": "Structure change events: mergers, failures, name and charter changes, branch openings and closings (CERT, EFFDATE, CHANGECODE, CHANGECODE_DESC, INSTNAME).",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    },
+    "search": {
+     "desc": "flexible text search"
+    },
+    "agg_by": {
+     "desc": "field to aggregate by, e.g. CHANGECODE: one row per value with count (and sum_<field>, count_<field>_<value>) instead of records"
+    },
+    "agg_sum_fields": {
+     "desc": "fields to sum per bucket (numeric fields)"
+    },
+    "agg_term_fields": {
+     "desc": "fields whose values are counted per bucket, e.g. CLASS"
+    },
+    "agg_limit": {
+     "desc": "number of aggregation buckets"
+    }
+   },
+   "defaults": {
+    "sort_by": "EFFDATE",
+    "sort_order": "DESC"
+   },
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "locations": {
+   "path": "/locations",
+   "method": "GET",
+   "description": "Branch and office locations of institutions (CERT, NAME, OFFNAME, ADDRESS, CITY, STALP, ZIP, COUNTY, LATITUDE, LONGITUDE, SERVTYPE).",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    }
+   },
+   "defaults": {},
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "demographics": {
+   "path": "/demographics",
+   "method": "GET",
+   "description": "Quarterly demographic and geographic attributes of institutions (office counts, CBSA, metro flags) keyed by CERT and REPDTE.",
+   "params": {
+    "filters": {
+     "desc": "Elasticsearch filter: STALP:\"WY\" AND ACTIVE:1, ASSET:[1000000 TO *], FAILDATE:[2008-01-01 TO 2010-12-31]"
+    },
+    "fields": {
+     "desc": "comma-separated field names (default: every field, often hundreds); always set this"
+    },
+    "sort_by": {
+     "desc": "field to sort on"
+    },
+    "sort_order": {
+     "desc": "ASC or DESC",
+     "enum": [
+      "ASC",
+      "DESC"
+     ]
+    }
+   },
+   "defaults": {},
+   "records": "data",
+   "total": "meta.total",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {},
+ "fields": {
+  "CERT": "FDIC certificate number: the institution id used by every endpoint",
+  "NAME": "institution name (institutions, failures, locations)",
+  "INSTNAME": "institution name (history, financials)",
+  "STALP": "state postal code (institutions, financials, locations); PSTALP in failures and history",
+  "STNAME": "state name (summary, institutions)",
+  "ACTIVE": "1 = open institution (institutions)",
+  "ASSET": "total assets, thousands of dollars",
+  "DEP": "total deposits, thousands of dollars",
+  "DEPDOM": "domestic deposits, thousands of dollars",
+  "NETINC": "net income, thousands of dollars; year-to-date in financials",
+  "ROA": "return on assets, percent (annualized)",
+  "ROE": "return on equity, percent (annualized)",
+  "LNLSNET": "net loans and leases, thousands of dollars",
+  "REPDTE": "report date: YYYYMMDD in financials, MM/DD/YYYY in institutions",
+  "FAILDATE": "failure date, M/D/YYYY text (failures)",
+  "FAILYR": "failure year (failures)",
+  "COST": "estimated loss to the Deposit Insurance Fund, thousands of dollars (failures)",
+  "QBFASSET": "total assets at failure, thousands of dollars",
+  "QBFDEP": "total deposits at failure, thousands of dollars",
+  "RESTYPE1": "transaction type code (failures): PA, P&A, PI, PO (payout), A/A, IDT, MGR, DINB, OBAM, ABT, REP",
+  "CB_SI": "summary charter group: CB commercial banks, SI savings institutions",
+  "BANKS": "number of institutions (summary)",
+  "DEPSUMBR": "branch deposits as of June 30, thousands of dollars (sod)",
+  "YEAR": "year (summary, sod)",
+  "EFFDATE": "event effective date (history)",
+  "CHANGECODE_DESC": "event type (history)",
+  "BKCLASS": "charter class (institutions): N national, SM state member, NM state nonmember, SB savings bank, SI state savings institution, SL savings and loan, NC, OI",
+  "RESTYPE": "FAILURE or ASSISTANCE (open-bank assistance); filter RESTYPE:\"FAILURE\" to count failures (failures)",
+  "REGAGNT": "primary federal regulator: OCC, FED, FDIC, ... (institutions)"
+ }
+}

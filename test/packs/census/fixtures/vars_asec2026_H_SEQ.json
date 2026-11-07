@@ -1,0 +1,17 @@
+{
+  "name": "H_SEQ",
+  "label": "Household sequence number on household record",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "HSUP_WGT",
+  "values": {
+    "range": [
+      {
+        "min": "1",
+        "max": "99999",
+        "description": "Range"
+      }
+    ]
+  }
+}

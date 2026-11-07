@@ -1,0 +1,99 @@
+{
+  "id": "fsa",
+  "title": "Federal Student Aid Data Center (student loan portfolio, Title IV volume by school)",
+  "agency": "U.S. Department of Education, Office of Federal Student Aid",
+  "depth": "standard",
+  "domains": [
+    "education",
+    "student loans",
+    "federal credit",
+    "higher education finance"
+  ],
+  "keywords": [
+    "student loans",
+    "student debt",
+    "federal student loan portfolio",
+    "outstanding student loans",
+    "direct loans",
+    "ffel",
+    "perkins",
+    "parent plus",
+    "grad plus",
+    "consolidation loans",
+    "student loan default",
+    "delinquency",
+    "forbearance",
+    "deferment",
+    "repayment plan",
+    "income-driven repayment",
+    "idr",
+    "save plan",
+    "paye",
+    "ibr",
+    "borrowers by state",
+    "borrowers by age",
+    "pell grant",
+    "pell recipients",
+    "teach grant",
+    "loan volume by school",
+    "title iv",
+    "federal student aid",
+    "nslds"
+  ],
+  "questions": [
+    "total federal student loan debt outstanding, latest quarter",
+    "how many borrowers are in default or forbearance on Direct Loans",
+    "outstanding student loans by repayment plan (SAVE, IBR, PAYE)",
+    "student loan balance and borrowers by state",
+    "Pell Grant disbursements at a college in the latest award year",
+    "Direct Loan volume by school and loan type",
+    "student debt held by borrowers aged 62 and older"
+  ],
+  "homepage": "https://studentaid.gov/data-center",
+  "terms_url": "https://studentaid.gov/notices/website-privacy-policy",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://studentaid.gov/sites/default/files/fsawg/datacenter/library",
+      "probe": "https://studentaid.gov/sites/default/files/fsawg/datacenter/library/PortfolioSummary.xls",
+      "hosts": [
+        "studentaid.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each is an .xls workbook on studentaid.gov), save it under the name shown and upload it. Without the links: open the FSA Data Center (https://studentaid.gov/data-center), Student Aid Data > Federal Student Loan Portfolio (https://studentaid.gov/data-center/student/portfolio) or Title IV Program Volume (https://studentaid.gov/data-center/student/title-iv), download the report's .xls and upload it, saying which report it is. Reading an .xls needs the Python package xlrd; without it, open the workbook in a spreadsheet program and save the sheet as CSV (keep the title rows) before uploading."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Portfolio reports are refreshed quarterly in place and volume files are revised for seven quarters; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Federal Student Aid Data Center reports are U.S. government works in the public domain (17 U.S.C. 105); they are aggregates with no personal data."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Education, Federal Student Aid, {dataset}, FSA Data Center (studentaid.gov/data-center), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which loans: all federal student loans (Direct Loans + FFEL + Perkins, the Portfolio Summary total), Direct Loans only, or the federally managed portfolio (Direct Loans + ED-held FFEL)? Default: the total, with Direct Loans shown separately.",
+    "Dollars or borrowers? Recipient counts cannot be added across programs or statuses (a recipient can hold several loan types); use the Total's unduplicated recipients for the count of people.",
+    "Award year (July-June, for loan and grant volume by school) or federal fiscal year (October-September, for the portfolio)? Default: the latest complete one of whichever the report uses."
+  ],
+  "formats": [
+    "xls"
+  ]
+}

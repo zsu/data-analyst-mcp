@@ -1,0 +1,5 @@
+{
+ "GET https://data.cdc.gov/resource/bi63-dtpu.json?%24order=deaths+DESC&%24where=state+%3D+%27New+York%27+AND+year+%3D+%272017%27&%24limit=5000&%24offset=0": "r001.json",
+ "GET https://data.cdc.gov/resource/eav7-hnsx.json?%24order=%3Aid&%24where=stateabbr+%3D+%27VT%27+AND+locationname+%3D+%27Burlington%27+AND+measureid+%3D+%27OBESITY%27&%24limit=5000&%24offset=0": "r002.json",
+ "GET https://data.cdc.gov/resource/r8kw-7aab.json?%24order=year&%24select=%60group%60%2C+year%2C+state%2C+total_deaths&%24where=%60group%60+%3D+%27By+Year%27+AND+state+%3D+%27Vermont%27&%24limit=5000&%24offset=0": "r003.json"
+}

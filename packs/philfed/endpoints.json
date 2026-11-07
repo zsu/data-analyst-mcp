@@ -1,0 +1,85 @@
+{
+  "base_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data",
+  "timeout": 90,
+  "endpoints": {
+    "spf": {
+      "path": "/survey-of-professional-forecasters/historical-data/{file}.xlsx",
+      "description": "Survey of Professional Forecasters, median or mean across forecasters, one row per quarterly survey since 1968:Q4 (YEAR, QUARTER) for one variable (worksheet). Level files: VAR1 = last quarter of history, VAR2 = current-quarter nowcast, VAR3..VAR6 = the next four quarters, VARA/VARB(/C/D) = annual averages for the survey year and the following years. Growth files: dvar2..dvar6 = annualized quarter-over-quarter growth of the median (mean) level for the current and next four quarters.",
+      "params": {
+        "file": {"in": "path", "required": true, "enum": ["medianLevel", "medianGrowth", "meanLevel", "meanGrowth"], "desc": "medianLevel / meanLevel (levels, and CPI/PCE inflation rates) or medianGrowth / meanGrowth (q/q annualized growth of the level forecasts; not for CPI/PCE or rates)"},
+        "sheet": {"in": "records", "required": true, "desc": "the variable = worksheet name, case-sensitive: RGDP, NGDP, PGDP, UNEMP, EMP, CPI, CORECPI, PCE, COREPCE, TBILL, TBOND, HOUSING, INDPROD, RCONSUM, ...; long-run: CPI10, PCE10, RGDP10, CPI5YR, PCE5YR (level files only)"}
+      },
+      "records": "$xlsx",
+      "header_row": 1,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    },
+    "spf_dispersion": {
+      "path": "/survey-of-professional-forecasters/historical-data/Dispersion_{measure}.xlsx",
+      "description": "SPF cross-sectional dispersion, one row per survey (Survey_Date(T) like 2026Q3): 25th and 75th percentiles across forecasters and their difference for horizons T..T+4. measure 1 = levels (D1), 2 = q/q annualized growth (D2), 3 = 100*log(P75/P25) of levels (D3).",
+      "params": {
+        "measure": {"in": "path", "required": true, "enum": ["1", "2", "3"], "desc": "1 levels, 2 q/q growth (annualized percentage points), 3 percent difference of levels"},
+        "sheet": {"in": "records", "required": true, "desc": "variable worksheet, e.g. RGDP (measures 2 and 3), UNEMP, CPI, TBOND (measure 1); see source.md"}
+      },
+      "records": "$xlsx",
+      "header_row": 10,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    },
+    "spf_prob": {
+      "path": "/survey-of-professional-forecasters/historical-data/prob.xlsx",
+      "description": "SPF mean probabilities (percent) across forecasters, one row per survey: PRGDP (annual-average real GDP growth ranges), PRPGDP (GDP price inflation), PRCCPI, PRCPCE (core inflation, Q4/Q4), PRUNEMP (annual unemployment rate), RECESS (RECESS1..5 = probability of a decline in real GDP in the current and next four quarters; RECESS2 is the Anxious Index). Bin columns (PRGDP1..) are ranges whose definitions changed over time: see source.md.",
+      "params": {
+        "sheet": {"in": "records", "required": true, "enum": ["PRGDP", "PRPGDP", "PRUNEMP", "PRCCPI", "PRCPCE", "RECESS"], "desc": "probability variable"}
+      },
+      "records": "$xlsx",
+      "header_row": 1,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    },
+    "greenbook": {
+      "path": "/greenbook-data/documentation/GBweb_Row_Format.xlsx",
+      "description": "Federal Reserve Board staff Greenbook/Tealbook projections, one row per Greenbook (DATE = year.quarter of the Greenbook, GBdate = publication date yyyymmdd), 1967 to the last released year (5-year lag: through December 2020 as of 2026). Columns VARB4..VARB1 = history for quarters T-4..T-1, VARF0 = current quarter, VARF1..VARF9 = the next nine quarters.",
+      "params": {
+        "sheet": {"in": "records", "required": true, "enum": ["gRGDP", "gPGDP", "UNEMP", "gPCPI", "gPCPIX", "gPPCE", "gPPCEX", "gRPCE", "gRBF", "gRRES", "gRGOVF", "gRGOVSL", "gNGDP", "HSTART", "gIP"], "desc": "variable worksheet: g-prefixed = q/q annualized growth or inflation; UNEMP percent; HSTART millions of units"}
+      },
+      "records": "$xlsx",
+      "header_row": 1,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    },
+    "livingston": {
+      "path": "/livingston-survey/historical-data/{file}.xlsx",
+      "description": "Livingston Survey (June and December since 1946), median or mean across forecasters, one row per survey (Date = Excel serial date; the pack adds survey_date). Level files: X_BP last known value, X_ZM survey month/quarter, X_6M, X_12M ahead, X_BY last annual average, X_ZY survey-year annual average, X_1Y, X_2Y following years, X_10Y 10-year average growth (RGDPX, CPI). Growth files: G_BP_To_ZM ... G_1Y_To_2Y annualized growth between those horizons.",
+      "params": {
+        "file": {"in": "path", "required": true, "enum": ["medians", "means", "MedianGrowthRate", "MeanGrowthRate"], "desc": "medians / means (levels) or MedianGrowthRate / MeanGrowthRate"},
+        "sheet": {"in": "records", "required": true, "desc": "variable worksheet: RGDPX (real GDP), GDPX (nominal GDP), CPI, PPI, UNPR (unemployment), IP, TPHS (housing starts), TBILL, TBOND, PRIME, SPIF (S&P 500), BFIX, CPAT, WMFG, RTTR, AUTODF"}
+      },
+      "records": "$xlsx",
+      "header_row": 1,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    },
+    "rtdsm": {
+      "path": "/real-time-data/data-files/xlsx/{file}.xlsx",
+      "description": "Real-Time Data Set for Macroeconomists: one variable, one row per observation date (DATE like 2025:Q4 or 2025:M10) and one column per data vintage (e.g. ROUTPUT26Q3 = as published in mid-August 2026). Use it for the history the SPF forecasters saw, first releases and revisions.",
+      "params": {
+        "file": {"in": "path", "required": true, "catalog": true, "desc": "file stem: ROUTPUTQvQd (real GDP, quarterly vintages), routputMvQd (monthly vintages), NOUTPUTQvQd, PQvQd (GDP price index), pcpiMvMd (CPI), rucQvMd (unemployment rate), employMvMd (payrolls), RCONQvQd; or a catalog alias (real_gdp, cpi, unemployment ...). Other variables: the page of each variable under real-time-data-set-full-time-series-history"}
+      },
+      "records": "$xlsx",
+      "header_row": 1,
+      "missing": ["", "#N/A"],
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "real_gdp": {"id": "ROUTPUTQvQd", "name": "Real GDP (real GNP before 1992), quarterly data, quarterly vintages", "description": "Billions of chained dollars, SAAR; base year changes across vintages", "endpoint": "rtdsm"},
+    "real_gdp_monthly_vintages": {"id": "routputMvQd", "name": "Real GDP, quarterly data, monthly vintages", "description": "Each monthly vintage (advance, second, third estimates)", "endpoint": "rtdsm"},
+    "nominal_gdp": {"id": "NOUTPUTQvQd", "name": "Nominal GDP, quarterly data, quarterly vintages", "description": "Billions of dollars, SAAR", "endpoint": "rtdsm"},
+    "gdp_price_index": {"id": "PQvQd", "name": "GDP price index (deflator), quarterly data, quarterly vintages", "description": "Index, base year changes across vintages", "endpoint": "rtdsm"},
+    "real_consumption": {"id": "RCONQvQd", "name": "Real personal consumption expenditures, quarterly vintages", "description": "Billions of chained dollars, SAAR", "endpoint": "rtdsm"},
+    "cpi": {"id": "pcpiMvMd", "name": "Consumer price index (CPI-U), monthly data, monthly vintages", "description": "Index 1982-84=100, seasonally adjusted", "endpoint": "rtdsm"},
+    "unemployment": {"id": "rucQvMd", "name": "Civilian unemployment rate, monthly data, quarterly vintages", "description": "Percent, seasonally adjusted", "endpoint": "rtdsm"},
+    "payrolls": {"id": "employMvMd", "name": "Nonfarm payroll employment, monthly data, monthly vintages", "description": "Thousands, seasonally adjusted", "endpoint": "rtdsm"}
+  }
+}

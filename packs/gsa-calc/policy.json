@@ -1,0 +1,97 @@
+{
+  "id": "gsa-calc",
+  "title": "GSA CALC+ Labor Ceiling Rates (Quick Rate API)",
+  "agency": "U.S. General Services Administration, Federal Acquisition Service",
+  "depth": "standard",
+  "domains": [
+    "federal procurement",
+    "contracting",
+    "labor rates"
+  ],
+  "keywords": [
+    "calc",
+    "calc+",
+    "ceiling rate",
+    "ceiling rates",
+    "labor rate",
+    "labor rates",
+    "hourly rate",
+    "billing rate",
+    "contractor rates",
+    "gsa schedule",
+    "mas",
+    "multiple award schedule",
+    "igce",
+    "market research",
+    "price analysis",
+    "labor category",
+    "professional services",
+    "consultant rates",
+    "it services",
+    "sin"
+  ],
+  "questions": [
+    "what do GSA schedule contractors charge per hour for a data scientist",
+    "ceiling rates for a labor category by education and experience",
+    "median hourly rate for software engineers on GSA MAS contracts",
+    "all labor rates on one GSA contract",
+    "rates of small versus other-than-small businesses"
+  ],
+  "homepage": "https://buy.gsa.gov/pricing/",
+  "terms_url": "https://www.gsa.gov/website-information/website-policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.gsa.gov/acquisition/calc/v3/api",
+      "probe": "https://api.gsa.gov/acquisition/calc/v3/api/ceilingrates/?page=1&page_size=0&keyword=analyst",
+      "hosts": [
+        "api.gsa.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser: each downloads a CSV export (ceilingrates_results.csv) of every matching rate; rename it to the name shown and upload. Without the links: search at https://buy.gsa.gov/pricing/ (CALC+ Labor Ceiling Rates), set the filters, use Export to CSV, and upload the file."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The index is rebuilt every night (the _timestamp column), so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CALC+ ceiling rates are published by GSA, a U.S. government agency; federal government works are in the public domain (17 U.S.C. 105) and GSA's website policies place its content in the public domain unless noted."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. General Services Administration, CALC+ Labor Ceiling Rates ({dataset}), api.gsa.gov/acquisition/calc/v3, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "calc_ceiling_not_paid",
+      "kind": "require_text",
+      "any": [
+        "ceiling"
+      ],
+      "why": "CALC+ rates are awarded ceiling (maximum) prices on schedule contracts, not prices actually paid or wages; a report must say so."
+    }
+  ],
+  "clarify": [
+    "Which labor categories, exactly? Titles are free text set by each vendor ('Data Scientist III', 'Sr. Data Scientist'): use a keyword search and say how titles were grouped.",
+    "Which filters change the comparison: education, minimum years of experience, worksite (customer, contractor, virtual), business size? Default: none, and report the mix.",
+    "Current-year price or next/second option-year prices? Default: current_price."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

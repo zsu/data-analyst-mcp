@@ -1,0 +1,13 @@
+{
+ "GET https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state&conditions%5B0%5D%5Bvalue%5D=VT&sorts%5B0%5D%5Bproperty%5D=facility_id&sorts%5B0%5D%5Border%5D=asc&properties%5B0%5D=facility_id&properties%5B1%5D=facility_name&properties%5B2%5D=citytown&properties%5B3%5D=hospital_type&properties%5B4%5D=hospital_overall_rating&limit=500&offset=0": "r001.json",
+ "GET https://data.cms.gov/data-api/v1/dataset/6219697b-8f6c-4164-bed4-cd9317c58ebc/data?filter%5BYEAR%5D=2024&filter%5BBENE_GEO_LVL%5D=State&filter%5BBENE_AGE_LVL%5D=All&column=YEAR%2CBENE_GEO_LVL%2CBENE_GEO_DESC%2CBENES_OM_CNT%2CTOT_MDCR_STDZD_PYMT_PC%2CTOT_MDCR_PYMT_PC%2CBENE_AGE_LVL&size=5000&offset=0": "r002.json",
+ "GET https://data.cms.gov/data-api/v1/dataset/6219697b-8f6c-4164-bed4-cd9317c58ebc/data?filter%5BSTATE%5D=VT&column=YEAR%2CBENE_GEO_DESC%2CSTATE&size=3&offset=0": "r003.json",
+ "GET https://data.cms.gov/data-api/v1/dataset/d7fabe1e-d19b-4333-9eff-e80e0643f2fd/data?filter%5BBENE_GEO_LVL%5D=County&filter%5BBENE_STATE_ABRVTN%5D=WY&filter%5BYEAR%5D=2022&filter%5BMONTH%5D=Year&column=BENE_COUNTY_DESC%2CTOT_BENES%2CNATIND_TOT_BENES%2CAGE_LT_25_BENES%2CBENE_GEO_LVL%2CBENE_STATE_ABRVTN%2CYEAR%2CMONTH&size=5000&offset=0": "r004.json",
+ "GET https://data.cms.gov/data-api/v1/dataset/c8ea3f8e-3a09-4fea-86f2-8902fb4b0920/data?filter%5BPrscrbr_Geo_Lvl%5D=State&filter%5BGE65_Sprsn_Flag%5D=%2A&column=Prscrbr_Geo_Desc%2CBrnd_Name%2CTot_Clms%2CGE65_Tot_Clms%2CPrscrbr_Geo_Lvl%2CGE65_Sprsn_Flag&size=2&offset=0": "r005.json",
+ "GET https://data.cms.gov/data-api/v1/dataset/6219697b-8f6c-4164-bed4-cd9317c58ebc/data?filter%5BYEAR%5D=2022&filter%5BBENE_GEO_LVL%5D=State&filter%5BBENE_AGE_LVL%5D=All&filter%5Bin3%5D%5Bcondition%5D%5Bpath%5D=BENE_GEO_DESC&filter%5Bin3%5D%5Bcondition%5D%5Boperator%5D=IN&filter%5Bin3%5D%5Bcondition%5D%5Bvalue%5D%5B1%5D=VT&filter%5Bin3%5D%5Bcondition%5D%5Bvalue%5D%5B2%5D=NH&filter%5Bin3%5D%5Bcondition%5D%5Bvalue%5D%5B3%5D=ME&column=YEAR%2CBENE_GEO_DESC%2CBENES_TOTAL_CNT%2CBENE_GEO_LVL%2CBENE_AGE_LVL&size=5000&offset=0": "r006.json",
+ "GET https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0?schema=false&conditions%5B0%5D%5Bproperty%5D=state&conditions%5B0%5D%5Bvalue%5D=VT&sorts%5B0%5D%5Bproperty%5D=ccn&sorts%5B0%5D%5Border%5D=asc&properties%5B0%5D=facility_id&properties%5B1%5D=facility_name&limit=500&offset=0": {
+  "file": "r007.json",
+  "status": 400
+ },
+ "GET https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0?limit=1&schema=true": "r008.json"
+}

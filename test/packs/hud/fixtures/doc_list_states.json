@@ -1,0 +1,22 @@
+{
+ "data": [
+  {
+   "state_name": "Alabama",
+   "state_code": "AL",
+   "state_num": "1",
+   "category": "State"
+  },
+  {
+   "state_name": "Alaska",
+   "state_code": "AK",
+   "state_num": "2",
+   "category": "State"
+  },
+  {
+   "state_name": "American Samoa",
+   "state_code": "AS",
+   "state_num": "60",
+   "category": "State"
+  }
+ ]
+}

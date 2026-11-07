@@ -1,0 +1,143 @@
+{
+  "base_url": "https://www.federalregister.gov/api/v1",
+  "endpoints": {
+    "documents": {
+      "path": "/documents.json",
+      "method": "GET",
+      "description": "Search published Federal Register documents (rules, proposed rules, notices, presidential documents) since 1994. Filters are conditions[...] parameters; at most 10,000 documents per query.",
+      "params": {
+        "conditions[term]": {"desc": "full-text words, e.g. 'tariff' or '\"greenhouse gas\"'"},
+        "conditions[type][]": {"desc": "RULE | PRORULE | NOTICE | PRESDOCU (a list gives several)"},
+        "conditions[agencies][]": {"desc": "agency slug(s), e.g. environmental-protection-agency (endpoint 'agencies' lists them)"},
+        "conditions[presidential_document_type][]": {"desc": "executive_order | memorandum | proclamation | notice | determination | ..."},
+        "conditions[president][]": {"desc": "president slug: donald-trump, joe-biden, barack-obama, george-w-bush, william-j-clinton"},
+        "conditions[publication_date][gte]": {"desc": "published on or after YYYY-MM-DD"},
+        "conditions[publication_date][lte]": {"desc": "published on or before YYYY-MM-DD"},
+        "conditions[publication_date][year]": {"desc": "publication year, e.g. 2025"},
+        "conditions[effective_date][gte]": {"desc": "effective on or after YYYY-MM-DD"},
+        "conditions[signing_date][gte]": {"desc": "presidential documents signed on or after YYYY-MM-DD"},
+        "conditions[significant]": {"desc": "1 = deemed significant under EO 12866 (Unified Agenda flag)"},
+        "conditions[docket_id]": {"desc": "agency docket number, e.g. EPA-HQ-OAR-2023-0072"},
+        "conditions[regulation_id_number]": {"desc": "RIN, e.g. 2060-AV09"},
+        "conditions[cfr][title]": {"desc": "CFR title number affected"},
+        "conditions[cfr][part]": {"desc": "CFR part affected (with conditions[cfr][title])"},
+        "conditions[correction]": {"desc": "0 = leave out correction notices (default), 1 = only corrections"},
+        "order": {"desc": "newest (default) | oldest | relevance | executive_order_number"},
+        "fields[]": {"desc": "list of fields to return (default: a useful set; see source.md)"}
+      },
+      "defaults": {
+        "order": "newest",
+        "conditions[correction]": "0",
+        "fields[]": ["document_number", "citation", "publication_date", "signing_date", "effective_on", "type", "subtype",
+                     "title", "abstract", "action", "agency_names", "executive_order_number", "proclamation_number",
+                     "president", "docket_ids", "regulation_id_numbers", "significant", "comments_close_on",
+                     "page_length", "start_page", "end_page", "html_url", "pdf_url"]
+      },
+      "records": "results",
+      "total": "count",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 1000, "start": 1},
+      "max_rows": 10000,
+      "missing": [""]
+    },
+    "executive_orders": {
+      "path": "/documents.json",
+      "method": "GET",
+      "description": "Executive orders (documents with type PRESDOCU and presidential_document_type executive_order); filter by president, year or words.",
+      "params": {
+        "conditions[president][]": {"desc": "president slug, e.g. donald-trump, joe-biden, barack-obama"},
+        "conditions[term]": {"desc": "full-text words"},
+        "conditions[publication_date][year]": {"desc": "publication year"},
+        "conditions[publication_date][gte]": {"desc": "YYYY-MM-DD"},
+        "conditions[publication_date][lte]": {"desc": "YYYY-MM-DD"},
+        "conditions[signing_date][gte]": {"desc": "signed on or after YYYY-MM-DD"},
+        "conditions[signing_date][lte]": {"desc": "signed on or before YYYY-MM-DD"},
+        "order": {"desc": "newest (default) | oldest | executive_order_number"},
+        "fields[]": {"desc": "fields to return"}
+      },
+      "defaults": {
+        "conditions[type][]": "PRESDOCU",
+        "conditions[presidential_document_type][]": "executive_order",
+        "conditions[correction]": "0",
+        "order": "newest",
+        "fields[]": ["executive_order_number", "document_number", "citation", "title", "signing_date", "publication_date",
+                     "president", "disposition_notes", "html_url", "pdf_url"]
+      },
+      "records": "results",
+      "total": "count",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 1000, "start": 1},
+      "max_rows": 10000
+    },
+    "document_counts": {
+      "path": "/documents/facets/{facet}",
+      "method": "GET",
+      "description": "Counts of documents matching the same conditions[...] filters, grouped by a facet: daily, weekly, monthly, quarterly, yearly, agency, topic, section, type, subtype. One row per group (key, name, count).",
+      "params": {
+        "facet": {"in": "path", "required": true, "enum": ["daily", "weekly", "monthly", "quarterly", "yearly", "agency", "topic", "section", "type", "subtype"], "desc": "grouping"},
+        "conditions[term]": {"desc": "full-text words"},
+        "conditions[type][]": {"desc": "RULE | PRORULE | NOTICE | PRESDOCU"},
+        "conditions[agencies][]": {"desc": "agency slug(s)"},
+        "conditions[presidential_document_type][]": {"desc": "executive_order, ..."},
+        "conditions[president][]": {"desc": "president slug"},
+        "conditions[publication_date][gte]": {"desc": "YYYY-MM-DD"},
+        "conditions[publication_date][lte]": {"desc": "YYYY-MM-DD"},
+        "conditions[publication_date][year]": {"desc": "year"},
+        "conditions[significant]": {"desc": "1 = significant only"},
+        "conditions[correction]": {"desc": "0 = leave out corrections (counts include them by default, as OFR's statistics do)"}
+      },
+      "defaults": {},
+      "records": "",
+      "paging": {"type": "none"},
+      "flatten": true
+    },
+    "document": {
+      "path": "/documents/{document_number}.json",
+      "method": "GET",
+      "description": "One document's full metadata: dates, docket, RIN, CFR references, comment deadline, links to full text.",
+      "params": {"document_number": {"in": "path", "required": true, "desc": "e.g. 2025-01759"}},
+      "records": "",
+      "paging": {"type": "none"}
+    },
+    "public_inspection_current": {
+      "path": "/public-inspection-documents/current.json",
+      "method": "GET",
+      "description": "Documents on public inspection now: filed and scheduled for publication (usually the next business day).",
+      "params": {},
+      "records": "results",
+      "total": "count",
+      "paging": {"type": "none"}
+    },
+    "public_inspection": {
+      "path": "/public-inspection-documents.json",
+      "method": "GET",
+      "description": "Documents that were on public inspection on a given date.",
+      "params": {
+        "conditions[available_on]": {"required": true, "desc": "YYYY-MM-DD"},
+        "conditions[agencies][]": {"desc": "agency slug(s)"},
+        "conditions[type][]": {"desc": "RULE | PRORULE | NOTICE | PRESDOCU"},
+        "conditions[special_filing]": {"desc": "1 = special (expedited) filings only"}
+      },
+      "records": "results",
+      "total": "count",
+      "paging": {"type": "none"}
+    },
+    "agencies": {
+      "path": "/agencies",
+      "method": "GET",
+      "description": "Every Federal Register agency: id, name, short name, slug (use the slug in conditions[agencies][]), parent.",
+      "params": {},
+      "records": "",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "rules": {"id": "RULE", "name": "Final rules", "description": "conditions[type][] = RULE: final rules and interim final rules", "endpoint": "documents"},
+    "proposed_rules": {"id": "PRORULE", "name": "Proposed rules", "description": "conditions[type][] = PRORULE: notices of proposed rulemaking, ANPRMs", "endpoint": "documents"},
+    "notices": {"id": "NOTICE", "name": "Notices", "description": "conditions[type][] = NOTICE: agency notices (meetings, grants, determinations)", "endpoint": "documents"},
+    "presidential_documents": {"id": "PRESDOCU", "name": "Presidential documents", "description": "conditions[type][] = PRESDOCU: executive orders, proclamations, memoranda, determinations", "endpoint": "documents"},
+    "executive_orders": {"id": "executive_order", "name": "Executive orders", "description": "endpoint executive_orders: EOs by president, year or words", "endpoint": "executive_orders"},
+    "counts_by_year": {"id": "yearly", "name": "Document counts by year", "description": "endpoint document_counts with facet yearly: rule or EO counts per year", "endpoint": "document_counts"},
+    "counts_by_agency": {"id": "agency", "name": "Document counts by agency", "description": "endpoint document_counts with facet agency", "endpoint": "document_counts"},
+    "public_inspection": {"id": "current", "name": "Public inspection", "description": "documents filed for publication tomorrow (public_inspection_current)", "endpoint": "public_inspection_current"},
+    "president_slugs": {"id": "donald-trump; joe-biden; barack-obama; george-w-bush; william-j-clinton", "name": "President slugs", "description": "values for conditions[president][]", "endpoint": "executive_orders"}
+  }
+}

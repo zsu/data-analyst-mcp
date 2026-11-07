@@ -1,0 +1,133 @@
+{
+  "id": "usda-fna",
+  "title": "USDA Food and Nutrition Administration: SNAP, WIC and child nutrition program data, SNAP State Options Report and SNAP State Activity Reports",
+  "agency": "U.S. Department of Agriculture, Food and Nutrition Administration (formerly Food and Nutrition Service)",
+  "depth": "standard",
+  "domains": [
+    "nutrition assistance",
+    "social safety net",
+    "state policy",
+    "program administration",
+    "school meals"
+  ],
+  "keywords": [
+    "snap",
+    "food stamps",
+    "supplemental nutrition assistance program",
+    "fns",
+    "fna",
+    "food and nutrition service",
+    "food and nutrition administration",
+    "state options",
+    "state options report",
+    "snap waivers",
+    "snap policy options",
+    "bbce",
+    "broad-based categorical eligibility",
+    "abawd",
+    "time limit waiver",
+    "certification period",
+    "simplified reporting",
+    "standard utility allowance",
+    "employment and training",
+    "drug felony",
+    "state activity report",
+    "snap participation by state",
+    "snap issuance",
+    "snap benefits by state",
+    "emergency allotments",
+    "snap administrative costs",
+    "fair hearings",
+    "snap fraud",
+    "trafficking",
+    "recipient claims",
+    "disqualifications",
+    "wic",
+    "women infants and children",
+    "wic participation",
+    "wic food costs",
+    "breastfeeding",
+    "school lunch",
+    "nslp",
+    "national school lunch program",
+    "school breakfast",
+    "sbp",
+    "free and reduced price meals",
+    "school meals",
+    "child nutrition",
+    "special milk program",
+    "cacfp",
+    "child and adult care food program",
+    "summer meals",
+    "summer food service program",
+    "sfsp",
+    "snap participation by month",
+    "snap households",
+    "program data"
+  ],
+  "questions": [
+    "which states use broad-based categorical eligibility for SNAP",
+    "which states have an ABAWD time limit waiver",
+    "the SNAP policy options a state has chosen, compared with another state",
+    "SNAP administrative costs by state and the federal share",
+    "SNAP participation, issuance and average benefit by state for a fiscal year",
+    "SNAP fraud investigations, disqualifications and recipient claims by state",
+    "SNAP persons, households and benefits by state for the latest month or each month since FY 2020",
+    "WIC participation by state, tribal organization or category (women, infants, children) and WIC food costs",
+    "school lunch and breakfast participation, meals served and cash payments by state",
+    "national trends in SNAP, WIC, school meals, summer meals and CACFP since 1969"
+  ],
+  "homepage": "https://www.fna.usda.gov/pd/overview",
+  "terms_url": "https://www.usda.gov/policies-and-links",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.fna.usda.gov",
+      "probe": "https://www.fna.usda.gov/snap/waivers/state-options-report",
+      "hosts": [
+        "www.fna.usda.gov",
+        "fna-bwbufwdzbabpezgc.z01.azurefd.us",
+        "publicdashboards.dl.usda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the file under the name shown (the PDFs, Excel files and the SNAP zip download; a dashboard .csv link downloads a small CSV), then upload them. Without the links: Program Data Excel tables at https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap, https://www.fna.usda.gov/pd/wic-program and https://www.fna.usda.gov/pd/child-nutrition-tables; the State Options Report PDFs at https://www.fna.usda.gov/snap/waivers/state-options-report, the SNAP State Activity Reports (PDF, FY 2004-2023) at https://www.fna.usda.gov/pd/snap-state-activity-reports; the dashboard at https://www.fna.usda.gov/data-research/data-visualization/snap/state-options has no download button, so upload the PDF instead."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The reports change once a year and the Program Data tables monthly; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Works of the U.S. Department of Agriculture, a federal agency: public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Agriculture, Food and Nutrition Administration, {dataset}, fna.usda.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which State Options Report edition (as-of date)? Options change every year. Default: the latest, the 17th edition (Aug 2025, options in place Oct 1, 2024, FFY 2025).",
+    "SNAP issuance with or without emergency allotments (FY 2020-2023)? Default: report both, named separately (the State Activity Reports' total issuance includes them).",
+    "All 53 SNAP state agencies (50 states, DC, Guam, Virgin Islands) or the 50 states only? Default: all 53, the reports' own count.",
+    "Latest months are preliminary (initial for the newest) and revised later: report the status column with them. Default: use them, labeled.",
+    "Program year or federal fiscal year? FNA tables are federal fiscal years (October-September); school year SY 2024-25 is not FY 2025. Default: fiscal years, said so."
+  ],
+  "formats": [
+    "csv",
+    "pdf",
+    "xlsx"
+  ]
+}

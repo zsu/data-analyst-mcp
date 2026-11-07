@@ -1,0 +1,109 @@
+{
+  "id": "usaspending",
+  "title": "USAspending.gov API (federal awards and spending)",
+  "agency": "U.S. Department of the Treasury, Bureau of the Fiscal Service",
+  "depth": "standard",
+  "domains": [
+    "spending",
+    "federal budget",
+    "procurement",
+    "grants"
+  ],
+  "keywords": [
+    "usaspending",
+    "federal spending",
+    "contracts",
+    "contract",
+    "grants",
+    "grant",
+    "loans",
+    "awards",
+    "award",
+    "recipient",
+    "recipients",
+    "contractor",
+    "contractors",
+    "procurement",
+    "obligations",
+    "outlays",
+    "federal dollars",
+    "agency spending",
+    "budgetary resources",
+    "spending by state",
+    "per capita federal spending",
+    "cfda",
+    "assistance listing",
+    "naics",
+    "psc",
+    "subaward",
+    "direct payments",
+    "federal funds to states",
+    "defense contractors"
+  ],
+  "questions": [
+    "which companies received the most federal contracts",
+    "federal spending by state per capita",
+    "grants from an agency over time",
+    "top recipients of a program",
+    "how much did an agency obligate in a fiscal year",
+    "contracts mentioning a keyword"
+  ],
+  "homepage": "https://www.usaspending.gov/",
+  "terms_url": "https://www.usaspending.gov/about",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.usaspending.gov/api/v2",
+      "probe": "https://api.usaspending.gov/api/v2/references/toptier_agencies/?sort=agency_name&order=asc",
+      "hosts": [
+        "api.usaspending.gov"
+      ]
+    },
+    "manual": {
+      "how": "Run download_data.sh (macOS, Linux) or download_data.ps1 (Windows) from manual_download/ with one command (no Python needed): the search endpoints are POST requests, which a browser cannot open; GET links (agency, budgetary resources, recipient state, award) also open in a browser (save each under the name shown). Upload the files, then --ingest. Without the bundle: on https://www.usaspending.gov/search set the filters (time period as fiscal years, award type, agency, location, keyword) and use Download > Award or Transaction CSV, or Advanced Search > the tab for the breakdown (e.g. Spending by Category) and its table download; upload the CSV and say which view it is."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The database is updated nightly and award records are revised; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "USAspending data are published by the U.S. Treasury under the DATA Act (31 U.S.C. 6101 note); they are U.S. government works in the public domain (17 U.S.C. 105). Recipient names and amounts are public records; cite USAspending.gov as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of the Treasury, USAspending.gov, {dataset}, api.usaspending.gov (API v2), retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "usaspending_period_basis",
+      "kind": "require_text",
+      "any": [
+        "fiscal year",
+        "fy20"
+      ],
+      "why": "USAspending periods are federal fiscal years (October-September); the report must say so before comparing with calendar-year data."
+    }
+  ],
+  "clarify": [
+    "Federal fiscal years (October-September, the API's basis) or calendar years? Converting needs monthly data (over_time with group=month).",
+    "Obligations (commitments made, what the search endpoints sum) or outlays (cash paid out, from agency budgetary resources or award outlays)? They differ by year and can differ a lot for multi-year awards and loans.",
+    "Which award types: contracts, grants, loans (face value, not cost), direct payments, or all? Award searches take one type group at a time."
+  ],
+  "formats": [
+    "json",
+    "csv (website downloads)"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "PULINENO",
+  "label": "Demographics-line number",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWSSWGT",
+  "values": {
+    "item": {
+      "-2": "Don't Know",
+      "-1": "Blank",
+      "-3": "Refused"
+    },
+    "range": [
+      {
+        "min": "1",
+        "max": "99",
+        "description": "Range"
+      }
+    ]
+  }
+}

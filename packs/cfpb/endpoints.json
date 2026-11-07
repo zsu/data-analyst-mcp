@@ -1,0 +1,327 @@
+{
+ "base_url": "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1",
+ "endpoints": {
+  "complaints": {
+   "path": "/",
+   "method": "GET",
+   "description": "Individual complaints matching the filters, newest first, one row per complaint (paged with search_after; max_rows default 10,000).",
+   "params": {
+    "search_term": {
+     "desc": "full-text search (all fields unless 'field' is set)"
+    },
+    "field": {
+     "desc": "where search_term looks: all (default) or company (the API answers HTTP 400 to any other value; narratives are no longer published)",
+     "enum": [
+      "all",
+      "company"
+     ]
+    },
+    "product": {
+     "desc": "exact product name, e.g. 'Mortgage', 'Debt collection', 'Credit reporting or other personal consumer reports'; a list = OR"
+    },
+    "sub_product": {
+     "desc": "exact sub-product name; needs exactly one product (sent as product='<product>' + U+2022 bullet + '<sub_product>', the only form the API applies); a list = OR"
+    },
+    "issue": {
+     "desc": "exact issue name, e.g. 'Struggling to repay your loan'"
+    },
+    "sub_issue": {
+     "desc": "exact sub-issue name; needs exactly one issue (sent as issue='<issue>' + U+2022 bullet + '<sub_issue>'); a list = OR"
+    },
+    "company": {
+     "desc": "exact company name as CFPB writes it, e.g. 'WELLS FARGO & COMPANY' (find it with aggregations agg=company)"
+    },
+    "state": {
+     "desc": "two-letter state or territory code, e.g. 'TX'; a list = OR"
+    },
+    "zip_code": {
+     "desc": "5-digit ZIP (consumer-reported; 3 digits plus XX for small areas)"
+    },
+    "date_received_min": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "date_received_max": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "company_received_min": {
+     "desc": "YYYY-MM-DD (date sent to company)"
+    },
+    "company_received_max": {
+     "desc": "YYYY-MM-DD"
+    },
+    "company_response": {
+     "desc": "'Closed with explanation', 'Closed with monetary relief', 'Closed with non-monetary relief', 'In progress', 'Untimely response' (older: 'Closed', 'Closed with relief', 'Closed without relief')"
+    },
+    "company_public_response": {
+     "desc": "company's optional public response text category"
+    },
+    "submitted_via": {
+     "desc": "Web, Referral, Phone, Postal mail, Fax, Email"
+    },
+    "timely": {
+     "desc": "Yes or No",
+     "enum": [
+      "Yes",
+      "No"
+     ]
+    },
+    "tags": {
+     "desc": "'Older American', 'Servicemember', 'Older American, Servicemember'"
+    },
+    "sort": {
+     "desc": "created_date_desc (default), created_date_asc, relevance_desc, relevance_asc",
+     "enum": [
+      "created_date_desc",
+      "created_date_asc",
+      "relevance_desc",
+      "relevance_asc"
+     ]
+    },
+    "page_size": {
+     "desc": "rows per page (default 1000, at most 10000)"
+    }
+   },
+   "defaults": {
+    "sort": "created_date_desc"
+   },
+   "records": "hits.hits",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 100000
+  },
+  "aggregations": {
+   "path": "/",
+   "method": "GET",
+   "description": "Complaint counts by one field (product, issue, company, state, timely, company_response, submitted_via, company_public_response, tags) for the filters; sub=true gives sub_product / sub_issue rows.",
+   "params": {
+    "search_term": {
+     "desc": "full-text search (all fields unless 'field' is set)"
+    },
+    "field": {
+     "desc": "where search_term looks: all (default) or company (the API answers HTTP 400 to any other value; narratives are no longer published)",
+     "enum": [
+      "all",
+      "company"
+     ]
+    },
+    "product": {
+     "desc": "exact product name, e.g. 'Mortgage', 'Debt collection', 'Credit reporting or other personal consumer reports'; a list = OR"
+    },
+    "sub_product": {
+     "desc": "exact sub-product name; needs exactly one product (sent as product='<product>' + U+2022 bullet + '<sub_product>', the only form the API applies); a list = OR"
+    },
+    "issue": {
+     "desc": "exact issue name, e.g. 'Struggling to repay your loan'"
+    },
+    "sub_issue": {
+     "desc": "exact sub-issue name; needs exactly one issue (sent as issue='<issue>' + U+2022 bullet + '<sub_issue>'); a list = OR"
+    },
+    "company": {
+     "desc": "exact company name as CFPB writes it, e.g. 'WELLS FARGO & COMPANY' (find it with aggregations agg=company)"
+    },
+    "state": {
+     "desc": "two-letter state or territory code, e.g. 'TX'; a list = OR"
+    },
+    "zip_code": {
+     "desc": "5-digit ZIP (consumer-reported; 3 digits plus XX for small areas)"
+    },
+    "date_received_min": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "date_received_max": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "company_received_min": {
+     "desc": "YYYY-MM-DD (date sent to company)"
+    },
+    "company_received_max": {
+     "desc": "YYYY-MM-DD"
+    },
+    "company_response": {
+     "desc": "'Closed with explanation', 'Closed with monetary relief', 'Closed with non-monetary relief', 'In progress', 'Untimely response' (older: 'Closed', 'Closed with relief', 'Closed without relief')"
+    },
+    "company_public_response": {
+     "desc": "company's optional public response text category"
+    },
+    "submitted_via": {
+     "desc": "Web, Referral, Phone, Postal mail, Fax, Email"
+    },
+    "timely": {
+     "desc": "Yes or No",
+     "enum": [
+      "Yes",
+      "No"
+     ]
+    },
+    "tags": {
+     "desc": "'Older American', 'Servicemember', 'Older American, Servicemember'"
+    },
+    "agg": {
+     "required": true,
+     "desc": "field to count by",
+     "enum": [
+      "product",
+      "issue",
+      "company",
+      "state",
+      "timely",
+      "company_response",
+      "submitted_via",
+      "company_public_response",
+      "tags"
+     ]
+    },
+    "sub": {
+     "desc": "true = one row per sub-bucket (product -> sub_product, issue -> sub_issue)"
+    }
+   },
+   "defaults": {
+    "size": 0
+   },
+   "records": "aggregations",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "trends": {
+   "path": "/",
+   "method": "GET",
+   "description": "Complaint counts per year, quarter or month between date_received_min and date_received_max (one count query per period; at most 120 periods); by=<field> splits each period.",
+   "params": {
+    "search_term": {
+     "desc": "full-text search (all fields unless 'field' is set)"
+    },
+    "field": {
+     "desc": "where search_term looks: all (default) or company (the API answers HTTP 400 to any other value; narratives are no longer published)",
+     "enum": [
+      "all",
+      "company"
+     ]
+    },
+    "product": {
+     "desc": "exact product name, e.g. 'Mortgage', 'Debt collection', 'Credit reporting or other personal consumer reports'; a list = OR"
+    },
+    "sub_product": {
+     "desc": "exact sub-product name; needs exactly one product (sent as product='<product>' + U+2022 bullet + '<sub_product>', the only form the API applies); a list = OR"
+    },
+    "issue": {
+     "desc": "exact issue name, e.g. 'Struggling to repay your loan'"
+    },
+    "sub_issue": {
+     "desc": "exact sub-issue name; needs exactly one issue (sent as issue='<issue>' + U+2022 bullet + '<sub_issue>'); a list = OR"
+    },
+    "company": {
+     "desc": "exact company name as CFPB writes it, e.g. 'WELLS FARGO & COMPANY' (find it with aggregations agg=company)"
+    },
+    "state": {
+     "desc": "two-letter state or territory code, e.g. 'TX'; a list = OR"
+    },
+    "zip_code": {
+     "desc": "5-digit ZIP (consumer-reported; 3 digits plus XX for small areas)"
+    },
+    "date_received_min": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "date_received_max": {
+     "desc": "YYYY-MM-DD, inclusive"
+    },
+    "company_received_min": {
+     "desc": "YYYY-MM-DD (date sent to company)"
+    },
+    "company_received_max": {
+     "desc": "YYYY-MM-DD"
+    },
+    "company_response": {
+     "desc": "'Closed with explanation', 'Closed with monetary relief', 'Closed with non-monetary relief', 'In progress', 'Untimely response' (older: 'Closed', 'Closed with relief', 'Closed without relief')"
+    },
+    "company_public_response": {
+     "desc": "company's optional public response text category"
+    },
+    "submitted_via": {
+     "desc": "Web, Referral, Phone, Postal mail, Fax, Email"
+    },
+    "timely": {
+     "desc": "Yes or No",
+     "enum": [
+      "Yes",
+      "No"
+     ]
+    },
+    "tags": {
+     "desc": "'Older American', 'Servicemember', 'Older American, Servicemember'"
+    },
+    "interval": {
+     "required": true,
+     "desc": "year, quarter or month",
+     "enum": [
+      "year",
+      "quarter",
+      "month"
+     ]
+    },
+    "by": {
+     "desc": "optional field to split by (same choices as aggregations agg)",
+     "enum": [
+      "product",
+      "issue",
+      "company",
+      "state",
+      "timely",
+      "company_response",
+      "submitted_via",
+      "company_public_response",
+      "tags"
+     ]
+    }
+   },
+   "defaults": {
+    "size": 0
+   },
+   "records": "hits.total",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "complaint": {
+   "path": "/{complaint_id}",
+   "method": "GET",
+   "description": "One complaint by its id.",
+   "params": {
+    "complaint_id": {
+     "in": "path",
+     "required": true,
+     "desc": "complaint id, e.g. 17993241"
+    }
+   },
+   "records": "hits.hits",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {},
+ "products": {
+  "Credit reporting or other personal consumer reports": "12,910,622 complaints in the database (2026-10-20)",
+  "Credit reporting, credit repair services, or other personal consumer reports": "2,163,769 complaints in the database (2026-10-20)",
+  "Debt collection": "1,217,848 complaints in the database (2026-10-20)",
+  "Mortgage": "463,905 complaints in the database (2026-10-20)",
+  "Checking or savings account": "404,615 complaints in the database (2026-10-20)",
+  "Credit card": "353,050 complaints in the database (2026-10-20)",
+  "Credit card or prepaid card": "206,356 complaints in the database (2026-10-20)",
+  "Money transfer, virtual currency, or money service": "195,446 complaints in the database (2026-10-20)",
+  "Credit reporting": "140,426 complaints in the database (2026-10-20)",
+  "Student loan": "135,133 complaints in the database (2026-10-20)",
+  "Vehicle loan or lease": "105,514 complaints in the database (2026-10-20)",
+  "Bank account or service": "86,198 complaints in the database (2026-10-20)",
+  "Payday loan, title loan, personal loan, or advance loan": "39,960 complaints in the database (2026-10-20)",
+  "Consumer Loan": "31,559 complaints in the database (2026-10-20)",
+  "Payday loan, title loan, or personal loan": "30,614 complaints in the database (2026-10-20)",
+  "Prepaid card": "23,812 complaints in the database (2026-10-20)",
+  "Debt or credit management": "10,660 complaints in the database (2026-10-20)",
+  "Payday loan": "5,528 complaints in the database (2026-10-20)",
+  "Money transfers": "5,354 complaints in the database (2026-10-20)",
+  "Other financial service": "1,056 complaints in the database (2026-10-20)",
+  "Virtual currency": "18 complaints in the database (2026-10-20)"
+ }
+}

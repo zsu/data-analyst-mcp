@@ -1,0 +1,72 @@
+%SeriesCode,SeriesLabel,MetricName,CalculationType,DefaultScale,TableId:LineNo,SeriesCodeParents
+A006RL,"Gross private domestic investment","Fisher Quantity Index","Percent change, annual rate",0,T10101:7|T10501:26,NONE
+A006RX,"Gross private domestic investment","Chained Dollars","Level",-6,T10106:7|T10506:26|T50206:4|U50206:4,NONE
+A007RL,"Private fixed investment","Fisher Quantity Index","Percent change, annual rate",0,T10101:8|T10501:27|T50301:1|T50302:1,NONE
+A007RX,"Private fixed investment","Chained Dollars","Level",-6,T10106:8|T10506:27|T50206:7|T50306:1|U50206:7,NONE
+A008RL,"Nonresidential","Fisher Quantity Index","Percent change, annual rate",0,T10101:9|T10501:28|T50301:2,NONE
+A008RX,"Nonresidential","Chained Dollars","Level",-6,T10106:9|T10506:28|T50206:10|T50306:2|U50206:10,NONE
+A009RL,"Structures","Fisher Quantity Index","Percent change, annual rate",0,T10101:10|T10501:29|T50301:3|T50401:2,NONE
+A011RL,"Residential","Fisher Quantity Index","Percent change, annual rate",0,T10101:13|T10501:41|T50301:20,NONE
+A011RX,"Residential","Chained Dollars","Level",-6,T10106:13|T10506:41|T50206:22|T50306:20|U50206:22,NONE
+A014RC,"Change in private inventories","Current Dollars","Level",-6,OECD10205:29|OECD10205:30|T10105:14|T10205:3|T10205:6|T10405:5|T10505:42|T50205:25|T50705A:1|T50705B:1|T50705B:16|T51000:43|U50205:25,A006RC|A191RC|A353RC|A713RC|LA000408
+A014RX,"Change in private inventories","Chained Dollars","Level",-6,OECD10206:29|OECD10206:30|T10106:14|T10206:3|T10206:7|T10406:5|T10506:42|T50206:25|T50706A:1|T50706B:1|T50706B:17|U50206:25,NONE
+A019RX,"External balance of goods and services","Chained Dollars","Level",-6,OECD10206:38|T10106:15|T10506:45,NONE
+A020RL,"Exports of goods and services","Fisher Quantity Index","Percent change, annual rate",0,T10101:16|T10401:2|T10501:46|T40201:1|T40202:1,NONE
+A020RX,"Exports of goods and services","Chained Dollars","Level",-6,OECD10206:32|T10106:16|T10406:2|T10506:46|T10806:2|T40206B:1,NONE
+A021RL,"Imports of goods and services","Fisher Quantity Index","Percent change, annual rate",0,T10101:19|T10401:3|T10501:49|T40201:25|T40202:25,NONE
+A021RX,"Imports of goods and services","Chained Dollars","Level",-6,OECD10206:35|T10106:19|T10406:3|T10506:49|T10806:3|T40206B:94,NONE
+A190RC,"Final sales of domestic product","Current Dollars","Level",-6,T10205:2|T10405:7,A191RC
+A191RC,"Gross domestic product","Current Dollars","Level",-6,OECD10205:1|T10105:1|T10205:1|T10305:1|T10405:1|T10505:1|T10705:1|T11705:1,A001RC|A712RC|A962RC|BB00RC|Y695RC
+A191RL,"Gross domestic product","Fisher Quantity Index","Percent change, annual rate",0,T10101:1|T10102:1|T10201:1|T10202:1|T10301:1|T10401:1|T10501:1|T10502:1|T10701:1|T10803:15|T11701:1,NONE
+A191RP,"Gross domestic product, current dollars","Current Dollars","Percent change, annual rate",0,T10101:27,NONE
+A191RX,"Gross domestic product","Chained Dollars","Level",-6,OECD10206:1|T10106:1|T10206:1|T10306:1|T10406:1|T10506:1|T10706:1|T10806:1|T11706:1,NONE
+A253RL,"Goods","Fisher Quantity Index","Percent change, annual rate",0,T10101:17|T10501:47|T40201:2,NONE
+A253RX,"Goods","Chained Dollars","Level",-6,OECD10206:33|T10106:17|T10506:47|T40206B:2,NONE
+A255RL,"Goods","Fisher Quantity Index","Percent change, annual rate",0,T10101:20|T10501:50|T40201:26,NONE
+A255RX,"Goods","Chained Dollars","Level",-6,OECD10206:36|T10106:20|T10506:50|T40206B:95,NONE
+A325RC,"Final sales","Current Dollars","Level",-6,T10205:5,A353RC
+A326RC,"Final sales","Current Dollars","Level",-6,T10205:8,A354RC
+A334RC,"Final sales","Current Dollars","Level",-6,T10205:11,A356RC
+A341RC,"Services","Current Dollars","Level",-6,T10205:13,A191RC
+A353RC,"Goods","Current Dollars","Level",-6,T10205:4,A191RC
+A354RC,"Durable goods","Current Dollars","Level",-6,T10205:7,A353RC
+A355RC,"Change in private inventories","Current Dollars","Level",-6,T10205:9,A354RC
+A356RC,"Nondurable goods","Current Dollars","Level",-6,T10205:10,A353RC
+A357RC,"Change in private inventories","Current Dollars","Level",-6,T10205:12,A356RC
+A646RL,"Services","Fisher Quantity Index","Percent change, annual rate",0,T10101:18|T10501:48|T40201:18,NONE
+A646RX,"Services","Chained Dollars","Level",-6,OECD10206:34|T10106:18|T10506:48|T40206B:59,NONE
+A656RL,"Services","Fisher Quantity Index","Percent change, annual rate",0,T10101:21|T10501:51|T40201:42,NONE
+A755RC,"Structures","Current Dollars","Level",-6,T10205:14,A191RC
+A822RL,"Government","Fisher Quantity Index","Percent change, annual rate",0,T10101:22|T10501:52|T30901:1|T30902:1|T31501:1|T31502:1,NONE
+A822RX,"Government","Chained Dollars","Level",-6,T10106:22|T10506:52|T30906:1|T31506:1,NONE
+A823RL,"Federal","Fisher Quantity Index","Percent change, annual rate",0,T10101:23|T10501:53|T30901:9|T31501:14,NONE
+A823RX,"Federal","Chained Dollars","Level",-6,T10106:23|T10506:53|T30906:9|T31506:14,NONE
+A824RL,"National defense","Fisher Quantity Index","Percent change, annual rate",0,T10101:24|T10501:54|T30901:17|T31101:1|T31102:1|T31501:16|T31501:3,NONE
+A824RX,"National defense","Chained Dollars","Level",-6,T10106:24|T10506:54|T30906:17|T31106:1|T31506:16|T31506:3,NONE
+A825RL,"Nondefense","Fisher Quantity Index","Percent change, annual rate",0,T10101:25|T10501:57|T30901:25,NONE
+A825RX,"Nondefense","Chained Dollars","Level",-6,T10106:25|T10506:57|T30906:25,NONE
+A829RL,"State and local","Fisher Quantity Index","Percent change, annual rate",0,T10101:26|T10501:60|T30901:33|T31501:27,NONE
+A829RX,"State and local","Chained Dollars","Level",-6,T10106:26|T10506:60|T30906:33|T31506:27,NONE
+A953RC,"Motor vehicle output","Current Dollars","Level",-6,T10205:15|T70205B:1|U70205:1,A962RC
+A960RX,"Residual","Chained Dollars","Level",-6,T10106:27,NONE
+A962RC,"Gross domestic product excluding motor vehicle output","Current Dollars","Level",-6,T10205:16,NONE
+B009RX,"Structures","Chained Dollars","Level",-6,T10106:10|T10506:29|T50206:13|T50306:3|T50406:2|U50206:13|U50406:2,NONE
+B656RX,"Services","Chained Dollars","Level",-6,OECD10206:37|T10106:21|T10506:51|T40206B:150,NONE
+BB00RC,"Gross domestic product excluding final sales of computers","Current Dollars","Level",-6,T10205:18,NONE
+BB01RC,"Final sales of computers","Current Dollars","Level",-6,T10205:17,BB00RC
+DDURRL,"Durable goods","Fisher Quantity Index","Percent change, annual rate",0,T10101:4|T10501:4|T20301:3|T20401:3,NONE
+DDURRX,"Durable goods","Chained Dollars","Level",-6,T10106:4|T10506:4|T20306:3|T20406:3|T20806:3|U20306:3|U20406:3,NONE
+DGDSRL,"Goods","Fisher Quantity Index","Percent change, annual rate",0,T10101:3|T10501:3|T20301:2|T20401:2,NONE
+DGDSRX,"Goods","Chained Dollars","Level",-6,T10106:3|T10506:3|T20306:2|T20406:2|T20806:2|U20306:2|U20406:2,NONE
+DNDGRL,"Nondurable goods","Fisher Quantity Index","Percent change, annual rate",0,T10101:5|T10501:9|T20301:8|T20401:25,NONE
+DNDGRX,"Nondurable goods","Chained Dollars","Level",-6,T10106:5|T10506:9|T20306:8|T20406:25|T20806:8|U20306:8|U20406:72,NONE
+DPCERL,"Personal consumption expenditures","Fisher Quantity Index","Percent change, annual rate",0,T10101:2|T10501:2|T20301:1|T20302:1|T20401:1|T20402:1,NONE
+DPCERX,"Personal consumption expenditures","Chained Dollars","Level",-6,OECD10206:3|T10106:2|T10506:2|T20306:1|T20406:1|T20506:1|T20806:1|U20306:1|U20306:29|U20406:1,NONE
+DSERRL,"Services","Fisher Quantity Index","Percent change, annual rate",0,T10101:6|T10501:14|T20301:13|T20401:47,NONE
+DSERRX,"Services","Chained Dollars","Level",-6,T10106:6|T10506:14|T20306:13|T20406:47|T20806:13|U20306:13|U20406:150,NONE
+Y001RL,"Intellectual property products","Fisher Quantity Index","Percent change, annual rate",0,T10101:12|T10501:37|T50301:16|T50601:1|T50602:1,NONE
+Y001RX,"Intellectual property products","Chained Dollars","Level",-6,T10106:12|T10506:37|T50206:19|T50306:16|T50606:1|U50206:19,NONE
+Y033RL,"Equipment","Fisher Quantity Index","Percent change, annual rate",0,T10101:11|T10501:30|T50301:9|T50501:2,NONE
+Y033RX,"Equipment","Chained Dollars","Level",-6,T10106:11|T10506:30|T50206:16|T50306:9|T50506:2|U50206:16|U50506:2,NONE
+Y694RC,"Research and development","Current Dollars","Level",-6,OECD10205:22|T10205:19,LA000001|Y695RC
+Y695RC,"Gross domestic product excluding research and development","Current Dollars","Level",-6,T10205:20,NONE

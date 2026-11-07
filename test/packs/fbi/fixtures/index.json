@@ -1,0 +1,7 @@
+{
+ "GET https://api.usa.gov/crime/fbi/cde/summarized/national/V?from=01-2020&to=12-2022": "r001.json",
+ "GET https://api.usa.gov/crime/fbi/cde/agency/byStateAbbr/DE": "r002.json",
+ "GET https://api.usa.gov/crime/fbi/cde/hate-crime/national?type=totals&from=01-2022&to=12-2023": "r003.json",
+ "GET https://api.usa.gov/crime/fbi/cde/pe?from=2021&to=2023": "r004.json",
+ "GET https://api.usa.gov/crime/fbi/cde/hate-crime/national/14?from=01-2022&to=12-2022&type=counts": "r005.json"
+}

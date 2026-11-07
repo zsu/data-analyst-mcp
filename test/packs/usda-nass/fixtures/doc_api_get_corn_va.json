@@ -1,0 +1,41 @@
+{
+ "data": [
+  {
+   "week_ending": "",
+   "state_name": "VIRGINIA",
+   "country_code": "9000",
+   "begin_code": "00",
+   "sector_desc": "CROPS",
+   "zip_5": "",
+   "county_ansi": "",
+   "state_alpha": "VA",
+   "util_practice_desc": "ALL UTILIZATION PRACTICES",
+   "domain_desc": "TOTAL",
+   "asd_desc": "",
+   "freq_desc": "ANNUAL",
+   "prodn_practice_desc": "ALL PRODUCTION PRACTICES",
+   "end_code": "00",
+   "short_desc": "CORN - ACRES PLANTED",
+   "country_name": "UNITED STATES",
+   "Value": "510,000",
+   "reference_period_desc": "YEAR",
+   "source_desc": "SURVEY",
+   "group_desc": "FIELD CROPS",
+   "asd_code": "",
+   "agg_level_desc": "STATE",
+   "Class_desc": "ALL CLASSES",
+   "county_name": "",
+   "region_desc": "",
+   "watershed_desc": "",
+   "state_ansi": "51",
+   "congr_district_code": "",
+   "domaincat_desc": "NOT SPECIFIED",
+   "watershed_code": "00000000",
+   "commodity_desc": "CORN",
+   "unit_desc": "ACRES",
+   "load_time": "2012-10-11 11:26:13",
+   "statisticcat_desc": "AREA PLANTED",
+   "year": "2012"
+  }
+ ]
+}

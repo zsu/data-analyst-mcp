@@ -1,0 +1,43 @@
+{
+    "dateIssued": "2024-12-23",
+    "references": [{
+        "contents": [{
+            "pages": ["2687"],
+            "label": "Stat.",
+            "title": "138"
+        }],
+        "collectionCode": "STATUTE",
+        "collectionName": "Statutes at Large"
+    }],
+    "documentType": "PUBLIC",
+    "congress": "118",
+    "documentNumber": "201",
+    "packageId": "PLAW-118publ201",
+    "collectionCode": "PLAW",
+    "detailsLink": "https://www.govinfo.gov/app/details/PLAW-118publ201",
+    "title": "An act to designate the facility of the United States Postal Service located at 1106 Main Street in Bastrop, Texas, as the \"Sergeant Major Billy D. Waugh Post Office\".",
+    "branch": "legislative",
+    "isAppropriation": "false",
+    "collectionName": "Public and Private Laws",
+    "download": {
+        "premisLink": "https://api.govinfo.gov/packages/PLAW-118publ201/premis",
+        "txtLink": "https://api.govinfo.gov/packages/PLAW-118publ201/htm",
+        "zipLink": "https://api.govinfo.gov/packages/PLAW-118publ201/zip",
+        "modsLink": "https://api.govinfo.gov/packages/PLAW-118publ201/mods",
+        "pdfLink": "https://api.govinfo.gov/packages/PLAW-118publ201/pdf",
+        "uslmLink": "https://api.govinfo.gov/packages/PLAW-118publ201/uslm"
+    },
+    "pages": "1",
+    "governmentAuthor2": "Office of the Federal Register",
+    "relatedLink": "https://api.govinfo.gov/related/PLAW-118publ201",
+    "governmentAuthor1": "National Archives and Records Administration",
+    "publisher": "U.S. Government Publishing Office",
+    "suDocClassNumber": "AE 2.110:118-201",
+    "docClass": "PUBLIC",
+    "lastModified": "2026-09-24T15:18:19Z",
+    "category": "Bills and Statutes",
+    "otherIdentifier": {
+        "migrated-doc-id": "f:publ201_118",
+        "ils-system-id": "001445931"
+    }
+}

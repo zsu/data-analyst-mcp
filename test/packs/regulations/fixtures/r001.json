@@ -1,0 +1,115 @@
+{
+  "data" : [ {
+    "type" : "documents",
+    "id" : "EPA-HQ-OAR-2023-0072-8106",
+    "attributes" : {
+      "agencyId" : "EPA",
+      "objectId" : "0900006486295cf1",
+      "frDocNum" : "2023-25580",
+      "documentType" : "Proposed Rule",
+      "withdrawn" : false,
+      "highlightedContent" : "",
+      "commentEndDate" : "2023-12-21T04:59:59Z",
+      "commentStartDate" : "2023-11-20T05:00:00Z",
+      "lastModifiedDate" : "2024-09-11T01:00:41Z",
+      "openForComment" : false,
+      "withinCommentPeriod" : false,
+      "postedDate" : "2023-11-20T05:00:00Z",
+      "title" : "New Source Performance Standards: Greenhouse Gas Emissions from New, Modified, and Reconstructed Fossil Fuel-Fired Electric Generating Units; Emission Guidelines for Greenhouse Gas Emissions from Existing Fossil Fuel-Fired Electric Generating Units; and Repeal of the Affordable Clean Energy Rule",
+      "docketId" : "EPA-HQ-OAR-2023-0072",
+      "subtype" : "Supplemental Notice of Proposed Rulemaking (SNPRM)",
+      "allowLateComments" : false
+    }
+  }, {
+    "type" : "documents",
+    "id" : "EPA-HQ-OAR-2023-0072-0112",
+    "attributes" : {
+      "agencyId" : "EPA",
+      "objectId" : "0900006485b38d4a",
+      "frDocNum" : "2023-12834",
+      "documentType" : "Proposed Rule",
+      "withdrawn" : false,
+      "highlightedContent" : "",
+      "commentEndDate" : null,
+      "commentStartDate" : null,
+      "lastModifiedDate" : "2023-11-15T02:01:21Z",
+      "openForComment" : false,
+      "withinCommentPeriod" : false,
+      "postedDate" : "2023-06-16T04:00:00Z",
+      "title" : "New Source Performance Standards for Greenhouse Gas Emissions from New, Modified, and Reconstructed Fossil Fuel-Fired Electric Generating Units: Emission Guidelines for Greenhouse Gas Emissions from Existing Fossil Fuel-Fired Electric Generating Units; and Repeal of the Affordable Clean Energy Rule",
+      "docketId" : "EPA-HQ-OAR-2023-0072",
+      "subtype" : "Extension of Comment Period",
+      "allowLateComments" : false
+    }
+  }, {
+    "type" : "documents",
+    "id" : "EPA-HQ-OAR-2023-0072-0001",
+    "attributes" : {
+      "agencyId" : "EPA",
+      "objectId" : "0900006485a3507a",
+      "frDocNum" : "2023-10141",
+      "documentType" : "Proposed Rule",
+      "withdrawn" : false,
+      "highlightedContent" : "",
+      "commentEndDate" : "2023-08-09T03:59:59Z",
+      "commentStartDate" : "2023-05-23T04:00:00Z",
+      "lastModifiedDate" : "2024-05-07T01:04:03Z",
+      "openForComment" : false,
+      "withinCommentPeriod" : false,
+      "postedDate" : "2023-05-23T04:00:00Z",
+      "title" : "New Source Performance Standards for Greenhouse Gas Emissions from New, Modified, and Reconstructed Fossil Fuel-Fired Electric Generating Units: Emission Guidelines for Greenhouse Gas Emissions from Existing Fossil Fuel-Fired Electric Generating Units; and Repeal of the Affordable Clean Energy Rule",
+      "docketId" : "EPA-HQ-OAR-2023-0072",
+      "subtype" : null,
+      "allowLateComments" : false
+    }
+  } ],
+  "meta" : {
+    "aggregations" : {
+      "documentType" : [ {
+        "docCount" : 1193,
+        "label" : "Supporting & Related Material"
+      }, {
+        "docCount" : 3,
+        "label" : "Proposed Rule"
+      }, {
+        "docCount" : 3,
+        "label" : "Rule"
+      } ],
+      "subtype" : [ {
+        "docCount" : 1,
+        "label" : "Extension of Comment Period"
+      }, {
+        "docCount" : 1,
+        "label" : "Supplemental Notice of Proposed Rulemaking (SNPRM)"
+      } ],
+      "withinCommentPeriod" : [ {
+        "docCount" : 0,
+        "label" : "true"
+      }, {
+        "docCount" : 3,
+        "label" : "false"
+      } ],
+      "agencyId" : [ {
+        "docCount" : 3,
+        "value" : "EPA"
+      } ],
+      "commentEndDate" : [ ],
+      "postedDate" : [ ]
+    },
+    "filters" : {
+      "documentType" : [ {
+        "label" : "Proposed Rule",
+        "value" : "Proposed Rule"
+      } ]
+    },
+    "hasNextPage" : false,
+    "hasPreviousPage" : false,
+    "numberOfElements" : 3,
+    "pageNumber" : 1,
+    "pageSize" : 250,
+    "totalElements" : 3,
+    "totalPages" : 1,
+    "firstPage" : true,
+    "lastPage" : true
+  }
+}

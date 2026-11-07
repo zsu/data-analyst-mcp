@@ -1,0 +1,287 @@
+{
+ "acf": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "actuaries": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "bea": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "bls": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "bts": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "census": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "cfpb": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "clinical-trials": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "cms": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "college-scorecard": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "congress": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "dhs-ohss": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "doj-news": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "dol": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "eia": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "epa": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "epa-aqs": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fbi": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fda": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fdic": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fec": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fed-board": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "federal-register": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fhfa": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "fred": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "fsa": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "govinfo": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "gsa-calc": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "hud": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "ipums": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "irs-soi": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "naep": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "nhtsa": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "nih": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "noaa": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "nrel": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "nws": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "omb": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "open-payments": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "opm": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "pbgc": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "philfed": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "regulations": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "sec": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "senate-lobbying": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "snapqc": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "treasury": {
+  "python": [
+   "fetch.py"
+  ]
+ },
+ "treasury-yields": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usaspending": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usda-fna": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usda-fooddata": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usda-nass": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usda-outlook": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usgs": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "usitc": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "uspto": {
+  "python": [
+   "adapter.py"
+  ]
+ },
+ "world-bank": {
+  "python": [
+   "adapter.py"
+  ]
+ }
+}

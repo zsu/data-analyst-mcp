@@ -1,0 +1,8 @@
+{
+  "name": "HRHHID",
+  "label": "Household-identifier,scrambled",
+  "predicateType": "string",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "HWHHWGT"
+}

@@ -1,0 +1,483 @@
+{
+ "base_url": "https://www.pbgc.gov",
+ "timeout": 90,
+ "endpoints": {
+  "data_table": {
+   "path": "/about/reports/pension-insurance-data",
+   "description": "One table (one sheet) of the PBGC Pension Insurance Data Tables workbook, read as published: header rows joined (\"Trusteed Termination Data Claims ($ millions)\"), source lines and footnotes in the notes, label rows kept, column sheet_row. The pack reads the index page, finds the edition's Excel link (paths differ by year) and reads the sheet. S- tables are the single-employer program, M- tables the multiemployer program.",
+   "params": {
+    "year": {
+     "in": "spec",
+     "desc": "edition year as listed on the index page (2010-2024 have Excel files; 2024 is the newest, a 1st installment published 2026-08-04); default: the newest edition. The edition year is not the data year: each table states its own years"
+    },
+    "table": {
+     "in": "spec",
+     "required": true,
+     "catalog": true,
+     "desc": "sheet name as published: \"S-1\" ... \"S-49\", \"M-1\" ... \"M-21\" (also s1, S1, \"Table S-1\"), or GLANCE (PBGC data at a glance); an installment edition lacks some tables"
+    },
+    "header_row": {
+     "in": "spec",
+     "desc": "optional: 1-based row of the (first) column-name row; default: detected"
+    },
+    "header_rows": {
+     "in": "spec",
+     "desc": "optional: how many header rows to join; default: detected"
+    }
+   },
+   "records": "$xlsx",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "table_list": {
+   "path": "/about/reports/pension-insurance-data",
+   "description": "The tables of one edition from its DATA BOOK LISTING sheet: table, title (with the table's own year range), program (single-employer or multiemployer), section, in_workbook (no = listed but not in this installment).",
+   "params": {
+    "year": {
+     "in": "spec",
+     "desc": "edition year as listed on the index page (2010-2024 have Excel files; 2024 is the newest, a 1st installment published 2026-08-04); default: the newest edition. The edition year is not the data year: each table states its own years"
+    }
+   },
+   "paging": {
+    "type": "none"
+   }
+  },
+  "editions": {
+   "path": "/about/reports/pension-insurance-data",
+   "description": "The editions with an Excel file on the index page: year, label (with installment and posting date), url, format (xlsx; 2011 xls).",
+   "params": {},
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "s_1": {
+   "id": "S-1",
+   "endpoint": "data_table",
+   "name": "Table S-1: Net Financial Position",
+   "description": "single-employer program; Summary Tables"
+  },
+  "s_2": {
+   "id": "S-2",
+   "endpoint": "data_table",
+   "name": "Table S-2: PBGC Premium Revenue, Benefit Payments, and Expenses",
+   "description": "single-employer program; Summary Tables"
+  },
+  "s_3": {
+   "id": "S-3",
+   "endpoint": "data_table",
+   "name": "Table S-3: PBGC Terminations and Claims",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_4": {
+   "id": "S-4",
+   "endpoint": "data_table",
+   "name": "Table S-4: PBGC Claims",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_5": {
+   "id": "S-5",
+   "endpoint": "data_table",
+   "name": "Table S-5: Top 10 Firms Presenting Claims",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_6": {
+   "id": "S-6",
+   "endpoint": "data_table",
+   "name": "Table S-6: PBGC Trusteed Terminations and Claims by Fiscal Year and Claim Size",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_7": {
+   "id": "S-7",
+   "endpoint": "data_table",
+   "name": "Table S-7: PBGC Trusteed Plans and Claims by Fiscal Year and Funded Ratio",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_8": {
+   "id": "S-8",
+   "endpoint": "data_table",
+   "name": "Table S-8: PBGC Trusteed Plans and Claims by Claim Size and Funded Ratio",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_9": {
+   "id": "S-9",
+   "endpoint": "data_table",
+   "name": "Table S-9: Average Claim per Vested Participant by Plan Size",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_10": {
+   "id": "S-10",
+   "endpoint": "data_table",
+   "name": "Table S-10: PBGC Trusteed Plans and Claims by Fiscal Year and Plan Size",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_11": {
+   "id": "S-11",
+   "endpoint": "data_table",
+   "name": "Table S-11: PBGC Trusteed Plans and Claims by Claim Size and Plan Size",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_12": {
+   "id": "S-12",
+   "endpoint": "data_table",
+   "name": "Table S-12: PBGC Trusteed Plans and Claims by Funded Ratio and Plan Size",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_13": {
+   "id": "S-13",
+   "endpoint": "data_table",
+   "name": "Table S-13: PBGC Claims by Industry",
+   "description": "single-employer program; Claims Tables"
+  },
+  "s_14": {
+   "id": "S-14",
+   "endpoint": "data_table",
+   "name": "Table S-14: PBGC Benefit Payments, Payees, and Deferred Payees",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_15": {
+   "id": "S-15",
+   "endpoint": "data_table",
+   "name": "Table S-15: PBGC Payees and Benefit Payments by Year of Plan Termination",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_16": {
+   "id": "S-16",
+   "endpoint": "data_table",
+   "name": "Table S-16: PBGC Periodic Payees and Benefit Payments by Trusteed Plan Size",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_17": {
+   "id": "S-17",
+   "endpoint": "data_table",
+   "name": "Table S-17: PBGC Periodic Payees and Average Benefit Payments by Age, Status, and Gender",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_18": {
+   "id": "S-18",
+   "endpoint": "data_table",
+   "name": "Table S-18: PBGC Periodic Payees and Benefit Payments by Monthly Payment Size and Status",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_19": {
+   "id": "S-19",
+   "endpoint": "data_table",
+   "name": "Table S-19: PBGC Periodic Payees and Benefit Payments by Industry",
+   "description": "single-employer program; Guaranteed Payments Tables"
+  },
+  "s_20": {
+   "id": "S-20",
+   "endpoint": "data_table",
+   "name": "Table S-20: PBGC-Insured Plan Participants",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_21": {
+   "id": "S-21",
+   "endpoint": "data_table",
+   "name": "Table S-21: PBGC-Insured Plans",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_22": {
+   "id": "S-22",
+   "endpoint": "data_table",
+   "name": "Table S-22: PBGC-Insured Plan Participants by Participant Status",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_23": {
+   "id": "S-23",
+   "endpoint": "data_table",
+   "name": "Table S-23: PBGC-Insured Active Participants as a Percent of Private-Sector Wage and Salary Workers",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_24": {
+   "id": "S-24",
+   "endpoint": "data_table",
+   "name": "Table S-24: PBGC-Insured Hybrid Plans by Plan Size",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_25": {
+   "id": "S-25",
+   "endpoint": "data_table",
+   "name": "Table S-25: PBGC-Insured Hybrid Plan Participants by Plan Size",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_26": {
+   "id": "S-26",
+   "endpoint": "data_table",
+   "name": "Table S-26: PBGC-Insured Plans by Status of Benefit Accruals and Participation Freeze",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_27": {
+   "id": "S-27",
+   "endpoint": "data_table",
+   "name": "Table S-27: Active Participants in PBGC-Insured Plans by Status of Benefit Accruals and Whether a Plan is Open to New Entrants",
+   "description": "single-employer program; Covered Plan Information Tables"
+  },
+  "s_28": {
+   "id": "S-28",
+   "endpoint": "data_table",
+   "name": "Table S-28: PBGC-Insured Plans, Participants and Premiums by Industry",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_29": {
+   "id": "S-29",
+   "endpoint": "data_table",
+   "name": "Table S-29: PBGC's Historical Premium Rates",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_30": {
+   "id": "S-30",
+   "endpoint": "data_table",
+   "name": "Table S-30: PBGC Premium Revenue",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_31": {
+   "id": "S-31",
+   "endpoint": "data_table",
+   "name": "Table S-31: PBGC Premium Revenue by Plan Size and Premium Type",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_32": {
+   "id": "S-32",
+   "endpoint": "data_table",
+   "name": "Table S-32: PBGC-Insured Plans and Participants by Variable-Rate Premiums Paid",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_33": {
+   "id": "S-33",
+   "endpoint": "data_table",
+   "name": "Table S-33: PBGC-Insured Plans and Participants by Variable-Rate Premium Status",
+   "description": "single-employer program; PBGC Premium Tables"
+  },
+  "s_34": {
+   "id": "S-34",
+   "endpoint": "data_table",
+   "name": "Table S-34: Aggregate Funding of PBGC-Insured Plans",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_35": {
+   "id": "S-35",
+   "endpoint": "data_table",
+   "name": "Table S-35: Aggregate Funding of Underfunded PBGC-Insured Plans",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_36": {
+   "id": "S-36",
+   "endpoint": "data_table",
+   "name": "Table S-36: Aggregate Funding of Overfunded PBGC-Insured Plans",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_37": {
+   "id": "S-37",
+   "endpoint": "data_table",
+   "name": "Table S-37: Concentration of Underfunding in PBGC-Insured Plans",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_38": {
+   "id": "S-38",
+   "endpoint": "data_table",
+   "name": "Table S-38: Plans, Participants, and Funding of PBGC-Insured Plans by Funding Ratio",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_39": {
+   "id": "S-39",
+   "endpoint": "data_table",
+   "name": "Table S-39: Various Measures of Underfunding in PBGC-Insured Plans",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_40": {
+   "id": "S-40",
+   "endpoint": "data_table",
+   "name": "Table S-40: Funding of PBGC-Insured Plans by Industry",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_41": {
+   "id": "S-41",
+   "endpoint": "data_table",
+   "name": "Table S-41: Pension Funding Data for PBGC-Insured Plans by Region and State",
+   "description": "single-employer program; Plan Funding Tables"
+  },
+  "s_42": {
+   "id": "S-42",
+   "endpoint": "data_table",
+   "name": "Table S-42: PBGC Pension Data by Region and State",
+   "description": "single-employer program; Regional/State Information and Maximum Guaranteed Benefits Tables"
+  },
+  "s_43": {
+   "id": "S-43",
+   "endpoint": "data_table",
+   "name": "Table S-43: PBGC Maximum Guaranteed Benefits",
+   "description": "single-employer program; Regional/State Information and Maximum Guaranteed Benefits Tables"
+  },
+  "s_44": {
+   "id": "S-44",
+   "endpoint": "data_table",
+   "name": "Table S-44: Estimated Incidence Rates of Partial Risk Transfer Activity in PBGC-Insured Plans",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "s_45": {
+   "id": "S-45",
+   "endpoint": "data_table",
+   "name": "Table S-45: Estimated Incidence Rates of Partial Risk Transfer Activity in PBGC-Insured Plans by Plan Size",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "s_46": {
+   "id": "S-46",
+   "endpoint": "data_table",
+   "name": "Table S-46: Estimated Incidence Rates of Partial Risk Transfer Activity in PBGC-Insured Plans by Plan Size - Hard Frozen Plans",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "s_47": {
+   "id": "S-47",
+   "endpoint": "data_table",
+   "name": "Table S-47: Estimated Incidence Rates of Partial Risk Transfer Activity in PBGC-Insured Plans by Plan Size - Plans with No Benefit Accrual or Participation Freeze",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "s_48": {
+   "id": "S-48",
+   "endpoint": "data_table",
+   "name": "Table S-48: Estimated Partial Risk Transfer Activity in PBGC-Insured Plans by Industry",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "s_49": {
+   "id": "S-49",
+   "endpoint": "data_table",
+   "name": "Table S-49: Estimated Cumulative Partial Risk Transfer Activity in PBGC-Insured Plans",
+   "description": "single-employer program; Pension Risk Transfer Tables"
+  },
+  "m_1": {
+   "id": "M-1",
+   "endpoint": "data_table",
+   "name": "Table M-1: Net Financial Position",
+   "description": "multiemployer program; Summary Tables"
+  },
+  "m_2": {
+   "id": "M-2",
+   "endpoint": "data_table",
+   "name": "Table M-2: PBGC Premium Revenue, Financial Assistance, and Expenses",
+   "description": "multiemployer program; Summary Tables"
+  },
+  "m_3": {
+   "id": "M-3",
+   "endpoint": "data_table",
+   "name": "Table M-3: PBGC Financial Assistance Payments",
+   "description": "multiemployer program; Financial Assistance Payments Table"
+  },
+  "m_4": {
+   "id": "M-4",
+   "endpoint": "data_table",
+   "name": "Table M-4: PBGC-Insured Plan Participants",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_5": {
+   "id": "M-5",
+   "endpoint": "data_table",
+   "name": "Table M-5: PBGC-Insured Plans",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_6": {
+   "id": "M-6",
+   "endpoint": "data_table",
+   "name": "Table M-6: PBGC-Insured Plan Participants by Participant Status",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_7": {
+   "id": "M-7",
+   "endpoint": "data_table",
+   "name": "Table M-7: PBGC-Insured Plans and Participants by Industry",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_8": {
+   "id": "M-8",
+   "endpoint": "data_table",
+   "name": "Table M-8: Aggregate Funding of PBGC-Insured Plans",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_9": {
+   "id": "M-9",
+   "endpoint": "data_table",
+   "name": "Table M-9: Aggregate Funding of Underfunded PBGC-Insured Plans",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_10": {
+   "id": "M-10",
+   "endpoint": "data_table",
+   "name": "Table M-10: Aggregate Funding of Overfunded PBGC-Insured Plans",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_11": {
+   "id": "M-11",
+   "endpoint": "data_table",
+   "name": "Table M-11: Concentration of Underfunding in PBGC-Insured Plans",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_12": {
+   "id": "M-12",
+   "endpoint": "data_table",
+   "name": "Table M-12: Plans, Participants, and Funding of PBGC-Insured Plans by Funding Ratio",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_13": {
+   "id": "M-13",
+   "endpoint": "data_table",
+   "name": "Table M-13: Funding of PBGC-Insured Plans by Industry",
+   "description": "multiemployer program; Covered Plan Information Tables"
+  },
+  "m_14": {
+   "id": "M-14",
+   "endpoint": "data_table",
+   "name": "Table M-14: PBGC Maximum Guaranteed Benefits",
+   "description": "multiemployer program; PBGC Maximum Guaranteed Benefits and Premium Rate Tables"
+  },
+  "m_15": {
+   "id": "M-15",
+   "endpoint": "data_table",
+   "name": "Table M-15: PBGC Historical Premium Rates",
+   "description": "multiemployer program; PBGC Maximum Guaranteed Benefits and Premium Rate Tables"
+  },
+  "m_16": {
+   "id": "M-16",
+   "endpoint": "data_table",
+   "name": "Table M-16: Participants by Zone Status and Participant Status",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "m_17": {
+   "id": "M-17",
+   "endpoint": "data_table",
+   "name": "Table M-17: Plans by Zone Status",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "m_18": {
+   "id": "M-18",
+   "endpoint": "data_table",
+   "name": "Table M-18: Administrative Expenses per Participant by Industry and Zone Status",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "m_19": {
+   "id": "M-19",
+   "endpoint": "data_table",
+   "name": "Table M-19: Administrative Expenses as a Percent of Benefits Paid by Industry and Zone Status",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "m_20": {
+   "id": "M-20",
+   "endpoint": "data_table",
+   "name": "Table M-20: Special Financial Assistance Paid by Plan Size",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "m_21": {
+   "id": "M-21",
+   "endpoint": "data_table",
+   "name": "Table M-21: Special Financial Assistance Paid by Industry",
+   "description": "multiemployer program; Multiemployer Supplement Tables"
+  },
+  "glance": {
+   "id": "GLANCE",
+   "endpoint": "data_table",
+   "name": "PBGC Pension Data at a Glance",
+   "description": "one-page summary of both programs: net position, premiums, benefits paid, participants, plans"
+  }
+ }
+}

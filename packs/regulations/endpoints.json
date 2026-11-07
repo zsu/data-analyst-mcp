@@ -1,0 +1,288 @@
+{
+ "base_url": "https://api.regulations.gov/v4",
+ "endpoints": {
+  "documents": {
+   "path": "/documents",
+   "method": "GET",
+   "description": "Search rulemaking documents (proposed rules, rules, notices, supporting material) across agencies. At most 10,000 per query.",
+   "params": {
+    "filter[searchTerm]": {
+     "desc": "full-text words"
+    },
+    "filter[agencyId]": {
+     "desc": "agency acronym, e.g. EPA, FDA, OSHA, CMS, FAA (comma-separated for several)"
+    },
+    "filter[docketId]": {
+     "desc": "docket id, e.g. EPA-HQ-OAR-2023-0072"
+    },
+    "filter[documentType]": {
+     "desc": "Proposed Rule | Rule | Notice | Supporting & Related Material | Other"
+    },
+    "filter[frDocNum]": {
+     "desc": "Federal Register document number, e.g. 2023-10141"
+    },
+    "filter[withinCommentPeriod]": {
+     "desc": "true = open for comment now"
+    },
+    "filter[commentEndDate][ge]": {
+     "desc": "comment period ends on or after YYYY-MM-DD"
+    },
+    "filter[commentEndDate][le]": {
+     "desc": "comment period ends on or before YYYY-MM-DD"
+    },
+    "filter[postedDate][ge]": {
+     "desc": "posted on or after YYYY-MM-DD"
+    },
+    "filter[postedDate][le]": {
+     "desc": "posted on or before YYYY-MM-DD"
+    },
+    "filter[lastModifiedDate][ge]": {
+     "desc": "modified on or after 'YYYY-MM-DD HH:MM:SS' (Eastern time); use to page past 10,000"
+    },
+    "filter[lastModifiedDate][le]": {
+     "desc": "modified on or before 'YYYY-MM-DD HH:MM:SS'"
+    },
+    "sort": {
+     "desc": "postedDate | -postedDate (default) | lastModifiedDate | commentEndDate | title | documentId"
+    }
+   },
+   "defaults": {
+    "sort": "-postedDate"
+   },
+   "records": "data",
+   "total": "meta.totalElements",
+   "paging": {
+    "type": "page",
+    "page_param": "page[number]",
+    "size_param": "page[size]",
+    "min_size": 5,
+    "size": 250,
+    "start": 1
+   },
+   "max_rows": 10000
+  },
+  "document": {
+   "path": "/documents/{documentId}",
+   "method": "GET",
+   "description": "One document's full metadata (CFR part, FR citation, page count, comment dates, file links).",
+   "params": {
+    "documentId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. EPA-HQ-OAR-2023-0072-0001"
+    },
+    "include": {
+     "desc": "attachments = add attachment metadata"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "comments": {
+   "path": "/comments",
+   "method": "GET",
+   "description": "Search posted public comments (id, title, posted date). At most 10,000 per query; the text needs the 'comment' endpoint per comment.",
+   "params": {
+    "filter[searchTerm]": {
+     "desc": "full-text words"
+    },
+    "filter[agencyId]": {
+     "desc": "agency acronym"
+    },
+    "filter[docketId]": {
+     "desc": "docket id: every comment in the docket"
+    },
+    "filter[commentOnId]": {
+     "desc": "objectId of a document (from 'documents' or 'document', e.g. 0900006485a3507a): comments on that document"
+    },
+    "filter[postedDate][ge]": {
+     "desc": "posted on or after YYYY-MM-DD"
+    },
+    "filter[postedDate][le]": {
+     "desc": "posted on or before YYYY-MM-DD"
+    },
+    "filter[lastModifiedDate][ge]": {
+     "desc": "modified on or after 'YYYY-MM-DD HH:MM:SS' (Eastern time); use to page past 10,000"
+    },
+    "filter[lastModifiedDate][le]": {
+     "desc": "modified on or before 'YYYY-MM-DD HH:MM:SS'"
+    },
+    "sort": {
+     "desc": "postedDate | -postedDate | lastModifiedDate (use with filter[lastModifiedDate][ge] to page past 10,000) | documentId"
+    }
+   },
+   "defaults": {
+    "sort": "-postedDate"
+   },
+   "records": "data",
+   "total": "meta.totalElements",
+   "paging": {
+    "type": "page",
+    "page_param": "page[number]",
+    "size_param": "page[size]",
+    "min_size": 5,
+    "size": 250,
+    "start": 1
+   },
+   "max_rows": 10000
+  },
+  "comment_count": {
+   "path": "/comments",
+   "method": "GET",
+   "description": "Number of posted comments matching the filters (one row: totalElements), without downloading them.",
+   "params": {
+    "filter[docketId]": {
+     "desc": "docket id"
+    },
+    "filter[commentOnId]": {
+     "desc": "document objectId"
+    },
+    "filter[agencyId]": {
+     "desc": "agency acronym"
+    },
+    "filter[searchTerm]": {
+     "desc": "words"
+    },
+    "filter[postedDate][ge]": {
+     "desc": "posted on or after YYYY-MM-DD"
+    },
+    "filter[postedDate][le]": {
+     "desc": "posted on or before YYYY-MM-DD"
+    },
+    "filter[lastModifiedDate][ge]": {
+     "desc": "modified on or after 'YYYY-MM-DD HH:MM:SS' (Eastern time); use to page past 10,000"
+    },
+    "filter[lastModifiedDate][le]": {
+     "desc": "modified on or before 'YYYY-MM-DD HH:MM:SS'"
+    }
+   },
+   "defaults": {
+    "page[size]": "5"
+   },
+   "records": "meta",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "comment": {
+   "path": "/comments/{commentId}",
+   "method": "GET",
+   "description": "One comment: text (attributes.comment), submitter fields as posted, organization, attachments.",
+   "params": {
+    "commentId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. EPA-HQ-OAR-2023-0072-8036"
+    },
+    "include": {
+     "desc": "attachments"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "dockets": {
+   "path": "/dockets",
+   "method": "GET",
+   "description": "Search dockets (rulemaking and nonrulemaking folders). At most 10,000 per query.",
+   "params": {
+    "filter[searchTerm]": {
+     "desc": "words"
+    },
+    "filter[agencyId]": {
+     "desc": "agency acronym"
+    },
+    "filter[docketType]": {
+     "desc": "Rulemaking | Nonrulemaking"
+    },
+    "filter[lastModifiedDate][ge]": {
+     "desc": "'YYYY-MM-DD HH:MM:SS'"
+    },
+    "filter[lastModifiedDate][le]": {
+     "desc": "'YYYY-MM-DD HH:MM:SS'"
+    },
+    "sort": {
+     "desc": "title | docketId | lastModifiedDate | -lastModifiedDate"
+    }
+   },
+   "defaults": {
+    "sort": "-lastModifiedDate"
+   },
+   "records": "data",
+   "total": "meta.totalElements",
+   "paging": {
+    "type": "page",
+    "page_param": "page[number]",
+    "size_param": "page[size]",
+    "min_size": 5,
+    "size": 250,
+    "start": 1
+   },
+   "max_rows": 10000
+  },
+  "docket": {
+   "path": "/dockets/{docketId}",
+   "method": "GET",
+   "description": "One docket: title, RIN, abstract, keywords, program, type.",
+   "params": {
+    "docketId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. EPA-HQ-OAR-2023-0072"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "proposed_rules": {
+   "id": "Proposed Rule",
+   "name": "Proposed rules",
+   "description": "documents with filter[documentType] = Proposed Rule",
+   "endpoint": "documents"
+  },
+  "final_rules": {
+   "id": "Rule",
+   "name": "Final rules",
+   "description": "documents with filter[documentType] = Rule",
+   "endpoint": "documents"
+  },
+  "notices": {
+   "id": "Notice",
+   "name": "Notices",
+   "description": "documents with filter[documentType] = Notice",
+   "endpoint": "documents"
+  },
+  "open_for_comment": {
+   "id": "true",
+   "name": "Open comment periods",
+   "description": "documents with filter[withinCommentPeriod] = true",
+   "endpoint": "documents"
+  },
+  "public_comments": {
+   "id": "comments",
+   "name": "Public comments",
+   "description": "comments on a docket (filter[docketId]) or a document (filter[commentOnId] = objectId)",
+   "endpoint": "comments"
+  },
+  "comment_totals": {
+   "id": "comment_count",
+   "name": "Comment counts",
+   "description": "how many comments a docket or document received (posted)",
+   "endpoint": "comment_count"
+  },
+  "agency_ids": {
+   "id": "EPA; FDA; CMS; OSHA; FAA; NHTSA; DOT; USDA; FWS; NOAA; CFPB; DOE; ED; HHS; IRS",
+   "name": "Agency acronyms",
+   "description": "values for filter[agencyId]; some independent agencies (SEC, FCC, FERC) run their own comment systems",
+   "endpoint": "documents"
+  }
+ }
+}

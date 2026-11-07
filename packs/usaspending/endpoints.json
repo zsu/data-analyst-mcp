@@ -1,0 +1,1316 @@
+{
+ "base_url": "https://api.usaspending.gov/api/v2",
+ "endpoints": {
+  "awards": {
+   "path": "/search/spending_by_award/",
+   "method": "POST",
+   "description": "Prime awards matching filters (one award type group per request); Award Amount is the award's total obligation, not the period's.",
+   "params": {
+    "fiscal_year": {
+     "desc": "federal fiscal year (FY2024 = 2023-10-01..2024-09-30), or [first, last]; earliest FY2008"
+    },
+    "start_date": {
+     "desc": "YYYY-MM-DD, not before 2007-10-01 (instead of fiscal_year)"
+    },
+    "end_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "award_type": {
+     "desc": "award type group (contracts, idvs, grants, loans, direct_payments, other_financial_assistance, insurance) or a list of codes from ONE group"
+    },
+    "keyword": {
+     "desc": "text search (string or list)"
+    },
+    "state": {
+     "desc": "place of performance state: USPS code, FIPS or name"
+    },
+    "agency": {
+     "desc": "awarding toptier agency: code (075), alias (hhs) or exact name"
+    },
+    "funding_agency": {
+     "desc": "funding toptier agency: code, alias or exact name"
+    },
+    "recipient": {
+     "desc": "recipient name or UEI search text"
+    },
+    "filters": {
+     "desc": "raw API filters object; merged over the convenience parameters"
+    },
+    "fields": {
+     "desc": "columns to return (defaults to a standard set)"
+    },
+    "sort": {
+     "desc": "a field name in fields (default Award Amount; Loan Value for loans)"
+    },
+    "order": {
+     "desc": "desc or asc"
+    }
+   },
+   "body": {
+    "fields": [
+     "Award ID",
+     "Recipient Name",
+     "recipient_id",
+     "Award Amount",
+     "Total Outlays",
+     "Awarding Agency",
+     "Awarding Sub Agency",
+     "Award Type",
+     "Description",
+     "Start Date",
+     "End Date",
+     "Place of Performance State Code",
+     "generated_internal_id"
+    ],
+    "sort": "Award Amount",
+    "order": "desc"
+   },
+   "records": "results",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "limit",
+    "size": 100,
+    "start": 1,
+    "in": "body"
+   },
+   "max_rows": 10000
+  },
+  "by_category": {
+   "path": "/search/spending_by_category/{category}/",
+   "method": "POST",
+   "description": "Obligations in the period (transaction action dates) by one category: awarding_agency, awarding_subagency, funding_agency, recipient, cfda, naics, psc, state_territory, county, district, country, federal_account, defc.",
+   "params": {
+    "category": {
+     "in": "path",
+     "required": true,
+     "desc": "category",
+     "enum": [
+      "awarding_agency",
+      "awarding_subagency",
+      "funding_agency",
+      "funding_subagency",
+      "recipient",
+      "cfda",
+      "naics",
+      "psc",
+      "state_territory",
+      "county",
+      "district",
+      "country",
+      "federal_account",
+      "defc"
+     ]
+    },
+    "fiscal_year": {
+     "desc": "federal fiscal year (FY2024 = 2023-10-01..2024-09-30), or [first, last]; earliest FY2008"
+    },
+    "start_date": {
+     "desc": "YYYY-MM-DD, not before 2007-10-01 (instead of fiscal_year)"
+    },
+    "end_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "award_type": {
+     "desc": "award type group (contracts, idvs, grants, loans, direct_payments, other_financial_assistance, insurance) or a list of codes from ONE group"
+    },
+    "keyword": {
+     "desc": "text search (string or list)"
+    },
+    "state": {
+     "desc": "place of performance state: USPS code, FIPS or name"
+    },
+    "agency": {
+     "desc": "awarding toptier agency: code (075), alias (hhs) or exact name"
+    },
+    "funding_agency": {
+     "desc": "funding toptier agency: code, alias or exact name"
+    },
+    "recipient": {
+     "desc": "recipient name or UEI search text"
+    },
+    "filters": {
+     "desc": "raw API filters object; merged over the convenience parameters"
+    }
+   },
+   "body": {},
+   "records": "results",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "limit",
+    "size": 100,
+    "start": 1,
+    "in": "body"
+   },
+   "max_rows": 5000
+  },
+  "over_time": {
+   "path": "/search/spending_over_time/",
+   "method": "POST",
+   "description": "Obligations by fiscal year, fiscal quarter or fiscal month, with contract/grant/loan/direct/other splits.",
+   "params": {
+    "group": {
+     "desc": "fiscal_year, quarter or month (fiscal)",
+     "enum": [
+      "fiscal_year",
+      "quarter",
+      "month"
+     ]
+    },
+    "fiscal_year": {
+     "desc": "federal fiscal year (FY2024 = 2023-10-01..2024-09-30), or [first, last]; earliest FY2008"
+    },
+    "start_date": {
+     "desc": "YYYY-MM-DD, not before 2007-10-01 (instead of fiscal_year)"
+    },
+    "end_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "award_type": {
+     "desc": "award type group (contracts, idvs, grants, loans, direct_payments, other_financial_assistance, insurance) or a list of codes from ONE group"
+    },
+    "keyword": {
+     "desc": "text search (string or list)"
+    },
+    "state": {
+     "desc": "place of performance state: USPS code, FIPS or name"
+    },
+    "agency": {
+     "desc": "awarding toptier agency: code (075), alias (hhs) or exact name"
+    },
+    "funding_agency": {
+     "desc": "funding toptier agency: code, alias or exact name"
+    },
+    "recipient": {
+     "desc": "recipient name or UEI search text"
+    },
+    "filters": {
+     "desc": "raw API filters object; merged over the convenience parameters"
+    }
+   },
+   "defaults": {
+    "group": "fiscal_year"
+   },
+   "body": {},
+   "records": "results",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "by_geography": {
+   "path": "/search/spending_by_geography/",
+   "method": "POST",
+   "description": "Obligations in the period by state, county or congressional district (place of performance or recipient location), with population and per capita.",
+   "params": {
+    "scope": {
+     "desc": "place_of_performance or recipient_location",
+     "enum": [
+      "place_of_performance",
+      "recipient_location"
+     ]
+    },
+    "geo_layer": {
+     "desc": "state, county or district",
+     "enum": [
+      "state",
+      "county",
+      "district"
+     ]
+    },
+    "geo_layer_filters": {
+     "desc": "list of shape codes to keep, e.g. [\"MD\"] or county FIPS"
+    },
+    "fiscal_year": {
+     "desc": "federal fiscal year (FY2024 = 2023-10-01..2024-09-30), or [first, last]; earliest FY2008"
+    },
+    "start_date": {
+     "desc": "YYYY-MM-DD, not before 2007-10-01 (instead of fiscal_year)"
+    },
+    "end_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "award_type": {
+     "desc": "award type group (contracts, idvs, grants, loans, direct_payments, other_financial_assistance, insurance) or a list of codes from ONE group"
+    },
+    "keyword": {
+     "desc": "text search (string or list)"
+    },
+    "state": {
+     "desc": "place of performance state: USPS code, FIPS or name"
+    },
+    "agency": {
+     "desc": "awarding toptier agency: code (075), alias (hhs) or exact name"
+    },
+    "funding_agency": {
+     "desc": "funding toptier agency: code, alias or exact name"
+    },
+    "recipient": {
+     "desc": "recipient name or UEI search text"
+    },
+    "filters": {
+     "desc": "raw API filters object; merged over the convenience parameters"
+    }
+   },
+   "defaults": {
+    "scope": "place_of_performance",
+    "geo_layer": "state"
+   },
+   "body": {},
+   "records": "results",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "award_count": {
+   "path": "/search/spending_by_award_count/",
+   "method": "POST",
+   "description": "Number of prime awards per award type group for the filters (one row).",
+   "params": {
+    "fiscal_year": {
+     "desc": "federal fiscal year (FY2024 = 2023-10-01..2024-09-30), or [first, last]; earliest FY2008"
+    },
+    "start_date": {
+     "desc": "YYYY-MM-DD, not before 2007-10-01 (instead of fiscal_year)"
+    },
+    "end_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "award_type": {
+     "desc": "award type group (contracts, idvs, grants, loans, direct_payments, other_financial_assistance, insurance) or a list of codes from ONE group"
+    },
+    "keyword": {
+     "desc": "text search (string or list)"
+    },
+    "state": {
+     "desc": "place of performance state: USPS code, FIPS or name"
+    },
+    "agency": {
+     "desc": "awarding toptier agency: code (075), alias (hhs) or exact name"
+    },
+    "funding_agency": {
+     "desc": "funding toptier agency: code, alias or exact name"
+    },
+    "recipient": {
+     "desc": "recipient name or UEI search text"
+    },
+    "filters": {
+     "desc": "raw API filters object; merged over the convenience parameters"
+    }
+   },
+   "body": {},
+   "records": "results",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "agency": {
+   "path": "/agency/{toptier_code}/",
+   "method": "GET",
+   "description": "Agency overview for a fiscal year: name, abbreviation, mission, website, subtier count.",
+   "params": {
+    "toptier_code": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "toptier code (075) or alias (hhs)"
+    },
+    "fiscal_year": {
+     "desc": "fiscal year (default: current)"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "agency_budgetary_resources": {
+   "path": "/agency/{toptier_code}/budgetary_resources/",
+   "method": "GET",
+   "description": "Agency budgetary resources, obligations and outlays by fiscal year (agency_data_by_year), with cumulative obligations by period.",
+   "params": {
+    "toptier_code": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "toptier code or alias"
+    }
+   },
+   "records": "agency_data_by_year",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "toptier_agencies": {
+   "path": "/references/toptier_agencies/",
+   "method": "GET",
+   "description": "Every toptier agency with code, abbreviation, current-year budget authority, obligations and outlays.",
+   "params": {
+    "sort": {
+     "desc": "agency_name, budget_authority_amount, obligated_amount, outlay_amount"
+    },
+    "order": {
+     "desc": "asc or desc"
+    }
+   },
+   "records": "results",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "recipient_state": {
+   "path": "/recipient/state/{fips}/",
+   "method": "GET",
+   "description": "Prime award totals for one state (place of performance) in a fiscal year.",
+   "params": {
+    "fips": {
+     "in": "path",
+     "desc": "state FIPS (24); or give 'state' (MD, Maryland)"
+    },
+    "state": {
+     "desc": "state USPS code, FIPS or name (fills fips)"
+    },
+    "year": {
+     "desc": "fiscal year, 'latest' or 'all'"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "award": {
+   "path": "/awards/{award_id}/",
+   "method": "GET",
+   "description": "One award in detail by its generated_internal_id (CONT_AWD_..., ASST_NON_...).",
+   "params": {
+    "award_id": {
+     "in": "path",
+     "required": true,
+     "desc": "generated_internal_id from the awards endpoint"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "award_type:contracts": {
+   "id": "contracts",
+   "kind": "award_type",
+   "codes": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "name": "award type group contracts",
+   "description": "award_type_codes A, B, C, D"
+  },
+  "award_type:idvs": {
+   "id": "idvs",
+   "kind": "award_type",
+   "codes": [
+    "IDV_A",
+    "IDV_B",
+    "IDV_B_A",
+    "IDV_B_B",
+    "IDV_B_C",
+    "IDV_C",
+    "IDV_D",
+    "IDV_E"
+   ],
+   "name": "award type group idvs",
+   "description": "award_type_codes IDV_A, IDV_B, IDV_B_A, IDV_B_B, IDV_B_C, IDV_C, IDV_D, IDV_E"
+  },
+  "award_type:grants": {
+   "id": "grants",
+   "kind": "award_type",
+   "codes": [
+    "02",
+    "03",
+    "04",
+    "05",
+    "F001",
+    "F002"
+   ],
+   "name": "award type group grants",
+   "description": "award_type_codes 02, 03, 04, 05, F001, F002"
+  },
+  "award_type:loans": {
+   "id": "loans",
+   "kind": "award_type",
+   "codes": [
+    "07",
+    "08",
+    "F003",
+    "F004"
+   ],
+   "name": "award type group loans",
+   "description": "award_type_codes 07, 08, F003, F004"
+  },
+  "award_type:direct_payments": {
+   "id": "direct_payments",
+   "kind": "award_type",
+   "codes": [
+    "06",
+    "10",
+    "F006",
+    "F007"
+   ],
+   "name": "award type group direct_payments",
+   "description": "award_type_codes 06, 10, F006, F007"
+  },
+  "award_type:other_financial_assistance": {
+   "id": "other_financial_assistance",
+   "kind": "award_type",
+   "codes": [
+    "09",
+    "11",
+    "-1",
+    "F005",
+    "F008",
+    "F009",
+    "F010"
+   ],
+   "name": "award type group other_financial_assistance",
+   "description": "award_type_codes 09, 11, -1, F005, F008, F009, F010"
+  },
+  "award_type:insurance": {
+   "id": "insurance",
+   "kind": "award_type",
+   "codes": [
+    "09",
+    "F005"
+   ],
+   "name": "award type group insurance",
+   "description": "award_type_codes 09, F005"
+  },
+  "aahc": {
+   "id": "247",
+   "kind": "agency",
+   "name": "400 Years of African-American History Commission",
+   "description": "toptier agency AAHC",
+   "endpoint": "agency"
+  },
+  "usab": {
+   "id": "310",
+   "kind": "agency",
+   "name": "Access Board",
+   "description": "toptier agency USAB",
+   "endpoint": "agency"
+  },
+  "acus": {
+   "id": "302",
+   "kind": "agency",
+   "name": "Administrative Conference of the U.S.",
+   "description": "toptier agency ACUS",
+   "endpoint": "agency"
+  },
+  "achp": {
+   "id": "306",
+   "kind": "agency",
+   "name": "Advisory Council on Historic Preservation",
+   "description": "toptier agency ACHP",
+   "endpoint": "agency"
+  },
+  "usadf": {
+   "id": "166",
+   "kind": "agency",
+   "name": "African Development Foundation",
+   "description": "toptier agency USADF",
+   "endpoint": "agency"
+  },
+  "usaid": {
+   "id": "072",
+   "kind": "agency",
+   "name": "Agency for International Development",
+   "description": "toptier agency USAID",
+   "endpoint": "agency"
+  },
+  "abmc": {
+   "id": "074",
+   "kind": "agency",
+   "name": "American Battle Monuments Commission",
+   "description": "toptier agency ABMC",
+   "endpoint": "agency"
+  },
+  "arc": {
+   "id": "309",
+   "kind": "agency",
+   "name": "Appalachian Regional Commission",
+   "description": "toptier agency ARC",
+   "endpoint": "agency"
+  },
+  "afrh": {
+   "id": "084",
+   "kind": "agency",
+   "name": "Armed Forces Retirement Home",
+   "description": "toptier agency AFRH",
+   "endpoint": "agency"
+  },
+  "goldwater": {
+   "id": "313",
+   "kind": "agency",
+   "name": "Barry Goldwater Scholarship and Excellence In Education Foundation",
+   "description": "toptier agency GOLDWATER",
+   "endpoint": "agency"
+  },
+  "heritageabroad": {
+   "id": "321",
+   "kind": "agency",
+   "name": "Commission for the Preservation of America's Heritage Abroad",
+   "description": "toptier agency HERITAGEABROAD",
+   "endpoint": "agency"
+  },
+  "cfa": {
+   "id": "323",
+   "kind": "agency",
+   "name": "Commission of Fine Arts",
+   "description": "toptier agency CFA",
+   "endpoint": "agency"
+  },
+  "usccr": {
+   "id": "326",
+   "kind": "agency",
+   "name": "Commission on Civil Rights",
+   "description": "toptier agency USCCR",
+   "endpoint": "agency"
+  },
+  "abilityone": {
+   "id": "338",
+   "kind": "agency",
+   "name": "Committee for Purchase from People Who Are Blind or Severely Disabled",
+   "description": "toptier agency ABILITYONE",
+   "endpoint": "agency"
+  },
+  "cftc": {
+   "id": "339",
+   "kind": "agency",
+   "name": "Commodity Futures Trading Commission",
+   "description": "toptier agency CFTC",
+   "endpoint": "agency"
+  },
+  "cfpb": {
+   "id": "581",
+   "kind": "agency",
+   "name": "Consumer Financial Protection Bureau",
+   "description": "toptier agency CFPB",
+   "endpoint": "agency"
+  },
+  "cpsc": {
+   "id": "061",
+   "kind": "agency",
+   "name": "Consumer Product Safety Commission",
+   "description": "toptier agency CPSC",
+   "endpoint": "agency"
+  },
+  "cncs": {
+   "id": "485",
+   "kind": "agency",
+   "name": "Corporation for National and Community Service",
+   "description": "toptier agency CNCS",
+   "endpoint": "agency"
+  },
+  "usace": {
+   "id": "096",
+   "kind": "agency",
+   "name": "Corps of Engineers - Civil Works",
+   "description": "toptier agency USACE",
+   "endpoint": "agency"
+  },
+  "cigie": {
+   "id": "542",
+   "kind": "agency",
+   "name": "Council of the Inspectors General on Integrity and Efficiency",
+   "description": "toptier agency CIGIE",
+   "endpoint": "agency"
+  },
+  "csosa": {
+   "id": "9553",
+   "kind": "agency",
+   "name": "Court Services and Offender Supervision Agency",
+   "description": "toptier agency CSOSA",
+   "endpoint": "agency"
+  },
+  "dnfsb": {
+   "id": "347",
+   "kind": "agency",
+   "name": "Defense Nuclear Facilities Safety Board",
+   "description": "toptier agency DNFSB",
+   "endpoint": "agency"
+  },
+  "dra": {
+   "id": "517",
+   "kind": "agency",
+   "name": "Delta Regional Authority",
+   "description": "toptier agency DRA",
+   "endpoint": "agency"
+  },
+  "denali": {
+   "id": "513",
+   "kind": "agency",
+   "name": "Denali Commission",
+   "description": "toptier agency DENALI",
+   "endpoint": "agency"
+  },
+  "usda": {
+   "id": "012",
+   "kind": "agency",
+   "name": "Department of Agriculture",
+   "description": "toptier agency USDA",
+   "endpoint": "agency"
+  },
+  "doc": {
+   "id": "013",
+   "kind": "agency",
+   "name": "Department of Commerce",
+   "description": "toptier agency DOC",
+   "endpoint": "agency"
+  },
+  "dod": {
+   "id": "097",
+   "kind": "agency",
+   "name": "Department of Defense",
+   "description": "toptier agency DOD",
+   "endpoint": "agency"
+  },
+  "ed": {
+   "id": "091",
+   "kind": "agency",
+   "name": "Department of Education",
+   "description": "toptier agency ED",
+   "endpoint": "agency"
+  },
+  "doe": {
+   "id": "089",
+   "kind": "agency",
+   "name": "Department of Energy",
+   "description": "toptier agency DOE",
+   "endpoint": "agency"
+  },
+  "hhs": {
+   "id": "075",
+   "kind": "agency",
+   "name": "Department of Health and Human Services",
+   "description": "toptier agency HHS",
+   "endpoint": "agency"
+  },
+  "dhs": {
+   "id": "070",
+   "kind": "agency",
+   "name": "Department of Homeland Security",
+   "description": "toptier agency DHS",
+   "endpoint": "agency"
+  },
+  "hud": {
+   "id": "086",
+   "kind": "agency",
+   "name": "Department of Housing and Urban Development",
+   "description": "toptier agency HUD",
+   "endpoint": "agency"
+  },
+  "doj": {
+   "id": "015",
+   "kind": "agency",
+   "name": "Department of Justice",
+   "description": "toptier agency DOJ",
+   "endpoint": "agency"
+  },
+  "dol": {
+   "id": "1601",
+   "kind": "agency",
+   "name": "Department of Labor",
+   "description": "toptier agency DOL",
+   "endpoint": "agency"
+  },
+  "dos": {
+   "id": "019",
+   "kind": "agency",
+   "name": "Department of State",
+   "description": "toptier agency DOS",
+   "endpoint": "agency"
+  },
+  "dot": {
+   "id": "069",
+   "kind": "agency",
+   "name": "Department of Transportation",
+   "description": "toptier agency DOT",
+   "endpoint": "agency"
+  },
+  "va": {
+   "id": "036",
+   "kind": "agency",
+   "name": "Department of Veterans Affairs",
+   "description": "toptier agency VA",
+   "endpoint": "agency"
+  },
+  "doi": {
+   "id": "014",
+   "kind": "agency",
+   "name": "Department of the Interior",
+   "description": "toptier agency DOI",
+   "endpoint": "agency"
+  },
+  "treas": {
+   "id": "020",
+   "kind": "agency",
+   "name": "Department of the Treasury",
+   "description": "toptier agency TREAS",
+   "endpoint": "agency"
+  },
+  "dc_courts": {
+   "id": "349",
+   "kind": "agency",
+   "name": "District of Columbia Courts",
+   "description": "toptier agency DC COURTS",
+   "endpoint": "agency"
+  },
+  "eac": {
+   "id": "525",
+   "kind": "agency",
+   "name": "Election Assistance Commission",
+   "description": "toptier agency EAC",
+   "endpoint": "agency"
+  },
+  "epa": {
+   "id": "068",
+   "kind": "agency",
+   "name": "Environmental Protection Agency",
+   "description": "toptier agency EPA",
+   "endpoint": "agency"
+  },
+  "eeoc": {
+   "id": "045",
+   "kind": "agency",
+   "name": "Equal Employment Opportunity Commission",
+   "description": "toptier agency EEOC",
+   "endpoint": "agency"
+  },
+  "eop": {
+   "id": "1100",
+   "kind": "agency",
+   "name": "Executive Office of the President",
+   "description": "toptier agency EOP",
+   "endpoint": "agency"
+  },
+  "exim": {
+   "id": "083",
+   "kind": "agency",
+   "name": "Export-Import Bank of the United States",
+   "description": "toptier agency EXIM",
+   "endpoint": "agency"
+  },
+  "fcsic": {
+   "id": "7802",
+   "kind": "agency",
+   "name": "Farm Credit System Insurance Corporation",
+   "description": "toptier agency FCSIC",
+   "endpoint": "agency"
+  },
+  "fcc": {
+   "id": "027",
+   "kind": "agency",
+   "name": "Federal Communications Commission",
+   "description": "toptier agency FCC",
+   "endpoint": "agency"
+  },
+  "fdic": {
+   "id": "051",
+   "kind": "agency",
+   "name": "Federal Deposit Insurance Corporation",
+   "description": "toptier agency FDIC",
+   "endpoint": "agency"
+  },
+  "fec": {
+   "id": "360",
+   "kind": "agency",
+   "name": "Federal Election Commission",
+   "description": "toptier agency FEC",
+   "endpoint": "agency"
+  },
+  "ffiec": {
+   "id": "362",
+   "kind": "agency",
+   "name": "Federal Financial Institutions Examination Council",
+   "description": "toptier agency FFIEC",
+   "endpoint": "agency"
+  },
+  "flra": {
+   "id": "054",
+   "kind": "agency",
+   "name": "Federal Labor Relations Authority",
+   "description": "toptier agency FLRA",
+   "endpoint": "agency"
+  },
+  "fmc": {
+   "id": "065",
+   "kind": "agency",
+   "name": "Federal Maritime Commission",
+   "description": "toptier agency FMC",
+   "endpoint": "agency"
+  },
+  "fmcs": {
+   "id": "093",
+   "kind": "agency",
+   "name": "Federal Mediation and Conciliation Service",
+   "description": "toptier agency FMCS",
+   "endpoint": "agency"
+  },
+  "fmshrc": {
+   "id": "368",
+   "kind": "agency",
+   "name": "Federal Mine Safety and Health Review Commission",
+   "description": "toptier agency FMSHRC",
+   "endpoint": "agency"
+  },
+  "fpisc": {
+   "id": "473",
+   "kind": "agency",
+   "name": "Federal Permitting Improvement Steering Council",
+   "description": "toptier agency FPISC",
+   "endpoint": "agency"
+  },
+  "ftc": {
+   "id": "029",
+   "kind": "agency",
+   "name": "Federal Trade Commission",
+   "description": "toptier agency FTC",
+   "endpoint": "agency"
+  },
+  "gsa": {
+   "id": "047",
+   "kind": "agency",
+   "name": "General Services Administration",
+   "description": "toptier agency GSA",
+   "endpoint": "agency"
+  },
+  "gao": {
+   "id": "005",
+   "kind": "agency",
+   "name": "Government Accountability Office",
+   "description": "toptier agency GAO",
+   "endpoint": "agency"
+  },
+  "gcerc": {
+   "id": "471",
+   "kind": "agency",
+   "name": "Gulf Coast Ecosystem Restoration Council",
+   "description": "toptier agency GCERC",
+   "endpoint": "agency"
+  },
+  "truman": {
+   "id": "372",
+   "kind": "agency",
+   "name": "Harry S Truman Scholarship Foundation",
+   "description": "toptier agency TRUMAN",
+   "endpoint": "agency"
+  },
+  "imls": {
+   "id": "474",
+   "kind": "agency",
+   "name": "Institute of Museum and Library Services",
+   "description": "toptier agency IMLS",
+   "endpoint": "agency"
+  },
+  "iaf": {
+   "id": "164",
+   "kind": "agency",
+   "name": "Inter-American Foundation",
+   "description": "toptier agency IAF",
+   "endpoint": "agency"
+  },
+  "usitc": {
+   "id": "034",
+   "kind": "agency",
+   "name": "International Trade Commission",
+   "description": "toptier agency USITC",
+   "endpoint": "agency"
+  },
+  "madison": {
+   "id": "381",
+   "kind": "agency",
+   "name": "James Madison Memorial Fellowship Foundation",
+   "description": "toptier agency MADISON",
+   "endpoint": "agency"
+  },
+  "jusfc": {
+   "id": "382",
+   "kind": "agency",
+   "name": "Japan-United States Friendship Commission",
+   "description": "toptier agency JUSFC",
+   "endpoint": "agency"
+  },
+  "kennedy_center": {
+   "id": "3301",
+   "kind": "agency",
+   "name": "John F. Kennedy Center for the Performing Arts",
+   "description": "toptier agency KENNEDY CENTER",
+   "endpoint": "agency"
+  },
+  "mmc": {
+   "id": "387",
+   "kind": "agency",
+   "name": "Marine Mammal Commission",
+   "description": "toptier agency MMC",
+   "endpoint": "agency"
+  },
+  "mspb": {
+   "id": "389",
+   "kind": "agency",
+   "name": "Merit Systems Protection Board",
+   "description": "toptier agency MSPB",
+   "endpoint": "agency"
+  },
+  "mcc": {
+   "id": "524",
+   "kind": "agency",
+   "name": "Millennium Challenge Corporation",
+   "description": "toptier agency MCC",
+   "endpoint": "agency"
+  },
+  "udall": {
+   "id": "487",
+   "kind": "agency",
+   "name": "Morris K. Udall and Stewart L. Udall Foundation",
+   "description": "toptier agency UDALL",
+   "endpoint": "agency"
+  },
+  "nasa": {
+   "id": "080",
+   "kind": "agency",
+   "name": "National Aeronautics and Space Administration",
+   "description": "toptier agency NASA",
+   "endpoint": "agency"
+  },
+  "nara": {
+   "id": "088",
+   "kind": "agency",
+   "name": "National Archives and Records Administration",
+   "description": "toptier agency NARA",
+   "endpoint": "agency"
+  },
+  "ncpc": {
+   "id": "394",
+   "kind": "agency",
+   "name": "National Capital Planning Commission",
+   "description": "toptier agency NCPC",
+   "endpoint": "agency"
+  },
+  "ncd": {
+   "id": "413",
+   "kind": "agency",
+   "name": "National Council on Disability",
+   "description": "toptier agency NCD",
+   "endpoint": "agency"
+  },
+  "ncua": {
+   "id": "025",
+   "kind": "agency",
+   "name": "National Credit Union Administration",
+   "description": "toptier agency NCUA",
+   "endpoint": "agency"
+  },
+  "nea": {
+   "id": "417",
+   "kind": "agency",
+   "name": "National Endowment for the Arts",
+   "description": "toptier agency NEA",
+   "endpoint": "agency"
+  },
+  "neh": {
+   "id": "418",
+   "kind": "agency",
+   "name": "National Endowment for the Humanities",
+   "description": "toptier agency NEH",
+   "endpoint": "agency"
+  },
+  "nlrb": {
+   "id": "420",
+   "kind": "agency",
+   "name": "National Labor Relations Board",
+   "description": "toptier agency NLRB",
+   "endpoint": "agency"
+  },
+  "nmb": {
+   "id": "421",
+   "kind": "agency",
+   "name": "National Mediation Board",
+   "description": "toptier agency NMB",
+   "endpoint": "agency"
+  },
+  "nsf": {
+   "id": "049",
+   "kind": "agency",
+   "name": "National Science Foundation",
+   "description": "toptier agency NSF",
+   "endpoint": "agency"
+  },
+  "ntsb": {
+   "id": "424",
+   "kind": "agency",
+   "name": "National Transportation Safety Board",
+   "description": "toptier agency NTSB",
+   "endpoint": "agency"
+  },
+  "nbrc": {
+   "id": "573",
+   "kind": "agency",
+   "name": "Northern Border Regional Commission",
+   "description": "toptier agency NBRC",
+   "endpoint": "agency"
+  },
+  "nrc": {
+   "id": "031",
+   "kind": "agency",
+   "name": "Nuclear Regulatory Commission",
+   "description": "toptier agency NRC",
+   "endpoint": "agency"
+  },
+  "nwtrb": {
+   "id": "431",
+   "kind": "agency",
+   "name": "Nuclear Waste Technical Review Board",
+   "description": "toptier agency NWTRB",
+   "endpoint": "agency"
+  },
+  "oshrc": {
+   "id": "432",
+   "kind": "agency",
+   "name": "Occupational Safety and Health Review Commission",
+   "description": "toptier agency OSHRC",
+   "endpoint": "agency"
+  },
+  "oge": {
+   "id": "434",
+   "kind": "agency",
+   "name": "Office of Government Ethics",
+   "description": "toptier agency OGE",
+   "endpoint": "agency"
+  },
+  "onhir": {
+   "id": "435",
+   "kind": "agency",
+   "name": "Office of Navajo and Hopi Indian Relocation",
+   "description": "toptier agency ONHIR",
+   "endpoint": "agency"
+  },
+  "opm": {
+   "id": "024",
+   "kind": "agency",
+   "name": "Office of Personnel Management",
+   "description": "toptier agency OPM",
+   "endpoint": "agency"
+  },
+  "osc": {
+   "id": "062",
+   "kind": "agency",
+   "name": "Office of Special Counsel",
+   "description": "toptier agency OSC",
+   "endpoint": "agency"
+  },
+  "opic": {
+   "id": "071",
+   "kind": "agency",
+   "name": "Overseas Private Investment Corporation",
+   "description": "toptier agency OPIC",
+   "endpoint": "agency"
+  },
+  "pcortf": {
+   "id": "579",
+   "kind": "agency",
+   "name": "Patient-Centered Outcomes Research Trust Fund",
+   "description": "toptier agency PCORTF",
+   "endpoint": "agency"
+  },
+  "pc": {
+   "id": "1125",
+   "kind": "agency",
+   "name": "Peace Corps",
+   "description": "toptier agency PC",
+   "endpoint": "agency"
+  },
+  "pbgc": {
+   "id": "1602",
+   "kind": "agency",
+   "name": "Pension Benefit Guaranty Corporation",
+   "description": "toptier agency PBGC",
+   "endpoint": "agency"
+  },
+  "presidio": {
+   "id": "512",
+   "kind": "agency",
+   "name": "Presidio Trust",
+   "description": "toptier agency PRESIDIO",
+   "endpoint": "agency"
+  },
+  "pclob": {
+   "id": "535",
+   "kind": "agency",
+   "name": "Privacy and Civil Liberties Oversight Board",
+   "description": "toptier agency PCLOB",
+   "endpoint": "agency"
+  },
+  "pbrb": {
+   "id": "290",
+   "kind": "agency",
+   "name": "Public Buildings Reform Board",
+   "description": "toptier agency PBRB",
+   "endpoint": "agency"
+  },
+  "rrb": {
+   "id": "060",
+   "kind": "agency",
+   "name": "Railroad Retirement Board",
+   "description": "toptier agency RRB",
+   "endpoint": "agency"
+  },
+  "sec": {
+   "id": "050",
+   "kind": "agency",
+   "name": "Securities and Exchange Commission",
+   "description": "toptier agency SEC",
+   "endpoint": "agency"
+  },
+  "sss": {
+   "id": "090",
+   "kind": "agency",
+   "name": "Selective Service System",
+   "description": "toptier agency SSS",
+   "endpoint": "agency"
+  },
+  "sba": {
+   "id": "073",
+   "kind": "agency",
+   "name": "Small Business Administration",
+   "description": "toptier agency SBA",
+   "endpoint": "agency"
+  },
+  "ssa": {
+   "id": "028",
+   "kind": "agency",
+   "name": "Social Security Administration",
+   "description": "toptier agency SSA",
+   "endpoint": "agency"
+  },
+  "scrc": {
+   "id": "574",
+   "kind": "agency",
+   "name": "Southeast Crescent Regional Commission",
+   "description": "toptier agency SCRC",
+   "endpoint": "agency"
+  },
+  "sbrc": {
+   "id": "569",
+   "kind": "agency",
+   "name": "Southwest Border Regional Commission",
+   "description": "toptier agency SBRC",
+   "endpoint": "agency"
+  },
+  "stb": {
+   "id": "472",
+   "kind": "agency",
+   "name": "Surface Transportation Board",
+   "description": "toptier agency STB",
+   "endpoint": "agency"
+  },
+  "usagm": {
+   "id": "514",
+   "kind": "agency",
+   "name": "U.S. Agency for Global Media",
+   "description": "toptier agency USAGM",
+   "endpoint": "agency"
+  },
+  "usich": {
+   "id": "376",
+   "kind": "agency",
+   "name": "U.S. Interagency Council on Homelessness",
+   "description": "toptier agency USICH",
+   "endpoint": "agency"
+  },
+  "dfc": {
+   "id": "077",
+   "kind": "agency",
+   "name": "U.S. International Development Finance Corporation",
+   "description": "toptier agency DFC",
+   "endpoint": "agency"
+  },
+  "csb": {
+   "id": "510",
+   "kind": "agency",
+   "name": "United States Chemical Safety Board",
+   "description": "toptier agency CSB",
+   "endpoint": "agency"
+  },
+  "cavc": {
+   "id": "345",
+   "kind": "agency",
+   "name": "United States Court of Appeals for Veterans Claims",
+   "description": "toptier agency CAVC",
+   "endpoint": "agency"
+  },
+  "ustda": {
+   "id": "1133",
+   "kind": "agency",
+   "name": "United States Trade and Development Agency",
+   "description": "toptier agency USTDA",
+   "endpoint": "agency"
+  },
+  "vef": {
+   "id": "519",
+   "kind": "agency",
+   "name": "Vietnam Education Foundation",
+   "description": "toptier agency VEF",
+   "endpoint": "agency"
+  }
+ },
+ "award_type_labels": {
+  "contracts": {
+   "A": "BPA Call",
+   "B": "Purchase Order",
+   "C": "Delivery Order",
+   "D": "Definitive Contract"
+  },
+  "loans": {
+   "07": "Direct Loan",
+   "08": "Guaranteed/Insured Loan",
+   "F003": "Direct Loan",
+   "F004": "Loan Guarantee"
+  },
+  "idvs": {
+   "IDV_A": "GWAC Government Wide Acquisition Contract",
+   "IDV_B": "IDC Multi-Agency Contract, Other Indefinite Delivery Contract",
+   "IDV_B_A": "IDC Indefinite Delivery Contract / Requirements",
+   "IDV_B_B": "IDC Indefinite Delivery Contract / Indefinite Quantity",
+   "IDV_B_C": "IDC Indefinite Delivery Contract / Definite Quantity",
+   "IDV_C": "FSS Federal Supply Schedule",
+   "IDV_D": "BOA Basic Ordering Agreement",
+   "IDV_E": "BPA Blanket Purchase Agreement"
+  },
+  "grants": {
+   "02": "Block Grant",
+   "03": "Formula Grant",
+   "04": "Project Grant",
+   "05": "Cooperative Agreement",
+   "F001": "Grant",
+   "F002": "Cooperative Agreement"
+  },
+  "other_financial_assistance": {
+   "09": "Insurance",
+   "F005": "Indemnity / Insurance (non-loan)",
+   "11": "Other Financial Assistance",
+   "-1": "Not Specified",
+   "F008": "Asset Forfeiture / Equitable Sharing",
+   "F009": "Sale, Exchange, or Donation of Property and Goods",
+   "F010": "Other Financial Assistance"
+  },
+  "direct_payments": {
+   "06": "Direct Payment for Specified Use",
+   "10": "Direct Payment with Unrestricted Use",
+   "F006": "Direct Payment for Specified Use",
+   "F007": "Direct Payment with Unrestricted Use"
+  }
+ }
+}

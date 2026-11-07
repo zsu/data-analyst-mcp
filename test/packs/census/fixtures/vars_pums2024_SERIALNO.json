@@ -1,0 +1,8 @@
+{
+  "name": "SERIALNO",
+  "label": "Housing unit/GQ person serial number",
+  "predicateType": "string",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWGTP"
+}

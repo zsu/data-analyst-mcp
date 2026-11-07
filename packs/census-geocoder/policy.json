@@ -1,0 +1,80 @@
+{
+  "id": "census-geocoder",
+  "title": "Census Geocoder (addresses and coordinates to census geographies)",
+  "agency": "U.S. Census Bureau",
+  "depth": "standard",
+  "domains": [
+    "geography",
+    "demographics"
+  ],
+  "keywords": [
+    "geocode",
+    "geocoder",
+    "address",
+    "street address",
+    "coordinates",
+    "latitude",
+    "longitude",
+    "census tract",
+    "tract",
+    "census block",
+    "fips code",
+    "county fips",
+    "congressional district",
+    "which county",
+    "which district"
+  ],
+  "questions": [
+    "the census tract and county of an address",
+    "the coordinates of a street address",
+    "which congressional district a point is in",
+    "the FIPS codes of an address, to join census or health data"
+  ],
+  "homepage": "https://geocoding.geo.census.gov/geocoder/",
+  "terms_url": "https://www.census.gov/data/developers/about/terms-of-service.html",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 100
+  },
+  "routes": {
+    "api": {
+      "base": "https://geocoding.geo.census.gov/geocoder",
+      "probe": "https://geocoding.geo.census.gov/geocoder/benchmarks",
+      "hosts": [
+        "geocoding.geo.census.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the JSON under the name shown, then upload the files. Without the links: https://geocoding.geo.census.gov/geocoder/ (Find Locations or Find Geographies, by address or coordinates) shows the same match; batches of up to 10,000 addresses go through its Address Batch form."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Address ranges and boundaries are updated with each benchmark and vintage; each analysis asks again and records which benchmark and vintage it used."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Census Bureau data products are U.S. government works in the public domain; the API terms ask for the statement that the product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+  },
+  "notices": [
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+  ],
+  "retention": null,
+  "citation": "U.S. Census Bureau, Census Geocoder, {dataset}, geocoding.geo.census.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which boundaries: current (benchmark Public_AR_Current, vintage Current_Current), or those of a census or ACS year (e.g. vintage Census2020_Current, ACS2025_Current) to join data of that year? Default: the vintage of the data the codes will be joined to."
+  ],
+  "formats": [
+    "json"
+  ]
+}

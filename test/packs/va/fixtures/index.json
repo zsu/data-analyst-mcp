@@ -1,0 +1,6 @@
+{
+ "GET https://www.data.va.gov/resource/6kr5-skza.json?%24order=date%2C+sex&%24where=state+%3D+%27Texas%27+AND+pos+%3D+%27%28a%29+All+Veterans+%28b%2Bc%29%27+AND+date+%3C%3D+%272026-09-30%27&%24limit=5000&%24offset=0": "r001.json",
+ "GET https://www.data.va.gov/resource/f43c-vb9n.json?%24order=state&%24select=state%2C+sum%28veterans%29+AS+veterans&%24where=date+%3D+%272025-09-30%27&%24group=state&%24limit=5000&%24offset=0": "r002.json",
+ "GET https://www.data.va.gov/resource/bm86-dmni.json?%24order=state&%24limit=5000&%24offset=0": "r003.json",
+ "GET https://www.data.va.gov/resource/95an-zhhy.json?%24order=fips_code&%24where=state+%3D+%27Vermont%27&%24limit=5000&%24offset=0": "r004.json"
+}

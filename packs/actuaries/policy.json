@@ -1,0 +1,109 @@
+{
+  "id": "actuaries",
+  "title": "Social Security and Medicare Trustees Reports and National Health Expenditure data (SSA and CMS actuaries)",
+  "agency": "Social Security Administration and Centers for Medicare & Medicaid Services, Offices of the Chief Actuary",
+  "depth": "standard",
+  "domains": [
+    "social security",
+    "medicare",
+    "health spending",
+    "entitlement programs",
+    "long-term fiscal outlook"
+  ],
+  "keywords": [
+    "social security trust fund",
+    "oasdi",
+    "oasi",
+    "di trust fund",
+    "medicare trust fund",
+    "hospital insurance",
+    "hi trust fund",
+    "smi",
+    "supplementary medical insurance",
+    "part b",
+    "part d",
+    "trustees report",
+    "depletion date",
+    "trust fund depletion",
+    "insolvency",
+    "actuarial balance",
+    "cost rate",
+    "income rate",
+    "taxable payroll",
+    "trust fund ratio",
+    "workers per beneficiary",
+    "national health expenditure",
+    "nhe",
+    "health spending",
+    "health spending projections",
+    "nhe share of gdp",
+    "health spending by payer",
+    "out-of-pocket spending",
+    "chief actuary"
+  ],
+  "questions": [
+    "when the Medicare HI trust fund is projected to be depleted",
+    "Social Security trust fund reserves and cost rates under the intermediate assumptions",
+    "Medicare spending as a share of GDP in the Trustees Report projections",
+    "national health expenditures as a share of GDP since 1960",
+    "health spending by source of funds (Medicare, Medicaid, private insurance, out of pocket)",
+    "projected national health spending growth over the next decade"
+  ],
+  "homepage": "https://www.cms.gov/data-research/statistics-trends-and-reports/trustees-report-trust-funds",
+  "terms_url": "https://www.cms.gov/about-cms/web-policies-important-links/web-policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "daily_quota": null,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.cms.gov",
+      "probe": "https://www.cms.gov/robots.txt",
+      "hosts": [
+        "www.cms.gov"
+      ]
+    },
+    "manual": {
+      "browser_hosts": [
+        "www.ssa.gov"
+      ],
+      "how": "CMS (Medicare Trustees Report and NHE): open https://www.cms.gov/data-research/statistics-trends-and-reports/trustees-report-trust-funds (the '<year> Expanded and Supplementary Tables and Figures (ZIP)' link) or the NHE pages https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical and .../projected, download the ZIP named in INSTRUCTIONS.md and upload it as downloaded. Social Security (always this route: www.ssa.gov refuses scripts with HTTP 403): in a web browser open https://www.ssa.gov/oact/TR/<year>/lrIndex.html, click the 'Excel' link of the single-year tables (SingleYearTRTables_TR<year>.xlsx, one sheet per table such as IV.B1 or V.A3), save it and upload the .xlsx; --ingest reads the sheet named in the request."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small published files; the reports are revised once a year, so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The Trustees Reports, their tables and the National Health Expenditure Accounts are works of U.S. government agencies (SSA and CMS Offices of the Chief Actuary), in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Social Security Administration and Centers for Medicare & Medicaid Services, Offices of the Chief Actuary, {dataset} (Trustees Report tables and National Health Expenditure data, ssa.gov/oact and cms.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which report year? Each Trustees Report (released in spring or summer) replaces the previous projections; the default is the latest. NHE historical data are revised each December and projections come out mid-year, so the latest data years differ.",
+    "Which assumptions? The Trustees' intermediate assumptions are the central projection; low-cost and high-cost are alternatives (and Medicare also publishes an illustrative alternative scenario). The default is intermediate.",
+    "Which units: nominal dollars, constant dollars, percent of GDP or percent of taxable payroll? The tables publish each separately; the default is the measure the question names, else percent of GDP for long-range comparisons."
+  ],
+  "formats": [
+    "xlsx",
+    "csv",
+    "zip"
+  ]
+}

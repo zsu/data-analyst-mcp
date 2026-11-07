@@ -1,0 +1,123 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.9ec79098186eb3f78ed80d83a6973b4c562fbb09.001.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.9ec79098186eb3f78ed80d83a6973b4c562fbb09.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.9ec79098186eb3f78ed80d83a6973b4c562fbb09.001.1",
+                "areaDesc": "Northwest Plateau; Chuska Mountains; Far Northwest Highlands; Northwest Highlands; West Central Plateau; West Central Mountains; West Central Highlands; Southwest Mountains; San Francisco River Valley; Tusas Mountains Including Chama; San Agustin Plains and Adjacent Lowlands",
+                "geocode": {
+                    "SAME": [
+                        "035031",
+                        "035045",
+                        "035039",
+                        "035043",
+                        "035003",
+                        "035006",
+                        "035053",
+                        "035001",
+                        "035061",
+                        "035055"
+                    ],
+                    "UGC": [
+                        "NMZ201",
+                        "NMZ202",
+                        "NMZ203",
+                        "NMZ204",
+                        "NMZ205",
+                        "NMZ206",
+                        "NMZ207",
+                        "NMZ208",
+                        "NMZ209",
+                        "NMZ210",
+                        "NMZ241"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/NMZ201",
+                    "https://api.weather.gov/zones/forecast/NMZ202",
+                    "https://api.weather.gov/zones/forecast/NMZ203",
+                    "https://api.weather.gov/zones/forecast/NMZ204",
+                    "https://api.weather.gov/zones/forecast/NMZ205",
+                    "https://api.weather.gov/zones/forecast/NMZ206",
+                    "https://api.weather.gov/zones/forecast/NMZ207",
+                    "https://api.weather.gov/zones/forecast/NMZ208",
+                    "https://api.weather.gov/zones/forecast/NMZ209",
+                    "https://api.weather.gov/zones/forecast/NMZ210",
+                    "https://api.weather.gov/zones/forecast/NMZ241"
+                ],
+                "references": [],
+                "sent": "2026-10-20T12:46:00-06:00",
+                "effective": "2026-10-20T12:46:00-06:00",
+                "onset": "2026-10-21T12:00:00-06:00",
+                "expires": "2026-10-21T02:15:00-06:00",
+                "ends": "2026-10-23T06:00:00-06:00",
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Severe",
+                "certainty": "Possible",
+                "urgency": "Future",
+                "event": "Flood Watch",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Albuquerque NM",
+                "headline": "Flood Watch issued October 20 at 12:46PM MDT until October 23 at 6:00AM MDT by NWS Albuquerque NM",
+                "description": "* WHAT...Flooding caused by excessive rainfall is possible.\n\n* WHERE...Portions of western, central, and north-central NM mainly\nalong and west of the Continental Divide.\n\n* WHEN...From Wednesday afternoon through late Thursday night.\n\n* IMPACTS...Excessive runoff may result in flooding of rivers,\ncreeks, streams, and other low-lying and flood-prone locations.\nFlooding may occur in poor drainage and urban areas. Low-water\ncrossings may be  flooded.\n\n* ADDITIONAL DETAILS...\n- A potent Pacific storm system will draw up anomalously high\nmoisture into the Desert Southwest, generating repeated rounds of\nwidespread showers and thunderstorms. Fast moving thunderstorms\nproducing locally heavy rainfall will have the ability to pass\nover the same areas repeatedly, threatening flash flooding.\n- Low-lying, poorly drained, and/or urban areas will be most\nsusceptible to flooding. Rivers, arroyos and streams will see\nrises with fast flows. Minor flooding is possible along rivers.\nRecent burn scars may see flash flooding.\n- http://www.weather.gov/safety/flood",
+                "instruction": "You should monitor later forecasts and be alert for possible Flood\nWarnings. Those living in areas prone to flooding should be prepared\nto take action should flooding develop.",
+                "response": "Prepare",
+                "note": null,
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "FFAABQ"
+                    ],
+                    "WMOidentifier": [
+                        "WGUS65 KABQ 201846"
+                    ],
+                    "NWSheadline": [
+                        "FLOOD WATCH IN EFFECT FROM WEDNESDAY AFTERNOON THROUGH LATE THURSDAY NIGHT"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "EAS-ORG": [
+                        "WXR"
+                    ],
+                    "VTEC": [
+                        "/O.NEW.KABQ.FA.A.0026.261021T1800Z-261023T1200Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2026-10-23T06:00:00-06:00"
+                    ]
+                },
+                "scope": "Public",
+                "code": "IPAWSv1.0",
+                "language": "en-US",
+                "web": "http://www.weather.gov",
+                "eventCode": {
+                    "SAME": [
+                        "FFA"
+                    ],
+                    "NationalWeatherService": [
+                        "FAA"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Current watches, warnings, and advisories for New Mexico",
+    "updated": "2026-10-20T21:00:57+00:00"
+}

@@ -1,0 +1,101 @@
+{
+  "id": "open-payments",
+  "title": "CMS Open Payments (openpaymentsdata.cms.gov)",
+  "agency": "Centers for Medicare & Medicaid Services",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "health care",
+    "industry payments"
+  ],
+  "keywords": [
+    "open payments",
+    "sunshine act",
+    "industry payments",
+    "pharma payments",
+    "payments to doctors",
+    "physician payments",
+    "drug company",
+    "device company",
+    "manufacturer",
+    "consulting fee",
+    "speaking fee",
+    "food and beverage",
+    "royalty",
+    "research payments",
+    "ownership interest",
+    "teaching hospital",
+    "npi"
+  ],
+  "questions": [
+    "payments from drug and device companies to doctors in a state",
+    "which companies paid the most to physicians",
+    "payments to a specific physician by NPI",
+    "industry payments by specialty",
+    "research payments to teaching hospitals"
+  ],
+  "homepage": "https://openpaymentsdata.cms.gov/",
+  "terms_url": "https://www.usa.gov/government-works",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://openpaymentsdata.cms.gov/api/1",
+      "probe": "https://openpaymentsdata.cms.gov/api/1/metastore/schemas/dataset/items/02157882-0f43-473a-a777-c96eb5b1b623",
+      "hosts": [
+        "openpaymentsdata.cms.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the JSON links in INSTRUCTIONS.md (filters applied, 500 rows a page), save each under the shown name and upload; or search https://openpaymentsdata.cms.gov/ (Search > by physician, hospital or company) and export the results. Full-year payment files are several GB: download them from the dataset page only on a computer with room, then upload a filtered extract."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Filtered queries are small; every dataset is republished when CMS refreshes the program years (all were last modified 2026-06-30). data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Open Payments datasets carry the licence https://www.usa.gov/government-works (U.S. government work, public domain, 17 U.S.C. 105) in the CMS metastore."
+  },
+  "notices": [
+    "Open Payments records are reported by manufacturers and group purchasing organizations and published as reported (recipients may dispute them); a payment does not by itself indicate a conflict of interest or wrongdoing."
+  ],
+  "retention": null,
+  "citation": "Centers for Medicare & Medicaid Services, Open Payments: {dataset}, openpaymentsdata.cms.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "op_not_wrongdoing",
+      "kind": "require_text",
+      "any": [
+        "not verified",
+        "does not indicate",
+        "not necessarily",
+        "conflict of interest",
+        "wrongdoing",
+        "reported by"
+      ],
+      "why": "Reports using Open Payments must say that payments are self-reported by industry and do not imply wrongdoing."
+    }
+  ],
+  "clarify": [
+    "Which program year(s)? Each year is a separate file; the latest published year is 2025 (published June 2026).",
+    "General payments only, or also research payments and ownership interests? They are separate datasets and are not additive with the summaries.",
+    "Physicians only, or also nurse practitioners and other non-physician practitioners (reported since program year 2021) and teaching hospitals?"
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

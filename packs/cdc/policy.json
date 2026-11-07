@@ -1,0 +1,83 @@
+{
+  "id": "cdc",
+  "title": "CDC Open Data (data.cdc.gov)",
+  "agency": "Centers for Disease Control and Prevention",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "mortality",
+    "public health"
+  ],
+  "keywords": [
+    "death",
+    "deaths",
+    "mortality",
+    "cause of death",
+    "overdose",
+    "drug",
+    "life expectancy",
+    "covid",
+    "births",
+    "birth rate",
+    "obesity",
+    "disability",
+    "places",
+    "county health",
+    "influenza",
+    "pneumonia"
+  ],
+  "questions": [
+    "leading causes of death by state",
+    "drug overdose deaths trend",
+    "life expectancy by state",
+    "county health indicators such as obesity or diabetes",
+    "weekly excess deaths"
+  ],
+  "homepage": "https://data.cdc.gov/",
+  "terms_url": "https://www.cdc.gov/other/agencymaterials.html",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.cdc.gov/resource",
+      "probe": "https://data.cdc.gov/resource/bi63-dtpu.json?$limit=1",
+      "hosts": [
+        "data.cdc.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the dataset page (https://data.cdc.gov/d/<id>), choose Export > CSV, and upload the file; or open the CSV links in INSTRUCTIONS.md."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Queries are small and provisional datasets change weekly; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CDC data are U.S. government works in the public domain (17 U.S.C. 105); CDC asks for attribution and no implied endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Centers for Disease Control and Prevention, {dataset}, data.cdc.gov (Socrata API), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Final or provisional counts? Provisional series (weekly deaths, VSRR overdose) are revised for months; say which and the data date.",
+    "Counts or age-adjusted rates? Compare places with age-adjusted rates."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

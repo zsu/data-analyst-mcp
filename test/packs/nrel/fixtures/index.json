@@ -1,0 +1,7 @@
+{
+ "GET https://developer.nlr.gov/api/alt-fuel-stations/v1.json?state=VT&fuel_type=ELEC&ev_charging_level=dc_fast&limit=3&offset=0": "r001.json",
+ "GET https://developer.nlr.gov/api/utility_rates/v3.json?lat=44.26&lon=-72.58": "r002.json",
+ "GET https://developer.nlr.gov/api/solar/solar_resource/v1.json?lat=44.26&lon=-72.58": "r003.json",
+ "GET https://developer.nlr.gov/api/pvwatts/v8.json?lat=44.26&lon=-72.58&system_capacity=4&module_type=0&losses=14&array_type=1&tilt=30&azimuth=180": "r004.json",
+ "GET https://developer.nlr.gov/api/alt-fuel-stations/v1.json?zip=05301&fuel_type=ELEC&ev_charging_level=dc_fast&limit=200&offset=0": "r005.json"
+}

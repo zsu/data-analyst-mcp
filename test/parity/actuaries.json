@@ -1,0 +1,472 @@
+{
+ "hi_ops": {
+  "description": "2026 Medicare Trustees Report HI trust fund operations",
+  "requests": [
+   {
+    "name": "hi_ops",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund"
+    }
+   }
+  ]
+ },
+ "medicare_files_and_tables": {
+  "description": "Medicare TR tables",
+  "requests": [
+   {
+    "name": "files",
+    "endpoint": "medicare_tr_files",
+    "params": {
+     "report_year": 2026
+    }
+   },
+   {
+    "name": "rates",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates"
+    }
+   },
+   {
+    "name": "tp_gdp",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Ratio of HI Taxable Payroll"
+    }
+   },
+   {
+    "name": "partd",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Part D"
+    }
+   },
+   {
+    "name": "notes",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates",
+     "sheet": "Notes"
+    }
+   }
+  ]
+ },
+ "nhe_historical": {
+  "description": "NHE 2024",
+  "requests": [
+   {
+    "name": "summary",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "summary"
+    }
+   },
+   {
+    "name": "summary_long",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "summary",
+     "layout": "long"
+    }
+   },
+   {
+    "name": "funds",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "service_funds"
+    }
+   },
+   {
+    "name": "t3",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "tables",
+     "table": "Table 03"
+    }
+   }
+  ]
+ },
+ "nhe_projections": {
+  "description": "NHE projections",
+  "requests": [
+   {
+    "name": "t1",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "projections_tables",
+     "table": "Table01"
+    }
+   },
+   {
+    "name": "t2long",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "projections_tables",
+     "table": "Table02",
+     "layout": "long"
+    }
+   },
+   {
+    "name": "data",
+    "endpoint": "nhe_table",
+    "params": {
+     "file": "projections_data"
+    }
+   }
+  ]
+ },
+ "nhe_files": {
+  "requests": [
+   {
+    "name": "tables_list",
+    "endpoint": "nhe_files",
+    "params": {
+     "file": "tables"
+    }
+   },
+   {
+    "name": "proj_list",
+    "endpoint": "nhe_files",
+    "params": {
+     "file": "projections_tables"
+    }
+   },
+   {
+    "name": "summary_list",
+    "endpoint": "nhe_files",
+    "params": {
+     "file": "summary"
+    }
+   },
+   {
+    "name": "data_list",
+    "endpoint": "nhe_files",
+    "params": {
+     "file": "projections_data"
+    }
+   }
+  ]
+ },
+ "all_medicare_tr_2026_trimmed": {
+  "requests": [
+   {
+    "name": "t1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates"
+    }
+   },
+   {
+    "name": "t1_s0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t1_l0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t1_s1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates",
+     "sheet": 2
+    }
+   },
+   {
+    "name": "t1_l1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "HI Cost and Income Rates",
+     "sheet": 2,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t2",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund For Calendar Years"
+    }
+   },
+   {
+    "name": "t2_s0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund For Calendar Years",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t2_l0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund For Calendar Years",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t2_s1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund For Calendar Years",
+     "sheet": 2
+    }
+   },
+   {
+    "name": "t2_l1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Hospital Insurance (HI) Trust Fund For Calendar Years",
+     "sheet": 2,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t3",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Part D Account of the Supplementary Medical Insurance (SMI) Trust Fund For Calendar Years"
+    }
+   },
+   {
+    "name": "t3_s0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Part D Account of the Supplementary Medical Insurance (SMI) Trust Fund For Calendar Years",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t3_l0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Part D Account of the Supplementary Medical Insurance (SMI) Trust Fund For Calendar Years",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t3_s1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Part D Account of the Supplementary Medical Insurance (SMI) Trust Fund For Calendar Years",
+     "sheet": 2
+    }
+   },
+   {
+    "name": "t3_l1",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Operations of the Part D Account of the Supplementary Medical Insurance (SMI) Trust Fund For Calendar Years",
+     "sheet": 2,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t4",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Ratio of HI Taxable Payroll to GDP"
+    }
+   },
+   {
+    "name": "t4_s0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Ratio of HI Taxable Payroll to GDP",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t4_l0",
+    "endpoint": "medicare_tr_table",
+    "params": {
+     "table": "Ratio of HI Taxable Payroll to GDP",
+     "sheet": 1,
+     "layout": "long"
+    }
+   }
+  ]
+ },
+ "all_nhe_tables_trimmed": {
+  "requests": [
+   {
+    "name": "t0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 01 National Health Expenditures; Aggregate and Per Capita Amounts",
+     "file": "tables"
+    }
+   },
+   {
+    "name": "t0_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 01 National Health Expenditures; Aggregate and Per Capita Amounts",
+     "file": "tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t0_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 01 National Health Expenditures; Aggregate and Per Capita Amounts",
+     "file": "tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t1",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 03 National Health Expenditures, by Source of Funds",
+     "file": "tables"
+    }
+   },
+   {
+    "name": "t1_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 03 National Health Expenditures, by Source of Funds",
+     "file": "tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t1_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 03 National Health Expenditures, by Source of Funds",
+     "file": "tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t2",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05 National Health Expenditures by Type of Sponsor",
+     "file": "tables"
+    }
+   },
+   {
+    "name": "t2_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05 National Health Expenditures by Type of Sponsor",
+     "file": "tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t2_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05 National Health Expenditures by Type of Sponsor",
+     "file": "tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t3",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05-1 Private Business Sponsor Expenditures",
+     "file": "tables"
+    }
+   },
+   {
+    "name": "t3_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05-1 Private Business Sponsor Expenditures",
+     "file": "tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t3_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table 05-1 Private Business Sponsor Expenditures",
+     "file": "tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   }
+  ]
+ },
+ "all_nhe_projections_tables_trimmed": {
+  "requests": [
+   {
+    "name": "t0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table01 National Health Expenditures and Selected Economic Indicators",
+     "file": "projections_tables"
+    }
+   },
+   {
+    "name": "t0_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table01 National Health Expenditures and Selected Economic Indicators",
+     "file": "projections_tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t0_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table01 National Health Expenditures and Selected Economic Indicators",
+     "file": "projections_tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   },
+   {
+    "name": "t1",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table02 National Health Expenditure Amounts and Annual Percent Change by Type of Expenditure",
+     "file": "projections_tables"
+    }
+   },
+   {
+    "name": "t1_s0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table02 National Health Expenditure Amounts and Annual Percent Change by Type of Expenditure",
+     "file": "projections_tables",
+     "sheet": 1
+    }
+   },
+   {
+    "name": "t1_l0",
+    "endpoint": "nhe_table",
+    "params": {
+     "table": "Table02 National Health Expenditure Amounts and Annual Percent Change by Type of Expenditure",
+     "file": "projections_tables",
+     "sheet": 1,
+     "layout": "long"
+    }
+   }
+  ]
+ }
+}

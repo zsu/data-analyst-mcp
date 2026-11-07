@@ -1,0 +1,84 @@
+{
+  "id": "hud",
+  "title": "HUD Fair Market Rents and Income Limits API (HUD User)",
+  "agency": "U.S. Department of Housing and Urban Development, Office of Policy Development and Research",
+  "depth": "standard",
+  "domains": [
+    "housing"
+  ],
+  "keywords": [
+    "fair market rent",
+    "fmr",
+    "rent",
+    "rents",
+    "section 8",
+    "housing choice voucher",
+    "income limits",
+    "area median income",
+    "ami",
+    "very low income",
+    "extremely low income",
+    "low income",
+    "lihtc",
+    "mtsp",
+    "small area fmr",
+    "affordable housing",
+    "hud"
+  ],
+  "questions": [
+    "fair market rent for a two-bedroom in a county",
+    "HUD income limits for a family of four",
+    "fair market rents for every county in a state",
+    "Small Area FMRs by ZIP code in a metro"
+  ],
+  "homepage": "https://www.huduser.gov/portal/dataset/fmr-api.html",
+  "terms_url": "https://www.huduser.gov/portal/dataset/fmr-api.html",
+  "auth": {
+    "env": "HUD_USER_TOKEN",
+    "required": "required",
+    "placement": "header",
+    "param": "Authorization",
+    "prefix": "Bearer ",
+    "home": "hud",
+    "signup_url": "https://www.huduser.gov/hudapi/public/register",
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.huduser.gov/hudapi/public",
+      "probe": "https://www.huduser.gov/hudapi/public/fmr/listStates",
+      "hosts": [
+        "www.huduser.gov"
+      ]
+    },
+    "manual": {
+      "how": "With a HUD User token, run the download script in the bundle (the token goes in a header, so browser links do not work). Without a token, download the published files: FMRs at https://www.huduser.gov/portal/datasets/fmr.html and income limits at https://www.huduser.gov/portal/datasets/il.html (choose the fiscal year and download its data file), save it as CSV, and upload it."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Values change once a fiscal year (with occasional mid-year revisions); queries are small."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FMRs and income limits are U.S. government works published by HUD (17 U.S.C. 105); the HUD User API terms govern access, not reuse of the values."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Housing and Urban Development, {dataset}, HUD User FMR and Income Limits API, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which fiscal year? FMRs and income limits are set per federal fiscal year; FMRs take effect October 1 (FY2027 on October 1, 2026), income limits when HUD publishes them in spring (FY2026 on May 1, 2026), so the latest years differ. The default is the latest of each.",
+    "In a Small Area FMR metro, the metro-wide value or ZIP-code values?"
+  ],
+  "formats": [
+    "json"
+  ]
+}

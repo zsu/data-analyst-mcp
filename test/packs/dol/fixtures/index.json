@@ -1,0 +1,17 @@
+{
+ "GET https://apiprod.dol.gov/v4/datasets?page=1": "r001.json",
+ "GET https://apiprod.dol.gov/v4/datasets?page=2": "r002.json",
+ "GET https://apiprod.dol.gov/v4/datasets?page=3": "r003.json",
+ "GET https://apiprod.dol.gov/v4/datasets?page=4": "r004.json",
+ "GET https://apiprod.dol.gov/v4/datasets?page=5": "r005.json",
+ "GET https://apiprod.dol.gov/v4/datasets/10305": "r006.json",
+ "GET https://apiprod.dol.gov/v4/datasets/10334": "r007.json",
+ "GET https://apiprod.dol.gov/v4/get/WHD/enforcement/json?sort_by=findings_end_date&sort=desc&filter_object=%7B%22field%22%3A%22st_cd%22%2C%22operator%22%3A%22eq%22%2C%22value%22%3A%22TX%22%7D&limit=1000&offset=0": {
+  "file": "r008.json",
+  "status": 401
+ },
+ "GET https://apiprod.dol.gov/v4/get/ETA/ui_national_weekly_claims/json?sort_by=rptdate&sort=asc&limit=10&offset=0": "doc_ui_national_preview.json",
+ "GET https://apiprod.dol.gov/v4/get/OSHA/inspection/json?limit=10&offset=0": "doc_osha_inspection_preview.json",
+ "GET https://oui.doleta.gov/unemploy/data_summary/SummaryTables.xlsx": "SummaryTables.xlsx",
+ "GET https://oui.doleta.gov/unemploy/csv/ar2112.csv": "trimmed_ar2112.csv"
+}

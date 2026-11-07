@@ -1,0 +1,9 @@
+{
+ "GET https://www.huduser.gov/hudapi/public/fmr/listStates": "doc_list_states.json",
+ "GET https://www.huduser.gov/hudapi/public/fmr/listCounties/VA": "doc_list_counties_VA.json",
+ "GET https://www.huduser.gov/hudapi/public/fmr/data/5002175925?year=2017": "doc_fmr_5002175925_2017.json",
+ "GET https://www.huduser.gov/hudapi/public/fmr/data/METRO47900M47900": "doc_fmr_METRO47900M47900.json",
+ "GET https://www.huduser.gov/hudapi/public/fmr/statedata/MA": "doc_fmr_statedata_MA.json",
+ "GET https://www.huduser.gov/hudapi/public/il/data/0100199999": "doc_il_0100199999.json",
+ "_note": "doc_* files are the documented example responses on https://www.huduser.gov/portal/dataset/fmr-api.html (read 2026-10-20), with the elided items ('...') left out; no HUD_USER_TOKEN was available to record live responses."
+}

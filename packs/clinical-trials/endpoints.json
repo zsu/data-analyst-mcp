@@ -1,0 +1,167 @@
+{
+ "base_url": "https://clinicaltrials.gov/api/v2",
+ "endpoints": {
+  "studies": {
+   "path": "/studies",
+   "method": "GET",
+   "description": "Studies matching query.* searches and filter.* filters (1,000 a page, cursor paging with pageToken).",
+   "params": {
+    "query.cond": {
+     "desc": "condition or disease (Essie expression), e.g. sickle cell"
+    },
+    "query.term": {
+     "desc": "other terms anywhere in the record"
+    },
+    "query.intr": {
+     "desc": "intervention or treatment, e.g. metformin"
+    },
+    "query.titles": {
+     "desc": "title words"
+    },
+    "query.outc": {
+     "desc": "outcome measure words"
+    },
+    "query.spons": {
+     "desc": "sponsor or collaborator name"
+    },
+    "query.lead": {
+     "desc": "lead sponsor name"
+    },
+    "query.id": {
+     "desc": "study ids (NCT, org study id, secondary ids)"
+    },
+    "query.locn": {
+     "desc": "location terms (city, state, country, facility)"
+    },
+    "query.patient": {
+     "desc": "patient-oriented search (like the website's search box)"
+    },
+    "filter.overallStatus": {
+     "desc": "status list: RECRUITING, NOT_YET_RECRUITING, ACTIVE_NOT_RECRUITING, ENROLLING_BY_INVITATION, COMPLETED, SUSPENDED, TERMINATED, WITHDRAWN, UNKNOWN (list or a|b)"
+    },
+    "filter.geo": {
+     "desc": "distance(lat,lon,50mi)"
+    },
+    "filter.ids": {
+     "desc": "NCT ids (list or a|b)"
+    },
+    "filter.advanced": {
+     "desc": "Essie expression, e.g. AREA[StartDate]RANGE[2024-01-01,MAX]"
+    },
+    "aggFilters": {
+     "desc": "shorthand filters, e.g. phase:3,studyType:int,results:with,sex:f"
+    },
+    "sort": {
+     "desc": "e.g. LastUpdatePostDate:desc (list or a|b)"
+    },
+    "fields": {
+     "desc": "fields to return (piece names such as NCTId, BriefTitle, OverallStatus, Phase, EnrollmentCount; list or a|b)"
+    },
+    "phase": {
+     "desc": "convenience: EARLY_PHASE1, PHASE1, PHASE2, PHASE3, PHASE4 or NA (list allowed); added to aggFilters"
+    },
+    "study_type": {
+     "desc": "convenience: INTERVENTIONAL, OBSERVATIONAL or EXPANDED_ACCESS; added to aggFilters"
+    }
+   },
+   "defaults": {
+    "countTotal": "true",
+    "fields": "NCTId|BriefTitle|OverallStatus|Phase|StudyType|LeadSponsorName|LeadSponsorClass|Condition|InterventionType|InterventionName|EnrollmentCount|EnrollmentType|StartDate|PrimaryCompletionDate|CompletionDate|HasResults"
+   },
+   "records": "studies",
+   "total": "totalCount",
+   "paging": {
+    "type": "cursor",
+    "cursor_param": "pageToken",
+    "next": "nextPageToken",
+    "size_param": "pageSize",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "study": {
+   "path": "/studies/{nct_id}",
+   "method": "GET",
+   "description": "One study record (all modules, or the fields given).",
+   "params": {
+    "nct_id": {
+     "in": "path",
+     "required": true,
+     "desc": "NCT number, e.g. NCT06609226"
+    },
+    "fields": {
+     "desc": "fields to return (default all)"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 1,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "field_values": {
+   "path": "/stats/field/values",
+   "method": "GET",
+   "description": "Counts of studies by the values of one field across the whole registry (e.g. Phase, OverallStatus, LeadSponsorClass).",
+   "params": {
+    "fields": {
+     "required": true,
+     "desc": "one field piece name, e.g. Phase"
+    },
+    "types": {
+     "desc": "ENUM, STRING, DATE, INTEGER, NUMBER, BOOLEAN"
+    }
+   },
+   "records": "0.topValues",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {},
+ "enums": {
+  "overallStatus": [
+   "RECRUITING",
+   "NOT_YET_RECRUITING",
+   "ACTIVE_NOT_RECRUITING",
+   "ENROLLING_BY_INVITATION",
+   "COMPLETED",
+   "SUSPENDED",
+   "TERMINATED",
+   "WITHDRAWN",
+   "UNKNOWN",
+   "AVAILABLE",
+   "NO_LONGER_AVAILABLE",
+   "TEMPORARILY_NOT_AVAILABLE",
+   "APPROVED_FOR_MARKETING",
+   "WITHHELD"
+  ],
+  "phase": {
+   "EARLY_PHASE1": "0",
+   "PHASE1": "1",
+   "PHASE2": "2",
+   "PHASE3": "3",
+   "PHASE4": "4",
+   "NA": "NA"
+  },
+  "studyType": {
+   "INTERVENTIONAL": "int",
+   "OBSERVATIONAL": "obs",
+   "EXPANDED_ACCESS": "exp"
+  },
+  "note": "aggFilters phase codes verified 2026-10-20 against /stats/field/values counts (phase:0 = EARLY_PHASE1 6,510; phase:NA = 239,209); early_phase1 and not_applicable codes match nothing."
+ }
+}

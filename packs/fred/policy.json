@@ -1,0 +1,253 @@
+{
+  "id": "fred",
+  "title": "FRED, ALFRED and GeoFRED (Federal Reserve Bank of St. Louis)",
+  "agency": "Federal Reserve Bank of St. Louis",
+  "depth": "deep",
+  "domains": [
+    "economy",
+    "finance",
+    "federal budget",
+    "prices",
+    "interest rates",
+    "revisions"
+  ],
+  "keywords": [
+    "trade balance",
+    "trade deficit",
+    "exports",
+    "imports",
+    "fred",
+    "alfred",
+    "geofred",
+    "gdp",
+    "real gdp",
+    "potential gdp",
+    "output gap",
+    "inflation",
+    "pce",
+    "cpi",
+    "cpi-w",
+    "chained cpi",
+    "interest rates",
+    "treasury yield",
+    "10-year",
+    "federal funds",
+    "mortgage rate",
+    "deficit",
+    "federal debt",
+    "net interest",
+    "outlays",
+    "receipts",
+    "unemployment",
+    "recession",
+    "nber",
+    "vintage",
+    "first release",
+    "revision",
+    "real-time",
+    "release calendar",
+    "state comparison",
+    "fiscal year",
+    "fed balance sheet",
+    "federal reserve balance sheet",
+    "h.4.1",
+    "quantitative tightening",
+    "quantitative easing",
+    "reserve balances",
+    "breakeven",
+    "inflation expectations",
+    "5y5y",
+    "tips spread",
+    "debt service ratio",
+    "household debt service",
+    "financial obligations ratio",
+    "initial claims",
+    "jobless claims",
+    "unemployment claims",
+    "industrial production",
+    "capacity utilization",
+    "manufacturing output",
+    "g.17",
+    "housing starts",
+    "building permits",
+    "new residential construction",
+    "money supply",
+    "m2",
+    "m1",
+    "money stock",
+    "h.6",
+    "consumer sentiment",
+    "university of michigan",
+    "exchange rate",
+    "case-shiller",
+    "home prices",
+    "house prices",
+    "house price index",
+    "net international investment position",
+    "niip",
+    "exchange rates",
+    "dollar index",
+    "trade-weighted dollar",
+    "broad dollar",
+    "h.10",
+    "value of the dollar"
+  ],
+  "questions": [
+    "how big is the output gap",
+    "net interest as a share of GDP by fiscal year",
+    "how much was 2020 Q2 GDP revised",
+    "the 10-year Treasury yield since 2000",
+    "when is the next CPI release",
+    "real disposable income since 2019"
+  ],
+  "homepage": "https://fred.stlouisfed.org/",
+  "terms_url": "https://fred.stlouisfed.org/docs/api/terms_of_use.html",
+  "auth": {
+    "env": "FRED_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "prefix": "",
+    "home": "fred",
+    "signup_url": "https://fredaccount.stlouisfed.org/apikeys",
+    "echoes_key": false,
+    "key_only": [
+      "series search",
+      "first-release vintages",
+      "full revision history (ALFRED real-time periods)",
+      "GeoFRED regional cross-sections",
+      "source agency, notes and copyright status of each series",
+      "release calendar and whole-release downloads"
+    ],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1.8,
+    "burst": 4,
+    "daily_quota": null,
+    "requests_per_minute": 120,
+    "graph_max_series": 12,
+    "max_rows": 100000,
+    "note": "API: 120 requests a minute, 100,000 observations per call (paged). Graph downloads: at most 12 series per graph (more are silently dropped); fetch.py sends one series per CSV."
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.stlouisfed.org/fred/",
+      "probe": "https://api.stlouisfed.org/fred/series?series_id=GNPCA&file_type=json",
+      "hosts": [
+        "api.stlouisfed.org"
+      ]
+    },
+    "api_keyless": {
+      "base": "https://fred.stlouisfed.org/graph/fredgraph.csv",
+      "probe": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GNPCA&cosd=2020-01-01",
+      "hosts": [
+        "fred.stlouisfed.org",
+        "alfred.stlouisfed.org"
+      ]
+    },
+    "manual": {
+      "how": "Run --manual-bundle (or follow --check): <out>/manual_download/fred/INSTRUCTIONS.md lists one browser link per series (fredgraph.csv / alfredgraph.csv, no key; or the series page's Download button, CSV) and download_fred.sh / .ps1 with the request built in (one command each, e.g. bash ~/Downloads/download_fred.sh), which fetch everything, asking for a key with hidden input only for key-only files. Send INSTRUCTIONS.md, both scripts and spec.json; the user uploads the files unchanged, then run --ingest."
+    }
+  },
+  "cache": {
+    "mode": "none",
+    "ttl_hours": null,
+    "why": "FRED's terms of use forbid storing or caching FRED content beyond what a use needs and building an archive of it; only the analysis folder's own data/fred/ copy for this request is kept."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "withhold": {
+      "meta": "series.csv",
+      "key": "series_id",
+      "column": "copyright",
+      "shareable": [
+        "no_copyright_notice",
+        "public_domain",
+        "citation_required"
+      ]
+    },
+    "why": "FRED's terms (https://fred.stlouisfed.org/docs/api/terms_of_use.html, https://fred.stlouisfed.org/legal/) let users share public-domain series with a citation and copyrighted series marked Citation Required with the owner's citation; series marked Copyrighted: Pre-Approval Required (S&P, some Moody's and ICE indexes) may not be republished without the owner's written permission, so their rows are withheld from shared files."
+  },
+  "notices": [
+    "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis."
+  ],
+  "retention": null,
+  "citation": "{dataset}, retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/, {retrieved_long}. Per-series citations are in data/fred/series.csv.",
+  "audit_hooks": [
+    {
+      "id": "fred_request",
+      "kind": "require_file",
+      "glob": "data/fred/request.json",
+      "why": "The retrieval date, route and vintage of each series must be stated; request.json records them."
+    },
+    {
+      "id": "fred_series_citations",
+      "kind": "require_file",
+      "glob": "data/fred/[sr]e*.csv",
+      "why": "FRED's terms ask that each series be cited; series.csv holds the citation and copyright status (regional.csv, for GeoFRED-only specs, the group titles)."
+    },
+    {
+      "id": "fred_api_notice",
+      "kind": "require_text",
+      "when_route": [
+        "api"
+      ],
+      "any": [
+        "not endorsed or certified by the Federal Reserve Bank of St. Louis"
+      ],
+      "why": "FRED's API terms of use require this notice in any product that uses the API (route api in data/fred/request.json)."
+    },
+    {
+      "id": "fred_retrieved",
+      "kind": "require_text",
+      "any": [
+        "retrieved from fred"
+      ],
+      "any_pattern": [
+        "retrieved[^\\n]{0,80}\\bfred\\b",
+        "\\bfred\\b[^\\n]{0,80}retrieved"
+      ],
+      "why": "FRED's suggested citation names FRED and the retrieval date."
+    }
+  ],
+  "clarify": [
+    "Calendar or fiscal years? Default: fiscal years (October to September) for budget amounts and their shares of GDP (fiscal-year GDP = mean of the four quarters); calendar years otherwise.",
+    "Which vintage: latest data, as published on a date, or as first reported? Default: latest, unless the question is about what was known at a time; then the vintage just before it.",
+    "Which measure (PCE or CPI; debt held by the public or total public debt; budget-basis or NIPA interest)? Default: the measure the question's institution uses; indexing questions use the index the law names.",
+    "Which growth measure (Q4 over Q4, annual average, quarterly annualized)? Default: the publishing agency's own measure: BEA's annual growth is annual average over annual average (Q4 over Q4 only when comparing with Fed or CBO projections, which use it); annual averages for rates; name it every time."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "xlsx",
+    "zip"
+  ],
+  "use_instead": [
+    {
+      "question": "BLS detail with preliminary flags, footnotes and gaps",
+      "source": "bls",
+      "terms": [
+        "preliminary"
+      ],
+      "why": "The bls pack keeps BLS's own flags."
+    },
+    {
+      "question": "BEA tables with line numbers and vintages",
+      "source": "bea",
+      "terms": [
+        "NIPA"
+      ],
+      "why": "The bea pack reads BEA tables as published."
+    },
+    {
+      "question": "Treasury daily statements and auctions",
+      "source": "treasury",
+      "terms": [
+        "auction"
+      ],
+      "why": "Treasury Fiscal Data."
+    }
+  ]
+}

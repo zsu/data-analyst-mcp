@@ -1,0 +1,5 @@
+{
+ "GET https://data.opm.gov/api/v1/files/accessions?current=true&year=2025&month=1": "ping_accessions_202501.json",
+ "GET https://data.opm.gov/api/v1/files/separations": "list_separations.json",
+ "GET https://data.opm.gov/api/v1/files/separations/2026/08/1/download": "separations_202608_1_head.parquet"
+}

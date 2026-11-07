@@ -1,0 +1,197 @@
+{
+  "base_url": "https://data.cdc.gov/resource",
+  "endpoints": {
+    "query": {
+      "path": "/{dataset}.json",
+      "method": "GET",
+      "description": "SODA query against any data.cdc.gov dataset (catalog alias or 4x4 id).",
+      "params": {
+        "dataset": {
+          "in": "path",
+          "required": true,
+          "catalog": true,
+          "desc": "catalog alias (leading_death) or dataset id (bi63-dtpu)"
+        },
+        "$select": {
+          "desc": "SoQL columns, e.g. 'year, state, deaths'"
+        },
+        "$where": {
+          "desc": "SoQL filter; quote text values: state = 'New York' AND year = '2017'"
+        },
+        "$group": {
+          "desc": "SoQL group by"
+        },
+        "$order": {
+          "desc": "SoQL order; default :id gives stable paging"
+        },
+        "$q": {
+          "desc": "full-text search"
+        }
+      },
+      "defaults": {
+        "$order": ":id"
+      },
+      "records": "",
+      "paging": {
+        "type": "offset",
+        "limit_param": "$limit",
+        "offset_param": "$offset",
+        "size": 5000,
+        "manual_size": 50000
+      },
+      "max_rows": 200000,
+      "missing": [
+        ""
+      ],
+      "flatten": true
+    },
+    "csv": {
+      "path": "/{dataset}.csv",
+      "method": "GET",
+      "description": "Same query as CSV (for manual download in a browser).",
+      "params": {
+        "dataset": {
+          "in": "path",
+          "required": true,
+          "catalog": true,
+          "desc": "alias or id"
+        },
+        "$select": {},
+        "$where": {},
+        "$order": {}
+      },
+      "defaults": {
+        "$order": ":id"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "offset",
+        "limit_param": "$limit",
+        "offset_param": "$offset",
+        "size": 50000
+      },
+      "max_rows": 200000
+    }
+  },
+  "catalog": {
+    "leading_death": {
+      "id": "bi63-dtpu",
+      "name": "Leading Causes of Death",
+      "description": "U.S. leading causes of death by state and year (1999\u20132017, final; no newer release on data.cdc.gov)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/bi63-dtpu"
+    },
+    "life_expectancy": {
+      "id": "w9j2-ggv5",
+      "name": "Life Expectancy",
+      "description": "Life expectancy at birth by race (All Races, Black, White) and sex (1900\u20132018)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/w9j2-ggv5"
+    },
+    "mortality_rates": {
+      "id": "489q-934x",
+      "name": "Provisional Mortality Rates",
+      "description": "Provisional quarterly death rates by cause: national, by sex, and one rate_<state> column per state (rolling window of about the last three years, e.g. 2023 Q1\u20132025 Q3 in 2026-10)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/489q-934x"
+    },
+    "places_county": {
+      "id": "swc5-untb",
+      "name": "PLACES: County Health",
+      "description": "County-level health indicators: obesity, diabetes, smoking, depression, sleep, etc. (BRFSS-based)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/swc5-untb"
+    },
+    "places_city": {
+      "id": "eav7-hnsx",
+      "name": "PLACES: Place (City and Town) Health",
+      "description": "Place-level (cities, towns, CDPs) model-based health indicators: obesity, diabetes, smoking, depression, sleep, etc. (BRFSS-based, latest PLACES release); long format like places_county: one row per place and measureid, value in data_value",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/eav7-hnsx"
+    },
+    "cities_500_2019": {
+      "id": "dxpw-cm5u",
+      "name": "500 Cities: City-level Data, 2019 release (superseded by PLACES)",
+      "description": "Older 500 Cities project: 2016-2017 estimates for 500 large cities only; wide format, one <measure>_crudeprev / _adjprev column per measure; use places_city for current place estimates",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/dxpw-cm5u"
+    },
+    "covid_cases": {
+      "id": "pwn4-m3yp",
+      "name": "COVID-19 Cases & Deaths (archived)",
+      "description": "COVID-19 weekly cases and deaths by state, archived in 2023 after national case reporting ended; current COVID-19 deaths are in weekly_deaths",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/pwn4-m3yp"
+    },
+    "covid_conditions": {
+      "id": "hk9y-quqm",
+      "name": "COVID-19 Conditions",
+      "description": "COVID-19 deaths by contributing condition, age group, and state",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/hk9y-quqm"
+    },
+    "weekly_deaths": {
+      "id": "r8kw-7aab",
+      "name": "Weekly Death Surveillance",
+      "description": "Provisional COVID-19, pneumonia, influenza and total death counts by state (updated weekly, 2020\u2013present); column `group` mixes By Week, By Month, By Year and By Total rows: always filter it, written with backticks (`group` = 'By Week')",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/r8kw-7aab"
+    },
+    "disability": {
+      "id": "s2qv-b27b",
+      "name": "Disability Prevalence",
+      "description": "Disability status and types by state: mobility, cognitive, hearing, vision, self-care (BRFSS)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/s2qv-b27b"
+    },
+    "weekly_deaths_by_cause": {
+      "id": "muzy-jte6",
+      "name": "Weekly Deaths by Cause",
+      "description": "Weekly deaths by state and cause: heart disease, cancer, diabetes, stroke, COVID, respiratory (2020\u20132023)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/muzy-jte6"
+    },
+    "drug_overdose_state": {
+      "id": "xbxb-epbu",
+      "name": "Drug Poisoning Mortality by State",
+      "description": "Drug poisoning/overdose death rates by state, sex, race, and age (1999\u20132016)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/xbxb-epbu"
+    },
+    "drug_overdose_provisional": {
+      "id": "xkb8-kh2a",
+      "name": "Provisional Drug Overdose Deaths",
+      "description": "VSRR provisional 12-month-ending drug overdose death counts by state and drug (2015\u2013present, monthly)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/xkb8-kh2a"
+    },
+    "life_expectancy_state": {
+      "id": "it4f-frdc",
+      "name": "State Life Expectancy by Sex",
+      "description": "Life expectancy at birth by state and sex, 2021 only (no year column)",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/it4f-frdc"
+    },
+    "nutrition_obesity": {
+      "id": "hn4x-zwk7",
+      "name": "Nutrition, Physical Activity & Obesity",
+      "description": "Adult obesity, physical inactivity, and fruit/vegetable consumption by state from BRFSS",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/hn4x-zwk7"
+    },
+    "death_rates_historical": {
+      "id": "6rkc-nb2q",
+      "name": "Historical Death Rates by Cause",
+      "description": "Age-adjusted death rates for major causes (heart disease, cancer, stroke, etc.) since 1900",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/6rkc-nb2q"
+    },
+    "birth_indicators": {
+      "id": "76vv-a7x8",
+      "name": "Quarterly Birth Indicators",
+      "description": "Provisional quarterly birth rates, teen births, preterm births, cesarean rates by race/ethnicity",
+      "endpoint": "query",
+      "page": "https://data.cdc.gov/d/76vv-a7x8"
+    }
+  }
+}

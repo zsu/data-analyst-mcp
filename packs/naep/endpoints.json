@@ -1,0 +1,217 @@
+{
+  "base_url": "https://www.nationsreportcard.gov",
+  "endpoints": {
+    "scores": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "NAEP estimates (type=data): average scale scores, achievement-level or row percents, percentiles, with standard errors (QCData=true), by subject, grade, jurisdiction(s), year(s) and student group.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "reading, math (mathematics), science, writing, civics, history, geography, economics, tel, music"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "4, 8 or 12"},
+        "subscale": {"desc": "scale code; default is the subject's composite (math grade 12: MWPCM). --search sub: lists them"},
+        "variable": {"desc": "student group: TOTAL, SDRACE, GENDER, ECONDIS (SLUNCH3 before 2024), PARED, SCHTYPE, UTOL4, IEP, LEP; crosstab A+B (SDRACE+GENDER)"},
+        "jurisdiction": {"desc": "NP (national public), NT (national), state codes (CA), districts (XN = New York City); comma-separated for several"},
+        "stattype": {"desc": "MN:MN mean (default); ALC:AB / ALC:AP / ALC:AD at or above Basic/Proficient/Advanced; RP:RP row percent; PC:P1/P2/P5/P7/P9 = 10th/25th/50th/75th/90th percentile (no other PC codes); comma-separated for several"},
+        "Year": {"desc": "2024, comma list 2024,2022,2019, or Current / Prior / Base; R2 suffix = non-accommodated sample (e.g. 1998R2)"},
+        "categoryindex": {"desc": "restrict a variable to some categories, e.g. 1,2"},
+        "StackType": {"enum": ["ColThenRow", "RowThenCol"], "desc": "row order for crosstabs"}
+      },
+      "defaults": {"type": "data", "variable": "TOTAL", "jurisdiction": "NP", "stattype": "MN:MN", "Year": "Current", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "achievement_levels": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Cumulative achievement-level percents: below Basic, at or above Basic, at or above Proficient, at Advanced (one row per stattype), with standard errors.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "4, 8 or 12"},
+        "subscale": {"desc": "default composite"},
+        "variable": {"desc": "student group (default TOTAL)"},
+        "jurisdiction": {"desc": "jurisdiction code(s)"},
+        "Year": {"desc": "year(s)"}
+      },
+      "defaults": {"type": "data", "variable": "TOTAL", "jurisdiction": "NP", "stattype": "ALC:BB,ALC:AB,ALC:AP,ALC:AD", "Year": "Current", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "compare_years": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Significance test between years (type=sigacrossyear): focal and target values, gap, sig (HIGHER / LOWER / EQUAL), pValue, seDiff. Needs 2+ years.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "Year": {"required": true, "desc": "two or more years: 2024,2019"},
+        "subscale": {"desc": "default composite"}, "variable": {"desc": "default TOTAL"},
+        "jurisdiction": {"desc": "default NP"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "sigacrossyear", "variable": "TOTAL", "jurisdiction": "NP", "stattype": "MN:MN", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "compare_jurisdictions": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Significance test between jurisdictions (type=sigacrossjuris), every ordered pair. Needs 2+ jurisdictions.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "jurisdiction": {"required": true, "desc": "two or more codes: NP,MA,MS"},
+        "subscale": {"desc": "default composite"}, "variable": {"desc": "default TOTAL"},
+        "Year": {"desc": "default Current"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "sigacrossjuris", "variable": "TOTAL", "stattype": "MN:MN", "Year": "Current", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "compare_groups": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Significance test between categories of one student-group variable (type=sigacrossvalue), e.g. male vs female. variable must not be TOTAL.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "variable": {"required": true, "desc": "SDRACE, GENDER, ECONDIS, ... (not TOTAL)"},
+        "subscale": {"desc": "default composite"}, "jurisdiction": {"desc": "default NP"},
+        "Year": {"desc": "default Current"}, "categoryindex": {"desc": "restrict categories"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "sigacrossvalue", "jurisdiction": "NP", "stattype": "MN:MN", "Year": "Current", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "gap_years_across_jurisdictions": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Is one jurisdiction's change between two years different from another's? (type=gaponyearacrossjuris). Exactly 2 years, 2+ jurisdictions.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "Year": {"required": true, "desc": "exactly two years: 2024,2019"},
+        "jurisdiction": {"required": true, "desc": "two or more codes"},
+        "subscale": {"desc": "default composite"}, "variable": {"desc": "default TOTAL"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "gaponyearacrossjuris", "variable": "TOTAL", "stattype": "MN:MN", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "gap_groups_across_years": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Did a group gap (e.g. female minus male) change between years? (type=gaponvaracrossyear). 2+ years, variable not TOTAL.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "variable": {"required": true, "desc": "group variable (not TOTAL)"},
+        "Year": {"required": true, "desc": "two or more years"},
+        "subscale": {"desc": "default composite"}, "jurisdiction": {"desc": "default NP"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "gaponvaracrossyear", "jurisdiction": "NP", "stattype": "MN:MN", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "gap_groups_across_jurisdictions": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Is a group gap larger in one jurisdiction than another? (type=gaponvaracrossjuris). 2+ jurisdictions, variable not TOTAL.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "grade": {"required": true, "enum": [4, 8, 12], "desc": "grade"},
+        "variable": {"required": true, "desc": "group variable (not TOTAL)"},
+        "jurisdiction": {"required": true, "desc": "two or more codes"},
+        "subscale": {"desc": "default composite"}, "Year": {"desc": "default Current"}, "stattype": {"desc": "default MN:MN"}
+      },
+      "defaults": {"type": "gaponvaracrossjuris", "stattype": "MN:MN", "Year": "Current", "QCData": "true"},
+      "records": "result", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "variables": {
+      "path": "/Dataservice/GetAdhocData.aspx",
+      "description": "Independent (student-group and questionnaire) variables available for a subject, cohort (1 = grade 4, 2 = grade 8, 3 = grade 12) and year.",
+      "params": {
+        "subject": {"required": true, "catalog": true, "desc": "subject"},
+        "cohort": {"required": true, "enum": [1, 2, 3], "desc": "1 = grade 4, 2 = grade 8, 3 = grade 12"},
+        "Year": {"required": true, "desc": "one year, e.g. 2024"}
+      },
+      "defaults": {"type": "independentvariables"},
+      "records": "result.0.variables", "paging": {"type": "none"}, "max_rows": 50000
+    }
+  },
+  "catalog": {
+    "reading": {"id": "reading", "kind": "subject", "subscale": "RRPCM", "name": "Reading (composite scale 0-500)", "description": "grades 4, 8, 12; latest 2024 (all three grades). Aliases: ela, english", "grades": [4, 8, 12]},
+    "ela": {"id": "reading", "kind": "subject alias", "subscale": "RRPCM", "name": "Reading", "description": "alias of reading"},
+    "math": {"id": "mathematics", "kind": "subject", "subscale": "MRPCM", "subscale_grade12": "MWPCM", "name": "Mathematics (composite)", "description": "grades 4 and 8 on MRPCM (0-500), latest 2024; grade 12 on MWPCM (0-300, 2005 framework), latest 2024", "grades": [4, 8, 12]},
+    "mathematics": {"id": "mathematics", "kind": "subject", "subscale": "MRPCM", "subscale_grade12": "MWPCM", "name": "Mathematics", "description": "same as math"},
+    "science": {"id": "science", "kind": "subject", "subscale": "SRPUV", "name": "Science (2009 framework, 0-300)", "description": "grades 4, 8, 12; latest grade 8 2024; grades 4 and 12 2019 (not assessed in 2024)", "grades": [4, 8, 12]},
+    "writing": {"id": "writing", "kind": "subject", "subscale": "WRIRP", "name": "Writing", "description": "grade 4 2002; grades 8 and 12 2011 (computer-based, not comparable with earlier)", "grades": [4, 8, 12]},
+    "civics": {"id": "civics", "kind": "subject", "subscale": "CIVRP", "name": "Civics", "description": "grade 8 latest 2022; grades 4 and 12 2010. Alias: social studies", "grades": [4, 8, 12]},
+    "history": {"id": "history", "kind": "subject", "subscale": "HRPCM", "name": "U.S. History (composite)", "description": "grade 8 latest 2022; grades 4 and 12 2010. Alias: us history", "grades": [4, 8, 12]},
+    "us history": {"id": "history", "kind": "subject alias", "subscale": "HRPCM", "name": "U.S. History", "description": "alias of history"},
+    "geography": {"id": "geography", "kind": "subject", "subscale": "GRPCM", "name": "Geography (composite)", "description": "grade 8 latest 2018; grades 4 and 12 2010", "grades": [4, 8, 12]},
+    "economics": {"id": "economics", "kind": "subject", "subscale": "ERPCM", "name": "Economics", "description": "grade 12 only, 2006 and 2012", "grades": [12]},
+    "tel": {"id": "tel", "kind": "subject", "subscale": "TRPUN", "name": "Technology and Engineering Literacy", "description": "grade 8 only, 2014 and 2018", "grades": [8]},
+    "music": {"id": "music", "kind": "subject", "subscale": "MUSRP", "name": "Music", "description": "grade 8 only (arts assessment, 2008 and 2016)", "grades": [8]},
+    "sub:RRPS1": {"id": "RRPS1", "kind": "subscale", "name": "Reading: literary experience"},
+    "sub:RRPS2": {"id": "RRPS2", "kind": "subscale", "name": "Reading: gain information"},
+    "sub:RRPS3": {"id": "RRPS3", "kind": "subscale", "name": "Reading: perform a task (grades 8, 12)"},
+    "sub:MRPS1": {"id": "MRPS1", "kind": "subscale", "name": "Mathematics: number properties and operations"},
+    "sub:MRPS2": {"id": "MRPS2", "kind": "subscale", "name": "Mathematics: measurement"},
+    "sub:MRPS3": {"id": "MRPS3", "kind": "subscale", "name": "Mathematics: geometry"},
+    "sub:MRPS4": {"id": "MRPS4", "kind": "subscale", "name": "Mathematics: data analysis, statistics, and probability"},
+    "sub:MRPS5": {"id": "MRPS5", "kind": "subscale", "name": "Mathematics: algebra"},
+    "sub:MWPCM": {"id": "MWPCM", "kind": "subscale", "name": "Mathematics grade 12 composite (2005 framework, 0-300)"},
+    "sub:SRPCM": {"id": "SRPCM", "kind": "subscale", "name": "Science composite, 1996-2005 framework (not comparable with SRPUV)"},
+    "sub:SRPS1": {"id": "SRPS1", "kind": "subscale", "name": "Science: physical science"},
+    "sub:SRPS2": {"id": "SRPS2", "kind": "subscale", "name": "Science: earth science"},
+    "sub:SRPS3": {"id": "SRPS3", "kind": "subscale", "name": "Science: life science"},
+    "sub:GRPS1": {"id": "GRPS1", "kind": "subscale", "name": "Geography: space and place"},
+    "sub:HRPS1": {"id": "HRPS1", "kind": "subscale", "name": "U.S. history: democracy"},
+    "sub:ERPS1": {"id": "ERPS1", "kind": "subscale", "name": "Economics: market"},
+    "sub:TRPP1": {"id": "TRPP1", "kind": "subscale", "name": "TEL: communicating and collaborating"},
+    "var:TOTAL": {"id": "TOTAL", "kind": "variable", "name": "All students"},
+    "var:SDRACE": {"id": "SDRACE", "kind": "variable", "name": "Race/ethnicity used to report trends (school-reported)"},
+    "var:SRACE10": {"id": "SRACE10", "kind": "variable", "name": "Race/ethnicity, 2011 guidelines"},
+    "var:GENDER": {"id": "GENDER", "kind": "variable", "name": "Sex"},
+    "var:SLUNCH3": {"id": "SLUNCH3", "kind": "variable", "name": "National School Lunch Program eligibility (poverty proxy), to 2022", "successor": "ECONDIS"},
+    "var:ECONDIS": {"id": "ECONDIS", "kind": "variable", "name": "Economically disadvantaged status (poverty proxy; 2024 on, same values as SLUNCH3 in earlier years)"},
+    "var:PARED": {"id": "PARED", "kind": "variable", "name": "Parental education (grades 8, 12, student-reported)"},
+    "var:SCHTYPE": {"id": "SCHTYPE", "kind": "variable", "name": "School type: public / private"},
+    "var:CHRTRPT": {"id": "CHRTRPT", "kind": "variable", "name": "Charter school"},
+    "var:UTOL4": {"id": "UTOL4", "kind": "variable", "name": "School location: city, suburb, town, rural"},
+    "var:CENSREG": {"id": "CENSREG", "kind": "variable", "name": "Census region"},
+    "var:IEP": {"id": "IEP", "kind": "variable", "name": "Students with disabilities (IEP)"},
+    "var:LEP": {"id": "LEP", "kind": "variable", "name": "English learners"},
+    "stat:MN:MN": {"id": "MN:MN", "kind": "stattype", "name": "Average scale score (mean)"},
+    "stat:RP:RP": {"id": "RP:RP", "kind": "stattype", "name": "Row percent (share of students in each category)"},
+    "stat:ALC:BB": {"id": "ALC:BB", "kind": "stattype", "name": "% below Basic"},
+    "stat:ALC:AB": {"id": "ALC:AB", "kind": "stattype", "name": "% at or above Basic"},
+    "stat:ALC:AP": {"id": "ALC:AP", "kind": "stattype", "name": "% at or above Proficient"},
+    "stat:ALC:AD": {"id": "ALC:AD", "kind": "stattype", "name": "% at Advanced"},
+    "stat:ALD:BA": {"id": "ALD:BA", "kind": "stattype", "name": "% at Basic (discrete)"},
+    "stat:ALD:PR": {"id": "ALD:PR", "kind": "stattype", "name": "% at Proficient (discrete)"},
+    "stat:SD:SD": {"id": "SD:SD", "kind": "stattype", "name": "Standard deviation of scores"},
+    "stat:PC:P1": {"id": "PC:P1", "kind": "stattype", "name": "10th percentile score"},
+    "stat:PC:P2": {"id": "PC:P2", "kind": "stattype", "name": "25th percentile score"},
+    "stat:PC:P5": {"id": "PC:P5", "kind": "stattype", "name": "50th percentile (median) score"},
+    "stat:PC:P7": {"id": "PC:P7", "kind": "stattype", "name": "75th percentile score"},
+    "stat:PC:P9": {"id": "PC:P9", "kind": "stattype", "name": "90th percentile score"},
+    "jur:NP": {"id": "NP", "kind": "jurisdiction", "name": "National public schools (use to compare with states)"},
+    "jur:NT": {"id": "NT", "kind": "jurisdiction", "name": "National, public and private (grade 12, long-run national)"},
+    "jur:NR": {"id": "NR", "kind": "jurisdiction", "name": "National private schools", "description": "rows only through 2013; later years: NT with variable=SCHTYPE (Catholic, Other private)"},
+    "jur:NL": {"id": "NL", "kind": "jurisdiction", "name": "Large city (public schools in cities over 250,000)"},
+    "jur:DS": {"id": "DS", "kind": "jurisdiction", "name": "DoDEA schools"},
+    "jur:XA": {"id": "XA", "kind": "jurisdiction", "name": "Atlanta (TUDA district)"},
+    "jur:XU": {"id": "XU", "kind": "jurisdiction", "name": "Austin (TUDA district)"},
+    "jur:XM": {"id": "XM", "kind": "jurisdiction", "name": "Baltimore City (TUDA district)"},
+    "jur:XB": {"id": "XB", "kind": "jurisdiction", "name": "Boston (TUDA district)"},
+    "jur:XT": {"id": "XT", "kind": "jurisdiction", "name": "Charlotte-Mecklenburg (TUDA district)"},
+    "jur:XC": {"id": "XC", "kind": "jurisdiction", "name": "Chicago (TUDA district)"},
+    "jur:XX": {"id": "XX", "kind": "jurisdiction", "name": "Clark County NV (TUDA district)"},
+    "jur:XV": {"id": "XV", "kind": "jurisdiction", "name": "Cleveland (TUDA district)"},
+    "jur:XS": {"id": "XS", "kind": "jurisdiction", "name": "Dallas (TUDA district)"},
+    "jur:XY": {"id": "XY", "kind": "jurisdiction", "name": "Denver (TUDA district)"},
+    "jur:XR": {"id": "XR", "kind": "jurisdiction", "name": "Detroit (TUDA district)"},
+    "jur:XW": {"id": "XW", "kind": "jurisdiction", "name": "District of Columbia Public Schools (TUDA district)"},
+    "jur:XE": {"id": "XE", "kind": "jurisdiction", "name": "Duval County FL (TUDA district)"},
+    "jur:XZ": {"id": "XZ", "kind": "jurisdiction", "name": "Fort Worth (TUDA district)"},
+    "jur:XF": {"id": "XF", "kind": "jurisdiction", "name": "Fresno (TUDA district)"},
+    "jur:XG": {"id": "XG", "kind": "jurisdiction", "name": "Guilford County NC (TUDA district)"},
+    "jur:XO": {"id": "XO", "kind": "jurisdiction", "name": "Hillsborough County FL (TUDA district)"},
+    "jur:XH": {"id": "XH", "kind": "jurisdiction", "name": "Houston (TUDA district)"},
+    "jur:XJ": {"id": "XJ", "kind": "jurisdiction", "name": "Jefferson County KY (TUDA district)"},
+    "jur:XL": {"id": "XL", "kind": "jurisdiction", "name": "Los Angeles (TUDA district)"},
+    "jur:XI": {"id": "XI", "kind": "jurisdiction", "name": "Miami-Dade (TUDA district)"},
+    "jur:XK": {"id": "XK", "kind": "jurisdiction", "name": "Milwaukee (TUDA district)"},
+    "jur:XN": {"id": "XN", "kind": "jurisdiction", "name": "New York City (TUDA district)"},
+    "jur:XP": {"id": "XP", "kind": "jurisdiction", "name": "Philadelphia (TUDA district)"},
+    "jur:XD": {"id": "XD", "kind": "jurisdiction", "name": "San Diego (TUDA district)"},
+    "jur:YA": {"id": "YA", "kind": "jurisdiction", "name": "Shelby County TN (TUDA district)"},
+    "jur:XQ": {"id": "XQ", "kind": "jurisdiction", "name": "Albuquerque (TUDA district)"},
+    "jur:PR": {"id": "PR", "kind": "jurisdiction", "name": "Puerto Rico (mathematics only, own scale)"}
+  }
+}

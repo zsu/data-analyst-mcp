@@ -1,0 +1,20 @@
+{
+  "name": "PEMLR",
+  "label": "Labor Force-employment status",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWCMPWGT",
+  "values": {
+    "item": {
+      "3": "Unemployed-On Layoff",
+      "-1": "Not in Universe",
+      "4": "Unemployed-Looking",
+      "1": "Employed-At Work",
+      "6": "Disabled-Not In Labor Force",
+      "5": "Retired-Not In Labor Force",
+      "7": "Other-Not In Labor Force",
+      "2": "Employed-Absent"
+    }
+  }
+}

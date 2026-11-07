@@ -1,0 +1,112 @@
+{
+ "MANUAL_HEAD": "# Download the IPUMS extract by hand\n\nThe analysis environment cannot download from IPUMS (@REASON@). The extract definition is\nready. Get the two files with one of the options below, on your own computer, then upload them.\n\n@OPTIONS@",
+ "WEB_TEMPLATE": "## Option @LETTER@: the IPUMS website (no API key needed)\n\nYou need only a free IPUMS account registered for @COLLECTION_UPPER@ (register and accept the terms of\nuse at @SITE@). Build the extract below in the website's extract builder. Select exactly these items:\nthe analysis relies on them.\n\n1. Sign in at @SITE@ and open **Select Data** (@BROWSE@).\n2. **Select Samples.** Clear the samples that are checked by default, then check only these:\n@SAMPLES@\n   Click **Submit sample selections**.\n3. **Add variables to the cart.** Search for each name in the variable search box and click the\n   plus sign to add it:\n@VARIABLES@\n   IPUMS adds technical variables (such as YEAR, SERIAL, PERNUM and the weights) by itself. Keep them.\n4. Click **View Cart**, then **Create Data Extract**.\n@CASES@@OPTIONS_EXTRA@5. **Data format:** click *Change* and choose **Comma delimited (.csv)**. Keep the structure\n   **@STRUCTURE@**.\n6. Add the description \"@DESCRIPTION@\" and click **Submit Extract**. IPUMS emails you when the\n   extract is ready (minutes for CPS, NHIS or MEPS, up to about 30 minutes for multi-year ACS).\n7. On **My Data** (@MYDATA@), download the **data file** (`.csv.gz`) and the **DDI codebook**: right-click\n   the *DDI* link and choose *Save link as*, so it is saved as an `.xml` file.\n\n",
+ "API_TEMPLATE": "## Option @LETTER@: the IPUMS API, with one script (needs an API key)\n\nYou need an IPUMS API key: https://account.ipums.org/api_keys (the account must be registered for\nthe @COLLECTION_UPPER@ collection). The script asks for it with hidden input on your own computer.\nDo not paste it into the chat.\n\nThe extract definition is built into the script (`extract_spec.json` holds the same definition, for\nreference and for the curl steps below). The script submits the extract, waits until IPUMS has built\nit (minutes for CPS, NHIS or MEPS, up to about 30 minutes for multi-year ACS), and saves the data file (`.csv.gz`)\nand the codebook (`.xml`) next to itself. If it is interrupted, run it again: it continues with the\nsame extract. To submit a new extract instead (for example after IPUMS deleted the files, about 72\nhours after they were built), add `--new` (bash) or `-New` (PowerShell).\n@NUMBER_NOTE@\n@RUN@\nWhen it finishes, it prints the full paths of the two files.\n\n### If the script does not work: the same steps with curl\n\n`extract_spec.json` in this folder is the request body (the extract definition). Run the commands\nfrom the folder that holds it, or give the full path after `@`. The first line asks for your key with\nhidden input; it stays in this terminal only.\n\n#### macOS, Linux, Git Bash, WSL\n\n```bash\nread -rsp 'IPUMS API key (hidden): ' IPUMS_API_KEY && echo && export IPUMS_API_KEY\n\n# 1. Submit the extract. The reply has \"number\" (the extract number).\ncurl -sS -X POST -H \"Authorization: $IPUMS_API_KEY\" -H \"Content-Type: application/json\" -d @extract_spec.json \"https://api.ipums.org/extracts?collection=@COLLECTION@&version=2\"\n\n# 2. Check status. Repeat until the reply shows \"status\": \"completed\" (a large extract can take up to 30 minutes).\ncurl -sS -H \"Authorization: $IPUMS_API_KEY\" \"https://api.ipums.org/extracts/<NUMBER>?collection=@COLLECTION@&version=2\"\n\n# 3. Download the data file and the codebook. Use the URLs in the completed reply:\n#    downloadLinks.data.url and downloadLinks.ddiCodebook.url\ncurl -sS -L -H \"Authorization: $IPUMS_API_KEY\" -o @COLLECTION@_data.csv.gz \"<DATA_URL>\"\ncurl -sS -L -H \"Authorization: $IPUMS_API_KEY\" -o @COLLECTION@_ddi.xml \"<DDI_URL>\"\n```\n\n#### Windows PowerShell\n\nUse `curl.exe`. Plain `curl` in PowerShell is a different command.\n\n```powershell\n$env:IPUMS_API_KEY = [Net.NetworkCredential]::new('', (Read-Host 'IPUMS API key (hidden)' -AsSecureString)).Password\n\n# 1. Submit the extract. The reply has \"number\" (the extract number).\ncurl.exe -sS -X POST -H \"Authorization: $env:IPUMS_API_KEY\" -H \"Content-Type: application/json\" -d \"@extract_spec.json\" \"https://api.ipums.org/extracts?collection=@COLLECTION@&version=2\"\n\n# 2. Check status. Repeat until the reply shows \"status\": \"completed\".\ncurl.exe -sS -H \"Authorization: $env:IPUMS_API_KEY\" \"https://api.ipums.org/extracts/<NUMBER>?collection=@COLLECTION@&version=2\"\n\n# 3. Download the data file and the codebook (downloadLinks.data.url and downloadLinks.ddiCodebook.url).\ncurl.exe -sS -L -H \"Authorization: $env:IPUMS_API_KEY\" -o @COLLECTION@_data.csv.gz \"<DATA_URL>\"\ncurl.exe -sS -L -H \"Authorization: $env:IPUMS_API_KEY\" -o @COLLECTION@_ddi.xml \"<DDI_URL>\"\n```\n\nA reply with `\"status\": \"failed\"` means the extract definition has a problem: send that reply to the\nanalyst and do not resubmit by hand. Close the terminal afterwards (or run `unset IPUMS_API_KEY` /\n`Remove-Item Env:IPUMS_API_KEY`). The script needs no clean-up: it keeps the key only while it runs.\n\n",
+ "UPLOAD_TEMPLATE": "## Upload\n\nUpload these two files to the chat (do not unzip or edit them):\n1. the data file (the `.csv.gz` that IPUMS named, for example `@COLLECTION@_00012.csv.gz`);\n2. the codebook (the `.xml` DDI file, for example `@COLLECTION@_00012.xml`).\n\nThe assistant then packages them and continues the analysis.\n\nTips:\n- The files are for your own use under the IPUMS terms of use: do not share or repost them.\n- An error message about a variable or sample means the extract definition has a problem. Send that\n  message to the analyst; do not change the selection by hand.\n- IPUMS removes extract files after about 72 hours. Download soon after the extract is ready.\n",
+ "REPRODUCE_HEAD": "# Reproduce the IPUMS extract\n\nThe IPUMS terms of use do not permit redistributing the extract, so this report ships its definition\ninstead. Request the same extract from IPUMS with your own free account, with one of the options below.\nEach download script is one self-contained file with the extract definition built in, so it works on\nits own; `extract_spec.json` is the same definition (the API request body), for reference and curl.\n\n",
+ "REPRODUCE_TAIL": "## Then\n\nKeep the data file (`.csv.gz`) and the codebook (`.xml`) in this folder (the script saves them next\nto itself; move them here if you ran it elsewhere). Then package them: give this folder to the\ndata-analyst MCP server's `ingest` tool (source `ipums`, with the report's `spec.json` as the spec).\n\nThis writes `data/ipums/ipums_extract.csv` and `data/ipums/codebook.csv`. Compare the SHA-256 of\n`data/ipums/ipums_extract.csv` with the audit trail in the report; if IPUMS has revised the samples since,\nsmall differences can occur. The files are for your own use under the IPUMS terms: do not share or repost them.\n",
+ "REASON_TEXT": {
+  "key_missing": "no IPUMS API key was found (not in the IPUMS_API_KEY environment variable, a key file, keys.json, Claude Code's settings.json, or ~/.ipums/api_key)",
+  "auth": "IPUMS rejected the API key (HTTP 401 or 403): the key is wrong, or the account is not registered for this collection",
+  "network": "IPUMS (api.ipums.org) could not be reached from here"
+ },
+ "TERMS_LINE": "The extract is for the user's own use under the IPUMS terms of use: it must not be shared, attached to a report or reposted. Share extract_spec.json and the reproduce scripts instead; aggregated estimates (exhibit tables) may be published. IPUMS deletes extract files about 72 hours after they are built; the definition can be resubmitted at any time.",
+ "CITATIONS": {
+  "usa": "Steven Ruggles, Sarah Flood, Matthew Sobek, et al. IPUMS USA [dataset]. Minneapolis, MN: IPUMS. Use the exact version and DOI cited at https://usa.ipums.org/usa/cite.shtml (the unversioned DOI does not resolve)",
+  "cps": "Sarah Flood, Miriam King, Renae Rodgers, Steven Ruggles, J. Robert Warren, et al. IPUMS CPS [dataset]. Minneapolis, MN: IPUMS. Use the exact version and DOI cited at https://cps.ipums.org/cps/citation.shtml (the unversioned DOI does not resolve)",
+  "nhis": "Lynn A. Blewett, Julia A. Rivera Drew, Andrew Fenelon, Miriam L. King, Kari C.W. Williams, et al. IPUMS Health Surveys: National Health Interview Survey [dataset]. Minneapolis, MN: IPUMS. Use the exact version and DOI cited at https://nhis.ipums.org/nhis/citation.shtml, and acknowledge NCHS as the source of the NHIS",
+  "meps": "Lynn A. Blewett, Julia A. Rivera Drew, Andrew Fenelon, Daniel Backman, Etienne Breton, et al. IPUMS Health Surveys: Medical Expenditure Panel Survey [dataset]. Minneapolis, MN: IPUMS. Use the exact version and DOI cited at https://meps.ipums.org/meps/citation.shtml, and acknowledge AHRQ as the source of the MEPS"
+ },
+ "SOURCE_LINE": {
+  "usa": "IPUMS-USA (American Community Survey / decennial census)",
+  "cps": "IPUMS-CPS (Current Population Survey)",
+  "nhis": "IPUMS NHIS (National Health Interview Survey, NCHS)",
+  "meps": "IPUMS MEPS (Medical Expenditure Panel Survey, AHRQ)"
+ },
+ "WEIGHT_HINTS": {
+  "usa": {
+   "PERWT": "person weight (USA): use for person-level estimates",
+   "HHWT": "household weight (USA): use for household-level estimates (one row per household, PERNUM==1)"
+  },
+  "cps": {
+   "ASECWT": "ASEC person weight (CPS March supplement): use for annual income/insurance/poverty",
+   "WTFINL": "final basic monthly weight (CPS): use for monthly labor-force estimates",
+   "EARNWT": "earnings weight (CPS outgoing rotation groups): use for EARNWEEK2/HOURWAGE2 and UNION",
+   "ASECWTH": "ASEC household weight (CPS)"
+  },
+  "nhis": {
+   "SAMPWEIGHT": "sample adult / sample child weight (NHIS): sample-adult and sample-child items, and the only person weight from 2019 on (each variable page names its weight)",
+   "PERWEIGHT": "person weight (NHIS person file, to 2018): all persons; there is none from 2019",
+   "PARTWEIGHT": "2020 NHIS sample adults: use instead of SAMPWEIGHT when pooling 2019-2020",
+   "HHWEIGHT": "household weight (NHIS, to 2018)",
+   "FWEIGHT": "family weight (NHIS, to 2018)"
+  },
+  "meps": {
+   "PERWEIGHT": "full-year person weight (MEPS): use for person-level estimates (expenditures, insurance); 0 = out of scope",
+   "SAQWEIGHT": "self-administered questionnaire weight (MEPS adults): use for SAQ items",
+   "DIABWEIGHT": "diabetes care survey weight (MEPS)"
+  }
+ },
+ "MISSING_HINT": {
+  "usa": "e.g. INCWAGE 999999 = N/A, 999998 = missing; EMPSTAT 0 = N/A",
+  "cps": "e.g. INCWAGE 99999999 = NIU, 99999998 = missing; EMPSTAT 0 = NIU",
+  "nhis": "e.g. 0 = NIU; 7/8/9, 97-99 and 997-999 = unknown (refused, not ascertained, don't know)",
+  "meps": "e.g. AHRQ's negative codes appear as labelled NIU/unknown values; INCTOT 9999999.96-.99 = NIU/unknown"
+ },
+ "APPROX_ROWS": {
+  "usa_acs1": 3300000,
+  "usa_acs5": 16000000,
+  "usa_census": 3000000,
+  "cps_asec": 160000,
+  "cps_monthly": 120000,
+  "nhis": 45000,
+  "nhis_pre2019": 100000,
+  "meps": 25000
+ },
+ "WEB_SITES": {
+  "usa": [
+   "https://usa.ipums.org",
+   "usa-action"
+  ],
+  "cps": [
+   "https://cps.ipums.org",
+   "cps-action"
+  ],
+  "ipumsi": [
+   "https://international.ipums.org",
+   "international-action"
+  ],
+  "atus": [
+   "https://www.atusdata.org",
+   "atus-action"
+  ],
+  "nhis": [
+   "https://nhis.ipums.org",
+   "nhis-action"
+  ],
+  "meps": [
+   "https://meps.ipums.org",
+   "meps-action"
+  ]
+ },
+ "API_LIMITS": {
+  "nhis": {
+   "unsupported": [
+    "data_quality_flags"
+   ],
+   "rect_on": [
+    "P",
+    "I"
+   ]
+  },
+  "meps": {
+   "unsupported": [
+    "attached_characteristics"
+   ],
+   "rect_on": [
+    "P",
+    "R"
+   ]
+  }
+ }
+}

@@ -1,0 +1,272 @@
+{
+ "base_url": "https://api.weather.gov",
+ "headers": {
+  "Accept": "application/geo+json"
+ },
+ "endpoints": {
+  "forecast": {
+   "path": "/points/{lat},{lon}",
+   "resolve": "forecast",
+   "description": "7-day forecast in 12-hour periods for a point (resolves the forecast grid first). Not historical data.",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (4 decimals at most)"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees (negative west)"
+    }
+   },
+   "records": "properties.periods",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "forecast_hourly": {
+   "path": "/points/{lat},{lon}",
+   "resolve": "forecastHourly",
+   "description": "Hourly forecast for about 7 days for a point. Not historical data.",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (4 decimals at most)"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees (negative west)"
+    }
+   },
+   "records": "properties.periods",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "point": {
+   "path": "/points/{lat},{lon}",
+   "description": "Metadata for a point: forecast office, grid x/y, county and forecast zones, time zone.",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (4 decimals at most)"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees (negative west)"
+    }
+   },
+   "records": "properties",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alerts_active": {
+   "path": "/alerts/active",
+   "description": "Active watches, warnings and advisories (one row per alert).",
+   "params": {
+    "area": {
+     "desc": "state/territory code(s): VT or VT,NH"
+    },
+    "zone": {
+     "desc": "zone id, e.g. VTZ006 or VTC023"
+    },
+    "point": {
+     "desc": "lat,lon"
+    },
+    "region": {
+     "desc": "marine region: AL, AT, GL, GM, PA, PI"
+    },
+    "event": {
+     "desc": "event name, e.g. Flood Warning (see alert_types)"
+    },
+    "severity": {
+     "desc": "Extreme, Severe, Moderate, Minor, Unknown"
+    },
+    "urgency": {
+     "desc": "Immediate, Expected, Future, Past, Unknown"
+    },
+    "certainty": {
+     "desc": "Observed, Likely, Possible, Unlikely, Unknown"
+    },
+    "status": {
+     "desc": "actual (default actual + others), exercise, system, test, draft"
+    },
+    "message_type": {
+     "desc": "alert, update, cancel"
+    }
+   },
+   "records": "features",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alerts_recent": {
+   "path": "/alerts",
+   "description": "Recently issued alerts, newest first (the API keeps only recent ones; not an archive).",
+   "params": {
+    "area": {
+     "desc": "state/territory code(s): VT or VT,NH"
+    },
+    "zone": {
+     "desc": "zone id, e.g. VTZ006 or VTC023"
+    },
+    "point": {
+     "desc": "lat,lon"
+    },
+    "region": {
+     "desc": "marine region: AL, AT, GL, GM, PA, PI"
+    },
+    "event": {
+     "desc": "event name, e.g. Flood Warning (see alert_types)"
+    },
+    "severity": {
+     "desc": "Extreme, Severe, Moderate, Minor, Unknown"
+    },
+    "urgency": {
+     "desc": "Immediate, Expected, Future, Past, Unknown"
+    },
+    "certainty": {
+     "desc": "Observed, Likely, Possible, Unlikely, Unknown"
+    },
+    "status": {
+     "desc": "actual (default actual + others), exercise, system, test, draft"
+    },
+    "message_type": {
+     "desc": "alert, update, cancel"
+    },
+    "start": {
+     "desc": "ISO 8601 time with offset, e.g. 2026-01-05T00:00:00Z; /alerts holds only the past seven days"
+    },
+    "end": {
+     "desc": "ISO 8601 time"
+    },
+    "limit": {
+     "desc": "alerts per page (the fetcher follows pagination.next)"
+    }
+   },
+   "records": "features",
+   "paging": {
+    "type": "link",
+    "next": "pagination.next",
+    "max_pages": 20
+   },
+   "max_rows": 5000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alert_types": {
+   "path": "/alerts/types",
+   "description": "Every alert event name.",
+   "params": {},
+   "records": "eventTypes",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "stations_near": {
+   "path": "/points/{lat},{lon}/stations",
+   "description": "Observation stations near a point, nearest first.",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (4 decimals at most)"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees (negative west)"
+    }
+   },
+   "records": "features",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 500,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "observations": {
+   "path": "/stations/{station}/observations",
+   "description": "Recent observations at a station (about the last week), newest first; SI units.",
+   "params": {
+    "station": {
+     "in": "path",
+     "required": true,
+     "desc": "station id, e.g. KDCA"
+    },
+    "start": {
+     "desc": "ISO 8601 time"
+    },
+    "end": {
+     "desc": "ISO 8601 time"
+    },
+    "limit": {
+     "desc": "observations per page"
+    }
+   },
+   "records": "features",
+   "paging": {
+    "type": "link",
+    "next": "pagination.next",
+    "max_pages": 20
+   },
+   "max_rows": 5000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "observation_latest": {
+   "path": "/stations/{station}/observations/latest",
+   "description": "The latest observation at a station.",
+   "params": {
+    "station": {
+     "in": "path",
+     "required": true,
+     "desc": "station id, e.g. KDCA"
+    }
+   },
+   "records": "properties",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {}
+}

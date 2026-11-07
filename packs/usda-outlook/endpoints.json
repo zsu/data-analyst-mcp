@@ -1,0 +1,86 @@
+{
+  "base_url": "https://www.ers.usda.gov",
+  "timeout": 90,
+  "endpoints": {
+    "wasde": {
+      "path": "https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-{report}.csv",
+      "description": "World Agricultural Supply and Demand Estimates (WASDE), one monthly report (or a range of reports) as USDA's long-format CSV: one row per report table, commodity, region, attribute and marketing year, with Value, Unit and ProjEstFlag (Proj. = projection, Est. = estimate, blank = history). January 2021 report on. The pack filters the rows by the spec's commodity, region, attribute, report_title, market_year and proj_est.",
+      "params": {
+        "report": {"in": "spec", "desc": "report month YYYY-MM (2021-01 on), or \"latest\" (default: the newest report listed on USDA ESMIS whose CSV is posted)"},
+        "start_report": {"in": "spec", "desc": "first report month YYYY-MM of a range (with end_report; one CSV per month, at most 72): for month-to-month revisions"},
+        "end_report": {"in": "spec", "desc": "last report month YYYY-MM of a range (default: latest)"},
+        "commodity": {"in": "spec", "desc": "Commodity as published, case-insensitive, one or a list: Corn, Wheat, \"Oilseed, Soybean\", \"Meal, Soybean\", \"Oil, Soybean\", Cotton, Rice, \"Rice, milled\", Sorghum, Barley, Oats, Sugar, Beef, Pork, Broiler, Turkey, Eggs, Milk, Coarse Grains ... (names differ by table)"},
+        "region": {"in": "spec", "desc": "Region as published: United States, World, Foreign, a country (Brazil, China, European Union ...) or group (Major Exporters)"},
+        "attribute": {"in": "spec", "desc": "Attribute as published: Ending Stocks, Production, Exports, Imports, Beginning Stocks, Feed and Residual, Avg. Farm Price, Area Planted, Yield per Harvested Acre, Domestic, Total ..."},
+        "report_title": {"in": "spec", "desc": "ReportTitle (the report table), e.g. \"U.S. Feed Grain and Corn Supply and Use\", \"World Corn Supply and Use\"; the same item appears in several tables in different units"},
+        "market_year": {"in": "spec", "desc": "MarketYear as published: 2026/27 for crops, 2026 for livestock (calendar year)"},
+        "proj_est": {"in": "spec", "enum": ["proj", "est", "none"], "desc": "proj = projections (Proj.), est = estimates (Est.), none = rows with no flag (history and the reliability tables)"},
+        "include_reliability": {"in": "spec", "desc": "true keeps the 'Reliability of ... Projections' tables (past forecast errors); default false drops them"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"}
+    },
+    "farm_income": {
+      "path": "/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics",
+      "description": "ERS Farm Income and Wealth Statistics, one release (default: the latest, scraped from the data-files page): U.S. and state farm income statement, cash receipts by commodity, government payments, production expenses, balance sheet (assets, debt, equity) and ratios, 1910 on (states 1949 on), current-year forecast. Nominal dollars ($1,000) with ChainType_GDP_Deflator; the pack streams the 111 MB CSV inside the release ZIP and keeps only the rows the spec asks for.",
+      "params": {
+        "release": {"in": "spec", "desc": "\"latest\" (default) or a release date: YYYY-MM-DD or YYYY-MM (2014-08 on; releases are in February, late August/early September and late November/early December)"},
+        "variable": {"in": "spec", "desc": "VariableDescriptionTotal as published, case-insensitive, one or a list: \"Net farm income\", \"Net cash income\", \"Cash receipts value, all commodities , all\" (sic), \"Value of government payments, total\", \"Dec. 31 value of farm equity, all, excl. operator dwelling\" ..."},
+        "key": {"in": "spec", "desc": "artificialKey, one or a list: FIAUSNTFI--P (U.S. net farm income), FIAUSNTCI--P (U.S. net cash income); the 3rd-4th letters are the state"},
+        "search": {"in": "spec", "desc": "case-insensitive text that VariableDescriptionTotal must contain (to discover variables: e.g. \"government payments\")"},
+        "state": {"in": "spec", "desc": "US or a two-letter state code, one or a list (default: all)"},
+        "year": {"in": "spec", "desc": "one calendar year"},
+        "start_year": {"in": "spec", "desc": "first calendar year"},
+        "end_year": {"in": "spec", "desc": "last calendar year"}
+      },
+      "records": "$zip:*.csv",
+      "paging": {"type": "none"}
+    },
+    "farm_income_summary": {
+      "path": "/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics",
+      "description": "The 'U.S. farm sector financial indicators' table of the latest release (one small .xlsx, billion dollars, last eight years with the forecast year marked F, e.g. 2026F, plus percent changes): cash income statement, farm income statement, balance sheet, debt by lender, debt-to-equity and debt-to-asset ratios. One row per line item with section and unit.",
+      "params": {},
+      "records": "$xlsx",
+      "paging": {"type": "none"}
+    },
+    "farm_income_archive": {
+      "path": "/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics",
+      "description": "ERS archive of past forecasts and estimates (U.S. only): every release's value of net farm income (nfi), net cash income (nci) and cash receipts (cr_all) for each year, first 15 releases per year, February 1977 release on. For forecast accuracy and revision paths.",
+      "params": {
+        "item": {"in": "spec", "enum": ["nfi", "nci", "cr_all"], "desc": "nfi = net farm income, nci = net cash income, cr_all = cash receipts, all commodities (default: all three)"},
+        "year": {"in": "spec", "desc": "one calendar year being forecast or estimated"},
+        "start_year": {"in": "spec", "desc": "first year"},
+        "end_year": {"in": "spec", "desc": "last year"}
+      },
+      "records": "$zip:archive.csv",
+      "paging": {"type": "none"}
+    },
+    "baseline": {
+      "path": "/data-products/agricultural-baseline-database",
+      "description": "USDA Agricultural Projections (the 10-year baseline of the Interagency Agricultural Projections Committee), one edition's ZIP: by default its machine-readable Projections<year>.csv (one row per commodity, attribute and year: supply and use, area, yield, prices for crops; production, use and prices for livestock and dairy), or one of its .xlsx tables (farm income, trade, macro assumptions ...).",
+      "params": {
+        "edition": {"in": "spec", "desc": "\"latest\" (default: the most recent full release), \"early\" (the most recent early release, before the report), or the last projection year, e.g. 2035 or 2034 (projections to that year; full release)"},
+        "member": {"in": "spec", "desc": "file in the ZIP, a glob (case-insensitive): default \"Projections*.csv\"; e.g. \"*Farm receipts*\" for Table 26 (farm income), \"*Feed Grains*\", \"*Macroeoconomic*\" (sic, as published)"},
+        "sheet": {"in": "spec", "desc": ".xlsx member: sheet name or 1-based number (default 1)"},
+        "header_row": {"in": "spec", "desc": ".xlsx member: 1-based row holding the column names (default: the first row with three or more filled cells)"},
+        "commodity": {"in": "spec", "desc": "CSV member: commodity as published, case-insensitive, one or a list (Corn, Wheat, Soybeans, Upland Cotton, Beef, Pork, Broilers ...)"},
+        "attribute": {"in": "spec", "desc": "CSV member: attribute as published (Ending stocks, Planted acres, Farm price ...)"},
+        "year": {"in": "spec", "desc": "CSV member: year as published (2030/31 for marketing years, 2030 for calendar years), one or a list"}
+      },
+      "records": "$zip:Projections*.csv",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "wasde": {"id": "wasde", "endpoint": "wasde", "name": "WASDE monthly supply and use projections",
+              "description": "World Agricultural Supply and Demand Estimates: U.S. and world supply, use, ending stocks, prices for grains, oilseeds, cotton, rice, sugar, livestock, poultry, dairy; monthly, 2021 on"},
+    "farm_income": {"id": "farm_income", "endpoint": "farm_income", "name": "ERS farm income and wealth statistics (U.S. and states)",
+                    "description": "net farm income, net cash farm income, cash receipts by commodity, government payments, expenses, farm assets, debt, equity; annual 1910 on with the current-year forecast"},
+    "farm_income_summary": {"id": "farm_income_summary", "endpoint": "farm_income_summary", "name": "U.S. farm sector financial indicators (latest forecast table)",
+                            "description": "one-page summary of the latest farm income forecast in billion dollars, with the forecast year marked F"},
+    "farm_income_archive": {"id": "farm_income_archive", "endpoint": "farm_income_archive", "name": "Archive of past farm income forecasts",
+                            "description": "net farm income, net cash income and cash receipts as forecast and estimated in each release since 1977: forecast accuracy, revisions"},
+    "baseline": {"id": "baseline", "endpoint": "baseline", "name": "USDA Agricultural Projections (10-year baseline)",
+                 "description": "long-term projections of U.S. crop and livestock supply, use, prices, farm income and trade, ten years ahead, under current law"}
+  }
+}

@@ -1,0 +1,328 @@
+{
+ "base_url": "https://developer.nlr.gov/api",
+ "endpoints": {
+  "alt_fuel_stations": {
+   "path": "/alt-fuel-stations/v1.json",
+   "description": "Alternative fuel and EV charging stations (AFDC Station Locator), filtered by fuel, state, ZIP, network, status.",
+   "params": {
+    "fuel_type": {
+     "desc": "ELEC, E85, CNG, LPG, BD, HY, LNG, RD; comma-separated for several"
+    },
+    "state": {
+     "desc": "two-letter state code(s), comma-separated"
+    },
+    "zip": {
+     "desc": "ZIP code(s)"
+    },
+    "city": {
+     "in": "spec",
+     "desc": "city name: the API has no city filter (it answers 0 rows), so the pack keeps the rows whose city matches, ignoring case; give state (or zip) too"
+    },
+    "status": {
+     "desc": "E open, P planned, T temporarily unavailable, all; comma-separated for several. Without it the API returns every status: pass E for open stations only"
+    },
+    "access": {
+     "desc": "public, private or all. Without it the API returns both: pass public for public stations only"
+    },
+    "ev_network": {
+     "desc": "EV network, e.g. Tesla, ChargePoint Network"
+    },
+    "ev_charging_level": {
+     "desc": "1, 2, dc_fast or all"
+    },
+    "ev_connector_type": {
+     "desc": "J1772, J1772COMBO, CHADEMO, TESLA, NEMA515 ..."
+    },
+    "owner_type": {
+     "desc": "P private, T utility, FG federal, LG local, SG state, J jointly owned"
+    },
+    "country": {
+     "desc": "US (default), CA, or all"
+    }
+   },
+   "records": "fuel_stations",
+   "total": "total_results",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 200
+   },
+   "max_rows": 100000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alt_fuel_nearest": {
+   "path": "/alt-fuel-stations/v1/nearest.json",
+   "description": "Stations nearest a point (latitude/longitude), with distance in miles.",
+   "params": {
+    "fuel_type": {
+     "desc": "ELEC, E85, CNG, LPG, BD, HY, LNG, RD; comma-separated for several"
+    },
+    "state": {
+     "desc": "two-letter state code(s), comma-separated"
+    },
+    "zip": {
+     "desc": "ZIP code(s)"
+    },
+    "city": {
+     "in": "spec",
+     "desc": "city name: the API has no city filter (it answers 0 rows), so the pack keeps the rows whose city matches, ignoring case; give state (or zip) too"
+    },
+    "status": {
+     "desc": "E open, P planned, T temporarily unavailable, all; comma-separated for several. Without it the API returns every status: pass E for open stations only"
+    },
+    "access": {
+     "desc": "public, private or all. Without it the API returns both: pass public for public stations only"
+    },
+    "ev_network": {
+     "desc": "EV network, e.g. Tesla, ChargePoint Network"
+    },
+    "ev_charging_level": {
+     "desc": "1, 2, dc_fast or all"
+    },
+    "ev_connector_type": {
+     "desc": "J1772, J1772COMBO, CHADEMO, TESLA, NEMA515 ..."
+    },
+    "owner_type": {
+     "desc": "P private, T utility, FG federal, LG local, SG state, J jointly owned"
+    },
+    "country": {
+     "desc": "US (default), CA, or all"
+    },
+    "latitude": {
+     "required": true,
+     "desc": "decimal degrees (the API no longer accepts a 'location' address)"
+    },
+    "longitude": {
+     "required": true,
+     "desc": "decimal degrees"
+    },
+    "radius": {
+     "desc": "miles (default 5.0; 'infinite' allowed)"
+    }
+   },
+   "records": "fuel_stations",
+   "total": "total_results",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 200
+   },
+   "max_rows": 20000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alt_fuel_station": {
+   "path": "/alt-fuel-stations/v1/{id}.json",
+   "description": "One station by its numeric id.",
+   "params": {
+    "id": {
+     "in": "path",
+     "required": true,
+     "desc": "station id"
+    }
+   },
+   "records": "alt_fuel_station",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "utility_rates": {
+   "path": "/utility_rates/v3.json",
+   "description": "Average residential, commercial and industrial electricity rates ($/kWh) of the utility serving a point (2012 data; see traps).",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (the API no longer accepts an 'address')"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees"
+    }
+   },
+   "records": "outputs",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "solar_resource": {
+   "path": "/solar/solar_resource/v1.json",
+   "description": "Average daily solar resource (kWh/m2/day) by month: DNI, GHI, latitude-tilt; one row per month plus annual.",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude, decimal degrees (the API no longer accepts an 'address')"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude, decimal degrees"
+    }
+   },
+   "records": "outputs",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "pvwatts": {
+   "path": "/pvwatts/v8.json",
+   "description": "PVWatts v8 modeled PV output for a system at a point: monthly AC kWh, plane-of-array irradiance, capacity factor (or hourly values with timeframe=hourly).",
+   "params": {
+    "lat": {
+     "required": true,
+     "desc": "latitude"
+    },
+    "lon": {
+     "required": true,
+     "desc": "longitude"
+    },
+    "system_capacity": {
+     "required": true,
+     "desc": "kW DC (0.05-500000)"
+    },
+    "module_type": {
+     "required": true,
+     "desc": "0 standard, 1 premium, 2 thin film"
+    },
+    "losses": {
+     "required": true,
+     "desc": "system losses, percent (e.g. 14)"
+    },
+    "array_type": {
+     "required": true,
+     "desc": "0 fixed open rack, 1 fixed roof, 2 1-axis, 3 1-axis backtracking, 4 2-axis"
+    },
+    "tilt": {
+     "required": true,
+     "desc": "degrees"
+    },
+    "azimuth": {
+     "required": true,
+     "desc": "degrees (180 = south)"
+    },
+    "dataset": {
+     "desc": "nsrdb (default), tmy2, tmy3, intl"
+    },
+    "timeframe": {
+     "desc": "monthly (default): 12 rows; hourly: one row per hour of the typical year (8,760 rows: ac_w, dc_w in W; poa_w_m2, dn_w_m2, df_w_m2 in W/m2; tamb_c, tcell_c; wspd_m_s; alb)"
+    }
+   },
+   "records": "outputs",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "alt_fuel_csv": {
+   "path": "/alt-fuel-stations/v1.csv",
+   "description": "Same as alt_fuel_stations as CSV (manual route; column names are labels such as 'Station Name').",
+   "params": {
+    "fuel_type": {
+     "desc": "ELEC, E85, CNG, LPG, BD, HY, LNG, RD; comma-separated for several"
+    },
+    "state": {
+     "desc": "two-letter state code(s), comma-separated"
+    },
+    "zip": {
+     "desc": "ZIP code(s)"
+    },
+    "city": {
+     "in": "spec",
+     "desc": "city name: the API has no city filter (it answers 0 rows), so the pack keeps the rows whose city matches, ignoring case; give state (or zip) too"
+    },
+    "status": {
+     "desc": "E open, P planned, T temporarily unavailable, all; comma-separated for several. Without it the API returns every status: pass E for open stations only"
+    },
+    "access": {
+     "desc": "public, private or all. Without it the API returns both: pass public for public stations only"
+    },
+    "ev_network": {
+     "desc": "EV network, e.g. Tesla, ChargePoint Network"
+    },
+    "ev_charging_level": {
+     "desc": "1, 2, dc_fast or all"
+    },
+    "ev_connector_type": {
+     "desc": "J1772, J1772COMBO, CHADEMO, TESLA, NEMA515 ..."
+    },
+    "owner_type": {
+     "desc": "P private, T utility, FG federal, LG local, SG state, J jointly owned"
+    },
+    "country": {
+     "desc": "US (default), CA, or all"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "limit": "all"
+   },
+   "max_rows": 100000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "ev_chargers": {
+   "id": "ELEC",
+   "name": "EV charging stations",
+   "description": "alt_fuel_stations with fuel_type ELEC (ports in ev_level1_evse_num, ev_level2_evse_num, ev_dc_fast_num)",
+   "endpoint": "alt_fuel_stations"
+  },
+  "hydrogen_stations": {
+   "id": "HY",
+   "name": "Hydrogen fueling stations",
+   "description": "alt_fuel_stations with fuel_type HY",
+   "endpoint": "alt_fuel_stations"
+  },
+  "electricity_rates": {
+   "id": "utility_rates",
+   "name": "Utility electricity rates",
+   "description": "utility_rates v3: residential, commercial, industrial $/kWh (2012 data)",
+   "endpoint": "utility_rates"
+  },
+  "solar": {
+   "id": "solar_resource",
+   "name": "Solar resource",
+   "description": "solar_resource v1: monthly GHI, DNI and latitude-tilt irradiance",
+   "endpoint": "solar_resource"
+  },
+  "pv_output": {
+   "id": "pvwatts",
+   "name": "PVWatts v8",
+   "description": "modeled monthly solar PV production for a system",
+   "endpoint": "pvwatts"
+  }
+ }
+}

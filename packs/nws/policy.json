@@ -1,0 +1,82 @@
+{
+  "id": "nws",
+  "title": "National Weather Service API (forecasts, alerts, observations)",
+  "agency": "National Weather Service, National Oceanic and Atmospheric Administration",
+  "depth": "standard",
+  "domains": [
+    "weather",
+    "emergency management"
+  ],
+  "keywords": [
+    "forecast",
+    "weather forecast",
+    "hourly forecast",
+    "weather alert",
+    "warning",
+    "watch",
+    "advisory",
+    "tornado warning",
+    "flood warning",
+    "heat advisory",
+    "winter storm",
+    "current weather",
+    "observation",
+    "nws",
+    "weather.gov"
+  ],
+  "questions": [
+    "the 7-day forecast for a place",
+    "active weather warnings in a state",
+    "current conditions at an airport station",
+    "alerts issued for a county in the last few days"
+  ],
+  "homepage": "https://www.weather.gov/documentation/services-web-api",
+  "terms_url": "https://www.weather.gov/disclaimer",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.weather.gov",
+      "probe": "https://api.weather.gov/alerts/types",
+      "hosts": [
+        "api.weather.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the JSON under the name shown; for forecasts open the point link first, then the URL in its properties.forecast (or forecastHourly) field, and save that page. Upload the files. Without the links: https://forecast.weather.gov (type the place) shows the same forecast, and https://alerts.weather.gov lists active alerts."
+    }
+  },
+  "cache": {
+    "mode": "none",
+    "ttl_hours": null,
+    "why": "Forecasts update hourly and alerts by the minute; every run asks again."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NWS information is a U.S. government work in the public domain (17 U.S.C. 105; https://www.weather.gov/disclaimer); credit the National Weather Service."
+  },
+  "notices": [],
+  "retention": {
+    "upstream_days": 7,
+    "note": "The API serves current forecasts, active alerts, recent alerts and about the last week of observations only; it is not an archive. Record the retrieval time."
+  },
+  "citation": "National Weather Service, {dataset}, api.weather.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Forecast, current conditions, or past weather? Forecasts are not historical data; past weather comes from noaa (station observations) instead."
+  ],
+  "formats": [
+    "json",
+    "geojson"
+  ]
+}

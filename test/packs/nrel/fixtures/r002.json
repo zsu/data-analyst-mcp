@@ -1,0 +1,1 @@
+{"inputs":{"lat":"44.26","lon":"-72.58"},"errors":[],"warnings":[],"version":"3.2.0","metadata":{"sources":["Ventyx Research (2012)"]},"outputs":{"company_id":"7601","utility_name":"Green Mountain Power Corp","utility_info":[{"company_id":"7601","utility_name":"Green Mountain Power Corp"}],"commercial":0.1363,"industrial":0.095,"residential":0.1688}}

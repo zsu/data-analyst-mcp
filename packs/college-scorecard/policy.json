@@ -1,0 +1,106 @@
+{
+  "id": "college-scorecard",
+  "title": "College Scorecard (U.S. Department of Education)",
+  "agency": "U.S. Department of Education",
+  "depth": "standard",
+  "domains": [
+    "education",
+    "higher education",
+    "student debt"
+  ],
+  "keywords": [
+    "college",
+    "colleges",
+    "university",
+    "universities",
+    "tuition",
+    "net price",
+    "cost of college",
+    "graduation rate",
+    "completion rate",
+    "earnings after college",
+    "student debt",
+    "student loans",
+    "admission rate",
+    "pell",
+    "scorecard",
+    "ipeds",
+    "unitid",
+    "hbcu",
+    "community college",
+    "for-profit college"
+  ],
+  "questions": [
+    "median earnings ten years after entry by college",
+    "net price of public universities in a state",
+    "graduation rates of colleges in a state",
+    "student debt of graduates by school",
+    "most selective colleges by admission rate"
+  ],
+  "homepage": "https://collegescorecard.ed.gov/data/",
+  "terms_url": "https://collegescorecard.ed.gov/data/documentation/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "key_only": [
+      "more than a few requests an hour (DEMO_KEY is limited per IP address)"
+    ],
+    "demo_key": "DEMO_KEY"
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "daily_quota": null,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.data.gov/ed/collegescorecard/v1",
+      "probe": "https://api.data.gov/ed/collegescorecard/v1/schools.json?id=130943&fields=id",
+      "hosts": [
+        "api.data.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md (they carry api.data.gov's public DEMO_KEY; replace it with your own free key if it answers OVER_RATE_LIMIT), save the JSON pages under the names shown, and upload them. Without the links: download the full data files from https://collegescorecard.ed.gov/data/ (Most Recent Institution-Level Data, CSV inside a zip) and upload the CSV; the CSV uses upper-case variable names (UNITID, INSTNM, MD_EARN_WNE_P10) listed in the data dictionary."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Queries are small and the data are refreshed a few times a year; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "College Scorecard data are U.S. government works (Department of Education) in the public domain (17 U.S.C. 105); the earnings and debt measures derive from federal administrative records and are published for public use."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Education, College Scorecard, {dataset}, api.data.gov/ed/collegescorecard, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "scorecard_title_iv",
+      "kind": "require_text",
+      "any": [
+        "federal aid",
+        "title iv",
+        "federally aided",
+        "federal student aid"
+      ],
+      "why": "Earnings, debt and net price cover only students who received federal aid (Title IV); a report must say so."
+    }
+  ],
+  "clarify": [
+    "Which schools? All institutions, or only bachelor's-predominant (predominant_degree 3), and which ownership (public, private nonprofit, for-profit)?",
+    "Which cost measure: published tuition (in-state or out-of-state) or average net price after grants?",
+    "Earnings 6 or 10 years after entry? Both cover only federally aided students who are working."
+  ],
+  "formats": [
+    "json"
+  ]
+}

@@ -1,0 +1,245 @@
+y1_statefips,y1_countyfips,y2_statefips,y2_countyfips,y2_state,y2_countyname,n1,n2,agi
+01,001,96,000,AL,Autauga County Total Migration-US and Foreign,1920,3869,118308
+01,001,97,000,AL,Autauga County Total Migration-US,1888,3759,115092
+01,001,97,001,AL,Autauga County Total Migration-Same State,1199,2247,63596
+01,001,97,003,AL,Autauga County Total Migration-Different State,689,1512,51496
+01,001,98,000,AL,Autauga County Total Migration-Foreign,32,110,3216
+01,001,01,001,AL,Autauga County Non-migrants,20045,43150,1531683
+01,001,01,051,AL,Elmore County,438,847,24777
+01,001,01,101,AL,Montgomery County,260,491,12370
+01,001,01,021,AL,Chilton County,71,143,3069
+01,001,01,073,AL,Jefferson County,61,91,3916
+01,001,01,081,AL,Lee County,51,78,2182
+01,001,01,117,AL,Shelby County,45,73,2442
+01,001,01,047,AL,Dallas County,35,72,1324
+01,001,01,089,AL,Madison County,32,63,2173
+01,001,01,003,AL,Baldwin County,25,47,1655
+01,001,01,109,AL,Pike County,20,40,934
+01,001,58,000,SS,Other flows - Same State,161,302,8754
+01,001,59,000,DS,Other flows - Different State,689,1512,51496
+01,001,59,001,DS,Other flows - Northeast,29,46,1840
+01,001,59,003,DS,Other flows - Midwest,84,207,6049
+01,005,96,000,AL,Barbour County Total Migration-US and Foreign,492,932,19330
+01,005,97,000,AL,Barbour County Total Migration-US,492,932,19330
+01,005,97,001,AL,Barbour County Total Migration-Same State,318,612,12591
+01,005,97,003,AL,Barbour County Total Migration-Different State,174,320,6738
+01,005,01,005,AL,Barbour County Non-migrants,7453,15143,409369
+01,005,01,069,AL,Houston County,55,111,1559
+01,005,01,045,AL,Dale County,41,81,1848
+01,005,01,109,AL,Pike County,34,77,1564
+01,005,01,067,AL,Henry County,33,64,1315
+01,005,01,113,AL,Russell County,28,57,1394
+01,005,01,101,AL,Montgomery County,21,34,744
+01,005,13,239,GA,Quitman County,21,47,714
+01,005,58,000,SS,Other flows - Same State,106,188,4168
+01,005,59,000,DS,Other flows - Different State,153,273,6024
+01,005,59,001,DS,Other flows - Northeast,-1,-1,-1
+01,005,59,003,DS,Other flows - Midwest,-1,-1,-1
+01,005,59,005,DS,Other flows - South,153,273,6024
+01,005,59,007,DS,Other flows - West,-1,-1,-1
+24,031,96,000,MD,Montgomery County Total Migration-US and Foreign,32453,51792,3350945
+24,031,97,000,MD,Montgomery County Total Migration-US,31675,50273,3255295
+24,031,97,001,MD,Montgomery County Total Migration-Same State,11202,19168,906612
+24,031,97,003,MD,Montgomery County Total Migration-Different State,20473,31105,2348683
+24,031,98,000,MD,Montgomery County Total Migration-Foreign,778,1519,95650
+24,031,24,031,MD,Montgomery County Non-migrants,429090,857863,64362711
+24,031,24,033,MD,Prince George's County,3823,6334,215650
+24,031,11,001,DC,District of Columbia,2420,3096,261765
+24,031,24,021,MD,Frederick County,2352,4543,238491
+24,031,51,059,VA,Fairfax County,1396,2168,175105
+24,031,24,027,MD,Howard County,1293,2311,129848
+24,031,24,003,MD,Anne Arundel County,997,1671,113252
+24,031,51,013,VA,Arlington County,754,864,64842
+24,031,24,510,MD,Baltimore city,701,909,45665
+24,031,24,005,MD,Baltimore County,666,978,44852
+24,031,36,061,NY,New York County,645,703,67921
+24,031,57,001,FR,Foreign - Overseas,575,1034,67899
+24,031,24,043,MD,Washington County,434,836,25419
+24,031,06,037,CA,Los Angeles County,405,532,37085
+24,031,51,107,VA,Loudoun County,366,644,44013
+24,031,51,510,VA,Alexandria city,339,446,28393
+24,031,36,047,NY,Kings County,284,324,24114
+24,031,10,005,DE,Sussex County,263,448,54050
+24,031,17,031,IL,Cook County,259,329,19889
+24,031,51,153,VA,Prince William County,232,427,16381
+24,031,24,013,MD,Carroll County,231,398,18867
+24,031,53,033,WA,King County,228,316,26806
+24,031,12,099,FL,Palm Beach County,223,384,96863
+24,031,25,017,MA,Middlesex County,222,327,35226
+24,031,48,201,TX,Harris County,211,367,17577
+24,031,06,073,CA,San Diego County,208,343,24360
+24,031,42,101,PA,Philadelphia County,201,244,14542
+24,031,24,017,MD,Charles County,193,332,15201
+24,031,12,086,FL,Miami-Dade County,186,292,37160
+24,031,57,005,FR,Foreign - APO/FPO ZIPs,175,434,25447
+24,031,37,119,NC,Mecklenburg County,159,237,13203
+24,031,12,011,FL,Broward County,158,240,20073
+24,031,25,025,MA,Suffolk County,158,183,11870
+24,031,06,085,CA,Santa Clara County,157,213,22764
+24,031,42,003,PA,Allegheny County,154,195,12302
+24,031,37,183,NC,Wake County,140,239,20881
+24,031,13,121,GA,Fulton County,139,209,15442
+24,031,36,081,NY,Queens County,134,173,9647
+24,031,12,095,FL,Orange County,131,233,16238
+24,031,04,013,AZ,Maricopa County,125,188,16160
+24,031,08,031,CO,Denver County,122,148,11492
+24,031,48,113,TX,Dallas County,118,173,12199
+24,031,48,453,TX,Travis County,116,168,15555
+24,031,34,017,NJ,Hudson County,112,139,10023
+24,031,48,029,TX,Bexar County,109,217,10810
+24,031,54,003,WV,Berkeley County,108,189,7915
+24,031,06,075,CA,San Francisco County,105,125,13748
+24,031,12,057,FL,Hillsborough County,99,166,10652
+24,031,06,001,CA,Alameda County,98,140,10131
+24,031,06,059,CA,Orange County,96,147,9415
+24,031,15,003,HI,Honolulu County,81,156,11979
+24,031,24,025,MD,Harford County,79,135,6481
+24,031,32,003,NV,Clark County,79,121,6707
+24,031,45,019,SC,Charleston County,78,121,15130
+24,031,51,810,VA,Virginia Beach city,77,121,6414
+24,031,39,049,OH,Franklin County,75,125,6072
+24,031,10,003,DE,New Castle County,74,111,6754
+24,031,51,760,VA,Richmond city,74,93,5151
+24,031,47,037,TN,Davidson County,73,88,7909
+24,031,12,103,FL,Pinellas County,72,117,14494
+24,031,24,009,MD,Calvert County,71,108,5932
+24,031,42,091,PA,Montgomery County,70,131,10764
+24,031,12,031,FL,Duval County,69,115,7472
+24,031,37,063,NC,Durham County,68,87,5632
+24,031,48,085,TX,Collin County,67,129,8074
+24,031,42,133,PA,York County,66,100,7084
+24,031,13,135,GA,Gwinnett County,64,108,5209
+24,031,24,047,MD,Worcester County,64,114,8534
+24,031,54,037,WV,Jefferson County,64,108,6461
+24,031,08,041,CO,El Paso County,63,109,5980
+24,031,12,115,FL,Sarasota County,61,108,16925
+24,031,12,081,FL,Manatee County,60,121,10227
+24,031,25,021,MA,Norfolk County,60,86,8193
+24,031,34,023,NJ,Middlesex County,58,104,8383
+24,031,39,035,OH,Cuyahoga County,58,83,5161
+24,031,48,439,TX,Tarrant County,57,90,5375
+24,031,55,025,WI,Dane County,57,75,3919
+24,031,12,021,FL,Collier County,56,98,20120
+24,031,24,035,MD,Queen Anne's County,55,98,8231
+24,031,45,051,SC,Horry County,55,101,5679
+24,031,36,103,NY,Suffolk County,54,70,4132
+24,031,13,089,GA,DeKalb County,53,73,3489
+24,031,34,003,NJ,Bergen County,53,84,7139
+24,031,51,179,VA,Stafford County,53,117,2779
+24,031,26,161,MI,Washtenaw County,52,77,4698
+24,031,51,041,VA,Chesterfield County,51,79,4572
+24,031,51,710,VA,Norfolk city,51,87,7865
+24,031,51,069,VA,Frederick County,50,62,3220
+24,031,53,053,WA,Pierce County,50,97,6046
+24,031,34,013,NJ,Essex County,49,73,4741
+24,031,36,119,NY,Westchester County,49,82,12067
+24,031,48,121,TX,Denton County,49,108,5774
+24,031,12,109,FL,St. Johns County,48,106,8955
+24,031,13,067,GA,Cobb County,48,88,4181
+24,031,24,037,MD,St. Mary's County,48,77,3732
+24,031,26,125,MI,Oakland County,47,72,5432
+24,031,04,019,AZ,Pima County,46,74,4011
+24,031,06,081,CA,San Mateo County,46,67,5750
+24,031,08,013,CO,Boulder County,46,60,4676
+24,031,09,170,CT,South Central Connecticut Plannin,46,54,3044
+24,031,12,071,FL,Lee County,44,75,8708
+24,031,27,053,MN,Hennepin County,44,69,4275
+24,031,41,051,OR,Multnomah County,44,54,3557
+24,031,51,087,VA,Henrico County,44,72,4401
+24,031,24,041,MD,Talbot County,43,76,11653
+24,031,42,029,PA,Chester County,43,62,5371
+24,031,12,105,FL,Polk County,42,77,3784
+24,031,42,001,PA,Adams County,42,72,5604
+24,031,42,071,PA,Lancaster County,42,68,4672
+24,031,51,600,VA,Fairfax city,41,58,5016
+24,031,12,097,FL,Osceola County,40,73,2847
+24,031,36,059,NY,Nassau County,40,50,3989
+24,031,37,133,NC,Onslow County,40,88,3948
+24,031,36,005,NY,Bronx County,39,58,1794
+24,031,37,051,NC,Cumberland County,38,69,2145
+24,031,42,055,PA,Franklin County,38,62,4955
+24,031,48,141,TX,El Paso County,38,85,3896
+24,031,48,491,TX,Williamson County,38,74,4815
+24,031,09,190,CT,Western Connecticut Planning Regi,37,58,4729
+24,031,34,021,NJ,Mercer County,37,56,3748
+24,031,51,003,VA,Albemarle County,37,60,4769
+24,031,53,061,WA,Snohomish County,37,59,3465
+24,031,08,059,CO,Jefferson County,36,58,4670
+24,031,12,101,FL,Pasco County,36,77,4841
+24,031,12,111,FL,St. Lucie County,36,64,6781
+24,031,09,110,CT,Capitol Planning Region,35,57,3261
+24,031,12,009,FL,Brevard County,35,53,4555
+24,031,42,045,PA,Delaware County,34,58,6065
+24,031,51,177,VA,Spotsylvania County,34,61,3896
+24,031,24,045,MD,Wicomico County,33,52,1830
+24,031,34,039,NJ,Union County,33,63,3336
+24,031,12,127,FL,Volusia County,32,48,3465
+24,031,24,001,MD,Allegany County,32,49,2617
+24,031,37,135,NC,Orange County,32,45,2375
+24,031,49,035,UT,Salt Lake County,32,52,3406
+24,031,26,163,MI,Wayne County,31,62,3525
+24,031,34,005,NJ,Burlington County,31,54,2502
+24,031,48,157,TX,Fort Bend County,31,74,4518
+24,031,22,071,LA,Orleans Parish,30,39,1819
+24,031,37,021,NC,Buncombe County,30,48,4587
+24,031,39,061,OH,Hamilton County,30,36,2088
+24,031,06,071,CA,San Bernardino County,29,57,1851
+24,031,08,005,CO,Arapahoe County,29,49,2804
+24,031,34,035,NJ,Somerset County,29,56,5583
+24,031,42,041,PA,Cumberland County,29,44,2892
+24,031,42,043,PA,Dauphin County,29,44,3594
+24,031,45,013,SC,Beaufort County,29,55,6229
+24,031,45,045,SC,Greenville County,29,49,2689
+24,031,51,610,VA,Falls Church city,29,41,3253
+24,031,06,065,CA,Riverside County,28,44,2486
+24,031,18,097,IN,Marion County,28,52,1662
+24,031,25,009,MA,Essex County,28,52,3732
+24,031,34,027,NJ,Morris County,28,48,3720
+24,031,44,007,RI,Providence County,28,39,1577
+24,031,29,189,MO,St. Louis County,27,53,2411
+24,031,34,007,NJ,Camden County,27,48,2245
+24,031,36,055,NY,Monroe County,27,32,1510
+24,031,37,019,NC,Brunswick County,27,49,5263
+24,031,37,067,NC,Forsyth County,27,45,2113
+24,031,37,081,NC,Guilford County,27,51,2512
+24,031,48,339,TX,Montgomery County,27,53,4314
+24,031,12,033,FL,Escambia County,26,36,1437
+24,031,37,129,NC,New Hanover County,26,34,1655
+24,031,42,017,PA,Bucks County,26,57,3914
+24,031,12,069,FL,Lake County,25,48,3392
+24,031,36,029,NY,Erie County,25,46,2565
+24,031,45,079,SC,Richland County,25,51,1874
+24,031,06,013,CA,Contra Costa County,24,44,4184
+24,031,17,043,IL,DuPage County,24,42,3650
+24,031,24,015,MD,Cecil County,24,39,2431
+24,031,25,027,MA,Worcester County,24,40,2190
+24,031,45,015,SC,Berkeley County,24,57,4005
+24,031,48,027,TX,Bell County,24,43,2025
+24,031,51,540,VA,Charlottesville city,24,33,2165
+24,031,06,067,CA,Sacramento County,23,37,2076
+24,031,13,051,GA,Chatham County,23,31,2074
+24,031,25,001,MA,Barnstable County,23,32,4947
+24,031,35,001,NM,Bernalillo County,23,37,2371
+24,031,47,093,TN,Knox County,23,36,2599
+24,031,47,157,TN,Shelby County,23,41,3720
+24,031,51,550,VA,Chesapeake city,23,49,2362
+24,031,08,069,CO,Larimer County,22,29,1567
+24,031,24,019,MD,Dorchester County,22,37,2226
+24,031,49,049,UT,Utah County,22,41,1061
+24,031,50,007,VT,Chittenden County,22,24,1082
+24,031,17,097,IL,Lake County,21,37,2199
+24,031,23,005,ME,Cumberland County,21,34,2396
+24,031,41,067,OR,Washington County,21,39,2356
+24,031,12,117,FL,Seminole County,20,42,1383
+24,031,24,023,MD,Garrett County,20,37,3691
+24,031,34,025,NJ,Monmouth County,20,25,1816
+24,031,51,199,VA,York County,20,35,1846
+24,031,51,700,VA,Newport News city,20,27,1299
+24,031,54,061,WV,Monongalia County,20,25,1639
+24,031,58,000,SS,Other flows - Same State,21,34,2009
+24,031,59,000,DS,Other flows - Different State,3765,6332,417758
+24,031,59,001,DS,Other flows - Northeast,749,1142,84195
+24,031,59,003,DS,Other flows - Midwest,717,1202,65666
+24,031,59,005,DS,Other flows - South,1720,3033,194374
+24,031,59,007,DS,Other flows - West,579,955,73523
+24,031,57,009,FR,Foreign - Other flows,28,51,2304

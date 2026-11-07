@@ -1,0 +1,14 @@
+{
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB/xls/BUDGET-2027-TAB-2-1.xlsx": "tab2027_2_1.xlsx",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB/xls/BUDGET-2027-TAB-8-1.xlsx": "tab2027_8_1.xlsx",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB/xls/BUDGET-2027-TAB-4-1.xlsx": "tab2027_4_1.xlsx",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-DB/xls/BUDGET-2027-DB-3.xlsx": "db2027_3_receipts.xlsx",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2026-DB/xls/BUDGET-2026-DB-2.xlsx": "govinfo_error.html",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2026-DB/csv/BUDGET-2026-DB-2.csv": "govinfo_error.html",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB/xls/BUDGET-2027-TAB-2-9.xlsx": "govinfo_error.html",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2026-TAB/xls/BUDGET-2026-TAB-2-1.xlsx": "govinfo_error.html",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2026-TAB.zip": "tab2026_package_trimmed.zip",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-TAB.zip": "tab2027_package_trimmed.zip",
+ "GET https://www.govinfo.gov/content/pkg/BUDGET-2027-FCS/xls/BUDGET-2027-FCS.xlsx": "fcs2027_trimmed.xlsx",
+ "_note": "Recorded live 2026-10-30. tab2026_package_trimmed.zip, tab2027_package_trimmed.zip and fcs2027_trimmed.xlsx are trimmed real copies (see the test module docstring); govinfo_error.html is GovInfo's error page, served for every missing file."
+}

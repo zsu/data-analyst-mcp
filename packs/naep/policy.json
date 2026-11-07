@@ -1,0 +1,100 @@
+{
+  "id": "naep",
+  "title": "NAEP, The Nation's Report Card (NAEP Data Service)",
+  "agency": "National Center for Education Statistics (U.S. Department of Education), for the National Assessment Governing Board",
+  "depth": "standard",
+  "domains": [
+    "education",
+    "k-12",
+    "student achievement"
+  ],
+  "keywords": [
+    "naep",
+    "nation's report card",
+    "test scores",
+    "reading scores",
+    "math scores",
+    "achievement",
+    "proficient",
+    "proficiency",
+    "achievement gap",
+    "4th grade",
+    "8th grade",
+    "12th grade",
+    "grade 4",
+    "grade 8",
+    "student performance",
+    "school",
+    "learning loss",
+    "science scores",
+    "civics",
+    "us history",
+    "tuda",
+    "urban district"
+  ],
+  "questions": [
+    "4th grade reading scores by state",
+    "did math scores fall since 2019",
+    "percent of 8th graders proficient in math",
+    "achievement gap by race or school lunch eligibility",
+    "how a state compares with the national average",
+    "NAEP results for a large city district"
+  ],
+  "homepage": "https://www.nationsreportcard.gov/",
+  "terms_url": "https://nces.ed.gov/help/copyright.asp",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.nationsreportcard.gov",
+      "probe": "https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=data&subject=reading&grade=4&subscale=RRPCM&variable=TOTAL&jurisdiction=NP&stattype=MN:MN&Year=Current",
+      "hosts": [
+        "www.nationsreportcard.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each returns JSON; save it under the name shown) and upload the files. Without the links: the NAEP Data Explorer (https://www.nationsreportcard.gov/ndecore/landing) builds the same tables (choose subject, grade, jurisdictions, variables, statistics; Download > Excel); upload the export and say which table it is. The report cards at https://www.nationsreportcard.gov/ give the headline numbers with significance marks."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small queries; results change only when a new assessment is released (about every two years), but data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NAEP results are published by NCES, a U.S. government agency; its materials are in the public domain (17 U.S.C. 105) unless marked otherwise, and NCES asks that the source be cited."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Education, Institute of Education Sciences, National Center for Education Statistics, National Assessment of Educational Progress (NAEP), {dataset}, NAEP Data Service (nationsreportcard.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "naep_uncertainty",
+      "kind": "require_text",
+      "any": [
+        "standard error",
+        "significant"
+      ],
+      "why": "NAEP scores are sample estimates with standard errors; a report must say whether differences are statistically significant (NAEP's own tests), not compare point estimates."
+    }
+  ],
+  "clarify": [
+    "Which subject, grade(s) and year(s)? Default: reading and mathematics, grades 4 and 8, the latest year and 2019 (pre-pandemic).",
+    "Average scale score or achievement level (percent at or above Proficient)? They can move differently; default: report both.",
+    "Public schools only (NP, the comparison base for states) or all schools (NT)? Default NP when states are involved."
+  ],
+  "formats": [
+    "json"
+  ]
+}

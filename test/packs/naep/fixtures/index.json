@@ -1,0 +1,8 @@
+{
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=data&variable=TOTAL&jurisdiction=NP&stattype=MN%3AMN&Year=2024%2C2019&QCData=true&subject=reading&grade=4&subscale=RRPCM": "r001.json",
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=sigacrossyear&variable=TOTAL&jurisdiction=NP&stattype=MN%3AMN&QCData=true&subject=reading&grade=4&Year=2024%2C2019&subscale=RRPCM": "r002.json",
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=data&variable=SDRACE&jurisdiction=WY&stattype=MN%3AMN&Year=2024&QCData=true&subject=reading&grade=4&subscale=RRPCM": "r003.json",
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=sigacrossjuris&variable=TOTAL&stattype=MN%3AMN&Year=2024&QCData=true&subject=mathematics&grade=8&jurisdiction=NP%2CMA%2CMS&subscale=MRPCM": "r004.json",
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=data&variable=TOTAL&jurisdiction=NP&stattype=ALC%3ABB%2CALC%3AAB%2CALC%3AAP%2CALC%3AAD&Year=2024&QCData=true&subject=reading&grade=4&subscale=RRPCM": "r005.json",
+ "GET https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx?type=independentvariables&subject=reading&cohort=2&Year=2024": "r006.json"
+}

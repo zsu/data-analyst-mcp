@@ -1,0 +1,16 @@
+{
+ "GET https://efts.sec.gov/LATEST/search-index?keysTyped=AAPL": "r001.json",
+ "GET https://data.sec.gov/api/xbrl/companyconcept/CIK0000320193/us-gaap/NetIncomeLoss.json": "r002.json",
+ "GET https://data.sec.gov/api/xbrl/frames/us-gaap/GoodwillImpairmentLoss/USD/CY2023Q4.json": "r003.json",
+ "GET https://data.sec.gov/api/xbrl/companyfacts/CIK0002129664.json": "r004.json",
+ "GET https://data.sec.gov/submissions/CIK0002129664.json": "r005.json",
+ "GET https://efts.sec.gov/LATEST/search-index?q=%22goodwill+impairment%22&forms=8-K&startdt=2024-01-01&enddt=2024-01-05": "r006.json",
+ "GET https://efts.sec.gov/LATEST/search-index?forms=4&ciks=0000320193&startdt=2025-01-01&enddt=2025-03-31": "r007.json",
+ "GET https://data.sec.gov/api/xbrl/companyconcept/CIK0000789019/us-gaap/CommonStockDividendsPerShareDeclared.json": "r008.json",
+ "GET https://data.sec.gov/api/xbrl/frames/us-gaap/BusinessAcquisitionProFormaEarningsPerShareBasic/USD-per-shares/CY2022.json": "r009.json",
+ "GET https://data.sec.gov/api/xbrl/companyconcept/CIK0000320193/us-gaap/RevenueFromLemonadeStands.json": {
+  "file": "r010.xml",
+  "status": 404
+ },
+ "GET https://efts.sec.gov/LATEST/search-index?keysTyped=Qzxvy+Kwrrt+Holdings": "r011.json"
+}

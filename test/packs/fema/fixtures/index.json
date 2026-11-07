@@ -1,0 +1,5 @@
+{
+ "GET https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries?%24orderby=id&%24filter=state+eq+%27VT%27+and+fyDeclared+eq+2023+and+declarationType+eq+%27DR%27&%24top=3&%24skip=0": "r001.json",
+ "GET https://www.fema.gov/api/open/v3/NfipClaims?%24orderby=id&%24filter=state+eq+%27VT%27+and+yearOfLoss+eq+2023&%24select=id%2CdateOfLoss%2CyearOfLoss%2CfloodEvent%2Cstate%2CcountyCode%2CratedFloodZone%2CnetBuildingPaymentAmount%2CnetContentsPaymentAmount&%24top=3&%24skip=0": "r002.json",
+ "GET https://www.fema.gov/api/open/v2/FemaRegions?%24format=csv&%24select=region%2Cname%2Ccity%2Cstate&%24top=3&%24skip=0": "r003.csv"
+}

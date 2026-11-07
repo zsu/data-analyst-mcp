@@ -1,0 +1,12 @@
+{
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?fields=record_date&page%5Bsize%5D=1&sort=-record_date": "r001.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?filter=record_date%3Agte%3A2026-09-01%2Crecord_date%3Alte%3A2026-09-30&page%5Bnumber%5D=1&page%5Bsize%5D=1": "r002.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?filter=record_date%3Agte%3A2026-09-01%2Crecord_date%3Alte%3A2026-09-30&sort=record_date%2Csrc_line_nbr&page%5Bnumber%5D=1&page%5Bsize%5D=10000": "r003.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?page%5Bnumber%5D=1&page%5Bsize%5D=1": "r004.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=record_date&page%5Bnumber%5D=1&page%5Bsize%5D=1": "r005.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&page%5Bnumber%5D=1&page%5Bsize%5D=1": "r006.json",
+ "GET https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/no_such_table?page%5Bnumber%5D=1&page%5Bsize%5D=1": {
+  "file": "r007.xml",
+  "status": 404
+ }
+}

@@ -1,0 +1,101 @@
+{
+  "id": "va",
+  "title": "VA Open Data (data.va.gov) and NCVAS Veteran Statistics",
+  "agency": "U.S. Department of Veterans Affairs",
+  "depth": "standard",
+  "domains": [
+    "veterans",
+    "federal spending",
+    "population projections",
+    "disability benefits"
+  ],
+  "keywords": [
+    "veteran",
+    "veterans",
+    "va",
+    "veterans affairs",
+    "vetpop",
+    "veteran population",
+    "veteran population projection",
+    "period of service",
+    "gulf war",
+    "vietnam era",
+    "ncvas",
+    "gdx",
+    "va expenditures",
+    "va spending by state",
+    "disability compensation",
+    "service-connected disability",
+    "va pension",
+    "pension recipients",
+    "compensation recipients",
+    "disability rating",
+    "veteran deaths",
+    "visn"
+  ],
+  "questions": [
+    "number of veterans by state (VetPop projection)",
+    "veteran population projected to 2050",
+    "veterans by period of service or age group in a state",
+    "veterans by county or congressional district",
+    "VA expenditures by state, county or congressional district",
+    "disability compensation recipients by county and rating",
+    "VA pension recipients by state",
+    "annual disability compensation dollars by state"
+  ],
+  "homepage": "https://www.data.va.gov/",
+  "terms_url": "https://www.va.gov/webpolicylinks.asp",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.data.va.gov/resource",
+      "probe": "https://www.data.va.gov/resource/w6fb-7dn4.json?$limit=1",
+      "hosts": [
+        "www.data.va.gov",
+        "www.va.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the dataset page (https://www.data.va.gov/d/<id>), choose Export > CSV, and upload the file; or open the CSV links in INSTRUCTIONS.md. GDX workbooks: download https://www.va.gov/vetdata/docs/GDX/GDX_FY<yy>.xlsx and upload it. NCVAS publishes the VetPop tables as workbooks at https://www.va.gov/vetdata/veteran_population.asp."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Queries are small; datasets are republished without notice. data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "VA data are U.S. government works in the public domain (17 U.S.C. 105); NCVAS asks to be cited as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Veterans Affairs, National Center for Veterans Analysis and Statistics, {dataset}, data.va.gov and va.gov/vetdata, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which fiscal year? VetPop2023 gives one value per September 30 from 2023 to 2053; years after 2023 are projections, not counts. Default: the current fiscal year's September 30 value, labeled a projection.",
+    "All veterans, or a period of service, age group or sex? VetPop tables split by sex and age or period of service only; totals are sums of the rows."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "xlsx"
+  ],
+  "aliases": [
+    "Department of Veterans Affairs",
+    "Veterans Affairs",
+    "NCVAS",
+    "National Center for Veterans Analysis and Statistics"
+  ]
+}

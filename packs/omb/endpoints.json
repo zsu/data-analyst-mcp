@@ -1,0 +1,460 @@
+{
+ "base_url": "https://www.govinfo.gov/content/pkg",
+ "timeout": 90,
+ "endpoints": {
+  "historical_table": {
+   "path": "/BUDGET-{fy}-TAB/xls/BUDGET-{fy}-TAB-{granule}.xlsx",
+   "description": "One table of the Historical Tables of the President's Budget (Table s.t, e.g. 1.1 receipts, outlays and deficits since 1789; 3.2 outlays by function and subfunction; 7.1 federal debt; 10.1 GDP and deflators), read as published: title and units in the notes, multi-row headers joined (\"Total Outlays\", \"On-Budget Receipts\"), footnotes in the notes, label rows kept, column sheet_row. The pack reads granule TAB-<s+1>-<t> and checks its title; an edition without that file (FY2026: one workbook) is read from the package zip.",
+   "params": {
+    "fy": {
+     "in": "spec",
+     "desc": "the budget's fiscal year (edition), e.g. 2027 for the budget released in 2026; default: the newest edition GovInfo has (tries next year, this year, last year)"
+    },
+    "table": {
+     "in": "spec",
+     "required": true,
+     "catalog": true,
+     "desc": "table number s.t as published, e.g. \"1.1\", \"3.2\", \"8.5\" (or a catalog alias such as table_1_1)"
+    },
+    "granule": {
+     "in": "path",
+     "desc": "set by the adapter from table (s.t -> <s+1>-<t>)"
+    },
+    "header_row": {
+     "in": "spec",
+     "desc": "optional: 1-based row of the (first) column-name row; default: detected"
+    },
+    "header_rows": {
+     "in": "spec",
+     "desc": "optional: how many header rows to join; default: detected (rows under the first header row whose first cell is empty)"
+    }
+   },
+   "records": "$xlsx",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "budget_database": {
+   "path": "/BUDGET-{fy}-DB/xls/BUDGET-{fy}-DB-{granule}.xlsx",
+   "description": "The Public Budget Database: one row per budget account (or receipt account) with agency, bureau, account, Treasury and CGAC codes, subfunction, BEA category (Mandatory, Discretionary, Net interest), on-/off-budget, and one column per fiscal year (1962 on for outlays and receipts, 1976 on for budget authority, TQ = 1976 transition quarter) in thousands of dollars, through the budget's last projection year. About 5,000-6,000 rows (receipts about 260).",
+   "params": {
+    "fy": {
+     "in": "spec",
+     "desc": "the budget's fiscal year (edition), e.g. 2027 for the budget released in 2026; default: the newest edition GovInfo has (tries next year, this year, last year)"
+    },
+    "kind": {
+     "in": "spec",
+     "required": true,
+     "catalog": true,
+     "enum": [
+      "budget_authority",
+      "outlays",
+      "receipts"
+     ],
+     "desc": "budget_authority (granule 1), outlays (2) or receipts (3)"
+    },
+    "granule": {
+     "in": "path",
+     "desc": "set by the adapter from kind"
+    },
+    "header_row": {
+     "in": "spec",
+     "desc": "optional: 1-based row of the (first) column-name row; default: detected"
+    },
+    "header_rows": {
+     "in": "spec",
+     "desc": "optional: how many header rows to join; default: detected (rows under the first header row whose first cell is empty)"
+    }
+   },
+   "records": "$xlsx",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "credit_supplement": {
+   "path": "/BUDGET-{fy}-FCS/xls/BUDGET-{fy}-FCS.xlsx",
+   "description": "One table of the Federal Credit Supplement: Table 1 direct loans and Table 2 loan guarantees (subsidy rates in percent, obligations or commitments and average loan size in thousands of dollars, for the current year and the budget year, by agency, bureau, program and risk category); Tables 3-6 subsidy assumptions; Tables 7-8 subsidy reestimates by cohort; Tables 9-10 disbursement rates. Label rows (agency, bureau, account) are kept in published order.",
+   "params": {
+    "fy": {
+     "in": "spec",
+     "desc": "the budget's fiscal year (edition), e.g. 2027 for the budget released in 2026; default: the newest edition GovInfo has (tries next year, this year, last year)"
+    },
+    "table": {
+     "in": "spec",
+     "required": true,
+     "catalog": true,
+     "desc": "table number 1-10 (1 = direct loan subsidy rates, 2 = loan guarantee subsidy rates)"
+    },
+    "header_row": {
+     "in": "spec",
+     "desc": "optional: 1-based row of the (first) column-name row; default: detected"
+    },
+    "header_rows": {
+     "in": "spec",
+     "desc": "optional: how many header rows to join; default: detected (rows under the first header row whose first cell is empty)"
+    }
+   },
+   "records": "$xlsx",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "table_1_1": {
+   "id": "1.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 1.1: Summary of receipts, outlays, and surpluses or deficits ( - )"
+  },
+  "table_1_2": {
+   "id": "1.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 1.2: Summary of receipts, outlays, and surpluses or deficits ( - ) as percentages of gdp"
+  },
+  "table_1_3": {
+   "id": "1.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 1.3: Summary of receipts, outlays, and surpluses or deficits ( - ) in current dollars, constant (fy 2017) dollars, and as percentages of gdp"
+  },
+  "table_1_4": {
+   "id": "1.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 1.4: Receipts, outlays, and surpluses or deficits ( - ) by fund group"
+  },
+  "table_2_1": {
+   "id": "2.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 2.1: Receipts by source"
+  },
+  "table_2_2": {
+   "id": "2.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 2.2: Percentage composition of receipts by source"
+  },
+  "table_2_3": {
+   "id": "2.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 2.3: Receipts by source as percentages of gdp"
+  },
+  "table_2_4": {
+   "id": "2.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 2.4: Composition of social insurance and retirement receipts and of excise taxes"
+  },
+  "table_2_5": {
+   "id": "2.5",
+   "endpoint": "historical_table",
+   "name": "Historical Table 2.5: Composition of \"other receipts\""
+  },
+  "table_3_1": {
+   "id": "3.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 3.1: Outlays by superfunction and function"
+  },
+  "table_3_2": {
+   "id": "3.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 3.2: Outlays by function and subfunction"
+  },
+  "table_4_1": {
+   "id": "4.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 4.1: Outlays by agency"
+  },
+  "table_4_2": {
+   "id": "4.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 4.2: Percentage distribution of outlays by agency"
+  },
+  "table_5_1": {
+   "id": "5.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.1: Budget authority by function and subfunction"
+  },
+  "table_5_2": {
+   "id": "5.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.2: Budget authority by agency"
+  },
+  "table_5_3": {
+   "id": "5.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.3: Percentage distribution of budget authority by agency"
+  },
+  "table_5_4": {
+   "id": "5.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.4: Discretionary budget authority by agency"
+  },
+  "table_5_5": {
+   "id": "5.5",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.5: Percentage distribution of discretionary budget authority by agency"
+  },
+  "table_5_6": {
+   "id": "5.6",
+   "endpoint": "historical_table",
+   "name": "Historical Table 5.6: Budget authority for discretionary programs"
+  },
+  "table_6_1": {
+   "id": "6.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 6.1: Composition of outlays"
+  },
+  "table_7_1": {
+   "id": "7.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 7.1: Federal debt at the end of year"
+  },
+  "table_7_2": {
+   "id": "7.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 7.2: Debt subject to statutory limit"
+  },
+  "table_7_3": {
+   "id": "7.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 7.3: Statutory limits on federal debt"
+  },
+  "table_8_1": {
+   "id": "8.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.1: Outlays by budget enforcement act category"
+  },
+  "table_8_2": {
+   "id": "8.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.2: Outlays by budget enforcement act category in constant (fy 2017) dollars"
+  },
+  "table_8_3": {
+   "id": "8.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.3: Percentage distribution of outlays by budget enforcement act category"
+  },
+  "table_8_4": {
+   "id": "8.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.4: Outlays by budget enforcement act category as percentages of gdp"
+  },
+  "table_8_5": {
+   "id": "8.5",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.5: Outlays for mandatory and related programs"
+  },
+  "table_8_6": {
+   "id": "8.6",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.6: Outlays for mandatory and related programs in constant (fy 2017) dollars"
+  },
+  "table_8_7": {
+   "id": "8.7",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.7: Outlays for discretionary programs"
+  },
+  "table_8_8": {
+   "id": "8.8",
+   "endpoint": "historical_table",
+   "name": "Historical Table 8.8: Outlays for discretionary programs in constant (fy 2017) dollars"
+  },
+  "table_9_1": {
+   "id": "9.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.1: Total investment outlays for major public physical capital, research and development, and education and training"
+  },
+  "table_9_2": {
+   "id": "9.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.2: Major public physical capital investment outlays in current and constant (fy 2017) dollars"
+  },
+  "table_9_3": {
+   "id": "9.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.3: Major public physical capital investment outlays in percentage terms"
+  },
+  "table_9_4": {
+   "id": "9.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.4: National defense outlays for major public direct physical capital investment"
+  },
+  "table_9_5": {
+   "id": "9.5",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.5: Nondefense outlays for major public direct physical capital investment"
+  },
+  "table_9_6": {
+   "id": "9.6",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.6: Composition of outlays for grants for major public physical capital investment"
+  },
+  "table_9_7": {
+   "id": "9.7",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.7: Summary of outlays for the conduct of research and development"
+  },
+  "table_9_8": {
+   "id": "9.8",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.8: Composition of outlays for the conduct of research and development"
+  },
+  "table_9_9": {
+   "id": "9.9",
+   "endpoint": "historical_table",
+   "name": "Historical Table 9.9: Composition of outlays for the conduct of education and training"
+  },
+  "table_10_1": {
+   "id": "10.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 10.1: Gross domestic product and deflators used in the historical tables"
+  },
+  "table_11_1": {
+   "id": "11.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 11.1: Summary comparison of outlays for payments for individuals"
+  },
+  "table_11_2": {
+   "id": "11.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 11.2: Functional composition of outlays for payments for individuals"
+  },
+  "table_11_3": {
+   "id": "11.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 11.3: Outlays for payments for individuals by category and major program"
+  },
+  "table_12_1": {
+   "id": "12.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 12.1: Summary comparison of total outlays for grants to state and local governments"
+  },
+  "table_12_2": {
+   "id": "12.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 12.2: Total outlays for grants to state and local governments by function and fund group"
+  },
+  "table_12_3": {
+   "id": "12.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 12.3: Total outlays for grants to state and local governments by function, agency, and program"
+  },
+  "table_13_1": {
+   "id": "13.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 13.1: Cash income, outgo, and balances of the social security and medicare trust funds"
+  },
+  "table_14_1": {
+   "id": "14.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.1: Total government receipts in absolute amounts and as percentages of gdp"
+  },
+  "table_14_2": {
+   "id": "14.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.2: Total government expenditures"
+  },
+  "table_14_3": {
+   "id": "14.3",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.3: Total government expenditures as percentages of gdp"
+  },
+  "table_14_4": {
+   "id": "14.4",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.4: Total government expenditures by major category of expenditure"
+  },
+  "table_14_5": {
+   "id": "14.5",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.5: Total government expenditures by major category of expenditure as percentages of gdp"
+  },
+  "table_14_6": {
+   "id": "14.6",
+   "endpoint": "historical_table",
+   "name": "Historical Table 14.6: Total government surpluses or deficits ( - ) in absolute amounts and as percentages of gdp"
+  },
+  "table_15_1": {
+   "id": "15.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 15.1: Outlays for health programs"
+  },
+  "table_16_1": {
+   "id": "16.1",
+   "endpoint": "historical_table",
+   "name": "Historical Table 16.1: Total executive branch civilian full-time equivalent (fte) employees"
+  },
+  "table_16_2": {
+   "id": "16.2",
+   "endpoint": "historical_table",
+   "name": "Historical Table 16.2: Total executive branch civilian full-time equivalent (fte) employees"
+  },
+  "pbd_budget_authority": {
+   "id": "budget_authority",
+   "endpoint": "budget_database",
+   "name": "Public Budget Database: budget authority by account",
+   "description": "budget authority (appropriations, mandatory authority) by agency, bureau, account, subfunction, BEA category, 1976 on, thousands of dollars"
+  },
+  "pbd_outlays": {
+   "id": "outlays",
+   "endpoint": "budget_database",
+   "name": "Public Budget Database: outlays by account",
+   "description": "outlays (spending) by agency, bureau, account, subfunction, BEA category (mandatory, discretionary, net interest), grant/nongrant, on-/off-budget, 1962 on, thousands of dollars"
+  },
+  "pbd_receipts": {
+   "id": "receipts",
+   "endpoint": "budget_database",
+   "name": "Public Budget Database: governmental receipts by account",
+   "description": "receipts (taxes, customs, fees) by source category and receipt account, 1962 on, thousands of dollars"
+  },
+  "fcs_table1": {
+   "id": "1",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 1: Direct loans: subsidy rates, obligations, and average loan size",
+   "description": "credit subsidy rate (percent of disbursements) for each direct loan program and risk category"
+  },
+  "fcs_table2": {
+   "id": "2",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 2: Loan guarantees: subsidy rates, commitments, and average loan size",
+   "description": "credit subsidy rate (percent of disbursements) for each loan guarantee program"
+  },
+  "fcs_table3": {
+   "id": "3",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 3: Direct loans: assumptions underlying the current-year subsidy estimates"
+  },
+  "fcs_table4": {
+   "id": "4",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 4: Loan guarantees: assumptions underlying the current-year subsidy estimates"
+  },
+  "fcs_table5": {
+   "id": "5",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 5: Direct loans: assumptions underlying the budget-year subsidy estimates"
+  },
+  "fcs_table6": {
+   "id": "6",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 6: Loan guarantees: assumptions underlying the budget-year subsidy estimates"
+  },
+  "fcs_table7": {
+   "id": "7",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 7: Direct loans: subsidy reestimates by cohort"
+  },
+  "fcs_table8": {
+   "id": "8",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 8: Guaranteed loans: subsidy reestimates by cohort"
+  },
+  "fcs_table9": {
+   "id": "9",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 9: Direct loan program disbursement rate assumptions"
+  },
+  "fcs_table10": {
+   "id": "10",
+   "endpoint": "credit_supplement",
+   "name": "Federal Credit Supplement Table 10: Loan guarantee program disbursement rate assumptions"
+  }
+ }
+}

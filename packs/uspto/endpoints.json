@@ -1,0 +1,141 @@
+{
+  "base_url": "https://api.uspto.gov",
+  "endpoints": {
+    "applications_search": {
+      "path": "/api/v1/patent/applications/search",
+      "description": "Patent File Wrapper search: patent applications and grants (bibliographic data, status, continuity, assignments) matching a query. Refreshed daily.",
+      "params": {
+        "q": {"desc": "query: free text, field:value, AND/OR/NOT, wildcards, ranges, e.g. applicationMetaData.filingDate:[2024-01-01 TO 2024-12-31]"},
+        "filters": {"desc": "'field value1,value2', e.g. 'applicationMetaData.applicationTypeCode UTL,DES'"},
+        "rangeFilters": {"desc": "'field from:to', e.g. 'applicationMetaData.grantDate 2020-01-01:2024-12-31'"},
+        "sort": {"desc": "'field asc|desc', e.g. 'applicationMetaData.filingDate desc' (text fields cannot be sorted)"},
+        "fields": {"desc": "comma-separated fields to return, e.g. applicationNumberText,applicationMetaData.patentNumber,applicationMetaData.filingDate"},
+        "facets": {"desc": "comma-separated fields to count by (returned in the response, not as rows)"}
+      },
+      "records": "patentFileWrapperDataBag", "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 100},
+      "max_rows": 10000
+    },
+    "application": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}",
+      "description": "Everything ODP holds for one application (metadata, events, continuity, assignments, attorney, PTA).",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number without punctuation, e.g. 14412875"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_meta_data": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/meta-data",
+      "description": "Bibliographic metadata of one application.",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_continuity": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/continuity",
+      "description": "Parent and child applications (continuations, divisionals).",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_assignment": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/assignment",
+      "description": "Recorded ownership transfers (assignors, assignees, reel/frame).",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_transactions": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/transactions",
+      "description": "Prosecution history events (eventDataBag: code, description, date).",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_adjustment": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/adjustment",
+      "description": "Patent term adjustment (A, B, C delays, applicant delay, total days).",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_foreign_priority": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/foreign-priority",
+      "description": "Foreign priority claims.",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_attorney": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/attorney",
+      "description": "Attorney/agent of record and correspondence address.",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"}},
+      "records": "patentFileWrapperDataBag", "paging": {"type": "none"}
+    },
+    "application_documents": {
+      "path": "/api/v1/patent/applications/{applicationNumberText}/documents",
+      "description": "List of documents in the file wrapper (code, date, download options). Counts against the 1.2M-a-week documents quota.",
+      "params": {"applicationNumberText": {"in": "path", "required": true, "desc": "application number"},
+                 "documentCodes": {"desc": "comma-separated document codes, e.g. CTNF,NOA"},
+                 "officialDateFrom": {"desc": "yyyy-MM-dd"}, "officialDateTo": {"desc": "yyyy-MM-dd"}},
+      "records": "documentBag", "paging": {"type": "none"}
+    },
+    "datasets_search": {
+      "path": "/api/v1/datasets/products/search",
+      "description": "Bulk dataset directory: products (grant/application full text XML, assignments, research datasets) and their files.",
+      "params": {"q": {"desc": "query, e.g. productTitleText:*assignment*"},
+                 "productTitle": {"desc": "product title words"}, "fields": {"desc": "fields to return"}},
+      "records": "bulkDataProductBag", "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 100},
+      "max_rows": 2000
+    },
+    "dataset_product": {
+      "path": "/api/v1/datasets/products/{productIdentifier}",
+      "description": "One bulk product and its file list (fileDataFromDate / fileDataToDate narrow the files).",
+      "params": {"productIdentifier": {"in": "path", "required": true, "desc": "e.g. PTGRXML"},
+                 "fileDataFromDate": {"desc": "yyyy-MM-dd"}, "fileDataToDate": {"desc": "yyyy-MM-dd"}},
+      "records": "bulkDataProductBag", "paging": {"type": "none"}
+    },
+    "petition_decisions_search": {
+      "path": "/api/v1/petition/decisions/search",
+      "description": "Final petition decisions (Office of Petitions, etc.).",
+      "params": {"q": {"desc": "query, e.g. decisionTypeCodeDescriptionText:Denied"},
+                 "filters": {"desc": "'field value1,value2'"}, "rangeFilters": {"desc": "'field from:to', e.g. 'petitionMailDate 2024-01-01:2024-12-31'"},
+                 "sort": {"desc": "'petitionMailDate desc'"}, "fields": {"desc": "fields to return"}},
+      "records": "petitionDecisionDataBag", "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 100},
+      "max_rows": 10000
+    },
+    "ptab_proceedings_search": {
+      "path": "/api/v1/patent/trials/proceedings/search",
+      "description": "PTAB trial proceedings (IPR, PGR, CBM, DER). GET form and record key follow the ODP pattern; not verified with a key.",
+      "params": {"q": {"desc": "query, e.g. trialMetaData.trialTypeCode:IPR"},
+                 "filters": {"desc": "'field value1,value2'"}, "rangeFilters": {"desc": "'field from:to'"},
+                 "sort": {"desc": "'field asc|desc'"}, "fields": {"desc": "fields to return"}},
+      "records": "patentTrialProceedingDataBag", "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 100},
+      "max_rows": 10000
+    },
+    "ptab_proceeding": {
+      "path": "/api/v1/patent/trials/proceedings/{trialNumber}",
+      "description": "One PTAB trial, e.g. IPR2023-00001.",
+      "params": {"trialNumber": {"in": "path", "required": true, "desc": "trial number, e.g. IPR2023-00001"}},
+      "records": "patentTrialProceedingDataBag", "paging": {"type": "none"}
+    },
+    "ptab_decisions_search": {
+      "path": "/api/v1/patent/trials/decisions/search",
+      "description": "PTAB trial decisions (institution, final written decisions). Not verified with a key.",
+      "params": {"q": {"desc": "query"}, "filters": {"desc": "'field value1,value2'"},
+                 "rangeFilters": {"desc": "'field from:to'"}, "sort": {"desc": "'field asc|desc'"}, "fields": {"desc": "fields"}},
+      "records": "patentTrialDecisionDataBag", "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 100},
+      "max_rows": 10000
+    }
+  },
+  "catalog": {
+    "type_codes": {"id": "applicationMetaData.applicationTypeCode", "name": "Application type codes",
+                   "description": "UTL utility, DES design, PLT plant, PPA provisional, REI reissue (filter: 'applicationMetaData.applicationTypeCode UTL')",
+                   "endpoint": "applications_search"},
+    "status_patented": {"id": "applicationMetaData.applicationStatusCode:150", "name": "Status 150 Patented Case",
+                        "description": "status code 150 = Patented Case (from the documented example); read applicationStatusDescriptionText for other codes",
+                        "endpoint": "applications_search"},
+    "trial_types": {"id": "IPR PGR CBM DER", "name": "PTAB trial types",
+                    "description": "IPR inter partes review, PGR post-grant review, CBM covered business method, DER derivation",
+                    "endpoint": "ptab_proceedings_search"},
+    "bulk_grant_xml": {"id": "PTGRXML", "name": "Patent grant full text XML (weekly)",
+                       "description": "bulk product: weekly patent grant full text (XML); APPXML = pre-grant publications",
+                       "endpoint": "dataset_product"}
+  }
+}

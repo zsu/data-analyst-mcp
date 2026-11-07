@@ -1,0 +1,6 @@
+{
+ "GET https://hts.usitc.gov/reststop/currentRelease": "r001.json",
+ "GET https://hts.usitc.gov/reststop/exportList?format=JSON&styles=false&from=7208&to=7209": "r002.json",
+ "GET https://hts.usitc.gov/reststop/search?keyword=lithium-ion": "r003.json",
+ "GET https://hts.usitc.gov/reststop/exportList?format=JSON&styles=false&from=0401&to=0402": "r004.json"
+}

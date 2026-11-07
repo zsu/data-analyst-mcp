@@ -1,0 +1,93 @@
+{
+  "id": "fec",
+  "title": "OpenFEC (Federal Election Commission API)",
+  "agency": "Federal Election Commission",
+  "depth": "standard",
+  "domains": [
+    "elections",
+    "campaign finance",
+    "legislation"
+  ],
+  "keywords": [
+    "fec",
+    "campaign finance",
+    "campaign contributions",
+    "donors",
+    "fundraising",
+    "pac",
+    "super pac",
+    "political action committee",
+    "candidate",
+    "independent expenditures",
+    "outside spending",
+    "itemized contributions",
+    "small donors",
+    "disbursements",
+    "election",
+    "race"
+  ],
+  "questions": [
+    "how much did each Senate candidate raise in a race",
+    "outside spending for or against a candidate",
+    "share of a candidate's money from small donors",
+    "contributions from employees of a company",
+    "where a PAC's money went"
+  ],
+  "homepage": "https://www.fec.gov/data/",
+  "terms_url": "https://www.fec.gov/updates/sale-or-use-contributor-information/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "demo_key": "DEMO_KEY",
+    "key_only": [
+      "more than a few requests an hour (DEMO_KEY limit); itemized schedules page 100 rows per request"
+    ]
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 4,
+    "daily_quota": null,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.open.fec.gov/v1",
+      "probe": "https://api.open.fec.gov/v1/candidates/?per_page=1",
+      "hosts": [
+        "api.open.fec.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the links in INSTRUCTIONS.md in a browser (they carry the public DEMO_KEY; put your own api.data.gov key in its place for more) and save each JSON file; or use https://www.fec.gov/data/ (candidates, committees, receipts, disbursements, independent expenditures), set the same filters, click Export to download a CSV, and upload it. Bulk files: https://www.fec.gov/data/browse-data/?tab=bulk-data."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Filings and amendments arrive daily and totals are revised; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FEC data are public records and U.S. government works. Federal law (52 U.S.C. 30111(a)(4)) forbids selling or using information about individual contributors (names, addresses) to solicit contributions or for any commercial purpose; aggregate tables and committee data may be published freely. Keep contributor-level rows out of anything used for solicitation or commercial purposes."
+  },
+  "notices": [
+    "Contributor information from FEC reports may not be sold or used by any person to solicit contributions or for commercial purposes (52 U.S.C. 30111(a)(4)); this analysis uses it only for research."
+  ],
+  "retention": null,
+  "citation": "Federal Election Commission, OpenFEC API, {dataset}, api.open.fec.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Two-year cycle or the whole election period? Senate totals over 6 years differ from one 2-year cycle; default election_full=true for races.",
+    "Candidate committees only, or outside spending too (super PACs, independent expenditures)?",
+    "Itemized contributions only (over $200) or totals including unitemized small donations? Itemized rows miss most small donors."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

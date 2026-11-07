@@ -1,0 +1,6 @@
+{
+ "POST https://api.bls.gov/publicAPI/v1/timeseries/data/ 0a76dd745f14": "v1_build_md.json",
+ "POST https://api.bls.gov/publicAPI/v1/timeseries/data/ a53a0a55b9c8": "v1_cpi_2017_2026.json",
+ "GET https://data.bls.gov/timeseries/CUUR0000SA0": "describe_CUUR0000SA0.html",
+ "POST https://api.bls.gov/publicAPI/v1/timeseries/data/ a190ab28dd2d": "v1_jobs_2017_2026.json"
+}

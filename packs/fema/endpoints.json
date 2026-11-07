@@ -1,0 +1,646 @@
+{
+ "base_url": "https://www.fema.gov/api/open",
+ "endpoints": {
+  "disaster_declarations": {
+   "path": "/v2/DisasterDeclarationsSummaries",
+   "method": "GET",
+   "description": "Disaster declarations since 1953 (DR major disaster, EM emergency, FM fire management): one row per declared county/area (v2/DisasterDeclarationsSummaries).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "DisasterDeclarationsSummaries",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "housing_owners": {
+   "path": "/v2/HousingAssistanceOwners",
+   "method": "GET",
+   "description": "Individuals and Households Program housing assistance for homeowners, by disaster, county, city and ZIP (v2/HousingAssistanceOwners).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "HousingAssistanceOwners",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "housing_renters": {
+   "path": "/v2/HousingAssistanceRenters",
+   "method": "GET",
+   "description": "IHP housing assistance for renters, by disaster, county, city and ZIP (v2/HousingAssistanceRenters).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "HousingAssistanceRenters",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "public_assistance": {
+   "path": "/v2/PublicAssistanceGrantAwardActivities",
+   "method": "GET",
+   "description": "Public Assistance grant award activities: applicant, county, damage category, federal share obligated (v2/PublicAssistanceGrantAwardActivities).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "PublicAssistanceGrantAwardActivities",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "pa_projects": {
+   "path": "/v2/PublicAssistanceFundedProjectsDetails",
+   "method": "GET",
+   "description": "Public Assistance funded project details: project amount, federal share obligated, damage category (v2/PublicAssistanceFundedProjectsDetails).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "PublicAssistanceFundedProjectsDetails",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "nfip_claims": {
+   "path": "/v3/NfipClaims",
+   "method": "GET",
+   "description": "NFIP flood insurance claims (redacted): date of loss, flood zone, building and contents payments (about 2.7 million rows) (v3/NfipClaims).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "NfipClaims",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "nfip_policies": {
+   "path": "/v3/NfipPolicies",
+   "method": "GET",
+   "description": "NFIP policy transactions (redacted): coverage, premium, flood zone (about 75 million rows; filter narrowly) (v3/NfipPolicies).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "NfipPolicies",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "hmgp_summaries": {
+   "path": "/v3/HazardMitigationGrantProgramDisasterSummaries",
+   "method": "GET",
+   "description": "Hazard Mitigation Grant Program disaster-level summaries: lock-in amounts, periods, status (v3/HazardMitigationGrantProgramDisasterSummaries).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "HazardMitigationGrantProgramDisasterSummaries",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "mission_assignments": {
+   "path": "/v2/MissionAssignments",
+   "method": "GET",
+   "description": "Mission assignments: FEMA work orders to other federal agencies, obligation amounts (FY2013+) (v2/MissionAssignments).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "MissionAssignments",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "ihp_registrations": {
+   "path": "/v2/RegistrationIntakeIndividualsHouseholdPrograms",
+   "method": "GET",
+   "description": "IHP registration intake by disaster, county, city, ZIP: valid registrations, eligible counts and amounts (v2/RegistrationIntakeIndividualsHouseholdPrograms).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "RegistrationIntakeIndividualsHouseholdPrograms",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "ihp_valid_registrations": {
+   "path": "/v2/IndividualsAndHouseholdsProgramValidRegistrations",
+   "method": "GET",
+   "description": "IHP valid registrations, one row per registration (redacted; about 26 million rows; filter narrowly) (v2/IndividualsAndHouseholdsProgramValidRegistrations).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "IndividualsAndHouseholdsProgramValidRegistrations",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "disaster_summaries": {
+   "path": "/v1/FemaWebDisasterSummaries",
+   "method": "GET",
+   "description": "Financial totals per disaster: IHP, HA, ONA approved, PA and HMGP obligated (v1/FemaWebDisasterSummaries).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "FemaWebDisasterSummaries",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "fema_regions": {
+   "path": "/v2/FemaRegions",
+   "method": "GET",
+   "description": "The ten FEMA regions: offices and states (v2/FemaRegions).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "FemaRegions",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "datasets": {
+   "path": "/v1/DataSets",
+   "method": "GET",
+   "description": "The OpenFEMA dataset catalog: names, versions, record counts, deprecation dates (v1/DataSets).",
+   "params": {
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "records": "DataSets",
+   "total": "metadata.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true,
+   "defaults": {
+    "$orderby": "id"
+   }
+  },
+  "query": {
+   "path": "/{version}/{entity}",
+   "method": "GET",
+   "description": "Any OpenFEMA dataset by version and entity name (CSV); see the datasets endpoint for names and versions.",
+   "params": {
+    "version": {
+     "in": "path",
+     "required": true,
+     "desc": "dataset version: v1, v2, v3 ..."
+    },
+    "entity": {
+     "in": "path",
+     "required": true,
+     "desc": "entity name, case-sensitive, e.g. DeclarationDenials (only entities with a csv distribution in the datasets endpoint; IpawsArchivedAlerts is JSON-only)"
+    },
+    "$filter": {
+     "desc": "OData filter: state eq 'TX' and fyDeclared ge 2020 (text in single quotes; field names are case-sensitive)"
+    },
+    "$select": {
+     "desc": "comma-separated fields"
+    },
+    "$orderby": {
+     "desc": "e.g. declarationDate desc; set it for stable paging"
+    },
+    "$count": {
+     "desc": "true adds metadata.count (the total matching rows) to the first page"
+    }
+   },
+   "defaults": {
+    "$format": "csv"
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$top",
+    "offset_param": "$skip",
+    "size": 10000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ]
+  }
+ },
+ "catalog": {
+  "disaster_declarations": {
+   "id": "DisasterDeclarationsSummaries",
+   "name": "DisasterDeclarationsSummaries",
+   "version": "v2",
+   "description": "Disaster declarations since 1953 (DR major disaster, EM emergency, FM fire management): one row per declared county/area",
+   "endpoint": "disaster_declarations",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "housing_owners": {
+   "id": "HousingAssistanceOwners",
+   "name": "HousingAssistanceOwners",
+   "version": "v2",
+   "description": "Individuals and Households Program housing assistance for homeowners, by disaster, county, city and ZIP",
+   "endpoint": "housing_owners",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "housing_renters": {
+   "id": "HousingAssistanceRenters",
+   "name": "HousingAssistanceRenters",
+   "version": "v2",
+   "description": "IHP housing assistance for renters, by disaster, county, city and ZIP",
+   "endpoint": "housing_renters",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "public_assistance": {
+   "id": "PublicAssistanceGrantAwardActivities",
+   "name": "PublicAssistanceGrantAwardActivities",
+   "version": "v2",
+   "description": "Public Assistance grant award activities: applicant, county, damage category, federal share obligated",
+   "endpoint": "public_assistance",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "pa_projects": {
+   "id": "PublicAssistanceFundedProjectsDetails",
+   "name": "PublicAssistanceFundedProjectsDetails",
+   "version": "v2",
+   "description": "Public Assistance funded project details: project amount, federal share obligated, damage category",
+   "endpoint": "pa_projects",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "nfip_claims": {
+   "id": "NfipClaims",
+   "name": "NfipClaims",
+   "version": "v3",
+   "description": "NFIP flood insurance claims (redacted): date of loss, flood zone, building and contents payments (about 2.7 million rows)",
+   "endpoint": "nfip_claims",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "nfip_policies": {
+   "id": "NfipPolicies",
+   "name": "NfipPolicies",
+   "version": "v3",
+   "description": "NFIP policy transactions (redacted): coverage, premium, flood zone (about 75 million rows; filter narrowly)",
+   "endpoint": "nfip_policies",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "hmgp_summaries": {
+   "id": "HazardMitigationGrantProgramDisasterSummaries",
+   "name": "HazardMitigationGrantProgramDisasterSummaries",
+   "version": "v3",
+   "description": "Hazard Mitigation Grant Program disaster-level summaries: lock-in amounts, periods, status",
+   "endpoint": "hmgp_summaries",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "mission_assignments": {
+   "id": "MissionAssignments",
+   "name": "MissionAssignments",
+   "version": "v2",
+   "description": "Mission assignments: FEMA work orders to other federal agencies, obligation amounts (FY2013+)",
+   "endpoint": "mission_assignments",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "ihp_registrations": {
+   "id": "RegistrationIntakeIndividualsHouseholdPrograms",
+   "name": "RegistrationIntakeIndividualsHouseholdPrograms",
+   "version": "v2",
+   "description": "IHP registration intake by disaster, county, city, ZIP: valid registrations, eligible counts and amounts",
+   "endpoint": "ihp_registrations",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "ihp_valid_registrations": {
+   "id": "IndividualsAndHouseholdsProgramValidRegistrations",
+   "name": "IndividualsAndHouseholdsProgramValidRegistrations",
+   "version": "v2",
+   "description": "IHP valid registrations, one row per registration (redacted; about 26 million rows; filter narrowly)",
+   "endpoint": "ihp_valid_registrations",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "disaster_summaries": {
+   "id": "FemaWebDisasterSummaries",
+   "name": "FemaWebDisasterSummaries",
+   "version": "v1",
+   "description": "Financial totals per disaster: IHP, HA, ONA approved, PA and HMGP obligated",
+   "endpoint": "disaster_summaries",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "fema_regions": {
+   "id": "FemaRegions",
+   "name": "FemaRegions",
+   "version": "v2",
+   "description": "The ten FEMA regions: offices and states",
+   "endpoint": "fema_regions",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  },
+  "datasets": {
+   "id": "DataSets",
+   "name": "DataSets",
+   "version": "v1",
+   "description": "The OpenFEMA dataset catalog: names, versions, record counts, deprecation dates",
+   "endpoint": "datasets",
+   "page": "https://www.fema.gov/about/openfema/data-sets"
+  }
+ }
+}

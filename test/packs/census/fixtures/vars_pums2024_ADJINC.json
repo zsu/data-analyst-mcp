@@ -1,0 +1,13 @@
+{
+  "name": "ADJINC",
+  "label": "Adjustment factor for income and earnings dollar amounts (6 implied decimal places)",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWGTP",
+  "values": {
+    "item": {
+      "1015250": "2024 factor (1.015250)"
+    }
+  }
+}

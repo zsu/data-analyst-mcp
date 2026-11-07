@@ -1,0 +1,1701 @@
+{
+ "base_url": "https://api.congress.gov/v3",
+ "endpoints": {
+  "bills": {
+   "path": "/bill/{congress}/{billType}",
+   "method": "GET",
+   "description": "Bills of one type in a Congress (latest action, title, update date). No keyword search: use govinfo search for text, or title_contains.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    },
+    "sort": {
+     "desc": "updateDate+desc (default), updateDate+asc, introducedDate+desc or introducedDate+asc",
+     "enum": [
+      "updateDate+desc",
+      "updateDate+asc",
+      "introducedDate+desc",
+      "introducedDate+asc"
+     ]
+    }
+   },
+   "records": "bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bills_congress": {
+   "path": "/bill/{congress}",
+   "method": "GET",
+   "description": "Every bill and resolution in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    },
+    "sort": {
+     "desc": "updateDate+desc (default), updateDate+asc, introducedDate+desc or introducedDate+asc",
+     "enum": [
+      "updateDate+desc",
+      "updateDate+asc",
+      "introducedDate+desc",
+      "introducedDate+asc"
+     ]
+    }
+   },
+   "records": "bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill": {
+   "path": "/bill/{congress}/{billType}/{billNumber}",
+   "method": "GET",
+   "description": "One bill: title, sponsor, introduced date, policy area, latest action, laws, counts of actions, cosponsors, committees.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "bill",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "bill_actions": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/actions",
+   "method": "GET",
+   "description": "Every action on a bill (date, text, type, chamber, recorded votes).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "actions",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_cosponsors": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/cosponsors",
+   "method": "GET",
+   "description": "Cosponsors with party, state, date, original cosponsor flag, withdrawal date.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "cosponsors",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_committees": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/committees",
+   "method": "GET",
+   "description": "Committees and their activities (referred, reported, markup).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "committees",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_subjects": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/subjects",
+   "method": "GET",
+   "description": "Legislative subject terms (the policy area is in 'bill').",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "subjects.legislativeSubjects",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_summaries": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/summaries",
+   "method": "GET",
+   "description": "CRS summaries of each version (HTML text plus text_plain).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "summaries",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_text": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/text",
+   "method": "GET",
+   "description": "Text versions with links to PDF, HTML and XML.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "textVersions",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_titles": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/titles",
+   "method": "GET",
+   "description": "Official, short and popular titles.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "titles",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_related": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/relatedbills",
+   "method": "GET",
+   "description": "Related bills (identical, companion, procedurally related).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "relatedBills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_amendments": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/amendments",
+   "method": "GET",
+   "description": "Amendments to a bill.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "amendments",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "bill_cbo_estimates": {
+   "path": "/bill/{congress}/{billType}/{billNumber}",
+   "method": "GET",
+   "description": "Titles, dates and cbo.gov links of the budget office's cost estimates listed for a bill (links only, no dollar figures).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    }
+   },
+   "records": "bill.cboCostEstimates",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "bill_votes": {
+   "path": "/bill/{congress}/{billType}/{billNumber}/actions",
+   "method": "GET",
+   "description": "Roll-call votes on a bill: one row per vote with totals by party, read from the House Clerk and Senate XML that the bill's actions point to; members=true gives one row per member per vote.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "billNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "bill number, e.g. 5376"
+    },
+    "members": {
+     "desc": "true = one row per member per vote"
+    },
+    "chamber": {
+     "desc": "house | senate (default both)"
+    }
+   },
+   "records": "actions",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "laws": {
+   "path": "/law/{congress}/{lawType}",
+   "method": "GET",
+   "description": "Public or private laws enacted in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "lawType": {
+     "in": "path",
+     "required": true,
+     "desc": "pub | priv",
+     "enum": [
+      "pub",
+      "priv"
+     ]
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    }
+   },
+   "records": "bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "laws_congress": {
+   "path": "/law/{congress}",
+   "method": "GET",
+   "description": "All laws enacted in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    }
+   },
+   "records": "bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "summaries": {
+   "path": "/summaries/{congress}/{billType}",
+   "method": "GET",
+   "description": "CRS bill summaries published or updated in a period (newest first).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "billType": {
+     "in": "path",
+     "required": true,
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres",
+     "enum": [
+      "hr",
+      "s",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres",
+      "hres",
+      "sres"
+     ]
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    },
+    "sort": {
+     "desc": "updateDate+desc (default)"
+    }
+   },
+   "records": "summaries",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "house_votes": {
+   "path": "/house-vote/{congress}/{session}",
+   "method": "GET",
+   "description": "House roll-call votes in a session (118th Congress on; older: roll_call with the Clerk XML).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "session": {
+     "in": "path",
+     "required": true,
+     "desc": "1 or 2"
+    }
+   },
+   "records": "houseRollCallVotes",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "house_vote": {
+   "path": "/house-vote/{congress}/{session}/{voteNumber}",
+   "method": "GET",
+   "description": "One House vote with totals by party (118th Congress on).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "session": {
+     "in": "path",
+     "required": true,
+     "desc": "1 or 2"
+    },
+    "voteNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "roll number"
+    }
+   },
+   "records": "houseRollCallVote.votePartyTotal",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "roll_call": {
+   "path": "/roll_call",
+   "method": "GET",
+   "description": "One roll-call vote, one row per member (House 1990 on from clerk.house.gov, Senate 1989 on from senate.gov); summary=true gives one row for the vote itself.",
+   "params": {
+    "chamber": {
+     "required": true,
+     "desc": "house | senate",
+     "enum": [
+      "house",
+      "senate"
+     ]
+    },
+    "roll": {
+     "required": true,
+     "desc": "roll-call (vote) number"
+    },
+    "congress": {
+     "desc": "Congress number (Senate: required)"
+    },
+    "session": {
+     "desc": "1 or 2 (Senate: required)"
+    },
+    "year": {
+     "desc": "House: calendar year (or give congress + session)"
+    },
+    "summary": {
+     "desc": "true: one row for the vote (question, result, vote type, totals) instead of one per member"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "senate_votes": {
+   "path": "/senate_votes",
+   "method": "GET",
+   "description": "Senate roll-call votes in a session (vote list from senate.gov: number, date, issue, question, result, yeas, nays; en_bloc counts nominations voted together).",
+   "params": {
+    "congress": {
+     "required": true,
+     "desc": "Congress number, 101 on"
+    },
+    "session": {
+     "required": true,
+     "desc": "1 or 2"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "members": {
+   "path": "/member",
+   "method": "GET",
+   "description": "Members of Congress (all time); currentMember=true for those serving now.",
+   "params": {
+    "currentMember": {
+     "desc": "true | false"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "members",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "members_congress": {
+   "path": "/member/congress/{congress}",
+   "method": "GET",
+   "description": "Everyone who served in a Congress (both chambers).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "currentMember": {
+     "desc": "true | false"
+    }
+   },
+   "records": "members",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "members_state": {
+   "path": "/member/congress/{congress}/{stateCode}",
+   "method": "GET",
+   "description": "Members from one state in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "stateCode": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter, e.g. MD"
+    },
+    "currentMember": {
+     "desc": "true | false"
+    }
+   },
+   "records": "members",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "members_district": {
+   "path": "/member/congress/{congress}/{stateCode}/{district}",
+   "method": "GET",
+   "description": "Members for one House district in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "stateCode": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter"
+    },
+    "district": {
+     "in": "path",
+     "required": true,
+     "desc": "district number (0 at large)"
+    }
+   },
+   "records": "members",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "member": {
+   "path": "/member/{bioguideId}",
+   "method": "GET",
+   "description": "One member: terms, party history, leadership, counts of sponsored and cosponsored bills.",
+   "params": {
+    "bioguideId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. P000197"
+    }
+   },
+   "records": "member",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "member_sponsored": {
+   "path": "/member/{bioguideId}/sponsored-legislation",
+   "method": "GET",
+   "description": "Bills and amendments a member sponsored.",
+   "params": {
+    "bioguideId": {
+     "in": "path",
+     "required": true,
+     "desc": "bioguide id"
+    }
+   },
+   "records": "sponsoredLegislation",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "member_cosponsored": {
+   "path": "/member/{bioguideId}/cosponsored-legislation",
+   "method": "GET",
+   "description": "Bills and amendments a member cosponsored.",
+   "params": {
+    "bioguideId": {
+     "in": "path",
+     "required": true,
+     "desc": "bioguide id"
+    }
+   },
+   "records": "cosponsoredLegislation",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committees": {
+   "path": "/committee/{congress}/{chamber}",
+   "method": "GET",
+   "description": "Committees and subcommittees in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | joint",
+     "enum": [
+      "house",
+      "senate",
+      "joint"
+     ]
+    }
+   },
+   "records": "committees",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committee": {
+   "path": "/committee/{chamber}/{committeeCode}",
+   "method": "GET",
+   "description": "One committee: history, subcommittees, counts of bills and reports.",
+   "params": {
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | joint"
+    },
+    "committeeCode": {
+     "in": "path",
+     "required": true,
+     "desc": "system code, e.g. hsba00, ssfi00"
+    }
+   },
+   "records": "committee",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "committee_bills": {
+   "path": "/committee/{chamber}/{committeeCode}/bills",
+   "method": "GET",
+   "description": "Bills referred to or reported by a committee (all Congresses; committee_bills_congress for one).",
+   "params": {
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | joint"
+    },
+    "committeeCode": {
+     "in": "path",
+     "required": true,
+     "desc": "system code"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "committee-bills.bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committee_bills_congress": {
+   "path": "/committee/{congress}/{chamber}/{committeeCode}/bills",
+   "method": "GET",
+   "description": "Bills referred to or reported by a committee in one Congress (same rows as committee_bills).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | joint"
+    },
+    "committeeCode": {
+     "in": "path",
+     "required": true,
+     "desc": "system code"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "committee-bills.bills",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committee_reports": {
+   "path": "/committee-report/{congress}/{reportType}",
+   "method": "GET",
+   "description": "Committee reports in a Congress (citation, number, chamber).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "reportType": {
+     "in": "path",
+     "required": true,
+     "desc": "hrpt | srpt | erpt",
+     "enum": [
+      "hrpt",
+      "srpt",
+      "erpt"
+     ]
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "reports",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "hearing": {
+   "path": "/hearing/{congress}/{chamber}/{jacketNumber}",
+   "method": "GET",
+   "description": "One printed hearing: title, dates held, committees, citation and formats (jacket number from the hearings list).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | nochamber"
+    },
+    "jacketNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "jacket number from the hearings list, e.g. 52250"
+    }
+   },
+   "records": "hearing",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "hearings": {
+   "path": "/hearing/{congress}/{chamber}",
+   "method": "GET",
+   "description": "Printed hearings in a Congress (jacket number; dates, committees and title need the hearing endpoint).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | nochamber"
+    }
+   },
+   "records": "hearings",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committee_meetings": {
+   "path": "/committee-meeting/{congress}/{chamber}",
+   "method": "GET",
+   "description": "Committee meetings (hearings, markups, business meetings) of a chamber in a Congress: eventId only; date, type and committee are in committee_meeting.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | nochamber",
+     "enum": [
+      "house",
+      "senate",
+      "nochamber"
+     ]
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "committeeMeetings",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "committee_meeting": {
+   "path": "/committee-meeting/{congress}/{chamber}/{eventId}",
+   "method": "GET",
+   "description": "One committee meeting: date, type (Hearing, Markup, Meeting), title, committees, status, witnesses.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "chamber": {
+     "in": "path",
+     "required": true,
+     "desc": "house | senate | nochamber",
+     "enum": [
+      "house",
+      "senate",
+      "nochamber"
+     ]
+    },
+    "eventId": {
+     "in": "path",
+     "required": true,
+     "desc": "event id from committee_meetings"
+    }
+   },
+   "records": "committeeMeeting",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "nominations": {
+   "path": "/nomination/{congress}",
+   "method": "GET",
+   "description": "Presidential nominations received in a Congress (citation, organization, received date, latest action).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    }
+   },
+   "records": "nominations",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "nomination": {
+   "path": "/nomination/{congress}/{nominationNumber}",
+   "method": "GET",
+   "description": "One nomination: nominees, position, committees, latest action.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "nominationNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "PN number without PN, e.g. 2"
+    }
+   },
+   "records": "nomination",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "nomination_actions": {
+   "path": "/nomination/{congress}/{nominationNumber}/actions",
+   "method": "GET",
+   "description": "Actions on a nomination (referral, hearing, cloture, confirmation vote).",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "nominationNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "PN number"
+    }
+   },
+   "records": "actions",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "treaties": {
+   "path": "/treaty/{congress}",
+   "method": "GET",
+   "description": "Treaty documents received or considered in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    }
+   },
+   "records": "treaties",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "crs_reports": {
+   "path": "/crsreport",
+   "method": "GET",
+   "description": "CRS reports (id, title, current version's publish date, status; the list's version field is not the product version, crs_report has currentVersion), newest first by update; no keyword search: use title_contains (a multi-word phrase matches only with its words together and in that order: list each order as its own phrase), or fromDateTime/toDateTime, which filter on the update date.",
+   "params": {
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    },
+    "title_contains": {
+     "desc": "keep rows whose title contains this phrase (words in order, each at a word start, any case) or any phrase of a list (filtered by the pack after download)"
+    }
+   },
+   "records": "CRSReports",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "crs_report": {
+   "path": "/crsreport/{reportNumber}",
+   "method": "GET",
+   "description": "One CRS report: authors, summary, topics, PDF and HTML links, related laws.",
+   "params": {
+    "reportNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. R47555"
+    }
+   },
+   "records": "CRSReport",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "amendments": {
+   "path": "/amendment/{congress}",
+   "method": "GET",
+   "description": "Amendments in a Congress.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "amendments",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "amendments_type": {
+   "path": "/amendment/{congress}/{amendmentType}",
+   "method": "GET",
+   "description": "Amendments of one type (samdt, hamdt, suamdt) in a Congress; numbers run in submission order.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "amendmentType": {
+     "in": "path",
+     "required": true,
+     "desc": "samdt (Senate) | hamdt (House) | suamdt (Senate unprinted)",
+     "enum": [
+      "samdt",
+      "hamdt",
+      "suamdt"
+     ]
+    },
+    "fromDateTime": {
+     "desc": "updated on or after YYYY-MM-DDT00:00:00Z"
+    },
+    "toDateTime": {
+     "desc": "updated on or before YYYY-MM-DDT00:00:00Z"
+    }
+   },
+   "records": "amendments",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 250
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000,
+   "total": "pagination.count"
+  },
+  "amendment": {
+   "path": "/amendment/{congress}/{amendmentType}/{amendmentNumber}",
+   "method": "GET",
+   "description": "One amendment: submitted and proposed dates, sponsor, purpose, amended bill, latest action.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    },
+    "amendmentType": {
+     "in": "path",
+     "required": true,
+     "desc": "samdt (Senate) | hamdt (House) | suamdt (Senate unprinted)",
+     "enum": [
+      "samdt",
+      "hamdt",
+      "suamdt"
+     ]
+    },
+    "amendmentNumber": {
+     "in": "path",
+     "required": true,
+     "desc": "amendment number, e.g. 4147"
+    }
+   },
+   "records": "amendment",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  },
+  "congress_info": {
+   "path": "/congress/{congress}",
+   "method": "GET",
+   "description": "A Congress's dates and sessions.",
+   "params": {
+    "congress": {
+     "in": "path",
+     "required": true,
+     "desc": "Congress number, e.g. 118, or 'current'"
+    }
+   },
+   "records": "congress.sessions",
+   "paging": {
+    "type": "none"
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "max_rows": 50000
+  }
+ },
+ "catalog": {
+  "bill_types": {
+   "id": "hr s hjres sjres hconres sconres hres sres",
+   "name": "Bill types",
+   "description": "hr House bill, s Senate bill, hjres/sjres joint resolutions (can become law), hconres/sconres concurrent, hres/sres simple resolutions",
+   "endpoint": "bills"
+  },
+  "votes_house": {
+   "id": "roll_call",
+   "name": "House roll-call votes",
+   "description": "member-level House votes 1990 on (clerk.house.gov XML); house_votes lists votes for the 118th Congress on",
+   "endpoint": "roll_call"
+  },
+  "votes_senate": {
+   "id": "roll_call",
+   "name": "Senate roll-call votes",
+   "description": "member-level Senate votes 1989 on (senate.gov XML); senate_votes lists a session's votes",
+   "endpoint": "roll_call"
+  },
+  "votes_on_a_bill": {
+   "id": "bill_votes",
+   "name": "Votes on a bill",
+   "description": "every recorded vote on a bill with party totals (bill_votes)",
+   "endpoint": "bill_votes"
+  },
+  "cosponsors": {
+   "id": "bill_cosponsors",
+   "name": "Cosponsors",
+   "description": "cosponsors with party and date (bill_cosponsors)",
+   "endpoint": "bill_cosponsors"
+  },
+  "crs": {
+   "id": "crs_reports",
+   "name": "CRS reports",
+   "description": "Congressional Research Service reports list and detail",
+   "endpoint": "crs_reports"
+  },
+  "cost_estimates": {
+   "id": "bill_cbo_estimates",
+   "name": "Cost estimate links",
+   "description": "titles and links of cost estimates listed for a bill; numbers are not in the API",
+   "endpoint": "bill_cbo_estimates"
+  },
+  "public_laws": {
+   "id": "laws",
+   "name": "Public laws",
+   "description": "laws enacted in a Congress (laws with lawType pub)",
+   "endpoint": "laws"
+  },
+  "nominations": {
+   "id": "nominations",
+   "name": "Nominations",
+   "description": "presidential nominations and confirmation actions",
+   "endpoint": "nominations"
+  },
+  "committee_codes": {
+   "id": "hsba00 hsap00 hswm00 hsif00 ssfi00 ssap00 ssbk00 sshr00 ssju00",
+   "name": "Committee system codes",
+   "description": "e.g. hsba00 House Financial Services, hsap00 House Appropriations, hswm00 Ways and Means, hsif00 Energy and Commerce, ssfi00 Senate Finance, ssap00 Senate Appropriations, ssbk00 Senate Banking, sshr00 HELP, ssju00 Senate Judiciary (committees lists all)",
+   "endpoint": "committee"
+  }
+ }
+}

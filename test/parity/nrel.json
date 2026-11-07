@@ -1,0 +1,5 @@
+{
+ "all": {"description": "Vermont DC fast EV stations; Montpelier VT rates, solar resource and a 4 kW PV system", "requests": [{"name": "vt_dcfast", "endpoint": "alt_fuel_stations", "params": {"state": "VT", "fuel_type": "ELEC", "ev_charging_level": "dc_fast"}, "max_rows": 3}, {"name": "montpelier_rates", "endpoint": "utility_rates", "params": {"lat": 44.26, "lon": -72.58}}, {"name": "montpelier_solar", "endpoint": "solar_resource", "params": {"lat": 44.26, "lon": -72.58}}, {"name": "montpelier_pv", "endpoint": "pvwatts", "params": {"lat": 44.26, "lon": -72.58, "system_capacity": 4, "module_type": 0, "losses": 14, "array_type": 1, "tilt": 30, "azimuth": 180}}]},
+ "city_match": {"requests": [{"name": "dcfast_town", "endpoint": "alt_fuel_stations", "params": {"zip": "05301", "fuel_type": "ELEC", "ev_charging_level": "dc_fast", "city": "  brattleboro"}}]},
+ "city_cut": {"requests": [{"name": "dcfast_town", "endpoint": "alt_fuel_stations", "max_rows": 3, "params": {"state": "VT", "fuel_type": "ELEC", "ev_charging_level": "dc_fast", "city": "Nowhere"}}]}
+}

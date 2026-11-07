@@ -1,0 +1,94 @@
+{
+  "id": "philfed",
+  "title": "Philadelphia Fed Real-Time Data Research Center (Survey of Professional Forecasters, Greenbook/Tealbook, Livingston Survey, Real-Time Data Set)",
+  "agency": "Federal Reserve Bank of Philadelphia",
+  "depth": "standard",
+  "domains": [
+    "macroeconomic forecasts",
+    "economic outlook",
+    "inflation expectations",
+    "real-time data"
+  ],
+  "keywords": [
+    "survey of professional forecasters",
+    "spf",
+    "professional forecasters",
+    "consensus forecast",
+    "private forecasters",
+    "median forecast",
+    "gdp forecast",
+    "inflation forecast",
+    "unemployment forecast",
+    "inflation expectations",
+    "long-run inflation expectations",
+    "10-year inflation",
+    "forecast dispersion",
+    "forecast uncertainty",
+    "probability of recession",
+    "anxious index",
+    "greenbook",
+    "tealbook",
+    "fed staff forecast",
+    "livingston survey",
+    "real-time data",
+    "data vintages",
+    "first release",
+    "forecast accuracy",
+    "philadelphia fed"
+  ],
+  "questions": [
+    "what do professional forecasters expect for real GDP growth this year and next",
+    "median SPF forecast for unemployment and CPI inflation over the next four quarters",
+    "10-year inflation expectations of professional forecasters over time",
+    "how far apart are forecasters (dispersion) on next year's GDP growth",
+    "Fed staff Greenbook forecasts of inflation in 2008",
+    "real GDP as it was first published, by vintage"
+  ],
+  "homepage": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research",
+  "terms_url": "https://www.philadelphiafed.org/about-us/privacy-notice",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data",
+      "probe": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/spf-release-dates.txt",
+      "hosts": [
+        "www.philadelphiafed.org"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser; it downloads the Philadelphia Fed's .xlsx workbook. Upload the workbook unchanged (the pack reads the worksheet named in the spec). Without the links: SPF median and mean forecasts at https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/median-forecasts and .../mean-forecasts, dispersion at .../dispersion-forecasts, probabilities at .../probability-variables, Greenbook/Tealbook at .../greenbook, Livingston at .../livingston-historical-data, real-time data at .../real-time-data-set-full-time-series-history (each page lists the files)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Workbooks change once a quarter (SPF) or less often; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Published openly by the Federal Reserve Bank of Philadelphia; its online terms of use allow informational, educational and research use, with the Bank credited as the source. The Bank is not a federal agency, so the data are not public domain: credit it and do not imply its endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Federal Reserve Bank of Philadelphia, Real-Time Data Research Center, {dataset}, philadelphiafed.org, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which growth measure: quarter-over-quarter annualized (the SPF quarterly forecasts), annual-average over annual-average (SPF and Livingston annual GDP), or fourth-quarter over fourth-quarter (SPF annual CPI and PCE inflation)? Default: the measure the SPF release itself reports for that variable, named in the answer.",
+    "Median or mean across forecasters? Default: median, as in the SPF news release.",
+    "Which survey: the latest (default) or the one in force at a past date (each row is one survey)?"
+  ],
+  "formats": [
+    "xlsx"
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "snapqc",
+  "title": "SNAP Quality Control (QC) public-use microdata: characteristics of SNAP households (snapqcdata.net)",
+  "agency": "U.S. Department of Agriculture, Food and Nutrition Administration (formerly Food and Nutrition Service); files prepared by Mathematica under contract",
+  "depth": "standard",
+  "domains": [
+    "nutrition assistance",
+    "social safety net",
+    "household microdata",
+    "program administration"
+  ],
+  "keywords": [
+    "snap qc",
+    "snap quality control",
+    "quality control database",
+    "snapqcdata",
+    "characteristics of snap households",
+    "snap household characteristics",
+    "snap microdata",
+    "snap participants characteristics",
+    "snap earnings",
+    "snap gross income",
+    "snap net income",
+    "snap deductions",
+    "shelter deduction",
+    "snap benefit amount distribution",
+    "snap poverty",
+    "snap elderly",
+    "snap disability",
+    "snap children",
+    "snap noncitizens",
+    "abawd",
+    "categorical eligibility",
+    "snap payment errors",
+    "qc minimodel",
+    "snap microsimulation"
+  ],
+  "questions": [
+    "how many SNAP households have earnings, children, elderly or disabled members (national or by state)",
+    "the distribution of SNAP households by gross income as a share of poverty",
+    "average SNAP benefit, gross and net income and deductions of SNAP households",
+    "characteristics of SNAP participants by age, citizenship or work status",
+    "simulating a change to SNAP benefit or deduction rules on the current caseload"
+  ],
+  "homepage": "https://snapqcdata.net/",
+  "terms_url": "https://www.usa.gov/publicdomain/label/1.0/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://snapqcdata.net",
+      "probe": "https://snapqcdata.net/",
+      "hosts": [
+        "snapqcdata.net"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (no account or form), save the CSV zip under the name shown and upload it. Without the links: open https://snapqcdata.net/datafiles, find the fiscal year's heading and download the row 'QC Data | CSV' (qcfyYYYY_csv.zip); the technical documentation PDF is in the same group."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "One CSV zip a fiscal year (1-6 MB); data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Public-use file released by USDA FNA (personal identifiers and sub-state geography removed); USDA's Ag Data Commons copy of the FY 2022 database carries the U.S. Public Domain label (checked 2026-10-31); snapqcdata.net states no terms."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Agriculture, Food and Nutrition Administration, SNAP Quality Control Database, public-use file (prepared by Mathematica), {dataset}, snapqcdata.net, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Average month of the fiscal year or one month? Default: the fiscal-year average (FYWGT), as FNA's Characteristics of SNAP Households report does.",
+    "SNAP units (households as certified) or persons? Default: say which; persons are FSUSIZE-weighted units or FSAFIL = 1 person rows.",
+    "Standard errors needed? The replicate weights are SAS datasets this pack does not read. Default: report weighted estimates without standard errors, said so, and suppress cells with few sample units."
+  ],
+  "formats": [
+    "csv"
+  ]
+}

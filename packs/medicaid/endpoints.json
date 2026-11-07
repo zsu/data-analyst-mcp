@@ -1,0 +1,412 @@
+{
+ "base_url": "https://data.medicaid.gov",
+ "timeout": 120,
+ "endpoints": {
+  "query": {
+   "path": "/api/1/datastore/query/{dataset}/{index}",
+   "method": "GET",
+   "description": "DKAN datastore query of one data.medicaid.gov dataset: rows with optional filters (conditions[i][property|value|operator]), sorts and a column list. Pages of 5,000 rows (the API caps a page at 8,000).",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (enrollment, sdud_2025, nadac_2026, ...) or data.medicaid.gov dataset id (UUID)"
+    },
+    "index": {
+     "in": "path",
+     "desc": "distribution index inside the dataset; 0 = its first (CSV) distribution"
+    },
+    "conditions[0][property]": {
+     "desc": "filter 0: column name (snake_case, as in the rows)"
+    },
+    "conditions[0][value]": {
+     "desc": "filter 0: one value (matching ignores case); for IN use conditions[0][value][0..9]"
+    },
+    "conditions[0][operator]": {
+     "desc": "filter 0: = (default), <>, <, <=, >, >=, like (with %), in, not in, between; < > compare numbers only on int/numeric columns (text columns compare as text)"
+    },
+    "conditions[1][property]": {
+     "desc": "filter 1: column name (snake_case, as in the rows)"
+    },
+    "conditions[1][value]": {
+     "desc": "filter 1: one value (matching ignores case); for IN use conditions[0][value][0..9]"
+    },
+    "conditions[1][operator]": {
+     "desc": "filter 1: = (default), <>, <, <=, >, >=, like (with %), in, not in, between; < > compare numbers only on int/numeric columns (text columns compare as text)"
+    },
+    "conditions[2][property]": {
+     "desc": "filter 2: column name (snake_case, as in the rows)"
+    },
+    "conditions[2][value]": {
+     "desc": "filter 2: one value (matching ignores case); for IN use conditions[0][value][0..9]"
+    },
+    "conditions[2][operator]": {
+     "desc": "filter 2: = (default), <>, <, <=, >, >=, like (with %), in, not in, between; < > compare numbers only on int/numeric columns (text columns compare as text)"
+    },
+    "conditions[3][property]": {
+     "desc": "filter 3: column name (snake_case, as in the rows)"
+    },
+    "conditions[3][value]": {
+     "desc": "filter 3: one value (matching ignores case); for IN use conditions[0][value][0..9]"
+    },
+    "conditions[3][operator]": {
+     "desc": "filter 3: = (default), <>, <, <=, >, >=, like (with %), in, not in, between; < > compare numbers only on int/numeric columns (text columns compare as text)"
+    },
+    "conditions[0][value][0]": {
+     "desc": "value 0 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][1]": {
+     "desc": "value 1 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][2]": {
+     "desc": "value 2 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][3]": {
+     "desc": "value 3 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][4]": {
+     "desc": "value 4 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][5]": {
+     "desc": "value 5 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][6]": {
+     "desc": "value 6 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][7]": {
+     "desc": "value 7 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][8]": {
+     "desc": "value 8 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "conditions[0][value][9]": {
+     "desc": "value 9 of an in / not in / between list on filter 0 (a comma-separated single value matches nothing)"
+    },
+    "sorts[0][property]": {
+     "desc": "sort key 0: column name"
+    },
+    "sorts[0][order]": {
+     "desc": "sort key 0: asc or desc",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    "sorts[1][property]": {
+     "desc": "sort key 1: column name"
+    },
+    "sorts[1][order]": {
+     "desc": "sort key 1: asc or desc",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    "properties[0]": {
+     "desc": "column 0 to return (default: all columns)"
+    },
+    "properties[1]": {
+     "desc": "column 1 to return (default: all columns)"
+    },
+    "properties[2]": {
+     "desc": "column 2 to return (default: all columns)"
+    },
+    "properties[3]": {
+     "desc": "column 3 to return (default: all columns)"
+    },
+    "properties[4]": {
+     "desc": "column 4 to return (default: all columns)"
+    },
+    "properties[5]": {
+     "desc": "column 5 to return (default: all columns)"
+    },
+    "properties[6]": {
+     "desc": "column 6 to return (default: all columns)"
+    },
+    "properties[7]": {
+     "desc": "column 7 to return (default: all columns)"
+    },
+    "properties[8]": {
+     "desc": "column 8 to return (default: all columns)"
+    },
+    "properties[9]": {
+     "desc": "column 9 to return (default: all columns)"
+    },
+    "properties[10]": {
+     "desc": "column 10 to return (default: all columns)"
+    },
+    "properties[11]": {
+     "desc": "column 11 to return (default: all columns)"
+    }
+   },
+   "defaults": {
+    "index": "0",
+    "schema": "false"
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 5000,
+    "manual_size": 8000
+   },
+   "max_rows": 500000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "datasets": {
+   "path": "/api/1/metastore/schemas/dataset/items",
+   "method": "GET",
+   "description": "The whole data.medicaid.gov catalog (about 560 datasets, 0.8 MB): identifier, title, description, modified date, theme, keywords, download URL. Search it for a dataset id the pack's catalog does not list.",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 5000,
+   "flatten": true
+  },
+  "dataset_info": {
+   "path": "/api/1/metastore/schemas/dataset/items/{dataset}",
+   "method": "GET",
+   "description": "Metadata of one dataset (one row): title, description, modified date, temporal coverage when given, distribution download URL and data dictionary link.",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias or dataset id"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "enrollment": {
+   "id": "6165f45b-ca93-5bb5-9d06-db29c692a360",
+   "name": "State Medicaid and CHIP Applications, Eligibility Determinations, and Enrollment Data",
+   "description": "Monthly by state since 2013-09 (Performance Indicator data behind the monthly enrollment reports): total Medicaid and CHIP enrollment, Medicaid, CHIP, child and adult enrollment, applications, determinations, call centers. Two rows per state-month (preliminary P and updated U) except the latest month.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/6165f45b-ca93-5bb5-9d06-db29c692a360"
+  },
+  "eligibility_processing": {
+   "id": "5abea2e0-3f8e-4b49-a50d-d63d5fd9103c",
+   "name": "State Medicaid and CHIP Eligibility Processing Data",
+   "description": "Monthly renewals by state since 2023-03: renewals due, renewed (ex parte or by form), disenrolled (ineligible or procedural), pending. Original (O) and updated (U) rows.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/5abea2e0-3f8e-4b49-a50d-d63d5fd9103c"
+  },
+  "renewal_outcomes_updated": {
+   "id": "e6205a51-e6d7-4849-9882-4483b8a28c41",
+   "name": "Medicaid and CHIP Updated Renewal Outcomes",
+   "description": "Unwinding-period renewal outcomes updated after reconsideration (2023-2024; last updated 2024-11).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/e6205a51-e6d7-4849-9882-4483b8a28c41"
+  },
+  "chip_enrollment": {
+   "id": "4723da0d-4d04-46ce-8163-e4b58c8fe728",
+   "name": "Separate CHIP Enrollment by Month and State",
+   "description": "Separate CHIP (S-CHIP) enrollment by state and coverage month from T-MSIS, with the T-MSIS data-through month.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/4723da0d-4d04-46ce-8163-e4b58c8fe728"
+  },
+  "chip_enrollment_historic": {
+   "id": "d30cfc7c-4b32-4df1-b2bf-e0a850befd77",
+   "name": "Separate CHIP Enrollment by Month and State - Historic CAA/Unwinding Period",
+   "description": "Separate CHIP enrollment by state, 2023-04 to 2024 (CAA 2023 reporting), with a USA row; values are text with commas.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/d30cfc7c-4b32-4df1-b2bf-e0a850befd77"
+  },
+  "new_adult": {
+   "id": "6c114b2c-cb83-559b-832f-4d8b06d6c1b9",
+   "name": "Medicaid Enrollment - New Adult Group",
+   "description": "Monthly Medicaid enrollees and ACA expansion (VIII group) enrollees, newly and not newly eligible, by state, from the CMS-64 enrollment reports.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/6c114b2c-cb83-559b-832f-4d8b06d6c1b9"
+  },
+  "eligibility_group_monthly": {
+   "id": "ea9b7db3-db71-4663-b4e1-67e11d1d4fcc",
+   "name": "Major Eligibility Group Information for Medicaid and CHIP Beneficiaries by Month",
+   "description": "T-MSIS (TAF) enrollees by state, month and major eligibility group (children, adult expansion, aged, disabled ...) since 2016.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/ea9b7db3-db71-4663-b4e1-67e11d1d4fcc"
+  },
+  "managed_care_monthly": {
+   "id": "89baf100-259b-4763-b9e2-337972f988c4",
+   "name": "Managed Care Information for Medicaid and CHIP Beneficiaries by Month",
+   "description": "T-MSIS (TAF) enrollees by state, month and managed care participation.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/89baf100-259b-4763-b9e2-337972f988c4"
+  },
+  "managed_care_summary": {
+   "id": "52ed908b-0cb8-5dd2-846d-99d4af12b369",
+   "name": "Managed Care Enrollment Summary",
+   "description": "Annual (as of July 1) Medicaid enrollees in any managed care and in comprehensive MCOs by state, 2016 on; includes a TOTALS row.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/52ed908b-0cb8-5dd2-846d-99d4af12b369"
+  },
+  "managed_care_share": {
+   "id": "79692ea5-21e1-56bf-8149-97d437120c4b",
+   "name": "Share of Medicaid Enrollees in Managed Care",
+   "description": "Annual share of Medicaid enrollees in any managed care and in comprehensive managed care by state.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/79692ea5-21e1-56bf-8149-97d437120c4b"
+  },
+  "managed_care_plans": {
+   "id": "0bef7b8a-c663-5b14-9a46-0b5c2b86b0fe",
+   "name": "Managed Care Enrollment by Program and Plan",
+   "description": "Annual enrollment by state, managed care program and plan (Medicaid-only, dual, total), with parent organization.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/0bef7b8a-c663-5b14-9a46-0b5c2b86b0fe"
+  },
+  "managed_care_population": {
+   "id": "e2ce0d2f-07c5-5213-947a-31e19bc649f6",
+   "name": "Managed Care Enrollment by Program and Population (All)",
+   "description": "Annual enrollment by state and program type (comprehensive MCO, PCCM, MLTSS, BHO, dental, transportation, PACE).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/e2ce0d2f-07c5-5213-947a-31e19bc649f6"
+  },
+  "mltss": {
+   "id": "5394bcab-c748-5e4b-af07-b5bf77ed3aa3",
+   "name": "Managed Long Term Services and Supports (MLTSS) Enrollees",
+   "description": "Annual MLTSS enrollees by state and program.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/5394bcab-c748-5e4b-af07-b5bf77ed3aa3"
+  },
+  "cms64_fmr": {
+   "id": "5b19d1d4-ae43-5fcd-ba14-3cecd99f473f",
+   "name": "Medicaid Financial Management Data (CMS-64)",
+   "description": "CMS-64 expenditures by state, program and service category, total computable, federal and state share. ONLY fiscal year 2016 is in the datastore; later years are files on www.medicaid.gov (manual browser download).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/5b19d1d4-ae43-5fcd-ba14-3cecd99f473f"
+  },
+  "cms64_fmr_national": {
+   "id": "4011579c-33ea-5741-a763-a2558d635561",
+   "name": "Medicaid Financial Management Data - National Totals",
+   "description": "CMS-64 national totals by program and service category, fiscal year 2016 only.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/4011579c-33ea-5741-a763-a2558d635561"
+  },
+  "cms64_new_adult": {
+   "id": "00505e90-f8ac-5921-b12f-5e23ba7ffcf3",
+   "name": "Medicaid CMS-64 New Adult Group Expenditures",
+   "description": "Quarterly medical assistance and expansion (VIII group) expenditures by state, total computable and federal share, since 2014Q1. Numbers are text with commas; N/A where a state had no expansion.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/00505e90-f8ac-5921-b12f-5e23ba7ffcf3"
+  },
+  "cms64_ffcra": {
+   "id": "e02d3bb0-600d-5451-945f-978a8a511770",
+   "name": "Medicaid CMS-64 FFCRA Increased FMAP Expenditure",
+   "description": "Quarterly federal share from the FFCRA 6.2-point FMAP increase (section 6008) and the COVID-19 testing group (section 6004) by state, 2020Q2 on.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/e02d3bb0-600d-5451-945f-978a8a511770"
+  },
+  "cms64_caa2023": {
+   "id": "1b03ec9b-07dd-4547-99a5-aacf206162d5",
+   "name": "Medicaid CMS-64 CAA 2023 Increased FMAP Expenditure Data Collected through MBES/CBES",
+   "description": "Quarterly federal share from the CAA 2023 phase-down of the increased FMAP (FY2023 Q3 to FY2024 Q1) by state.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/1b03ec9b-07dd-4547-99a5-aacf206162d5"
+  },
+  "eligibility_levels": {
+   "id": "d7e4cccb-1c56-5b5d-acce-5e7744c6d3b4",
+   "name": "Medicaid and CHIP Eligibility Levels",
+   "description": "Income eligibility limits (% of the federal poverty level) by state and group; not updated since 2018.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/d7e4cccb-1c56-5b5d-acce-5e7744c6d3b4"
+  },
+  "nadac_2026": {
+   "id": "fbb83258-11c7-47f5-8b18-5f8e79f7e704",
+   "name": "NADAC (National Average Drug Acquisition Cost) 2026",
+   "description": "Weekly NADAC per unit by NDC, 2026 (about 1.3 million rows: always filter by ndc or ndc_description).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/fbb83258-11c7-47f5-8b18-5f8e79f7e704"
+  },
+  "nadac_2025": {
+   "id": "f38d0706-1239-442c-a3cc-40ef1b686ac0",
+   "name": "NADAC (National Average Drug Acquisition Cost) 2025",
+   "description": "Weekly NADAC per unit by NDC, 2025.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/f38d0706-1239-442c-a3cc-40ef1b686ac0"
+  },
+  "nadac_2024": {
+   "id": "99315a95-37ac-4eee-946a-3c523b4c481e",
+   "name": "NADAC (National Average Drug Acquisition Cost) 2024",
+   "description": "Weekly NADAC per unit by NDC, 2024.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/99315a95-37ac-4eee-946a-3c523b4c481e"
+  },
+  "nadac_comparison": {
+   "id": "a217613c-12bc-5137-8b3a-ada0e4dad1ff",
+   "name": "NADAC Comparison",
+   "description": "Week-to-week NADAC changes by NDC (old and new rate, percent change, reason), 2021 on (3.5 million rows).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/a217613c-12bc-5137-8b3a-ada0e4dad1ff"
+  },
+  "nadac_first_time": {
+   "id": "e3af839d-8175-5be0-b94e-4a302ed7a035",
+   "name": "First Time NADAC Rates",
+   "description": "NDCs given a NADAC rate for the first time.",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/e3af839d-8175-5be0-b94e-4a302ed7a035"
+  },
+  "sdud_2026": {
+   "id": "2957a7f9-9a15-453e-9afd-3bbdcbac8fd3",
+   "name": "State Drug Utilization Data 2026",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2026; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/2957a7f9-9a15-453e-9afd-3bbdcbac8fd3"
+  },
+  "sdud_2025": {
+   "id": "158a1baa-5506-400a-8ec3-97756f0b0536",
+   "name": "State Drug Utilization Data 2025",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2025; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/158a1baa-5506-400a-8ec3-97756f0b0536"
+  },
+  "sdud_2024": {
+   "id": "61729e5a-7aa8-448c-8903-ba3e0cd0ea3c",
+   "name": "State Drug Utilization Data 2024",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2024; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/61729e5a-7aa8-448c-8903-ba3e0cd0ea3c"
+  },
+  "sdud_2023": {
+   "id": "d890d3a9-6b00-43fd-8b31-fcba4c8e2909",
+   "name": "State Drug Utilization Data 2023",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2023; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/d890d3a9-6b00-43fd-8b31-fcba4c8e2909"
+  },
+  "sdud_2022": {
+   "id": "200c2cba-e58d-4a95-aa60-14b99736808d",
+   "name": "State Drug Utilization Data 2022",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2022; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/200c2cba-e58d-4a95-aa60-14b99736808d"
+  },
+  "sdud_2021": {
+   "id": "eec7fbe6-c4c4-5915-b3d0-be5828ef4e9d",
+   "name": "State Drug Utilization Data 2021",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2021; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/eec7fbe6-c4c4-5915-b3d0-be5828ef4e9d"
+  },
+  "sdud_2020": {
+   "id": "cc318bfb-a9b2-55f3-a924-d47376b32ea3",
+   "name": "State Drug Utilization Data 2020",
+   "description": "Quarterly outpatient drug prescriptions and reimbursement by state, NDC and utilization type (FFSU fee-for-service, MCOU managed care), 2020; state XX = national total. Over a million rows: always filter (state, ndc, product_name, quarter).",
+   "endpoint": "query",
+   "page": "https://data.medicaid.gov/dataset/cc318bfb-a9b2-55f3-a924-d47376b32ea3"
+  }
+ }
+}

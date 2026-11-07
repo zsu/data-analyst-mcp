@@ -1,0 +1,4006 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-10-13"
+  },
+  "results": [
+    {
+      "term": "ENDOSSEOUS DENTAL IMPLANT",
+      "count": 38801
+    },
+    {
+      "term": "CONTINUOUS GLUCOSE MONITOR",
+      "count": 27749
+    },
+    {
+      "term": "ALTERNATE CONTROLLER ENABLED INFUSION PUMP",
+      "count": 10823
+    },
+    {
+      "term": "AUTOMATED INSULIN DOSING DEVICE SYSTEM, SINGLE HORMONAL CONTROL",
+      "count": 10380
+    },
+    {
+      "term": "ALTERNATE CONTROLLER ENABLED INSULIN INFUSION PUMP",
+      "count": 6837
+    },
+    {
+      "term": "PUMP, INFUSION",
+      "count": 4265
+    },
+    {
+      "term": "VENTILATOR, NON-CONTINUOUS (RESPIRATOR)",
+      "count": 3937
+    },
+    {
+      "term": "IMPLANT, ENDOSSEOUS, ROOT-FORM",
+      "count": 3930
+    },
+    {
+      "term": "FLASH GLUCOSE MONITORING SYSTEM",
+      "count": 2752
+    },
+    {
+      "term": "PROSTHESIS, BREAST, NONINFLATABLE, INTERNAL, SILICONE GEL-FILLED",
+      "count": 2187
+    },
+    {
+      "term": "PUMP, INFUSION, INSULIN, TO BE USED WITH INVASIVE GLUCOSE SENSOR",
+      "count": 2175
+    },
+    {
+      "term": "PERMANENT PACEMAKER ELECTRODE",
+      "count": 2163
+    },
+    {
+      "term": "AUTOMATED INSULIN DOSING, THRESHOLD SUSPEND",
+      "count": 1966
+    },
+    {
+      "term": "STIMULATOR, SPINAL-CORD, TOTALLY IMPLANTED FOR",
+      "count": 1904
+    },
+    {
+      "term": "INSULIN PUMP SECONDARY DISPLAY",
+      "count": 1835
+    },
+    {
+      "term": "DENTAL IMPLANT",
+      "count": 1795
+    },
+    {
+      "term": "PUMP, INFUSION, INSULIN",
+      "count": 1496
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS, FACILITY USE",
+      "count": 1472
+    },
+    {
+      "term": "STAPLE, IMPLANTABLE",
+      "count": 1287
+    },
+    {
+      "term": "WEARABLE CARDIOVERTER DEFIBRILLATOR",
+      "count": 1140
+    },
+    {
+      "term": "SUTURE MEDIATED CLOSURE",
+      "count": 988
+    },
+    {
+      "term": "IMPLANTABLE CARDIOVERTER DEFIBRILLATOR (NON-CRT)",
+      "count": 969
+    },
+    {
+      "term": "SENSOR, GLUCOSE, INVASIVE",
+      "count": 816
+    },
+    {
+      "term": "CONTINUOUS GLUCOSE MONITORING SYSTEM",
+      "count": 755
+    },
+    {
+      "term": "PROSTHESIS, BREAST, INFLATABLE, INTERNAL, SALINE",
+      "count": 754
+    },
+    {
+      "term": "STIMULATOR, SPINAL-CORD, TOTALLY IMPLANTED FOR PAIN RELIEF",
+      "count": 727
+    },
+    {
+      "term": "TEMPORARY NON-ROLLER TYPE LEFT HEART SUPPORT BLOOD PUMP",
+      "count": 690
+    },
+    {
+      "term": "SYSTEM, APPENDAGE CLOSURE, LEFT ATRIAL",
+      "count": 685
+    },
+    {
+      "term": "SENSOR, GLUCOSE, INVASIVE, NON-ADJUNCTIVE",
+      "count": 680
+    },
+    {
+      "term": "No Match",
+      "count": 667
+    },
+    {
+      "term": "IMPLANTABLE LEAD",
+      "count": 639
+    },
+    {
+      "term": "COLONOVIDEOSCOPE",
+      "count": 636
+    },
+    {
+      "term": "SENSOR, GLUCOSE, INVASIVE , NON-ADJUNCTIVE",
+      "count": 630
+    },
+    {
+      "term": "GASTROINTESTINAL VIDEOSCOPE",
+      "count": 612
+    },
+    {
+      "term": "NO MATCH",
+      "count": 602
+    },
+    {
+      "term": "VENTRICULAR (ASSIST) BYPASS",
+      "count": 537
+    },
+    {
+      "term": "INTERVENTIONAL FLUOROSCOPIC X-RAY SYSTEM",
+      "count": 521
+    },
+    {
+      "term": "PULSE GENERATOR, PERMANENT, IMPLANTABLE",
+      "count": 504
+    },
+    {
+      "term": "SCS LEAD",
+      "count": 493
+    },
+    {
+      "term": "SCS IPG",
+      "count": 490
+    },
+    {
+      "term": "BLOOD GLUCOSE MONITORING SYSTEM",
+      "count": 482
+    },
+    {
+      "term": "SYSTEM, BALLOON, INTRA-AORTIC AND CONTROL",
+      "count": 468
+    },
+    {
+      "term": "CAMLOG SCREW-LINE IMPLANT PROMOTE PLUS",
+      "count": 461
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, IMPLANTABLE, FOR INCON",
+      "count": 458
+    },
+    {
+      "term": "ANESTHESIA GAS MACHINE",
+      "count": 442
+    },
+    {
+      "term": "SURGICAL MESH",
+      "count": 440
+    },
+    {
+      "term": "IMPLANTABLE PULSE GENERATOR, PACEMAKER (NON-CRT)",
+      "count": 425
+    },
+    {
+      "term": "AORTIC VALVE, PROSTHESIS, PERCUTANEOUSLY DELIV",
+      "count": 422
+    },
+    {
+      "term": "DEFIBRILLATOR, AUTOMATIC IMPLANTABLE CARDIOVERTER",
+      "count": 407
+    },
+    {
+      "term": "INSTRUMENT, ULTRASONIC SURGICAL",
+      "count": 405
+    },
+    {
+      "term": "ELECTROSURGICAL, CUTTING & COAGULATION & ACCESSORIES",
+      "count": 391
+    },
+    {
+      "term": "DRUG ELUTING PERMANENT RIGHT VENTRICULAR (RV)",
+      "count": 387
+    },
+    {
+      "term": "BRONCHOVIDEOSCOPE",
+      "count": 375
+    },
+    {
+      "term": "BLOOD SPECIMEN COLLECTION DEVICE",
+      "count": 373
+    },
+    {
+      "term": "NEUROLOGICAL STEREOTAXIC INSTRUMENT",
+      "count": 371
+    },
+    {
+      "term": "AORTIC VALVE, PROSTHESIS, PERCUTANEOUSLY DELIVERED",
+      "count": 360
+    },
+    {
+      "term": "PERMANENT DEFIBRILLATOR ELECTRODES",
+      "count": 360
+    },
+    {
+      "term": "SYSTEM, PERITONEAL, AUTOMATIC DELIVERY",
+      "count": 360
+    },
+    {
+      "term": "VENTRICULAR (ASSISST) BYPASS",
+      "count": 353
+    },
+    {
+      "term": "HIP INSTRUMENTS : REAMERS",
+      "count": 351
+    },
+    {
+      "term": "VIDEO SYSTEM CENTER",
+      "count": 346
+    },
+    {
+      "term": "DUODENOVIDEOSCOPE",
+      "count": 342
+    },
+    {
+      "term": "PUMP, INFUSION, IMPLANTED, PROGRAMMABLE",
+      "count": 341
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS, MINIMAL VENTILATORY SUPPORT, FACILITY USE",
+      "count": 336
+    },
+    {
+      "term": "SET, ADMINISTRATION, INTRAVASCULAR",
+      "count": 321
+    },
+    {
+      "term": "DEFIBRILLATOR",
+      "count": 317
+    },
+    {
+      "term": "SUTURE, ABSORBABLE, SYNTHETIC",
+      "count": 308
+    },
+    {
+      "term": "HAMILTON-C1",
+      "count": 305
+    },
+    {
+      "term": "DEFIBRILLATOR/PACEMAKER",
+      "count": 291
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, IMPLANTED, FOR PARKINS",
+      "count": 269
+    },
+    {
+      "term": "SCREW, FIXATION, BONE",
+      "count": 266
+    },
+    {
+      "term": "CATHETER, URETHRAL",
+      "count": 265
+    },
+    {
+      "term": "INTRAVASCULAR ADMINISTRATION SET",
+      "count": 255
+    },
+    {
+      "term": "LAPAROSCOPE, GENERAL & PLASTIC SURGERY",
+      "count": 254
+    },
+    {
+      "term": "LEADLESS PACEMAKER",
+      "count": 249
+    },
+    {
+      "term": "CAMERA HEAD",
+      "count": 248
+    },
+    {
+      "term": "AUTOMATED EXTERNAL DEFIBRILLATORS (NON-WEARABLE)",
+      "count": 241
+    },
+    {
+      "term": "BIOFIRE® BLOOD CULTURE IDENTIFICATION 2 (BCID2) PANEL",
+      "count": 241
+    },
+    {
+      "term": "PHAKIC TORIC INTRAOCULAR LENS",
+      "count": 237
+    },
+    {
+      "term": "INTRODUCER, CATHETER",
+      "count": 235
+    },
+    {
+      "term": "AUTOCLAVABLE CAMERA HEAD",
+      "count": 233
+    },
+    {
+      "term": "CAMLOG SCREW-LINE IMPLANT PROMOTE",
+      "count": 229
+    },
+    {
+      "term": "INTRAOCULAR LENS",
+      "count": 228
+    },
+    {
+      "term": "BED, AC-POWERED ADJUSTABLE HOSPITAL",
+      "count": 224
+    },
+    {
+      "term": "SET, ADMINISTRATION, FOR PERITONEAL DIALYSIS, DISPOSABLE",
+      "count": 224
+    },
+    {
+      "term": "NUCLEUS 24 COCHLEAR IMPLANT SYSTEM",
+      "count": 223
+    },
+    {
+      "term": "ARCTIC SUN DEVICE",
+      "count": 221
+    },
+    {
+      "term": "EVERSENSE CONTINUOUS GLUCOSE MONITOR SYSTEM",
+      "count": 221
+    },
+    {
+      "term": "DEFIBRILLATOR, AUTOMATIC IMPLANTABLE CARDIOVERTER, WITH CARDIAC RESYNCHRONIZATIO",
+      "count": 214
+    },
+    {
+      "term": "COCHLEAR IMPLANT",
+      "count": 212
+    },
+    {
+      "term": "DRUG ELUTING PERMANENT RIGHT VENTRICULAR OR ATRIAL PACEMAKER ELECTRODES",
+      "count": 210
+    },
+    {
+      "term": "ORTHOPEDIC MANUAL SURGICAL INSTRUMENT",
+      "count": 208
+    },
+    {
+      "term": "IMPLANTABLE DEVICE",
+      "count": 205
+    },
+    {
+      "term": "DEVICE IMPOTENCE MECHANICAL/HYDRAULIC",
+      "count": 203
+    },
+    {
+      "term": "DIALYZER, HIGH PERMEABILITY WITH OR WITHOUT SEALED DIALYSATE SYSTEM",
+      "count": 201
+    },
+    {
+      "term": "DRUG ELUTING PERMANENT LEFT VENTRICULAR (LV) P",
+      "count": 201
+    },
+    {
+      "term": "SYRINGE, PISTON",
+      "count": 201
+    },
+    {
+      "term": "CAMLOG SCREW LINE IMPLANT PROMOTE PLUS",
+      "count": 199
+    },
+    {
+      "term": "PACING LEAD",
+      "count": 199
+    },
+    {
+      "term": "SILICONE GEL BREAST IMPLANT",
+      "count": 198
+    },
+    {
+      "term": "THORACOLUMBOSACRAL PEDICLE SCREW SYSTEM",
+      "count": 195
+    },
+    {
+      "term": "CLIP, IMPLANTABLE",
+      "count": 192
+    },
+    {
+      "term": "INSTRUMENT, SURGICAL, ORTHOPEDIC, AC-POWERED MOTOR AND ACCESSORY/ATTACHMENT",
+      "count": 192
+    },
+    {
+      "term": "XENON LIGHT SOURCE",
+      "count": 192
+    },
+    {
+      "term": "REPLACEMENT HEART-VALVE",
+      "count": 190
+    },
+    {
+      "term": "SYSTEM, X-RAY, ANGIOGRAPHIC",
+      "count": 190
+    },
+    {
+      "term": "RECORDER, EVENT, IMPLANTABLE CARDIAC, (WITH ARRHYTHMIA DETECTION)",
+      "count": 186
+    },
+    {
+      "term": "MESH, SURGICAL, POLYMERIC",
+      "count": 183
+    },
+    {
+      "term": "ELECTROSURGICAL, CUTTING & COAGULATION & ACCES",
+      "count": 182
+    },
+    {
+      "term": "CATHETER, ULTRASOUND, INTRAVASCULAR",
+      "count": 177
+    },
+    {
+      "term": "CARDIAC ABLATION PERCUTANEOUS CATHETER",
+      "count": 175
+    },
+    {
+      "term": "PROSTHESIS, KNEE",
+      "count": 172
+    },
+    {
+      "term": "GENERAL SURGERY TRAY (KIT)",
+      "count": 166
+    },
+    {
+      "term": "Permanent defibrillator electrodes",
+      "count": 165
+    },
+    {
+      "term": "FOLEY CATHETER",
+      "count": 164
+    },
+    {
+      "term": "PHAKIC INTRAOCULAR LENS",
+      "count": 161
+    },
+    {
+      "term": "SCREWDRIVER",
+      "count": 161
+    },
+    {
+      "term": "INTRAVASCULAR CATHETER",
+      "count": 160
+    },
+    {
+      "term": "SYSTEM, HEMODYNAMIC, IMPLANTABLE",
+      "count": 160
+    },
+    {
+      "term": "STRETCHER, WHEELED",
+      "count": 158
+    },
+    {
+      "term": "AUTOMATED EXTERNAL DEFIBRILLATOR",
+      "count": 154
+    },
+    {
+      "term": "MITRAL VALVE REPAIR DEVICES",
+      "count": 152
+    },
+    {
+      "term": "CATHETER,INTRAVASCULAR,THERAPEUTIC,LONG-TERM GREATER THAN 30 DAYS",
+      "count": 150
+    },
+    {
+      "term": "DEVICE INCONTINENCE MECHANICAL/HYDRAULIC",
+      "count": 149
+    },
+    {
+      "term": "STAPLE, REMOVABLE (SKIN)",
+      "count": 147
+    },
+    {
+      "term": "ALTERNATE CONTROLLER ENABLE INFUSION PUMP",
+      "count": 146
+    },
+    {
+      "term": "ICD LEAD",
+      "count": 145
+    },
+    {
+      "term": "DEVICE, HEMOSTASIS, VASCULAR",
+      "count": 142
+    },
+    {
+      "term": "ROD, FIXATION, INTRAMEDULLARY AND ACCESSORIES",
+      "count": 142
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS",
+      "count": 140
+    },
+    {
+      "term": "UNIT, PHACOFRAGMENTATION",
+      "count": 140
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS, CARDIAC ABLATION, FOR TREATMENT OF ATRIAL FIBRILLATION",
+      "count": 138
+    },
+    {
+      "term": "BIOPSY INSTRUMENT",
+      "count": 136
+    },
+    {
+      "term": "PENILE PROSTHESIS, INFLATABLE",
+      "count": 136
+    },
+    {
+      "term": "NON-DEGRADABLE FIXATN FASTENER",
+      "count": 134
+    },
+    {
+      "term": "PISTON SYRINGE",
+      "count": 134
+    },
+    {
+      "term": "POWERED LASER SURGICAL INSTRUMENT",
+      "count": 131
+    },
+    {
+      "term": "PLATE, FIXATION, BONE",
+      "count": 130
+    },
+    {
+      "term": "PUMP, INFUSION, PCA",
+      "count": 130
+    },
+    {
+      "term": "PACEMAKER",
+      "count": 129
+    },
+    {
+      "term": "MEDICAL DEVICE DATA SYSTEM",
+      "count": 128
+    },
+    {
+      "term": "PROSTHESIS, SHOULDER, SEMI-CONSTRAINED, METAL/POLYMER CEMENTED",
+      "count": 128
+    },
+    {
+      "term": "IMPLANT, DERMAL, FOR AESTHETIC USE",
+      "count": 127
+    },
+    {
+      "term": "DRG LEAD",
+      "count": 125
+    },
+    {
+      "term": "FLEX DEFLECTABLE VIDEOSCOPE",
+      "count": 125
+    },
+    {
+      "term": "CONELOG SCREW-LINE IMPLANT PROMOTE PLUS",
+      "count": 124
+    },
+    {
+      "term": "PATIENT SIDE CART, 4-ARM",
+      "count": 124
+    },
+    {
+      "term": "PROSTHESIS, KNEE, PATELLOFEMOROTIBIAL, SEMI-CONSTRAINED, CEMENTED, POLYMER/METAL",
+      "count": 124
+    },
+    {
+      "term": "MOTOR, SURGICAL INSTRUMENT, AC-POWERED",
+      "count": 122
+    },
+    {
+      "term": "HEART-VALVE, NON-ALLOGRAFT TISSUE",
+      "count": 120
+    },
+    {
+      "term": "IMPLANTABLE PACEMAKER",
+      "count": 120
+    },
+    {
+      "term": "STENT, CORONARY, DRUG-ELUTING",
+      "count": 120
+    },
+    {
+      "term": "SUTURE, ABSORBABLE, SYNTHETIC, POLYGLYCOLIC AC",
+      "count": 120
+    },
+    {
+      "term": "VIDEO COLONOCOPE - I10 STANDARD",
+      "count": 120
+    },
+    {
+      "term": "ULTRASOUND GASTROVIDEOSCOPE",
+      "count": 119
+    },
+    {
+      "term": "ORTHOPEDIC STEREOTAXIC INSTRUMENT",
+      "count": 118
+    },
+    {
+      "term": "ANALYZER, CHEMISTRY (PHOTOMETRIC, DISCRETE), FOR CLINICAL USE",
+      "count": 117
+    },
+    {
+      "term": "IMPLANTABLE CARDIOVERTER DEFIBRILLATOR",
+      "count": 117
+    },
+    {
+      "term": "INTRACRANIAL ANEURYSM FLOW DIVERTER",
+      "count": 117
+    },
+    {
+      "term": "AMBULATORY INFUSION PUMP",
+      "count": 116
+    },
+    {
+      "term": "CLINICAL CHEMISTRY ANALYZER",
+      "count": 115
+    },
+    {
+      "term": "ICD",
+      "count": 115
+    },
+    {
+      "term": "ISY IMPLANT-SET PROMOTE PLUS",
+      "count": 114
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SYNTHETIC, POLYETHYLENE",
+      "count": 114
+    },
+    {
+      "term": "SYRINGE",
+      "count": 114
+    },
+    {
+      "term": "FASTENER, FIXATION, BIODEGRADABLE, SOFT TISSUE",
+      "count": 113
+    },
+    {
+      "term": "PROSTHESIS, HIP",
+      "count": 113
+    },
+    {
+      "term": "MESH, SURGICAL, SYNTHETIC, UROGYNECOLOGIC, FOR STRESS URINARY INCONTINENCE, RETR",
+      "count": 112
+    },
+    {
+      "term": "HYPODERMIC SINGLE LUMEN NEEDLE",
+      "count": 110
+    },
+    {
+      "term": "PORT & CATHETER, IMPLANTED, SUBCUTANEOUS, INTRAVASCULAR",
+      "count": 110
+    },
+    {
+      "term": "SYSTEM, ENDOVASCULAR GRAFT, AORTIC ANEURYSM TREATMENT",
+      "count": 109
+    },
+    {
+      "term": "TUBE, TRACHEAL (W/WO CONNECTOR)",
+      "count": 109
+    },
+    {
+      "term": "VISION SIDE SYSTEM",
+      "count": 108
+    },
+    {
+      "term": "CORONAVIRUS ANTIGEN DETECTION TEST SYSTEM.",
+      "count": 107
+    },
+    {
+      "term": "DERMAL COOLING PACK/VACUUM/MASSAGER",
+      "count": 107
+    },
+    {
+      "term": "SUBCUTANEOUS IMPLANTABLE CARDIOVERTER DEFIBRILLATOR (S-ICD)",
+      "count": 107
+    },
+    {
+      "term": "FASTENER, FIXATION, NONDEGRADABLE, SOFT TISSUE",
+      "count": 106
+    },
+    {
+      "term": "PROGRAMMER, PACEMAKER",
+      "count": 106
+    },
+    {
+      "term": "TUBES, GASTROINTESTINAL (AND ACCESSORIES)",
+      "count": 106
+    },
+    {
+      "term": "CATHETER, UROLOGICAL",
+      "count": 103
+    },
+    {
+      "term": "BLOOD GLUCOSE MONITORING TEST STRIPS",
+      "count": 100
+    },
+    {
+      "term": "NEEDLE, HYPODERMIC, SINGLE LUMEN",
+      "count": 100
+    },
+    {
+      "term": "PUMP, INFUSION, ELASTOMERIC",
+      "count": 98
+    },
+    {
+      "term": "INSTRUMENT, KNEE",
+      "count": 97
+    },
+    {
+      "term": "CATHETERS, TRANSLUMINAL CORONARY ANGIOPLASTY, PERCUTANEOUS",
+      "count": 95
+    },
+    {
+      "term": "CORONARY DRUG-ELUTING STENT",
+      "count": 95
+    },
+    {
+      "term": "IMAGINA COLONOSCOPE",
+      "count": 95
+    },
+    {
+      "term": "HIGH FLOW INSUFFLATION UNIT",
+      "count": 94
+    },
+    {
+      "term": "NEEDLE",
+      "count": 94
+    },
+    {
+      "term": "WARMER, THERMAL, INFUSION FLUID",
+      "count": 94
+    },
+    {
+      "term": "AUTOMATED IMPELLA CONTROLLER (AIC)",
+      "count": 93
+    },
+    {
+      "term": "INTEGRATED CONTINUOUS GLUCOSE MONITORING SYSTEM, FACTORY CALIBRATED",
+      "count": 92
+    },
+    {
+      "term": "DETECTOR AND ALARM, ARRHYTHMIA",
+      "count": 91
+    },
+    {
+      "term": "TUBE TRACHEOSTOMY AND TUBE CUFF",
+      "count": 91
+    },
+    {
+      "term": "SET, ADMINISTRATION, INTRA",
+      "count": 90
+    },
+    {
+      "term": "VIDEO GASTROSCOPE - I10 STANDARD",
+      "count": 90
+    },
+    {
+      "term": "CAMLOG PROGRESSIVE LINE IMPLANT",
+      "count": 89
+    },
+    {
+      "term": "DRILLS, BURRS, TREPHINES & ACCESSORIES (SIMPLE, POWERED)",
+      "count": 89
+    },
+    {
+      "term": "INSULIN INFUSION PUMP",
+      "count": 89
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, METAL/POLYMER, POROUS UNCEMENTED",
+      "count": 88
+    },
+    {
+      "term": "PULSE GENERATOR, PACEMAKER, IMPLANTABLE, WITH CARDIAC RESYNCHRONIZATION (CRT-P)",
+      "count": 88
+    },
+    {
+      "term": "CATHETER, BILIARY, DIAGNOSTIC",
+      "count": 87
+    },
+    {
+      "term": "GUIDE, SURGICAL, INSTRUMENT",
+      "count": 87
+    },
+    {
+      "term": "INTERVERTEBRAL FUSION DEVICE WITH BONE GRAFT, LUMBAR",
+      "count": 87
+    },
+    {
+      "term": "SAW, POWERED, AND ACCESSORIES",
+      "count": 87
+    },
+    {
+      "term": "AED",
+      "count": 85
+    },
+    {
+      "term": "ARTHROSCOPE",
+      "count": 85
+    },
+    {
+      "term": "ALTERNATE CONTROLLER ENABLED INSULIN INFUSION PUMP-",
+      "count": 83
+    },
+    {
+      "term": "ARTHROSCOPE AND ACCESSORIES",
+      "count": 82
+    },
+    {
+      "term": "CAMLOG SCREW LINE IMPLANT PROMOTE",
+      "count": 82
+    },
+    {
+      "term": "DEVICE, VASCULAR, FOR PROMOTING EMBOLIZATION",
+      "count": 82
+    },
+    {
+      "term": "FENESTRATED BIPOLAR FORCEPS",
+      "count": 82
+    },
+    {
+      "term": "INSTRUMENT, SURGICAL, ORTHOPEDIC, AC-POWERED, MOTOR/ACCESS AND ATTACHMENT",
+      "count": 82
+    },
+    {
+      "term": "DERMATOME",
+      "count": 81
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS, NON-LIFE-SUPPORTING",
+      "count": 81
+    },
+    {
+      "term": "VENTILATOR, NON-CONTINUOUS (RESPIR ATOR)",
+      "count": 81
+    },
+    {
+      "term": "WIRE, GUIDE, CATHETER",
+      "count": 81
+    },
+    {
+      "term": "DEFIBRILLATOR, AUTOMATIC IMPLANTABLE CARDIOVERTER, WITH CRT-D",
+      "count": 80
+    },
+    {
+      "term": "PROSTHESIS, KNEE, PATELLO/FEMOROTIBIAL, SEMI-CONSTRAINED, UNCEMENTED, POROUS, CO",
+      "count": 78
+    },
+    {
+      "term": "STAPLER, SURGICAL",
+      "count": 77
+    },
+    {
+      "term": "VENTILATOR, NON-CONTINIOUS (RESPIRATOR)",
+      "count": 77
+    },
+    {
+      "term": "SUBCUTANEOUS IMPLANTABLE CARDIOVERTER DEFIBRILLATOR",
+      "count": 76
+    },
+    {
+      "term": "SUTURE, SURGICAL, ABSORBABLE",
+      "count": 75
+    },
+    {
+      "term": "TRANSCERVICAL CONTRACEPTIVE TUBAL OCCLUSION DEVICE",
+      "count": 75
+    },
+    {
+      "term": "LEAD",
+      "count": 74
+    },
+    {
+      "term": "CATHETER, ANGIOPLASTY, PERIPHERAL, TRANSLUMINAL",
+      "count": 73
+    },
+    {
+      "term": "CONELOG PROGRESSIVE-LINE IMPLANT PROMOTE PLUS",
+      "count": 73
+    },
+    {
+      "term": "INFUSION PUMP SYSTEM",
+      "count": 73
+    },
+    {
+      "term": "INTRACRANIAL NEUROVASCULAR STENT",
+      "count": 73
+    },
+    {
+      "term": "Implantable pulse generator, pacemaker (non-CRT)",
+      "count": 73
+    },
+    {
+      "term": "CORONARY ATHERECTOMY DEVICE",
+      "count": 72
+    },
+    {
+      "term": "DEVICE, MONITORING, INTRACRANIAL PRESSURE",
+      "count": 72
+    },
+    {
+      "term": "HAMILTON-T1",
+      "count": 72
+    },
+    {
+      "term": "ORTHOPEDIC MANUAL SURG INSTR",
+      "count": 72
+    },
+    {
+      "term": "DRUG ELUTING CORONARY STENT DELIVERY SYSTEM",
+      "count": 71
+    },
+    {
+      "term": "NEVRO SENZA",
+      "count": 71
+    },
+    {
+      "term": "Pulse generator, permanent, implantable",
+      "count": 71
+    },
+    {
+      "term": "ANALYZER, PACEMAKER GENERATOR FUNCTION",
+      "count": 70
+    },
+    {
+      "term": "MEGA SUTURECUT ND",
+      "count": 70
+    },
+    {
+      "term": "SYSTEM, BALLOON, INTRA-AORTIC",
+      "count": 69
+    },
+    {
+      "term": "REAGENTS, 2019-NOVEL CORONAVIRUS NUCLEIC ACID",
+      "count": 66
+    },
+    {
+      "term": "Stimulator, electrical, implanted, for parkinsonian tremor",
+      "count": 66
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS TRANSLUMINAL CORONARY ANGIOPLASTY (PTCA), CUTTING/SCORING",
+      "count": 65
+    },
+    {
+      "term": "FEMORAL TRIALS",
+      "count": 65
+    },
+    {
+      "term": "CATHETER, THROMBUS RETRIEVER",
+      "count": 63
+    },
+    {
+      "term": "HIP INSTRUMENTS : IMPACTORS",
+      "count": 63
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SYNTHETIC, POLYPROPYLENE",
+      "count": 63
+    },
+    {
+      "term": "CAMLOG PROGRESSIVE LINE IMPLANT PROMOTE PLUS",
+      "count": 61
+    },
+    {
+      "term": "LIGHT, SURGICAL, CEILING MOUNTED",
+      "count": 61
+    },
+    {
+      "term": "ORTHOSIS, SPINAL PEDICLE FIXATION, FOR DDD",
+      "count": 61
+    },
+    {
+      "term": "OXIMETER",
+      "count": 61
+    },
+    {
+      "term": "SHOULDER PROSTHESIS, REVERSE CONFIGURATION",
+      "count": 61
+    },
+    {
+      "term": "ULTRASONIC SURGICAL DEVICE",
+      "count": 61
+    },
+    {
+      "term": "APPLIANCE, FIXATION, NAIL/BLADE/PLATE COMBINATION, MULTIPLE COMPONENT",
+      "count": 60
+    },
+    {
+      "term": "DIAGNOSTIC ULTRASOUND TRANSDUCER",
+      "count": 60
+    },
+    {
+      "term": "LENS, INTRAOCULAR, TORIC OPTICS",
+      "count": 60
+    },
+    {
+      "term": "NEUROVASCULAR EMBOLIZATION DEVICE",
+      "count": 60
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, IMPLANTED, FOR ESSENTI",
+      "count": 60
+    },
+    {
+      "term": "CATHETER PERCUTANEOUS",
+      "count": 59
+    },
+    {
+      "term": "ANALYZER, GAS, CARBON-DIOXIDE, GASEOUS-PHASE",
+      "count": 58
+    },
+    {
+      "term": "CATHETER, CONTINUOUS FLUSH",
+      "count": 58
+    },
+    {
+      "term": "DRILL, SURGICAL, ENT (ELECTRIC OR PNEUMATIC) INCLUDING HANDPIECE",
+      "count": 58
+    },
+    {
+      "term": "INFUSION PUMP",
+      "count": 58
+    },
+    {
+      "term": "HIP INSTRUMENTS : HANDLES",
+      "count": 57
+    },
+    {
+      "term": "IMAGINA GASTROSCOPE",
+      "count": 57
+    },
+    {
+      "term": "LIGATOR, ESOPHAGEAL",
+      "count": 57
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS, FACILITY USE.",
+      "count": 57
+    },
+    {
+      "term": "CONELOG PROGRESSIVE LINE IMPLANT",
+      "count": 56
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : IMPACTORS",
+      "count": 55
+    },
+    {
+      "term": "DRIVER, PROSTHESIS",
+      "count": 55
+    },
+    {
+      "term": "GENERATOR, OXYGEN, PORTABLE",
+      "count": 55
+    },
+    {
+      "term": "Implantable cardioverter defibrillator (non-CRT)",
+      "count": 55
+    },
+    {
+      "term": "LAPAROSCOPE, GYNECOLOGIC",
+      "count": 55
+    },
+    {
+      "term": "SINGLE USE 2-LUMEN SPHINCTEROTOME",
+      "count": 55
+    },
+    {
+      "term": "XL+DEFIBRILLATOR",
+      "count": 55
+    },
+    {
+      "term": "CARDIAC CHEST COMPRESSOR",
+      "count": 54
+    },
+    {
+      "term": "MANUAL INSTR, GENERAL SURGICAL",
+      "count": 54
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, METAL/POLYMER, CEMENTED",
+      "count": 54
+    },
+    {
+      "term": "VENTILATOR",
+      "count": 54
+    },
+    {
+      "term": "PERIPHERAL IV CATHETERS",
+      "count": 53
+    },
+    {
+      "term": "ATTUNE IMPLANT : KNEE TIBIAL INSERT",
+      "count": 52
+    },
+    {
+      "term": "COCHLEAR BAHA CONNECT SYSTEM",
+      "count": 52
+    },
+    {
+      "term": "CONTROL, PUMP SPEED, CARDIOPULMONARY BYPASS",
+      "count": 52
+    },
+    {
+      "term": "HAMILTON-G5  VENTILATOR",
+      "count": 52
+    },
+    {
+      "term": "IMPLANTABLE PACEMAKER PULSE-GENERATOR",
+      "count": 52
+    },
+    {
+      "term": "LENS, MULTIFOCAL INTRAOCULAR",
+      "count": 52
+    },
+    {
+      "term": "MARYLAND BIPOLAR FORCEPS",
+      "count": 52
+    },
+    {
+      "term": "SET, I.V. FLUID TRANSFER",
+      "count": 52
+    },
+    {
+      "term": "BIO SOFT TISSUE FIXATN FASTNR",
+      "count": 51
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SYNTHETIC",
+      "count": 51
+    },
+    {
+      "term": "VIDEO NASO PHARYNGO LARYNGOSCOPE",
+      "count": 51
+    },
+    {
+      "term": "CONSOLE, HEART-LUNG MACHINE, CARDIOPULMONARY BYPASS",
+      "count": 50
+    },
+    {
+      "term": "CYSTO-NEPHRO VIDEOSCOPE",
+      "count": 50
+    },
+    {
+      "term": "GENERATOR",
+      "count": 50
+    },
+    {
+      "term": "GUIDE WIRE",
+      "count": 50
+    },
+    {
+      "term": "SCREW,FIXATION,BONE",
+      "count": 50
+    },
+    {
+      "term": "TRANSCATHETER SEPTAL OCCLUDER",
+      "count": 50
+    },
+    {
+      "term": "VENTILATOR, EMERGENCY, POWERED (RESUSCITATOR)",
+      "count": 50
+    },
+    {
+      "term": "FIXATION, SPINAL INTERVERTEBRAL BODY",
+      "count": 49
+    },
+    {
+      "term": "KNEE COMPONENT",
+      "count": 49
+    },
+    {
+      "term": "KNEE TIBIAL INSERT",
+      "count": 48
+    },
+    {
+      "term": "CATHETER, STEERABLE",
+      "count": 47
+    },
+    {
+      "term": "EVERSENSE CONTINUOUS GLUCOSE MONITORING SYSTEM",
+      "count": 47
+    },
+    {
+      "term": "FORCE BIPOLAR",
+      "count": 47
+    },
+    {
+      "term": "IMPLANTABLE ELECTRODE",
+      "count": 47
+    },
+    {
+      "term": "MESH, SURGICAL",
+      "count": 47
+    },
+    {
+      "term": "MONITOR, PHYSIOLOGICAL, PATIENT (WITH ARRHYTHMIA DETECTION OR ALARMS)",
+      "count": 47
+    },
+    {
+      "term": "SYSTEM, TEST, AUTOMATED ANTIMICROBIAL SUSCEPTIBILITY",
+      "count": 47
+    },
+    {
+      "term": "CARDIAC RESYNCHRONIZATION THERAPY DEFIBRILLATOR",
+      "count": 46
+    },
+    {
+      "term": "COCHLEAR¿ OSIA¿ SYSTEM",
+      "count": 46
+    },
+    {
+      "term": "CONELOG SCREW LINE IMPLANT PROMOTE PLUS",
+      "count": 46
+    },
+    {
+      "term": "CONTINUOUS GLUCOSE MONITOR RETROSPECTIVE DATA ANALYSIS SOFTWARE",
+      "count": 46
+    },
+    {
+      "term": "DATA MANAGEMENT SYSTEM",
+      "count": 46
+    },
+    {
+      "term": "DRILL BIT",
+      "count": 46
+    },
+    {
+      "term": "MEDIUM-LARGE CLIP APPLIER",
+      "count": 46
+    },
+    {
+      "term": "PINNACLE HIP SYSTEM : HIP POLY ACETABULAR LINERS",
+      "count": 46
+    },
+    {
+      "term": "PROSTHESIS KNEE",
+      "count": 46
+    },
+    {
+      "term": "AUTOMATED DISPENSING CABINET",
+      "count": 45
+    },
+    {
+      "term": "FFL DISLODGER, STONE, BASKET, URETERAL, METAL",
+      "count": 45
+    },
+    {
+      "term": "IMMUNOASSAY METHOD, TROPONIN SUBUNIT",
+      "count": 45
+    },
+    {
+      "term": "PTA BALLOON DILATATION CATHETER",
+      "count": 45
+    },
+    {
+      "term": "HAMILTON-C3",
+      "count": 44
+    },
+    {
+      "term": "STIMULATOR, NERVE",
+      "count": 44
+    },
+    {
+      "term": "TRANSDUCER, PRESSURE, CATHETER TIP",
+      "count": 44
+    },
+    {
+      "term": "ARTICULEZE HEAD (12/14 TAPER) : HIP CERAMIC FEMORAL HEADS",
+      "count": 43
+    },
+    {
+      "term": "LV LEAD",
+      "count": 43
+    },
+    {
+      "term": "SUBCUTANEOUS INFUSION SET",
+      "count": 43
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS, CUTTING/SCORING",
+      "count": 42
+    },
+    {
+      "term": "HIGH DEFINITION LCD MONITOR",
+      "count": 42
+    },
+    {
+      "term": "INTERVERTEBAL FUSION DEVICE W/BONE GRAFT, LUMBAR",
+      "count": 42
+    },
+    {
+      "term": "PULSE-GENERATOR, PACEMAKER, EXTERNAL",
+      "count": 42
+    },
+    {
+      "term": "STOPCOCK, I.V. SET",
+      "count": 42
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SILK",
+      "count": 42
+    },
+    {
+      "term": "APPLIANCE, FIXATION, SPINAL INTERLAMINAL",
+      "count": 41
+    },
+    {
+      "term": "CEMENT, BONE, VERTEBROPLASTY",
+      "count": 41
+    },
+    {
+      "term": "CONSOLE, HEART-LUNG MACHINE, CARDIOPULMONARY BYPASS-ADVANCED PERFUSION SYSTEM 1",
+      "count": 41
+    },
+    {
+      "term": "PERIPHERAL NERVE STIMULATOR",
+      "count": 41
+    },
+    {
+      "term": "PROSTHESIS, ANKLE, SEMI-CONSTRAINED, CEMENTED, METAL/POLYMER",
+      "count": 41
+    },
+    {
+      "term": "REAMER",
+      "count": 41
+    },
+    {
+      "term": "BONE CEMENT, POSTERIOR SCREW AUGMENTATION",
+      "count": 40
+    },
+    {
+      "term": "HARMONIC ACE",
+      "count": 40
+    },
+    {
+      "term": "LARGE HEM-O-LOK CLIP APPLIER",
+      "count": 40
+    },
+    {
+      "term": "SUTURE, ABSORBABLE, SYNTHETIC, POLYGLYCOLIC ACID",
+      "count": 40
+    },
+    {
+      "term": "---ALTERNATE CONTROLLER ENABLED INSULIN INFUSION PUMP",
+      "count": 39
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : TIBIAL TRIALS",
+      "count": 39
+    },
+    {
+      "term": "CATHETER, INTRACARDIAC MAPPING, HIGH-DENSITY ARRAY",
+      "count": 39
+    },
+    {
+      "term": "CHRONIC CATHETERS",
+      "count": 39
+    },
+    {
+      "term": "MESH, SURGICAL, SYNTHETIC, UROGYNECOLOGIC",
+      "count": 39
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS (FACILITY/HOME)",
+      "count": 39
+    },
+    {
+      "term": "WEARABLE AUTOMATED EXTERNAL DEFIBRILLATOR",
+      "count": 39
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS, CARDIAC ABLATION, FOR TREATMENT OF ATRIAL FLUTTER",
+      "count": 38
+    },
+    {
+      "term": "CORONAVIRUS ANTIGEN DETECTION TEST SYSTEM",
+      "count": 38
+    },
+    {
+      "term": "DRILL, SURGICAL, ENT (ELECTRIC OR PNEUMATIC)",
+      "count": 38
+    },
+    {
+      "term": "HD VIDEO GASTROSCOPE 2.8C 9.8T 1050L",
+      "count": 38
+    },
+    {
+      "term": "LARGE SUTURE CUT NEEDLE DRIVER",
+      "count": 38
+    },
+    {
+      "term": "NAIL, FIXATION, BONE",
+      "count": 38
+    },
+    {
+      "term": "VIDEO COLONOSCOPE",
+      "count": 38
+    },
+    {
+      "term": "KNEE TIBIAL TRAY",
+      "count": 37
+    },
+    {
+      "term": "MONOPOLAR CURVED SCISSORS",
+      "count": 37
+    },
+    {
+      "term": "CLOSED ANTINEOPLASTIC AND HAZARDOUS DRUG RECONSTITUTION AND TRANSFER SYSTEM",
+      "count": 36
+    },
+    {
+      "term": "DRESSING,WOUND,OCCLUSIVE",
+      "count": 36
+    },
+    {
+      "term": "ENTERAL INFUSION PUMP",
+      "count": 36
+    },
+    {
+      "term": "HEMOSTATIC METAL CLIP FOR THE GI TRACT",
+      "count": 36
+    },
+    {
+      "term": "HIP FEMORAL STEM",
+      "count": 36
+    },
+    {
+      "term": "INSULIN PUMP",
+      "count": 36
+    },
+    {
+      "term": "LAPAROSCOPE, GENERAL AND PLASTIC SURGERY",
+      "count": 36
+    },
+    {
+      "term": "MANAGEMENT AND MONITOR SYSTEM",
+      "count": 36
+    },
+    {
+      "term": "SYSTEM, SURGICAL, COMPUTER CONTROLLED INSTRUMENT",
+      "count": 36
+    },
+    {
+      "term": "BONE FIXATION SCREW/PLATE",
+      "count": 35
+    },
+    {
+      "term": "CARDIAC PLUG",
+      "count": 35
+    },
+    {
+      "term": "ELECTROSURGICAL GENERATOR ESG-400",
+      "count": 35
+    },
+    {
+      "term": "HEART-VALVE, MECHANICAL",
+      "count": 35
+    },
+    {
+      "term": "ORTHOSIS, SPINAL PEDICLE FIXATION",
+      "count": 35
+    },
+    {
+      "term": "OXYGENATOR, CARDIOPULMONARY BYPASS",
+      "count": 35
+    },
+    {
+      "term": "Recorder, event, implantable cardiac, (without arrhythmia detection)",
+      "count": 35
+    },
+    {
+      "term": "SHOULDER INSTRUMENT - INSERTION DEVICE",
+      "count": 35
+    },
+    {
+      "term": "SOFIA2 FLU + SARS ANTIGEN FIA, NS SWAB",
+      "count": 35
+    },
+    {
+      "term": "CATHETER, CORONARY, ATHERECTOMY",
+      "count": 34
+    },
+    {
+      "term": "DRILLS, BURRS, TREPHINES & ACCESSORIES (SIMPLE",
+      "count": 34
+    },
+    {
+      "term": "HAHN TAPERED IMPLANT",
+      "count": 34
+    },
+    {
+      "term": "KNIFE, OPHTHALMIC",
+      "count": 34
+    },
+    {
+      "term": "BLADE, SAW, GENERAL & PLASTIC SURGERY, SURGICAL",
+      "count": 33
+    },
+    {
+      "term": "BONE CEMENT : BONE CEMENT",
+      "count": 33
+    },
+    {
+      "term": "CATHETER, INTRAVASCULAR, THERAPEUTIC, SHORT-TERM LESS THAN 30 DAYS",
+      "count": 33
+    },
+    {
+      "term": "ORTHOSIS, SPINAL PEDICLE FIXATION, FOR DEGENERATIVE DISC DISEASE",
+      "count": 33
+    },
+    {
+      "term": "PUMP, BLOOD, CARDIOPULMONARY BYPASS, NON-ROLLER TYPE",
+      "count": 33
+    },
+    {
+      "term": "SUTURE, SURGICAL, ABSORBABLE, POLYDIOXANONE",
+      "count": 33
+    },
+    {
+      "term": "TEMPORARY NON-ROLLER TYPE RIGHT HEART SUPPORT BLOOD PUMP",
+      "count": 33
+    },
+    {
+      "term": "TOOTHBRUSH, POWERED - JEQ",
+      "count": 33
+    },
+    {
+      "term": "UNIT, ELECTROSURGICAL, ENDOSCOPIC (WITH OR WITHOUT ACCESSORIES)",
+      "count": 33
+    },
+    {
+      "term": "WARMER, BLOOD, NON-ELECTROMAGNETIC RADIATION",
+      "count": 33
+    },
+    {
+      "term": "CAMLOG PROGRESSIVE-LINE IMPLANT PROMOTE PLUS",
+      "count": 32
+    },
+    {
+      "term": "CARDIAC RESYNCHRONIZATION THERAPY DEFIBRILLATOR (CRT-D)",
+      "count": 32
+    },
+    {
+      "term": "DENTAL SCREW",
+      "count": 32
+    },
+    {
+      "term": "DIALYSIS CATHETER",
+      "count": 32
+    },
+    {
+      "term": "RECORDER, EVENT, IMPLANTABLE CARDIAC, (WITHOUT ARRHYTHMIA DETECTION)",
+      "count": 32
+    },
+    {
+      "term": "System, hemodynamic, implantable",
+      "count": 32
+    },
+    {
+      "term": "DRILL, SURGICAL, ENT (ELECTRIC OR PNEUMATIC) I",
+      "count": 31
+    },
+    {
+      "term": "ENDOUSSEOUS DENTAL IMPLANT ROOT FORM",
+      "count": 31
+    },
+    {
+      "term": "EXPANDER, SKIN, INFLATABLE",
+      "count": 31
+    },
+    {
+      "term": "EXPANDER, SURGICAL, SKIN GRAFT",
+      "count": 31
+    },
+    {
+      "term": "IMMUNOCHEMISTRY ANALYZER",
+      "count": 31
+    },
+    {
+      "term": "IMPLANTABLE DEFIBRILLATOR",
+      "count": 31
+    },
+    {
+      "term": "REPLACEMENT HEART VALVE",
+      "count": 31
+    },
+    {
+      "term": "BUR, EAR, NOSE AND THROAT",
+      "count": 30
+    },
+    {
+      "term": "CORONARY DILATATION CATHETER",
+      "count": 30
+    },
+    {
+      "term": "FIBER NASO PHARYNGO LARYNGOSCOPE",
+      "count": 30
+    },
+    {
+      "term": "HIP ACETABULAR CUP",
+      "count": 30
+    },
+    {
+      "term": "LAMP, SURGICAL",
+      "count": 30
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, METAL/CERAMIC/POLYMER, CEMENTED OR NON-POROUS",
+      "count": 30
+    },
+    {
+      "term": "PROTHESIS, HIPS",
+      "count": 30
+    },
+    {
+      "term": "SINGLE USE ELECTROSURGICAL KNIFE",
+      "count": 30
+    },
+    {
+      "term": "STENT, ENDOVASCULAR GRAFT, AORTIC",
+      "count": 30
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SYNTHETIC, POLYAMIDE",
+      "count": 30
+    },
+    {
+      "term": "SYSTEM, IMAGING, PULSED ECHO, ULTRASONIC",
+      "count": 30
+    },
+    {
+      "term": "CATHETER, ELECTRODE RECORDING, OR PROBE, ELECTRODE RECORDING",
+      "count": 29
+    },
+    {
+      "term": "DILATOR, ESOPHAGEAL",
+      "count": 29
+    },
+    {
+      "term": "HAMILTON-MR1",
+      "count": 29
+    },
+    {
+      "term": "IMAGINA COLONOSCOPE (US ONLY)",
+      "count": 29
+    },
+    {
+      "term": "MIH SYSTEM, ENDOVASCULAR GRAFT, AORTIC ANEURYSM TREATMENT",
+      "count": 29
+    },
+    {
+      "term": "POWERED SURG ORTHOPEDIC INSTR",
+      "count": 29
+    },
+    {
+      "term": "SCS PULSE GENERATOR",
+      "count": 29
+    },
+    {
+      "term": "SMOOTH FIXATION PIN",
+      "count": 29
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, IMPLANTED, FOR PARKINSONIAN SYMPTOMS",
+      "count": 29
+    },
+    {
+      "term": "VALVE REPAIR",
+      "count": 29
+    },
+    {
+      "term": "BLOOD GLUCOSE MONITORING DEVICE",
+      "count": 28
+    },
+    {
+      "term": "IMPLANTABLE CARDIOVERTER DEFIBRILLATOR (ICD)",
+      "count": 28
+    },
+    {
+      "term": "LAVAGE, JET",
+      "count": 28
+    },
+    {
+      "term": "OPHTHALMIC FEMTOSECOND LASER",
+      "count": 28
+    },
+    {
+      "term": "SYSTEM CART",
+      "count": 28
+    },
+    {
+      "term": "SYSTEM, BLOOD CULTURING",
+      "count": 28
+    },
+    {
+      "term": "SYSTEM, TEST BLOOD GLUCOSE, OVER THE COUNTER",
+      "count": 28
+    },
+    {
+      "term": "TUBE, TRACHEOSTOMY (W/WO CONNECTOR)",
+      "count": 28
+    },
+    {
+      "term": "VITRECTOMY, INSTRUMENT CUTTER",
+      "count": 28
+    },
+    {
+      "term": "CATHETER, EMBOLECTOMY",
+      "count": 27
+    },
+    {
+      "term": "DRUG ELUTING PERMANENT RIGHT VENTRICULAR (RV) OR RIGHT ATRIAL (RA) PACEMAKER ELE",
+      "count": 27
+    },
+    {
+      "term": "HAHN TAPERED IMPLANT SYSTEM",
+      "count": 27
+    },
+    {
+      "term": "INSPIRE MODEL 4063 STIMULATION LEAD",
+      "count": 27
+    },
+    {
+      "term": "NON-DEGRADABLE FIXATION FASTENER",
+      "count": 27
+    },
+    {
+      "term": "STENT, SUPERFICIAL FEMORAL ARTERY",
+      "count": 27
+    },
+    {
+      "term": "TENACULUM FORCEPS",
+      "count": 27
+    },
+    {
+      "term": "VESSEL SEALER EXTEND",
+      "count": 27
+    },
+    {
+      "term": "ACCESSORIES, ARTHROSCOPIC",
+      "count": 26
+    },
+    {
+      "term": "COVID-19 MULTI-ANALYTE RESPIRATORY PANEL NUCLEIC ACID DEVICES",
+      "count": 26
+    },
+    {
+      "term": "ELECTRODE, PH, STOMACH",
+      "count": 26
+    },
+    {
+      "term": "HIP INSTRUMENTS : INSERTION DEVICES",
+      "count": 26
+    },
+    {
+      "term": "QUICKVUE AT-HOME OTC COVID-19 TEST",
+      "count": 26
+    },
+    {
+      "term": "SAFETYGLIDE NEEDLES",
+      "count": 26
+    },
+    {
+      "term": "ULTRASONIC BRONCHOFIBERVIDEOSCOPE",
+      "count": 26
+    },
+    {
+      "term": "ATTUNE IMPLANT : KNEE FEMORAL",
+      "count": 25
+    },
+    {
+      "term": "CATHETER, PERIPHERAL, ATHERECTOMY",
+      "count": 25
+    },
+    {
+      "term": "CONFOCAL OPTICAL IMAGING",
+      "count": 25
+    },
+    {
+      "term": "EXTENDED DEPTH OF FOCUS INTRAOCULAR LENS",
+      "count": 25
+    },
+    {
+      "term": "HDVIDEO COLONOSCOPE 3.8C 13.2T 1700L FWJ",
+      "count": 25
+    },
+    {
+      "term": "HIP ACETABULAR LINERS",
+      "count": 25
+    },
+    {
+      "term": "INSPIRE MODEL 3028 IPG",
+      "count": 25
+    },
+    {
+      "term": "LENS, GUIDE, INTRAOCULAR",
+      "count": 25
+    },
+    {
+      "term": "MOTOR, DRILL, PNEUMATIC",
+      "count": 25
+    },
+    {
+      "term": "PERMANENT CAUTERY HOOK",
+      "count": 25
+    },
+    {
+      "term": "PROSTHESIS, KNEE, FEMOROTIBIAL, SEMI-CONSTRAINED, CEMENTED, METAL/POLYMER",
+      "count": 25
+    },
+    {
+      "term": "SET, TUBING, BLOOD, WITH A",
+      "count": 25
+    },
+    {
+      "term": "SHUNT, CENTRAL NERVOUS SYSTEM AND COMPONENTS",
+      "count": 25
+    },
+    {
+      "term": "ANTIGEN DIAGNOSTIC FOR SARS-COV-2, PRODUCT CODE: QKP",
+      "count": 24
+    },
+    {
+      "term": "Drug eluting permanent left ventricular (lv) pacemaker electrode",
+      "count": 24
+    },
+    {
+      "term": "GLUCOSE MONITORING SYS/KIT",
+      "count": 24
+    },
+    {
+      "term": "IMPLANTABLE CARDIAC MONITOR",
+      "count": 24
+    },
+    {
+      "term": "JOINT, TEMPOROMANDIBULAR, IMPLANT",
+      "count": 24
+    },
+    {
+      "term": "N/A",
+      "count": 24
+    },
+    {
+      "term": "PROSTHESIS, SPINOUS PROCESS SPACER/PLATE",
+      "count": 24
+    },
+    {
+      "term": "STRETCHER, WHEELED, POWERED",
+      "count": 24
+    },
+    {
+      "term": "SURGEON SIDE CONSOLE, SMART PEDALS",
+      "count": 24
+    },
+    {
+      "term": "SUSCEPTIBILITY TEST POWDERS, ANTIMYCOBACTERIAL",
+      "count": 24
+    },
+    {
+      "term": "TAPE AND BANDAGE, ADHESIVE",
+      "count": 24
+    },
+    {
+      "term": "URETERO-RENO VIDEOSCOPE",
+      "count": 24
+    },
+    {
+      "term": "VIDEO BRONCHOSCOPE",
+      "count": 24
+    },
+    {
+      "term": "BIT, DRILL",
+      "count": 23
+    },
+    {
+      "term": "DRILLS",
+      "count": 23
+    },
+    {
+      "term": "ENDOSCOPE REPROCESSOR",
+      "count": 23
+    },
+    {
+      "term": "FILE, PULP CANAL, ENDODONTIC",
+      "count": 23
+    },
+    {
+      "term": "INTERNAL ABUTMENT",
+      "count": 23
+    },
+    {
+      "term": "LANCET DEVICE",
+      "count": 23
+    },
+    {
+      "term": "LIFT, PATIENT, NON-AC-POWERED",
+      "count": 23
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, UNCEMENTED, METAL/POLYMER, NON-POROUS, CALICU",
+      "count": 23
+    },
+    {
+      "term": "PUMP, INFUSION, ELASTOMERI",
+      "count": 23
+    },
+    {
+      "term": "RESECTION BLOCKS/DEVICES",
+      "count": 23
+    },
+    {
+      "term": "RING, ANNULOPLASTY",
+      "count": 23
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, EVOKED RESPONSE",
+      "count": 23
+    },
+    {
+      "term": "TAMPON, MENSTRUAL, UNSCENTED - HEB",
+      "count": 23
+    },
+    {
+      "term": "VENA CAVA FILTER",
+      "count": 23
+    },
+    {
+      "term": "ABSORBABLE PERIRECTAL SPACER",
+      "count": 22
+    },
+    {
+      "term": "ANTI-REFLUX IMPLANT",
+      "count": 22
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : INSERTION DEVICES",
+      "count": 22
+    },
+    {
+      "term": "CATHETER, INTRAVASCULAR, DIAGNOSTIC",
+      "count": 22
+    },
+    {
+      "term": "CLAMP, VASCULAR",
+      "count": 22
+    },
+    {
+      "term": "DUODENOSCOPE AND ACCESSORIES, FLEXIBLE/RIGID",
+      "count": 22
+    },
+    {
+      "term": "ENDOSCOPE PLUS",
+      "count": 22
+    },
+    {
+      "term": "FEMALE STRESS URINARY INCONTINENCE SURGICAL MESH-SLING, SYNTHETIC POLYMER",
+      "count": 22
+    },
+    {
+      "term": "IMPLANT, INTRAGASTRIC FOR MORBID OBESITY",
+      "count": 22
+    },
+    {
+      "term": "INSTRUMENT, HIP",
+      "count": 22
+    },
+    {
+      "term": "INSULIN DELIVERY DEVICE",
+      "count": 22
+    },
+    {
+      "term": "LARYNGOSCOPE, RIGID",
+      "count": 22
+    },
+    {
+      "term": "LENS, MULTIFOCAL",
+      "count": 22
+    },
+    {
+      "term": "MX40 1.4 GHZ SMART HOPPING",
+      "count": 22
+    },
+    {
+      "term": "PACEMAKER/ICD/CRT NON-IMPLANTED COMPONENTS",
+      "count": 22
+    },
+    {
+      "term": "PROSTHESIS, BREAST, NON-INFLATABLE, INTERNAL, SILICONE GEL-FILLED",
+      "count": 22
+    },
+    {
+      "term": "SCREW, FIXATION, INTRAOSSEOUS",
+      "count": 22
+    },
+    {
+      "term": "STIMULATOR, ELECTRICAL, IMPLANTED, FOR PARKINSONIAN TREMOR",
+      "count": 22
+    },
+    {
+      "term": "THERMAL REGULATING SYSTEM",
+      "count": 22
+    },
+    {
+      "term": "WASHER, BOLT, NUT",
+      "count": 22
+    },
+    {
+      "term": "ACCESSORIES",
+      "count": 21
+    },
+    {
+      "term": "ALIGNER, SEQUENTIAL",
+      "count": 21
+    },
+    {
+      "term": "APPLIER, SURGICAL, CLIP",
+      "count": 21
+    },
+    {
+      "term": "CATHETER INTRAVASCULAR THERAPE",
+      "count": 21
+    },
+    {
+      "term": "CONELOG PROGRESSIVE LINE IMPLANT PROMOTE PLUS",
+      "count": 21
+    },
+    {
+      "term": "CONTROLLER, TEMPERATURE, CARDIOPULMONARY BYPASS",
+      "count": 21
+    },
+    {
+      "term": "COUNTER, DIFFERENTIAL CELL",
+      "count": 21
+    },
+    {
+      "term": "DBS IPG",
+      "count": 21
+    },
+    {
+      "term": "DEPTH GAUGE",
+      "count": 21
+    },
+    {
+      "term": "DRG IPG",
+      "count": 21
+    },
+    {
+      "term": "ENDOSCOPE REPROCESSOR ACCESSORIES",
+      "count": 21
+    },
+    {
+      "term": "EXTERNAL PROGRAMMER",
+      "count": 21
+    },
+    {
+      "term": "ORTHOSIS, SPONDYLOLISTHESIS SPINAL FIXATION",
+      "count": 21
+    },
+    {
+      "term": "PATIENT INFORMATION CENTER IX",
+      "count": 21
+    },
+    {
+      "term": "PLATE",
+      "count": 21
+    },
+    {
+      "term": "SIGMA KNEE PRIMARY : KNEE TIBIAL INSERT",
+      "count": 21
+    },
+    {
+      "term": "TEMPORARY CAROTID CATHETER FOR EMBOLIC CAPTURE",
+      "count": 21
+    },
+    {
+      "term": "VENTILATOR, HIGH FREQUENCY",
+      "count": 21
+    },
+    {
+      "term": "ADHESIVE, TOPICAL SKIN",
+      "count": 20
+    },
+    {
+      "term": "BARIATRIC BED",
+      "count": 20
+    },
+    {
+      "term": "CATHETER, HEMODIALYSIS, IMPLANTED",
+      "count": 20
+    },
+    {
+      "term": "CATHETER, SEPTOSTOMY",
+      "count": 20
+    },
+    {
+      "term": "CORONARY STENT DELIVERY SYSTEM",
+      "count": 20
+    },
+    {
+      "term": "DISTAL COVER",
+      "count": 20
+    },
+    {
+      "term": "DRUG ELUTING PERMANENT LEFT VENTRICULAR (LV) PACEMAKER ELECTRODE",
+      "count": 20
+    },
+    {
+      "term": "IN-VITRO DIAGNOSTICS",
+      "count": 20
+    },
+    {
+      "term": "INSTRUMENT, BIOPSY",
+      "count": 20
+    },
+    {
+      "term": "MONITOR",
+      "count": 20
+    },
+    {
+      "term": "PANCREATIC STENT, COVERED, METALLIC, REMOVABLE",
+      "count": 20
+    },
+    {
+      "term": "SALINE, VASCULAR ACCESS FLUSH",
+      "count": 20
+    },
+    {
+      "term": "SET, TUBING, BLOOD, WITH AND WITHOUT ANTI-REGURGITATION VALVE",
+      "count": 20
+    },
+    {
+      "term": "SILICONE FOLEY CATHETER",
+      "count": 20
+    },
+    {
+      "term": "SOFIA SARS ANTIGEN FIA, NS SWAB",
+      "count": 20
+    },
+    {
+      "term": "Stimulator, spinal-cord, totally implanted for pain relief",
+      "count": 20
+    },
+    {
+      "term": "THROMBECTOMY & ATHERECTOMY",
+      "count": 20
+    },
+    {
+      "term": "AGENT, ABSORBABLE HEMOSTATIC, NON-COLLAGEN BASED",
+      "count": 19
+    },
+    {
+      "term": "BRONCHOFIBERVIDEOSCOPE",
+      "count": 19
+    },
+    {
+      "term": "COMPRESSOR, AIR, PORTABLE",
+      "count": 19
+    },
+    {
+      "term": "DENTAL ABUTMENT",
+      "count": 19
+    },
+    {
+      "term": "EXTRACTION INSTRUMENTS",
+      "count": 19
+    },
+    {
+      "term": "FLEX 3D DEFLECTABLE VIDEOSCOPE",
+      "count": 19
+    },
+    {
+      "term": "GAS-MACHINE, ANESTHESIA",
+      "count": 19
+    },
+    {
+      "term": "IMPLANTED SUBCORTICAL ELECTRICAL STIMULATOR (M",
+      "count": 19
+    },
+    {
+      "term": "PROSTHESIS, HIP, FEMORAL COMPONENT, CEMENTED, METAL",
+      "count": 19
+    },
+    {
+      "term": "PROTHESIS, HIP",
+      "count": 19
+    },
+    {
+      "term": "SCREW",
+      "count": 19
+    },
+    {
+      "term": "SELF EXPANDING PERIPHERAL STENT SYSTEM",
+      "count": 19
+    },
+    {
+      "term": "SUTURE, SURGICAL, ABSORBABLE, POLYGLCOLIC ACID",
+      "count": 19
+    },
+    {
+      "term": "SYSTEM, TEST, AUTOMATED ANTIMICROBIAL SUSCEPTIBILITY, SHORT INCUBATION",
+      "count": 19
+    },
+    {
+      "term": "URETERAL STENT",
+      "count": 19
+    },
+    {
+      "term": "ANESTHESIA UNITS",
+      "count": 18
+    },
+    {
+      "term": "ARTICULEZE HEAD (12/14 TAPER) : HIP METAL FEMORAL HEADS",
+      "count": 18
+    },
+    {
+      "term": "ELECTROSURGICAL, CUTTING & COAGULATION ACCESSORIES, LAPAROSCOPIC & ENDOSCOPIC,",
+      "count": 18
+    },
+    {
+      "term": "ENDOSCOPIC TISSUE APPROXIMATION DEVICE",
+      "count": 18
+    },
+    {
+      "term": "FLUID JET REMOVAL SYSTEM",
+      "count": 18
+    },
+    {
+      "term": "GASTRIC BALLOON",
+      "count": 18
+    },
+    {
+      "term": "GAUZE/SPONGE, INTERNAL, X-RAY DETECTABLE",
+      "count": 18
+    },
+    {
+      "term": "INTERMITTENT CATHETER",
+      "count": 18
+    },
+    {
+      "term": "METAL FEMORAL HEAD",
+      "count": 18
+    },
+    {
+      "term": "PINNACLE HIP SYSTEM : HIP METAL ACETABULAR CUPS",
+      "count": 18
+    },
+    {
+      "term": "POLYETHYLENE SYNTHETIC SUTURE",
+      "count": 18
+    },
+    {
+      "term": "PROTECTOR, OSTOMY",
+      "count": 18
+    },
+    {
+      "term": "RIGID ENDOSCOPE SHEATH",
+      "count": 18
+    },
+    {
+      "term": "VASCULAR CLOSURE DEVICE",
+      "count": 18
+    },
+    {
+      "term": "VIDEO DUODENOSCOPE",
+      "count": 18
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : SPACER BLOCKS/TRIAL SHIMS",
+      "count": 17
+    },
+    {
+      "term": "BONE CEMENT",
+      "count": 17
+    },
+    {
+      "term": "BROACHES",
+      "count": 17
+    },
+    {
+      "term": "CARDIAC RESYNCHRONIZATION THERAPY PACEMAKER (CRT-P)",
+      "count": 17
+    },
+    {
+      "term": "COMPUTER, DIAGNOSTIC, PROGRAMMABLE",
+      "count": 17
+    },
+    {
+      "term": "ELECTROSURGICAL, CUTTING  COAGULATION  ACCESSORIES",
+      "count": 17
+    },
+    {
+      "term": "HIP COMPONENT",
+      "count": 17
+    },
+    {
+      "term": "HYSTEROSCOPE (AND ACCESSORIES)",
+      "count": 17
+    },
+    {
+      "term": "IMAGE-INTENSIFIED FLUOROSCOPIC X-RAY SYSTEM, M",
+      "count": 17
+    },
+    {
+      "term": "LINEAR ULTRASOUND VIDEO GASTROSCOPE 3.8C",
+      "count": 17
+    },
+    {
+      "term": "PROSTHESIS, SHOULDER, NON-CONSTRAINED, METAL/POLYMER CEMENTED",
+      "count": 17
+    },
+    {
+      "term": "SMALL GRASPING RETRACTOR",
+      "count": 17
+    },
+    {
+      "term": "STENT, COLONIC, METALIC, EXPANDABLE",
+      "count": 17
+    },
+    {
+      "term": "TIBIAL INSERT TRIALS",
+      "count": 17
+    },
+    {
+      "term": "VESSEL CLOSURE SUTURE",
+      "count": 17
+    },
+    {
+      "term": "VIDEO COLONOSCOPE 3.8C 2.8C 13.2T FWJ",
+      "count": 17
+    },
+    {
+      "term": "VIDEO DUODENOSCOPE - I10 STANDARD",
+      "count": 17
+    },
+    {
+      "term": "Ventricular (assist) bypass",
+      "count": 17
+    },
+    {
+      "term": "ABUTMENT, IMPLANT, DENTAL, ENDOSSEOUS",
+      "count": 16
+    },
+    {
+      "term": "CATHETER, PERITONEAL, LONG-TERM INDWELLING",
+      "count": 16
+    },
+    {
+      "term": "CATHETER,INTRAVASCULAR,THERAPEUTIC,SHORT-TERM LESS THAN 30 DAYS",
+      "count": 16
+    },
+    {
+      "term": "CORAIL AMT CEMENTLESS IMPLANT : HIP FEMORAL STEM",
+      "count": 16
+    },
+    {
+      "term": "CRT-D",
+      "count": 16
+    },
+    {
+      "term": "DYB INTRODUCER, CATHETER",
+      "count": 16
+    },
+    {
+      "term": "EAR, NOSE, AND THROAT STEREOTAXIC INSTRUMENT",
+      "count": 16
+    },
+    {
+      "term": "ELECTROSURG CUT/COAG DEVICE",
+      "count": 16
+    },
+    {
+      "term": "FGE CATHETER, BILIARY, DIAGNOSTIC",
+      "count": 16
+    },
+    {
+      "term": "FLUOROMETER, FOR CLINICAL USE",
+      "count": 16
+    },
+    {
+      "term": "HAMILTON-C6 VENTILATOR",
+      "count": 16
+    },
+    {
+      "term": "HIP FEMORAL HEAD",
+      "count": 16
+    },
+    {
+      "term": "HYDROCEPHALUS MANAGEMENT",
+      "count": 16
+    },
+    {
+      "term": "INDWELLING URETHRAL DRAINAGE BALLOON CATHETER, NON-ANTIMICROBIAL",
+      "count": 16
+    },
+    {
+      "term": "INJECTOR AND SYRINGE, ANGIOGRAPHIC",
+      "count": 16
+    },
+    {
+      "term": "INTERVERTEBRAL FUSION DEVICE WITH BONE GRAFT,",
+      "count": 16
+    },
+    {
+      "term": "INTRAOCULAR PRESSURE LOWERING IMPLANT",
+      "count": 16
+    },
+    {
+      "term": "IV ADMINISTRATION SET",
+      "count": 16
+    },
+    {
+      "term": "LOW ENERGY DEFIBRILLATOR",
+      "count": 16
+    },
+    {
+      "term": "ORTHOSIS, PEDICLE SPINAL FIXATION",
+      "count": 16
+    },
+    {
+      "term": "PERMANENT CAUTERY SPATULA",
+      "count": 16
+    },
+    {
+      "term": "PROSTHETIC, HIP",
+      "count": 16
+    },
+    {
+      "term": "RIGID ENDOSCOPE TELESCOPE",
+      "count": 16
+    },
+    {
+      "term": "SALINE VASCULAR ACCESS FLUSH",
+      "count": 16
+    },
+    {
+      "term": "SAW BLADE",
+      "count": 16
+    },
+    {
+      "term": "SCALER, ULTRASONIC",
+      "count": 16
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, SYNTHETIC, POLYPROPYLEN",
+      "count": 16
+    },
+    {
+      "term": "VIDEO COLONOSCOPE - I10 SLIM",
+      "count": 16
+    },
+    {
+      "term": "VISUAL, PREGNANCY HCG, PRESCRIPTION USE",
+      "count": 16
+    },
+    {
+      "term": "ACID, HYALURONIC, INTRAARTICULAR",
+      "count": 15
+    },
+    {
+      "term": "APPLIANCE, FIXATION, SPINAL INTERVERTEBRAL BODY",
+      "count": 15
+    },
+    {
+      "term": "BONE SCREWS AND PINS : SCREWS",
+      "count": 15
+    },
+    {
+      "term": "CYSTONEPHROFIBERSCOPE",
+      "count": 15
+    },
+    {
+      "term": "DISPOSABLE PERFORATORS",
+      "count": 15
+    },
+    {
+      "term": "FORCEPS",
+      "count": 15
+    },
+    {
+      "term": "IMPLANT, EYE VALVE",
+      "count": 15
+    },
+    {
+      "term": "MEGA NEEDLE DRIVER",
+      "count": 15
+    },
+    {
+      "term": "MONITOR, PHYSIOLOGICAL, PATIENT(WITH ARRHYTHMIA DETECTION OR ALARMS)",
+      "count": 15
+    },
+    {
+      "term": "PROGRASP FORCEPS",
+      "count": 15
+    },
+    {
+      "term": "RESECTOSCOPE SHEATH",
+      "count": 15
+    },
+    {
+      "term": "SINGLE USE MECHANICAL LITHOTRIPTOR",
+      "count": 15
+    },
+    {
+      "term": "STENT, INTRACRANIAL NEUROVASCULAR",
+      "count": 15
+    },
+    {
+      "term": "SURGICAL SEALANT",
+      "count": 15
+    },
+    {
+      "term": "SYNTHETIC ABSORBABLE MONOFILAR SUTURE",
+      "count": 15
+    },
+    {
+      "term": "SYSTEM, ENDOVASCULAR GRAFT, AORTIC ANEURYSM TR",
+      "count": 15
+    },
+    {
+      "term": "TIP COVER ACCESSORY",
+      "count": 15
+    },
+    {
+      "term": "TRANSDUCER, BLOOD-PRESSURE, EXTRAVASCULAR",
+      "count": 15
+    },
+    {
+      "term": "TRANSMITTER",
+      "count": 15
+    },
+    {
+      "term": "0.9% NORMAL SALINE FOR IRRIGATION USP IN SCREW BOTTLE TOP",
+      "count": 14
+    },
+    {
+      "term": "ATTUNE IMPLANT : KNEE TIBIAL TRAY",
+      "count": 14
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : ALIGNMENT DEVICES",
+      "count": 14
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : PATELLA HANDLE/CLAMPS",
+      "count": 14
+    },
+    {
+      "term": "BTL",
+      "count": 14
+    },
+    {
+      "term": "CARDIAC RESYNCHRONIZATION THERAPY PACEMAKER",
+      "count": 14
+    },
+    {
+      "term": "CATHETER, CANNULA AND TUBING, VASCULAR, CARDIO",
+      "count": 14
+    },
+    {
+      "term": "CATHETER, ELECTRODE RECORDING, OR PROBE, ELECT",
+      "count": 14
+    },
+    {
+      "term": "CATHETER, PERCUTANEOUS, NEUROVASCULATURE",
+      "count": 14
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 4.2X10",
+      "count": 14
+    },
+    {
+      "term": "DRUG-ELUTING PERIPHERAL TRANSLUMINAL ANGIOPLASTY CATHETER",
+      "count": 14
+    },
+    {
+      "term": "DTK FILTER, INTRAVASCULAR, CARDIOVASCULAR",
+      "count": 14
+    },
+    {
+      "term": "DYNAMIC IMPLANT SP 3.75X11.5",
+      "count": 14
+    },
+    {
+      "term": "ENDOSCOPE",
+      "count": 14
+    },
+    {
+      "term": "EVACUATED BLOOD COLLECTION TUBE",
+      "count": 14
+    },
+    {
+      "term": "FEMORAL ",
+      "count": 14
+    },
+    {
+      "term": "HD VIDEO COLONOSCOPE 3.8C 13.2T 1500L FWJ",
+      "count": 14
+    },
+    {
+      "term": "HIP INSTRUMENTS : ACETABULAR TRIALS",
+      "count": 14
+    },
+    {
+      "term": "IMPLANT",
+      "count": 14
+    },
+    {
+      "term": "IMPLANTABLE PULSE GENERATOR",
+      "count": 14
+    },
+    {
+      "term": "KNEE IMPLANT - TIBIAL INSERT",
+      "count": 14
+    },
+    {
+      "term": "Leadless pacemaker",
+      "count": 14
+    },
+    {
+      "term": "MQR STENT, COLONIC METALLIC EXPANDABLE",
+      "count": 14
+    },
+    {
+      "term": "NRY",
+      "count": 14
+    },
+    {
+      "term": "PACEMAKERS",
+      "count": 14
+    },
+    {
+      "term": "PERIPHERAL DILATATION CATHETER",
+      "count": 14
+    },
+    {
+      "term": "POLYMETHYLMETHACRYLATE BONE CEMENT",
+      "count": 14
+    },
+    {
+      "term": "SEE H.10",
+      "count": 14
+    },
+    {
+      "term": "SUBSYSTEM, WATER PURIFICATION",
+      "count": 14
+    },
+    {
+      "term": "SUTURE, ABSORBABLE, NATURAL",
+      "count": 14
+    },
+    {
+      "term": "TUBE, TRACHEAL (W/WO CONNECTOR",
+      "count": 14
+    },
+    {
+      "term": "VASCULAR STENT",
+      "count": 14
+    },
+    {
+      "term": "VDR WAVEFORM ANALYZER",
+      "count": 14
+    },
+    {
+      "term": "VENTILATORS, INTENSIVE CARE",
+      "count": 14
+    },
+    {
+      "term": "VIDEO GASTROSCOPE 2.8C 9.8T 1050L",
+      "count": 14
+    },
+    {
+      "term": "VIDEO NASOLARYNGOSCOPE (FOR VIVIDEO)",
+      "count": 14
+    },
+    {
+      "term": "ATTUNE IMPLANT : KNEE PATELLA",
+      "count": 13
+    },
+    {
+      "term": "BALLOON EXPANDABLE VASCULAR COVERED STENT",
+      "count": 13
+    },
+    {
+      "term": "BONE FIXATION PLATE",
+      "count": 13
+    },
+    {
+      "term": "CATHETER, INTRAVASCULAR, THERAPEUTIC, LONG-TERM GREATER THAN 30 DAYS",
+      "count": 13
+    },
+    {
+      "term": "CT LUCIA 602",
+      "count": 13
+    },
+    {
+      "term": "CVS HEALTH AT HOME COVID-19 TEST KIT",
+      "count": 13
+    },
+    {
+      "term": "DBS EXTENSION",
+      "count": 13
+    },
+    {
+      "term": "DENTAL DRIVER",
+      "count": 13
+    },
+    {
+      "term": "DEVICE, THERMAL ABLATION, ENDOMETRIAL",
+      "count": 13
+    },
+    {
+      "term": "DIGITAL LINEAR ULTRASOUND SCOPE",
+      "count": 13
+    },
+    {
+      "term": "DILATOR, VESSEL, FOR PERCUTANEOUS CATHETERIZATION",
+      "count": 13
+    },
+    {
+      "term": "DORSAL ROOT GANGLION STIMULATOR FOR PAIN RELIEF",
+      "count": 13
+    },
+    {
+      "term": "KNEE FEMORAL",
+      "count": 13
+    },
+    {
+      "term": "MND, LIGATOR",
+      "count": 13
+    },
+    {
+      "term": "MOTOR, DRILL, ELECTRIC",
+      "count": 13
+    },
+    {
+      "term": "OVER-THE-WIRE EMBOLECTOMY CATHETER",
+      "count": 13
+    },
+    {
+      "term": "PORT AND CATHETER ACCESSORIES",
+      "count": 13
+    },
+    {
+      "term": "PROBE, BLOOD-FLOW, EXTRAVASCULAR",
+      "count": 13
+    },
+    {
+      "term": "PROSTHESIS, INTERVERTEBRAL DISC",
+      "count": 13
+    },
+    {
+      "term": "PULMONARY VALVE PROSTHESIS PERCUTANEOUSLY DELI",
+      "count": 13
+    },
+    {
+      "term": "RECHARGEABLE BATTERY PACK",
+      "count": 13
+    },
+    {
+      "term": "REPLACEMENT, HEART-VALVE",
+      "count": 13
+    },
+    {
+      "term": "SINGLE USE REPOSITIONAL CLIP",
+      "count": 13
+    },
+    {
+      "term": "SYSTEM, TEST, HUMAN CHORIONIC GONADOTROPIN",
+      "count": 13
+    },
+    {
+      "term": "TRACHEAL INTUBATION FIBERSCOPE",
+      "count": 13
+    },
+    {
+      "term": "ULTRASONIC GASTROVIDEOSCOPE",
+      "count": 13
+    },
+    {
+      "term": "VASCULAR EMBOLIZATION DEVICE",
+      "count": 13
+    },
+    {
+      "term": "VIDEO CYSTOSCOPE 2.0C 5.5TP 400L",
+      "count": 13
+    },
+    {
+      "term": "ACCESSORIES,ARTHROSCOPIC",
+      "count": 12
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : SIZING/MEASURING INSTRUMENTS",
+      "count": 12
+    },
+    {
+      "term": "BED, FLOTATION THERAPY, POWERED",
+      "count": 12
+    },
+    {
+      "term": "CENTRAL MONITOR SYSTEM",
+      "count": 12
+    },
+    {
+      "term": "DIALYZER, CAPILLARY, HOLLOW FIBER",
+      "count": 12
+    },
+    {
+      "term": "DRESSING, WOUND, DRUG",
+      "count": 12
+    },
+    {
+      "term": "DRILL, BONE, POWERED",
+      "count": 12
+    },
+    {
+      "term": "ELECTRODE",
+      "count": 12
+    },
+    {
+      "term": "ENZYME IMMUNOASSAY, TACROLIMUS",
+      "count": 12
+    },
+    {
+      "term": "FEMORAL STEM",
+      "count": 12
+    },
+    {
+      "term": "GLUCOMETER",
+      "count": 12
+    },
+    {
+      "term": "HIGH PERMEABILITY HEMODIALYSIS SYSTEM",
+      "count": 12
+    },
+    {
+      "term": "IMPLANTABLE SUBCUTANEOUS CARDIAC DEVICE",
+      "count": 12
+    },
+    {
+      "term": "INSTRUMENT",
+      "count": 12
+    },
+    {
+      "term": "INSTRUMENTATION FOR CLINICAL MULTIPLEX TEST SYSTEMS",
+      "count": 12
+    },
+    {
+      "term": "KNEE INSTRUMENT",
+      "count": 12
+    },
+    {
+      "term": "LIGHT, SURGICAL, ACCESSORIES",
+      "count": 12
+    },
+    {
+      "term": "PACK, HOT OR COLD, DISPOSABLE",
+      "count": 12
+    },
+    {
+      "term": "PLATE, CRANIOPLASTY, PREFORMED, ALTERABLE",
+      "count": 12
+    },
+    {
+      "term": "PROSTHESIS, ESOPHAGEAL",
+      "count": 12
+    },
+    {
+      "term": "REVERSED SHOULDER PROTHESIS",
+      "count": 12
+    },
+    {
+      "term": "SAFETY NEEDLE",
+      "count": 12
+    },
+    {
+      "term": "SCS PERCUTANEOUS LEAD",
+      "count": 12
+    },
+    {
+      "term": "SHOULDER INSTRUMENT - IMPACTOR TIP",
+      "count": 12
+    },
+    {
+      "term": "SIGMA REVISION IMPLANT : KNEE FEMORAL ACCESSORY",
+      "count": 12
+    },
+    {
+      "term": "SNARE, FLEXIBLE",
+      "count": 12
+    },
+    {
+      "term": "SURGICAL POWER TOOL",
+      "count": 12
+    },
+    {
+      "term": "TABLE, OPERATING-ROOM, AC-POWERED",
+      "count": 12
+    },
+    {
+      "term": "TAMPON, MENSTRUAL, UNSCENTED",
+      "count": 12
+    },
+    {
+      "term": "TEST, HEPATITIS B (B CORE, BE ANTIGEN, BE ANTIBODY, B CORE IGM)",
+      "count": 12
+    },
+    {
+      "term": "TUBE, BRONCHIAL (W/WO CONNECTOR)",
+      "count": 12
+    },
+    {
+      "term": "ANESTHESIA CONDUCTION KIT",
+      "count": 11
+    },
+    {
+      "term": "ARCTIC GEL PADS",
+      "count": 11
+    },
+    {
+      "term": "ATTUNE INSTRUMENTS : HANDLES",
+      "count": 11
+    },
+    {
+      "term": "BIOMIMICS 3D VASCULAR STENT SYSTEM",
+      "count": 11
+    },
+    {
+      "term": "BLOOD COLLECTION NEEDLE",
+      "count": 11
+    },
+    {
+      "term": "BLOOD GAS OXYGENATOR",
+      "count": 11
+    },
+    {
+      "term": "BLOOD GLUCOSE METER",
+      "count": 11
+    },
+    {
+      "term": "CADIERE FORCEPS",
+      "count": 11
+    },
+    {
+      "term": "CANNULA, MANIPULATOR/INJECTOR, UTERINE",
+      "count": 11
+    },
+    {
+      "term": "CATHETER, FLOW DIRECTED",
+      "count": 11
+    },
+    {
+      "term": "CATHETERS, TRANSLUMINAL CORONARY ANGIOPLASTY,",
+      "count": 11
+    },
+    {
+      "term": "CONTAINER, I.V.",
+      "count": 11
+    },
+    {
+      "term": "DQX WIRE, GUIDE, CATHETER",
+      "count": 11
+    },
+    {
+      "term": "FIBEROPTICINTUBATIONSCOPE 2.4TP RO PLS",
+      "count": 11
+    },
+    {
+      "term": "FOLDERS AND INJECTORS, INTRAOCULAR LENS (IOL)",
+      "count": 11
+    },
+    {
+      "term": "INTEGRATED CONTINUOUS GLUCOSE MONITORING SYSTEM, FACTORY CALIBRATED, NOT FOR USE",
+      "count": 11
+    },
+    {
+      "term": "INTRASACCULAR FLOW DISRUPTION DEVICE",
+      "count": 11
+    },
+    {
+      "term": "KNEE INSTRUMENT : IMPACTORS",
+      "count": 11
+    },
+    {
+      "term": "LITHOTRIPTOR, BILIARY MECHANICAL",
+      "count": 11
+    },
+    {
+      "term": "MAIN BODY",
+      "count": 11
+    },
+    {
+      "term": "OXIMETER, TISSUE SATURATION",
+      "count": 11
+    },
+    {
+      "term": "PROSTHESIS, ELBOW, CONSTRAINED, CEMENTED",
+      "count": 11
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, METAL/CERAMIC/POLYMER",
+      "count": 11
+    },
+    {
+      "term": "PROSTHESIS, KNEE, PATELLOFEMOROTIBIAL, SEMI-CONSTRAINED, CEMENTED",
+      "count": 11
+    },
+    {
+      "term": "PROSTHESIS, MITRAL VALVE, PERCUTANEOUSLY DELIVERED",
+      "count": 11
+    },
+    {
+      "term": "PROSTHESIS, SHOULDER",
+      "count": 11
+    },
+    {
+      "term": "ROD, FIXATION, INTRMEDULLARY AND ACCESSORIES",
+      "count": 11
+    },
+    {
+      "term": "SLEEP EQUIPMENT MAINTENANCE SYSTEM",
+      "count": 11
+    },
+    {
+      "term": "SMALL  INTESTINAL VIDEOSCOPE",
+      "count": 11
+    },
+    {
+      "term": "STENT, SUPERFICIAL FEMORAL ARTERY, DRUG-ELUTING",
+      "count": 11
+    },
+    {
+      "term": "STYLET, CATHETER",
+      "count": 11
+    },
+    {
+      "term": "SYSTEM, IMAGING, PULSED DOPPLER, ULTRASONIC",
+      "count": 11
+    },
+    {
+      "term": "SYSTEM, THERMAL REGULATING",
+      "count": 11
+    },
+    {
+      "term": "Stimulator, electrical, implanted, for essential tremor",
+      "count": 11
+    },
+    {
+      "term": "TEMPORARY CORONARY SAPHENOUS VEIN BYPASS GRAFT FOR EMBOLIC PROTECTION",
+      "count": 11
+    },
+    {
+      "term": "VIDEO GASTROSCOPE",
+      "count": 11
+    },
+    {
+      "term": "",
+      "count": 10
+    },
+    {
+      "term": "AGENT, INJECTABLE, EMBOLIC",
+      "count": 10
+    },
+    {
+      "term": "CATHETER, HEMODIALYSIS, NON-IMPLANTED",
+      "count": 10
+    },
+    {
+      "term": "DISINFECTANT, MEDICAL DEVICES",
+      "count": 10
+    },
+    {
+      "term": "DYNAMIC IMPLANT SP 4.2X10",
+      "count": 10
+    },
+    {
+      "term": "ELECTROPHYSIOLOGY CARDIAC MAPPING SYSTEM",
+      "count": 10
+    },
+    {
+      "term": "ELECTROSURGICAL CUTTING & COAGULATION & ACCESSORIES",
+      "count": 10
+    },
+    {
+      "term": "FEMORAL SLEEVE",
+      "count": 10
+    },
+    {
+      "term": "FILTER, INFUSION LINE",
+      "count": 10
+    },
+    {
+      "term": "FOLDERS AND INJECTORS , INRAOCULAR LENS (IOL)",
+      "count": 10
+    },
+    {
+      "term": "HAMILTON-C2",
+      "count": 10
+    },
+    {
+      "term": "HCG, KRD",
+      "count": 10
+    },
+    {
+      "term": "HEARING AID, AIR-CONDUCTION WITH WIRELESS TECHNOLOGY, PRESCRIPTION",
+      "count": 10
+    },
+    {
+      "term": "HEATING PAD",
+      "count": 10
+    },
+    {
+      "term": "HOT OR COLD DISPOSABLE PACK.",
+      "count": 10
+    },
+    {
+      "term": "INJECTOR, VERTEBROPLASTY (DOES NOT CONTAIN CEMENT)",
+      "count": 10
+    },
+    {
+      "term": "INTELLIVUE X3",
+      "count": 10
+    },
+    {
+      "term": "INTEROPERABLE AUTOMATED GLYCEMIC CONTROLLER",
+      "count": 10
+    },
+    {
+      "term": "KNEE INSTRUMENT : REAMERS",
+      "count": 10
+    },
+    {
+      "term": "KNQ, DILATOR, ESOPHAGEAL",
+      "count": 10
+    },
+    {
+      "term": "LARYNGOSCOPE, ENDOSCOPE",
+      "count": 10
+    },
+    {
+      "term": "NC TREK NEO CORONARY DILATATION CATHETER",
+      "count": 10
+    },
+    {
+      "term": "ORTHOSIS, SPONDYLOSTHESIS SPINAL FIXATION",
+      "count": 10
+    },
+    {
+      "term": "PIN, FIXATION, THREADED",
+      "count": 10
+    },
+    {
+      "term": "SOLANA SARS-COV-2 ASSAY (LYO MMX)",
+      "count": 10
+    },
+    {
+      "term": "STAPLER 60 RELOAD BLUE",
+      "count": 10
+    },
+    {
+      "term": "STENT, URETERAL",
+      "count": 10
+    },
+    {
+      "term": "STRATAFIX SPIRAL PDS PLUS BIDIRECTIONAL KNOTLESS TISSUE CONTROL DEVICE",
+      "count": 10
+    },
+    {
+      "term": "SUMMIT HIP STEM : HIP FEMORAL STEM",
+      "count": 10
+    },
+    {
+      "term": "SYNCHROSEAL",
+      "count": 10
+    },
+    {
+      "term": "TEMPERATURE CABLE",
+      "count": 10
+    },
+    {
+      "term": "TEMPERATURE SENSING FOLEY CATHETER",
+      "count": 10
+    },
+    {
+      "term": "TUBING, PUMP, CARDIOPULMONARY BYPASS",
+      "count": 10
+    },
+    {
+      "term": "WALGREENS AT HOME COVID-19 TEST KIT",
+      "count": 10
+    },
+    {
+      "term": "WHEELCHAIR, POWERED",
+      "count": 10
+    },
+    {
+      "term": "ADJUSTABLE GASTRIC BAND",
+      "count": 9
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 3.75X10",
+      "count": 9
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 3.75X8",
+      "count": 9
+    },
+    {
+      "term": "AUTOMATED SLIDE STAINER",
+      "count": 9
+    },
+    {
+      "term": "BIFURCATED STENT GRAFT",
+      "count": 9
+    },
+    {
+      "term": "COVID 19 TEST KIT",
+      "count": 9
+    },
+    {
+      "term": "DBS LEAD",
+      "count": 9
+    },
+    {
+      "term": "DEEP BRAIN STIMULATOR FOR OBSESSIVE COMPULSIVE DISORDER (OCD)",
+      "count": 9
+    },
+    {
+      "term": "DEVICE, NEUROVASCULAR EMBOLIZATION",
+      "count": 9
+    },
+    {
+      "term": "DISPOSABLE DISTAL ATTACHMENT",
+      "count": 9
+    },
+    {
+      "term": "DRILL GUIDES",
+      "count": 9
+    },
+    {
+      "term": "EXCIMER LASER SYSTEM",
+      "count": 9
+    },
+    {
+      "term": "FDI, SNARE, FLEXIBLE",
+      "count": 9
+    },
+    {
+      "term": "FEMORAL TRIAL",
+      "count": 9
+    },
+    {
+      "term": "FWM - PROSTHESIS, BREAST, INFLATABLE, INTERNAL, SALINE",
+      "count": 9
+    },
+    {
+      "term": "GAUGE, DEPTH",
+      "count": 9
+    },
+    {
+      "term": "GENERAL SURGERY TRAY",
+      "count": 9
+    },
+    {
+      "term": "HIPS, INSTRUMENTS",
+      "count": 9
+    },
+    {
+      "term": "IMPACTOR",
+      "count": 9
+    },
+    {
+      "term": "KRA CATHETER, CONTINUOUS FLUSH",
+      "count": 9
+    },
+    {
+      "term": "LENSES, SOFT CONTACT, DAILY WEAR",
+      "count": 9
+    },
+    {
+      "term": "MIDLINE CATHETER",
+      "count": 9
+    },
+    {
+      "term": "NEUROPACE RNS SYSTEM",
+      "count": 9
+    },
+    {
+      "term": "NEUROSTIMULATOR",
+      "count": 9
+    },
+    {
+      "term": "NITRIC OXIDE ADMINISTRATION APPARATUS",
+      "count": 9
+    },
+    {
+      "term": "PERIPHERAL STENT DELIVERY SYSTEM",
+      "count": 9
+    },
+    {
+      "term": "PLATE, BONE",
+      "count": 9
+    },
+    {
+      "term": "PLATE, FIXATION ,BONE",
+      "count": 9
+    },
+    {
+      "term": "PRIMATRIX",
+      "count": 9
+    },
+    {
+      "term": "PROSTHESIS, KNEE, FEMOROTIBIAL, CONSTRAINED, CEMENTED, METAL/POLYMER",
+      "count": 9
+    },
+    {
+      "term": "SCS ANCHOR",
+      "count": 9
+    },
+    {
+      "term": "SCS PADDLE LEAD",
+      "count": 9
+    },
+    {
+      "term": "STAPLE, FIXATION, BONE",
+      "count": 9
+    },
+    {
+      "term": "STENT, CAROTID",
+      "count": 9
+    },
+    {
+      "term": "STENT, ILIAC",
+      "count": 9
+    },
+    {
+      "term": "STRABISMUS DETECTION DEVICE",
+      "count": 9
+    },
+    {
+      "term": "SYRINGE, PISOTON",
+      "count": 9
+    },
+    {
+      "term": "TELESCOPE",
+      "count": 9
+    },
+    {
+      "term": "THERMOMETER, ELECTRONIC, CLINICAL",
+      "count": 9
+    },
+    {
+      "term": "V-GO",
+      "count": 9
+    },
+    {
+      "term": "VAPORIZER",
+      "count": 9
+    },
+    {
+      "term": "VENTILATOR, CONTINUOUS, MINIMAL VENTILATORY SUPPORT",
+      "count": 9
+    },
+    {
+      "term": "VENTRICULAR ASSIST DEVICE",
+      "count": 9
+    },
+    {
+      "term": "VIDEO GASTROSCOPE - I10 SLIM",
+      "count": 9
+    },
+    {
+      "term": "ACCESSORIES, SOFT LENS PRODUCTS",
+      "count": 8
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 3.75X13",
+      "count": 8
+    },
+    {
+      "term": "AGENT, OCCLUDING, VASCULAR, PERMANENT",
+      "count": 8
+    },
+    {
+      "term": "BED, AIR FLUIDIZED",
+      "count": 8
+    },
+    {
+      "term": "BIOLOGICAL INDICATOR",
+      "count": 8
+    },
+    {
+      "term": "BIPOLAR EPICARDIAL LEAD",
+      "count": 8
+    },
+    {
+      "term": "BRONCHOFIBERSCOPE",
+      "count": 8
+    },
+    {
+      "term": "BRONCHOSCOPE (FLEXIBLE OR RIGID)",
+      "count": 8
+    },
+    {
+      "term": "BTT",
+      "count": 8
+    },
+    {
+      "term": "BZE",
+      "count": 8
+    },
+    {
+      "term": "CATHETER, HEMODIALYSIS, IMPLA",
+      "count": 8
+    },
+    {
+      "term": "CATHETER, HEMODIALYSIS, TRIPLE LUMEN, NON-IMPL",
+      "count": 8
+    },
+    {
+      "term": "CATHETER, RETENTION TYPE, BALLOON",
+      "count": 8
+    },
+    {
+      "term": "CATHETER,INTRAVASCULAR,THERAP",
+      "count": 8
+    },
+    {
+      "term": "COCHLEAR BAHA ATTRACT SYSTEM",
+      "count": 8
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 4.2X11.5",
+      "count": 8
+    },
+    {
+      "term": "DEC HD VIDEO DUODENOSCOPE",
+      "count": 8
+    },
+    {
+      "term": "DEVICE, IRRIGATION, OCULAR SURGERY",
+      "count": 8
+    },
+    {
+      "term": "ENZYME IMMUNOASSAY, TRACROLIMUS",
+      "count": 8
+    },
+    {
+      "term": "EXTREMITY INSTRUMENTS : PIN GUIDES",
+      "count": 8
+    },
+    {
+      "term": "FGE CATHETER, BILIARY, DIAGNOSTIC - BILIARY STENT - METAL",
+      "count": 8
+    },
+    {
+      "term": "FORESIGHT SENSOR",
+      "count": 8
+    },
+    {
+      "term": "GASTRIC STIMULATOR",
+      "count": 8
+    },
+    {
+      "term": "GENESIS TAPERED IMPLANT BIOSPARK 5.5X10",
+      "count": 8
+    },
+    {
+      "term": "HAMILTON-G5 VENTILATOR",
+      "count": 8
+    },
+    {
+      "term": "HIP INSTRUMENTS : BROACHES",
+      "count": 8
+    },
+    {
+      "term": "HIP INSTRUMENTS : CUTTING INSTRUMENTS",
+      "count": 8
+    },
+    {
+      "term": "HYSTEROSCOPE, GYNECOLOGY",
+      "count": 8
+    },
+    {
+      "term": "INSTRUMENTS, DENTAL HAND",
+      "count": 8
+    },
+    {
+      "term": "INTERVERTEBRAL FUSION DEVICE WITH INTEGRATED FIXATION, CERVICAL",
+      "count": 8
+    },
+    {
+      "term": "INTRALUMINAL DEVICES",
+      "count": 8
+    },
+    {
+      "term": "KIT, SURGICAL INSTRUMENT, DISPOSABLE",
+      "count": 8
+    },
+    {
+      "term": "KNEE PROSTHESIS",
+      "count": 8
+    },
+    {
+      "term": "LIGHT ADJUSTABLE LENS (LAL)",
+      "count": 8
+    },
+    {
+      "term": "LOCATOR, ROOT APEX",
+      "count": 8
+    },
+    {
+      "term": "NEEDLE, ASPIRATION AND INJECTION, DISPOSABLE",
+      "count": 8
+    },
+    {
+      "term": "OD, FIXATION, INTRAMEDULLARY AND ACCESSORIES",
+      "count": 8
+    },
+    {
+      "term": "PATIENT-FITTED TMJ RECONSTRUCTION PROSTHESIS",
+      "count": 8
+    },
+    {
+      "term": "PERMANENT DEFIBRILLATION ELECTRODE",
+      "count": 8
+    },
+    {
+      "term": "PHAKIC TORIC  INTRAOCULAR LENS",
+      "count": 8
+    },
+    {
+      "term": "PKL, LIGATOR, HEMORRHOIDAL",
+      "count": 8
+    },
+    {
+      "term": "PRIMACONNEX TC TAPERED SD 3.5X10",
+      "count": 8
+    },
+    {
+      "term": "PUMP, INFUSION, ENTERAL",
+      "count": 8
+    },
+    {
+      "term": "RADIOIMMUNOASSAY, THYROID-STIMULATING HORMONE",
+      "count": 8
+    },
+    {
+      "term": "REAMERS",
+      "count": 8
+    },
+    {
+      "term": "RESPIRATORY HUMIDIFIER",
+      "count": 8
+    },
+    {
+      "term": "RESTRAINT, PROTECTIVE",
+      "count": 8
+    },
+    {
+      "term": "RETRACTOR",
+      "count": 8
+    },
+    {
+      "term": "SCREW, FIXATION",
+      "count": 8
+    },
+    {
+      "term": "SEE H10",
+      "count": 8
+    },
+    {
+      "term": "SHOULDER INSTRUMENT - DRIVER",
+      "count": 8
+    },
+    {
+      "term": "SHOULDR PROSTH, REVERSE CONFIG",
+      "count": 8
+    },
+    {
+      "term": "SKULL CLAMPS AND HEADREST SYSTEMS",
+      "count": 8
+    },
+    {
+      "term": "SPINAL CORD STIMULATOR",
+      "count": 8
+    },
+    {
+      "term": "TUBES, VIALS, SYSTEMS, SERUM SEPARATORS, BLOOD COLLECTION",
+      "count": 8
+    },
+    {
+      "term": "UNIT, OPERATIVE DENTAL",
+      "count": 8
+    },
+    {
+      "term": "URETEROSCOPE AND ACCESSORIES, FLEXIBLE/RIGID",
+      "count": 8
+    },
+    {
+      "term": "WAX, BONE",
+      "count": 8
+    },
+    {
+      "term": "WIRE, GUIDE",
+      "count": 8
+    },
+    {
+      "term": "ADVANCED IMPLANT NP 3.25X16",
+      "count": 7
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 4.2X11.5",
+      "count": 7
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 5X8",
+      "count": 7
+    },
+    {
+      "term": "ADVANCED PLUS IMPLANT SP 3.75X11.5",
+      "count": 7
+    },
+    {
+      "term": "ARCTIC SUN TEMPERATURE CABLE",
+      "count": 7
+    },
+    {
+      "term": "BMET GENERAL KNEE INSTRUMENTS",
+      "count": 7
+    },
+    {
+      "term": "BOTTLE, COLLECTION, VACUUM",
+      "count": 7
+    },
+    {
+      "term": "BURR,SURGICAL",
+      "count": 7
+    },
+    {
+      "term": "CARDIAC RESYNCHRONIZATION THERAPY DEFIBRILLATORS (CRT-D)",
+      "count": 7
+    },
+    {
+      "term": "CATHETER AND TIP SUCTION",
+      "count": 7
+    },
+    {
+      "term": "CATHETER SUBCLAVIAN",
+      "count": 7
+    },
+    {
+      "term": "CATHETER, CANNULA AND TUBING, VASCULAR, CARDIOPULMONARY BYPASS",
+      "count": 7
+    },
+    {
+      "term": "CELLEX PHOTOPHERESIS SYSTEM",
+      "count": 7
+    },
+    {
+      "term": "CEREBRO VASCULAR CLIPS",
+      "count": 7
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 3.25X13",
+      "count": 7
+    },
+    {
+      "term": "CONNECTOR, AIRWAY (EXTENSION)",
+      "count": 7
+    },
+    {
+      "term": "COVERED CORONARY STENT",
+      "count": 7
+    },
+    {
+      "term": "COVID-19 RT-PCR TEST",
+      "count": 7
+    },
+    {
+      "term": "DH NASOGASTRIC (NG) FEEDING TUBES (NEOMED AND NEOCONNECT)",
+      "count": 7
+    },
+    {
+      "term": "DRUG COATED BALLOON PTA CATHETER",
+      "count": 7
+    },
+    {
+      "term": "ELECTRODE, ELECTROSURGICAL, ACTIVE, UROLOGICAL",
+      "count": 7
+    },
+    {
+      "term": "ELECTRODE, PACEMAKER, TEMPORARY",
+      "count": 7
+    },
+    {
+      "term": "ENDOBRONCHIAL VALVE",
+      "count": 7
+    },
+    {
+      "term": "FIXATION PINS",
+      "count": 7
+    },
+    {
+      "term": "FOLEY TRAY",
+      "count": 7
+    },
+    {
+      "term": "GBX CATHETER, IRRIGATION",
+      "count": 7
+    },
+    {
+      "term": "HDVIDEO COLONOSCOPE 3.2C 11.6T 1700L FWJ",
+      "count": 7
+    },
+    {
+      "term": "HIP IMPLANT",
+      "count": 7
+    },
+    {
+      "term": "HIP STEM",
+      "count": 7
+    },
+    {
+      "term": "HOLDER, NEEDLE, GASTROENTEROLOGIC",
+      "count": 7
+    },
+    {
+      "term": "INTERVERTEBRAL FUSION DEVICE WITH INTEGRATED FIXATION, LUMBAR",
+      "count": 7
+    },
+    {
+      "term": "KNEE FEMORAL ACCESSORY",
+      "count": 7
+    },
+    {
+      "term": "LINEAR ULTRASOUND VIDEOBRONCHOSCOPE 2.0C",
+      "count": 7
+    },
+    {
+      "term": "MBT TIBIAL TRAY : KNEE TIBIAL TRAY",
+      "count": 7
+    },
+    {
+      "term": "NUCLEUS HYBRID COCHLEAR IMPLANT SYSTEM",
+      "count": 7
+    },
+    {
+      "term": "OCCLUDER, PATENT DUCTUS, ARTERIOSUS",
+      "count": 7
+    },
+    {
+      "term": "OCY ENDOSCOPIC GUIDEWIRE, GASTROENTEROLOGY-UROLOGY",
+      "count": 7
+    },
+    {
+      "term": "OPHTHALMIC LASER",
+      "count": 7
+    },
+    {
+      "term": "OQY INTRAUTERINE BALLOON",
+      "count": 7
+    },
+    {
+      "term": "PASSER",
+      "count": 7
+    },
+    {
+      "term": "PEDIATRIC HEMODIALYSIS SYSTEM",
+      "count": 7
+    },
+    {
+      "term": "PERIPHERAL MECHANICAL THROMBECTOMY WITH ASPIRATION",
+      "count": 7
+    },
+    {
+      "term": "PIN, FIXATION, SMOOTH",
+      "count": 7
+    },
+    {
+      "term": "PRIMACONNEX TAPERED RD 4.1X10",
+      "count": 7
+    },
+    {
+      "term": "PROSTHESIS, HIP, SEMI-CONSTRAINED, METAL/METAL, RESURFACING",
+      "count": 7
+    },
+    {
+      "term": "PROSTHESIS, KNEE, FEMOROTIBIAL, NON-CONSTRAINED, CEMENTED, METAL/POLYMER",
+      "count": 7
+    },
+    {
+      "term": "PROSTHESIS, TRACHEAL, EXPANDABLE",
+      "count": 7
+    },
+    {
+      "term": "PROTHROMBIN TIME MONITOR",
+      "count": 7
+    },
+    {
+      "term": "REGULATOR, PRESSURE, GAS CYLINDER",
+      "count": 7
+    },
+    {
+      "term": "RHINO-LARYNGO VIDEOSCOPE",
+      "count": 7
+    },
+    {
+      "term": "RHINO-LARYNGOFIBERSCOPE",
+      "count": 7
+    },
+    {
+      "term": "Recorder, event, implantable cardiac, (with arrhythmia detection)",
+      "count": 7
+    },
+    {
+      "term": "SEAL",
+      "count": 7
+    },
+    {
+      "term": "SHOULDER IMPLANT - HUMERAL CUP",
+      "count": 7
+    },
+    {
+      "term": "SHOULDER IMPLANT - HUMERAL HEAD",
+      "count": 7
+    },
+    {
+      "term": "SIZING/MEASURING INSTRUMENTS",
+      "count": 7
+    },
+    {
+      "term": "SPECTRA OPTIA EXCHANGE SET",
+      "count": 7
+    },
+    {
+      "term": "SUTURE, NONABSORBABLE, STEEL",
+      "count": 7
+    },
+    {
+      "term": "SUTURES - NON-ABSORBABLE",
+      "count": 7
+    },
+    {
+      "term": "SYRINGE, BALLOON INFLATION",
+      "count": 7
+    },
+    {
+      "term": "SYSTEM, ABLATION, MICROWAVE AND ACCESSORIES",
+      "count": 7
+    },
+    {
+      "term": "SYSTEM, NUCLEAR MAGNETIC RESONANCE IMAGING",
+      "count": 7
+    },
+    {
+      "term": "TRIMALRS PLATELET PLASMA RBC AUTOPAS SET",
+      "count": 7
+    },
+    {
+      "term": "TUBE, BRONCHIAL (W/WO CONNECT",
+      "count": 7
+    },
+    {
+      "term": "ULTRASONIC PROBE",
+      "count": 7
+    },
+    {
+      "term": "VASCULAR STENT GRAFT",
+      "count": 7
+    },
+    {
+      "term": "VIDEO GASTROSCOPE (US ONLY)",
+      "count": 7
+    },
+    {
+      "term": "VIDEO NASO PHARYNGO LARYNGOSTROBOSCOPE",
+      "count": 7
+    },
+    {
+      "term": "VITAL SIGNS MONITOR",
+      "count": 7
+    },
+    {
+      "term": "XHIBIT CENTRAL",
+      "count": 7
+    },
+    {
+      "term": "implanted subcortical electrical Stimulator (motor disorders)",
+      "count": 7
+    },
+    {
+      "term": "ADVANCED IMPLANT SP 4.2X10",
+      "count": 6
+    },
+    {
+      "term": "AIRWAY, NASAL",
+      "count": 6
+    },
+    {
+      "term": "APPLIANCE, FIXATION, NAIL",
+      "count": 6
+    },
+    {
+      "term": "ARCTICGEL PADS",
+      "count": 6
+    },
+    {
+      "term": "ASCENCIODX MOLECULAR DETECTOR",
+      "count": 6
+    },
+    {
+      "term": "AUTO-READER INCUBATOR",
+      "count": 6
+    },
+    {
+      "term": "CARDIOVASCULAR PROCEDURE KIT - CONVENIENCE TUBING PACK",
+      "count": 6
+    },
+    {
+      "term": "CATHETER  INTRAVASCULAR THERAP",
+      "count": 6
+    },
+    {
+      "term": "CATHETER TIP PRESSURE TRANSDUCER",
+      "count": 6
+    },
+    {
+      "term": "CATHETER, ANGIOPLASTY, PERIPHERAL, TRANSLUMINA",
+      "count": 6
+    },
+    {
+      "term": "CATHETER, HEMODIALYSIS, TRIPLE LUMEN, NON-IMPLANTED",
+      "count": 6
+    },
+    {
+      "term": "CATHETER, INTRAVASCULAR OCCLUDING, TEMPORARY",
+      "count": 6
+    },
+    {
+      "term": "CATHETER, IRRIGATION",
+      "count": 6
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 3.75X11.5",
+      "count": 6
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 4.2X8",
+      "count": 6
+    },
+    {
+      "term": "CONICAL ACTIVE IMPLANT 5X8",
+      "count": 6
+    },
+    {
+      "term": "CORONARY ATHERECTOMY DEVICE (GUIDE WIRE)",
+      "count": 6
+    },
+    {
+      "term": "CT LUCIA  602",
+      "count": 6
+    },
+    {
+      "term": "CTNI CARTRIDGE",
+      "count": 6
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+ "GET https://www.pbgc.gov/about/reports/pension-insurance-data": "index_page.html",
+ "GET https://www.pbgc.gov/sites/default/files/documents/2024-pension-data-tables.xlsx": "pbgc2024_trimmed.xlsx",
+ "GET https://www.pbgc.gov/sites/default/files/documents/2023-pension-data-tables.xlsx": "pbgc2023_trimmed.xlsx",
+ "GET https://www.pbgc.gov/sites/default/files/2018_pension_data_tables.xlsx": "pbgc2018_trimmed.xlsx",
+ "_note": "index_page.html recorded live 2026-10-30; the three workbooks are trimmed real copies (only the sheets the tests read; see the test module docstring)."
+}

@@ -1,0 +1,99 @@
+{
+  "id": "epa",
+  "title": "EPA Envirofacts and ECHO (TRI, GHGRP, SDWIS, Superfund, compliance and enforcement)",
+  "agency": "U.S. Environmental Protection Agency",
+  "depth": "standard",
+  "domains": [
+    "environment",
+    "pollution",
+    "regulation",
+    "enforcement"
+  ],
+  "keywords": [
+    "epa",
+    "toxics release inventory",
+    "tri",
+    "toxic release",
+    "chemical release",
+    "greenhouse gas",
+    "ghgrp",
+    "emissions",
+    "co2e",
+    "large emitters",
+    "drinking water",
+    "water system",
+    "sdwis",
+    "drinking water violation",
+    "superfund",
+    "cercla",
+    "npl",
+    "hazardous waste",
+    "rcra",
+    "echo",
+    "compliance",
+    "violation",
+    "enforcement case",
+    "penalty",
+    "clean air act",
+    "clean water act",
+    "npdes",
+    "uv index",
+    "envirofacts"
+  ],
+  "questions": [
+    "largest greenhouse gas emitters in a state",
+    "TRI facilities in a county",
+    "Superfund sites on the National Priorities List in a state",
+    "drinking water violations in a state",
+    "EPA enforcement cases and penalties under the Clean Air Act in a state",
+    "major air facilities with violations"
+  ],
+  "homepage": "https://www.epa.gov/enviro",
+  "terms_url": "https://www.epa.gov/web-policies-and-procedures/epa-disclaimers",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.epa.gov/dmapservice",
+      "probe": "https://data.epa.gov/dmapservice/sems.envirofacts_site/fk_ref_state_code/equals/VT/1:1/JSON",
+      "hosts": [
+        "data.epa.gov",
+        "echodata.epa.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser: Envirofacts links return CSV pages of 5,000 rows; ECHO links take two steps (the first returns a QueryID, then open the get_qid link with it). Save each file under the name shown and upload. Without the links: Envirofacts at https://enviro.epa.gov (search, then download CSV); ECHO at https://echo.epa.gov/facilities/facility-search and https://echo.epa.gov/facilities/enforcement-case-search (Download Data); TRI and GHGRP full-year files at https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-data-files-calendar-years-1987-present and https://www.epa.gov/ghgreporting/data-sets."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "ECHO refreshes weekly and SDWIS quarterly; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "EPA data are U.S. government works in the public domain (17 U.S.C. 105; https://www.epa.gov/web-policies-and-procedures/epa-disclaimers); cite EPA and do not imply endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Environmental Protection Agency, {dataset}, Envirofacts (data.epa.gov) / ECHO (echo.epa.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which reporting year? TRI and GHGRP publish one year at a time with a lag of about 10 months; say the year used.",
+    "Facilities or emissions? GHGRP rows are facility x gas x year; sum CO2e over gases for facility totals."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

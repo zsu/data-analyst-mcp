@@ -1,0 +1,181 @@
+{
+ "base_url": "https://api.nal.usda.gov/fdc/v1",
+ "retry_html_400": 3,
+ "endpoints": {
+  "search": {
+   "path": "/foods/search",
+   "method": "GET",
+   "description": "Foods matching a query (200 a page), with their nutrients.",
+   "params": {
+    "query": {
+     "required": true,
+     "desc": "search words, e.g. cheddar cheese; supports +word, -word, \"phrases\" and field queries such as foodCategory:\"Cheese\" or +foodCategory:\"Cheese\" +ingredients:\"annatto\" (quote a value of several words; spell category names exactly as FDC does)"
+    },
+    "dataType": {
+     "desc": "Foundation, SR Legacy, Survey (FNDDS), Branded, Experimental (list or comma text)"
+    },
+    "brandOwner": {
+     "desc": "Branded foods only: brand owner name"
+    },
+    "sortBy": {
+     "desc": "dataType.keyword, lowercaseDescription.keyword, fdcId, publishedDate"
+    },
+    "sortOrder": {
+     "desc": "asc or desc"
+    }
+   },
+   "records": "foods",
+   "total": "totalHits",
+   "paging": {
+    "type": "page",
+    "page_param": "pageNumber",
+    "size_param": "pageSize",
+    "size": 200,
+    "start": 1
+   },
+   "max_rows": 10000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "food": {
+   "path": "/food/{fdcId}",
+   "method": "GET",
+   "description": "One food by FDC id, with every nutrient (format full) or the main ones (abridged).",
+   "params": {
+    "fdcId": {
+     "in": "path",
+     "required": true,
+     "desc": "FoodData Central id, e.g. 328637"
+    },
+    "format": {
+     "desc": "full (default) or abridged",
+     "enum": [
+      "full",
+      "abridged"
+     ]
+    },
+    "nutrients": {
+     "desc": "nutrient NUMBERS to keep, e.g. 203,204,208 (protein, fat, energy)"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 1,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "foods": {
+   "path": "/foods",
+   "method": "GET",
+   "description": "Up to 20 foods by FDC id in one call (the documented maximum; the API silently drops ids past 50).",
+   "params": {
+    "fdcIds": {
+     "required": true,
+     "desc": "comma-separated FDC ids, or a list; the pack refuses more than 20 (the API silently drops extra ids)"
+    },
+    "format": {
+     "desc": "abridged (default here) or full",
+     "enum": [
+      "full",
+      "abridged"
+     ]
+    },
+    "nutrients": {
+     "desc": "nutrient numbers to keep, e.g. 203,204,208"
+    }
+   },
+   "defaults": {
+    "format": "abridged"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "list": {
+   "path": "/foods/list",
+   "method": "GET",
+   "description": "Every food of a data type, paged (abridged nutrients).",
+   "params": {
+    "dataType": {
+     "desc": "Foundation, SR Legacy, Survey (FNDDS), Branded"
+    },
+    "sortBy": {
+     "desc": "dataType.keyword, lowercaseDescription.keyword, fdcId, publishedDate"
+    },
+    "sortOrder": {
+     "desc": "asc or desc"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "page",
+    "page_param": "pageNumber",
+    "size_param": "pageSize",
+    "size": 200,
+    "start": 1
+   },
+   "max_rows": 20000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "foundation": {
+   "id": "Foundation",
+   "name": "Foundation Foods",
+   "description": "Minimally processed foods with analytical nutrient values and metadata (dataType Foundation)",
+   "endpoint": "search"
+  },
+  "sr_legacy": {
+   "id": "SR Legacy",
+   "name": "SR Legacy",
+   "description": "USDA National Nutrient Database for Standard Reference, final 2018 release (dataType SR Legacy)",
+   "endpoint": "search"
+  },
+  "survey_fndds": {
+   "id": "Survey (FNDDS)",
+   "name": "Food and Nutrient Database for Dietary Studies",
+   "description": "Foods as eaten in What We Eat in America / NHANES (dataType Survey (FNDDS))",
+   "endpoint": "search"
+  },
+  "branded": {
+   "id": "Branded",
+   "name": "Global Branded Food Products Database",
+   "description": "Label data for branded products from manufacturers (dataType Branded; the largest set)",
+   "endpoint": "search"
+  }
+ },
+ "nutrient_numbers": {
+  "208": "Energy (kcal)",
+  "203": "Protein (g)",
+  "204": "Total lipid (fat) (g)",
+  "205": "Carbohydrate, by difference (g)",
+  "269": "Total sugars (g)",
+  "291": "Fiber, total dietary (g)",
+  "307": "Sodium, Na (mg)",
+  "301": "Calcium, Ca (mg)",
+  "303": "Iron, Fe (mg)",
+  "306": "Potassium, K (mg)",
+  "601": "Cholesterol (mg)",
+  "606": "Fatty acids, total saturated (g)",
+  "605": "Fatty acids, total trans (g)",
+  "401": "Vitamin C (mg)",
+  "320": "Vitamin A, RAE (ug)",
+  "328": "Vitamin D (D2 + D3) (ug)",
+  "255": "Water (g)"
+ }
+}

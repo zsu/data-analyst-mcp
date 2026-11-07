@@ -1,0 +1,63 @@
+{
+ "data": {
+  "year": "2018",
+  "metroareas": [
+   {
+    "code": "METRO12700M12700",
+    "name": "Barnstable Town, MA MSA",
+    "state_name": "Massachusetts",
+    "state_code": "MA",
+    "Efficiency": "925.0",
+    "One-Bedroom": "1048.0",
+    "Two-Bedroom": "1394.0",
+    "Three-Bedroom": "1757.0",
+    "Four-Bedroom": "1919.0",
+    "smallarea_status": 0
+   },
+   {
+    "code": "METRO38340N25003",
+    "name": "Berkshire County, MA (part) HUD Metro FMR Area",
+    "state_name": "Massachusetts",
+    "state_code": "MA",
+    "Efficiency": "836.0",
+    "One-Bedroom": "849.0",
+    "Two-Bedroom": "988.0",
+    "Three-Bedroom": "1239.0",
+    "Four-Bedroom": "1441.0",
+    "smallarea_status": 0
+   }
+  ],
+  "counties": [
+   {
+    "town_name": "Abington town",
+    "county_name": "Plymouth County",
+    "metro_name": "Brockton, MA HUD Metro FMR Area",
+    "fips_code": "2502300170",
+    "Efficiency": 1064,
+    "One-Bedroom": 1160,
+    "Two-Bedroom": 1528,
+    "Three-Bedroom": 1918,
+    "Four-Bedroom": 2240,
+    "FMR Percentile": 40,
+    "statename": "Massachusetts",
+    "statecode": "MA",
+    "smallarea_status": 0
+   },
+   {
+    "town_name": "Acton town",
+    "county_name": "Middlesex County",
+    "metro_name": "Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area",
+    "fips_code": "2501700380",
+    "Efficiency": 1715,
+    "One-Bedroom": 1900,
+    "Two-Bedroom": 2311,
+    "Three-Bedroom": 2880,
+    "Four-Bedroom": 3131,
+    "FMR Percentile": 40,
+    "statename": "Massachusetts",
+    "statecode": "MA",
+    "smallarea_status": 0
+   }
+  ]
+ }
+}

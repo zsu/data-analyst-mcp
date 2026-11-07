@@ -1,0 +1,83 @@
+{
+  "id": "fdic",
+  "title": "FDIC BankFind Suite API",
+  "agency": "Federal Deposit Insurance Corporation",
+  "depth": "standard",
+  "domains": [
+    "finance",
+    "banking"
+  ],
+  "keywords": [
+    "bank",
+    "banks",
+    "bank failure",
+    "failed banks",
+    "fdic",
+    "deposits",
+    "branch deposits",
+    "call report",
+    "bank assets",
+    "net income",
+    "return on assets",
+    "summary of deposits",
+    "merger",
+    "insured institutions",
+    "savings institution",
+    "community bank"
+  ],
+  "questions": [
+    "bank failures by year since 2000",
+    "largest banks in a state by total assets",
+    "quarterly assets and net income of one bank",
+    "branch deposits by county",
+    "number of banks over time"
+  ],
+  "homepage": "https://banks.data.fdic.gov/",
+  "terms_url": "https://www.fdic.gov/about/website-policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 5,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.fdic.gov/banks",
+      "probe": "https://api.fdic.gov/banks/failures?limit=1&fields=CERT",
+      "hosts": [
+        "api.fdic.gov",
+        "banks.data.fdic.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the CSV links in INSTRUCTIONS.md (format=csv) in a browser, or use BankFind Suite (https://banks.data.fdic.gov/bankfind-suite/) > the matching tab > filter > Download, and upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Call Report data are updated quarterly and the institution file daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FDIC BankFind data are U.S. government works in the public domain (17 U.S.C. 105); FDIC asks users not to imply endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Federal Deposit Insurance Corporation, BankFind Suite API ({dataset}), api.fdic.gov/banks, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Count failures only, or failures plus open-bank assistance transactions? The failures table holds both (RESTYPE).",
+    "Quarterly income as reported (year-to-date) or converted to quarterly flows? Call Report income fields are year-to-date."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

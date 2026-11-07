@@ -1,0 +1,13 @@
+{
+  "Header": [
+    {
+      "status": "Failed",
+      "request_time": "2018-06-13T08:05:46.588-04:00",
+      "url": "https://...",
+      "error": [
+        "value is missing or the value is empty: param"
+      ]
+    }
+  ],
+  "Body": []
+}

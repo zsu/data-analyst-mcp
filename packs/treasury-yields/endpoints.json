@@ -1,0 +1,226 @@
+{
+  "base_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates",
+  "headers": {
+    "Accept": "text/csv",
+    "User-Agent": "Mozilla/5.0 (compatible; data-analyst/1.0)"
+  },
+  "endpoints": {
+    "par_yield_curve": {
+      "path": "/daily-treasury-rates.csv/{year}/all",
+      "method": "GET",
+      "description": "Daily Treasury par yield curve rates (CMT), percent, one column per maturity from 1 Mo to 30 Yr; from 1990. One request per calendar year.",
+      "first_year": 1990,
+      "params": {
+        "year": {
+          "in": "path",
+          "desc": "set by the adapter from year / start_year / end_year"
+        },
+        "start_year": {
+          "in": "spec",
+          "desc": "first calendar year (default: the current year)"
+        },
+        "end_year": {
+          "in": "spec",
+          "desc": "last calendar year (default: start_year or the current year)"
+        },
+        "type": {
+          "desc": "fixed: daily_treasury_yield_curve"
+        }
+      },
+      "defaults": {
+        "type": "daily_treasury_yield_curve",
+        "_format": "csv"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "none"
+      },
+      "max_rows": 20000,
+      "missing": [
+        "",
+        "N/A"
+      ],
+      "flatten": false
+    },
+    "real_yield_curve": {
+      "path": "/daily-treasury-rates.csv/{year}/all",
+      "method": "GET",
+      "description": "Daily Treasury par real yield curve rates (TIPS), percent, 5 YR to 30 YR; from 2003.",
+      "first_year": 2003,
+      "params": {
+        "year": {
+          "in": "path",
+          "desc": "set by the adapter"
+        },
+        "start_year": {
+          "in": "spec",
+          "desc": "first calendar year"
+        },
+        "end_year": {
+          "in": "spec",
+          "desc": "last calendar year"
+        },
+        "type": {
+          "desc": "fixed: daily_treasury_real_yield_curve"
+        }
+      },
+      "defaults": {
+        "type": "daily_treasury_real_yield_curve",
+        "_format": "csv"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "none"
+      },
+      "max_rows": 20000,
+      "missing": [
+        "",
+        "N/A"
+      ],
+      "flatten": false
+    },
+    "bill_rates": {
+      "path": "/daily-treasury-rates.csv/{year}/all",
+      "method": "GET",
+      "description": "Daily Treasury bill rates: bank discount and coupon-equivalent rates for 4- to 52-week bills (closing market bid), percent; from 2002.",
+      "first_year": 2002,
+      "params": {
+        "year": {
+          "in": "path",
+          "desc": "set by the adapter"
+        },
+        "start_year": {
+          "in": "spec",
+          "desc": "first calendar year"
+        },
+        "end_year": {
+          "in": "spec",
+          "desc": "last calendar year"
+        },
+        "type": {
+          "desc": "fixed: daily_treasury_bill_rates"
+        }
+      },
+      "defaults": {
+        "type": "daily_treasury_bill_rates",
+        "_format": "csv"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "none"
+      },
+      "max_rows": 20000,
+      "missing": [
+        "",
+        "N/A"
+      ],
+      "flatten": false
+    },
+    "long_term_rates": {
+      "path": "/daily-treasury-rates.csv/{year}/all",
+      "method": "GET",
+      "description": "Daily Treasury long-term rates: the long-term composite rate (>10 years) and the 20-year CMT, percent; from 2000.",
+      "first_year": 2000,
+      "params": {
+        "year": {
+          "in": "path",
+          "desc": "set by the adapter"
+        },
+        "start_year": {
+          "in": "spec",
+          "desc": "first calendar year"
+        },
+        "end_year": {
+          "in": "spec",
+          "desc": "last calendar year"
+        },
+        "type": {
+          "desc": "fixed: daily_treasury_long_term_rate"
+        }
+      },
+      "defaults": {
+        "type": "daily_treasury_long_term_rate",
+        "_format": "csv"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "none"
+      },
+      "max_rows": 20000,
+      "missing": [
+        "",
+        "N/A"
+      ],
+      "flatten": false
+    },
+    "real_long_term": {
+      "path": "/daily-treasury-rates.csv/{year}/all",
+      "method": "GET",
+      "description": "Daily Treasury real long-term rate average (TIPS with more than 10 years to maturity), percent; from 2000.",
+      "first_year": 2000,
+      "params": {
+        "year": {
+          "in": "path",
+          "desc": "set by the adapter"
+        },
+        "start_year": {
+          "in": "spec",
+          "desc": "first calendar year"
+        },
+        "end_year": {
+          "in": "spec",
+          "desc": "last calendar year"
+        },
+        "type": {
+          "desc": "fixed: daily_treasury_real_long_term"
+        }
+      },
+      "defaults": {
+        "type": "daily_treasury_real_long_term",
+        "_format": "csv"
+      },
+      "records": "$csv",
+      "paging": {
+        "type": "none"
+      },
+      "max_rows": 20000,
+      "missing": [
+        "",
+        "N/A"
+      ],
+      "flatten": false
+    }
+  },
+  "catalog": {
+    "par": {
+      "id": "daily_treasury_yield_curve",
+      "name": "Daily Treasury Par Yield Curve Rates",
+      "endpoint": "par_yield_curve",
+      "description": "nominal constant-maturity (CMT) par yields, 1 month to 30 years: 10-year yield, 2-year yield, yield curve, term spread, inversion"
+    },
+    "real": {
+      "id": "daily_treasury_real_yield_curve",
+      "name": "Daily Treasury Par Real Yield Curve Rates",
+      "endpoint": "real_yield_curve",
+      "description": "TIPS real yields 5 to 30 years; breakeven inflation with the nominal curve"
+    },
+    "bills": {
+      "id": "daily_treasury_bill_rates",
+      "name": "Daily Treasury Bill Rates",
+      "endpoint": "bill_rates",
+      "description": "T-bill bank discount and coupon equivalent rates, 4 to 52 weeks"
+    },
+    "long_term": {
+      "id": "daily_treasury_long_term_rate",
+      "name": "Daily Treasury Long-Term Rates",
+      "endpoint": "long_term_rates",
+      "description": "long-term composite rate above 10 years; 20-year CMT"
+    },
+    "real_long_term": {
+      "id": "daily_treasury_real_long_term",
+      "name": "Daily Treasury Real Long-Term Rates",
+      "endpoint": "real_long_term",
+      "description": "average real yield of TIPS above 10 years"
+    }
+  }
+}

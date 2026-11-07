@@ -1,0 +1,84 @@
+{
+ "sample": {
+  "description": "Laken Riley Act (119th S. 5): bill, cosponsors and every recorded vote; one House and one Senate roll call; a 1989 Senate vote list; cost-estimate links for H.R. 5376 (117th); recent CRS reports; Maryland members of the 118th Congress",
+  "requests": [
+   {
+    "name": "s5_bill",
+    "endpoint": "bill",
+    "params": {
+     "congress": 119,
+     "billType": "s",
+     "billNumber": 5
+    }
+   },
+   {
+    "name": "s5_cosponsors",
+    "endpoint": "bill_cosponsors",
+    "params": {
+     "congress": 119,
+     "billType": "s",
+     "billNumber": 5
+    }
+   },
+   {
+    "name": "s5_votes",
+    "endpoint": "bill_votes",
+    "params": {
+     "congress": 119,
+     "billType": "s",
+     "billNumber": 5
+    }
+   },
+   {
+    "name": "ira_senate_passage",
+    "endpoint": "roll_call",
+    "params": {
+     "chamber": "senate",
+     "congress": 117,
+     "session": 2,
+     "roll": 325
+    }
+   },
+   {
+    "name": "ira_house_passage",
+    "endpoint": "roll_call",
+    "params": {
+     "chamber": "house",
+     "year": 2022,
+     "roll": 420
+    }
+   },
+   {
+    "name": "senate_votes_1989",
+    "endpoint": "senate_votes",
+    "params": {
+     "congress": 101,
+     "session": 1
+    }
+   },
+   {
+    "name": "hr5376_cost_estimates",
+    "endpoint": "bill_cbo_estimates",
+    "params": {
+     "congress": 117,
+     "billType": "hr",
+     "billNumber": 5376
+    }
+   },
+   {
+    "name": "crs_recent",
+    "endpoint": "crs_reports",
+    "max_rows": 5
+   },
+   {
+    "name": "md_members_118",
+    "endpoint": "members_state",
+    "params": {
+     "congress": 118,
+     "stateCode": "MD",
+     "currentMember": "false"
+    }
+   }
+  ]
+ }
+}

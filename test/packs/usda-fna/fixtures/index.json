@@ -1,0 +1,25 @@
+{
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/StateAgencyComparison.csv?State+1+Param=Texas&State+2+Param+=California&Edition=17th+Edition+%28FY+2025%29": "r001.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Broad-Based+Categorical+Eligibility+%28BBCE%29&Option+Selection+Parameter+1=BBCE&Edition=17th+Edition+%28FY+2025%29": "r002.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Broad-Based+Categorical+Eligibility+%28BBCE%29&Option+Selection+Parameter+1=No+BBCE&Edition=17th+Edition+%28FY+2025%29": "r003.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Broad-Based+Categorical+Eligibility+%28BBCE%29&Option+Selection+Parameter+1=BBCE&Edition=16th+Edition+%28FY+2024%29": "r004.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Telephonic+Signature+Waiver&Option+Selection+Parameter+1=Telephonic+signature+waiver&Edition=17th+Edition+%28FY+2025%29": "r005.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Transitional+Benefits+Alternative&Option+Selection+Parameter+1=TBA&Edition=17th+Edition+%28FY+2025%29": "r002.csv",
+ "GET https://publicdashboards.dl.usda.gov/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv?Policy+Option+Param+1=Elderly+Simplified+Application+Project&Option+Selection+Parameter+1=ESAP&Edition=17th+Edition+%28FY+2025%29": {
+  "body": "",
+  "status": 404
+ },
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/snap-sar-fy23.pdf": "sar23_p9_p14_p30.pdf",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/snap-stateOptionsReport-17edition-120925.pdf": "sor17_p132_p134.pdf",
+ "GET https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap": "pd_snap.html",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/snap-persons-10.xlsx": "snap-persons-10.xlsx",
+ "GET https://www.fna.usda.gov/pd/wic-program": "pd_wic.html",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/26wifypart-10.xlsx": "26wifypart-10.xlsx",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/27wilatest-10.xlsx": "27wilatest-10.xlsx",
+ "GET https://www.fna.usda.gov/pd/child-nutrition-tables": "pd_child_nutrition.html",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/01slfypart-10.xlsx": "01slfypart-10.xlsx",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/cncost-10.xlsx": "cncost-10.xlsx",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/36slmonthly-10.xlsx": "36slmonthly-10.xlsx",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/snap-zip-fy69tocurrent-10.zip": "snap-zip-fy69tocurrent-10_FY25only.zip",
+ "GET https://www.fna.usda.gov/sites/default/files/resource-files/wicagencies2025ytd.xlsx": "wicagencies2025ytd_3sheets.xlsx"
+}

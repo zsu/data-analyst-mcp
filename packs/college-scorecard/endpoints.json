@@ -1,0 +1,253 @@
+{
+ "base_url": "https://api.data.gov/ed/collegescorecard/v1",
+ "endpoints": {
+  "schools": {
+   "path": "/schools.json",
+   "description": "Institution-level College Scorecard records: filter on any field (school.state=CA, school.ownership=1, <field>__range=lo..hi), choose columns with fields=, sort=<field>:asc|desc.",
+   "params": {
+    "fields": {
+     "desc": "comma-separated field names or catalog aliases (default: the popular set); without it every school has about 3,000 fields"
+    },
+    "sort": {
+     "desc": "<field>:asc or <field>:desc, e.g. latest.earnings.10_yrs_after_entry.median:desc"
+    },
+    "id": {
+     "desc": "UNITID (IPEDS id), e.g. 166683; comma-separated for several"
+    },
+    "school.name": {
+     "desc": "name search (partial words match), e.g. 'University of Delaware'"
+    },
+    "school.state": {
+     "desc": "two-letter state code; comma-separated for several (DE,MD)"
+    },
+    "school.ownership": {
+     "desc": "1 public, 2 private nonprofit, 3 private for-profit"
+    },
+    "school.degrees_awarded.predominant": {
+     "desc": "0 not classified, 1 certificate, 2 associate, 3 bachelor's, 4 graduate"
+    },
+    "name": {
+     "desc": "alias of school.name"
+    },
+    "state": {
+     "desc": "alias of school.state"
+    },
+    "ownership": {
+     "desc": "alias of school.ownership"
+    },
+    "predominant_degree": {
+     "desc": "alias of school.degrees_awarded.predominant"
+    }
+   },
+   "defaults": {},
+   "records": "results",
+   "total": "metadata.total",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 0
+   },
+   "max_rows": 10000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "name": {
+   "id": "school.name",
+   "name": "Institution name",
+   "description": "school name",
+   "endpoint": "schools"
+  },
+  "state": {
+   "id": "school.state",
+   "name": "State",
+   "description": "two-letter state postal code",
+   "endpoint": "schools"
+  },
+  "city": {
+   "id": "school.city",
+   "name": "City",
+   "description": "city",
+   "endpoint": "schools"
+  },
+  "url": {
+   "id": "school.school_url",
+   "name": "Website",
+   "description": "institution website",
+   "endpoint": "schools"
+  },
+  "ownership": {
+   "id": "school.ownership",
+   "name": "Control",
+   "description": "ownership control: 1 public, 2 private nonprofit, 3 private for-profit",
+   "endpoint": "schools"
+  },
+  "predominant_degree": {
+   "id": "school.degrees_awarded.predominant",
+   "name": "Predominant degree",
+   "description": "predominant degree awarded: 0-4 (certificate, associate, bachelor's, graduate)",
+   "endpoint": "schools"
+  },
+  "highest_degree": {
+   "id": "school.degrees_awarded.highest",
+   "name": "Highest degree",
+   "description": "highest degree awarded 0-4",
+   "endpoint": "schools"
+  },
+  "admission_rate": {
+   "id": "latest.admissions.admission_rate.overall",
+   "name": "Admission rate",
+   "description": "admission rate, share 0-1 (admissions selectivity)",
+   "endpoint": "schools"
+  },
+  "sat_avg": {
+   "id": "latest.admissions.sat_scores.average.overall",
+   "name": "SAT average",
+   "description": "average SAT equivalent score of admitted students",
+   "endpoint": "schools"
+  },
+  "size": {
+   "id": "latest.student.size",
+   "name": "Undergraduate enrollment",
+   "description": "number of degree-seeking undergraduate students (enrollment size)",
+   "endpoint": "schools"
+  },
+  "tuition_in_state": {
+   "id": "latest.cost.tuition.in_state",
+   "name": "In-state tuition and fees",
+   "description": "in-state tuition and fees, dollars per year (cost)",
+   "endpoint": "schools"
+  },
+  "tuition_out_of_state": {
+   "id": "latest.cost.tuition.out_of_state",
+   "name": "Out-of-state tuition and fees",
+   "description": "out-of-state tuition and fees, dollars per year (cost)",
+   "endpoint": "schools"
+  },
+  "net_price": {
+   "id": "latest.cost.avg_net_price.overall",
+   "name": "Average net price",
+   "description": "average annual net price after grant aid, Title IV students (cost)",
+   "endpoint": "schools"
+  },
+  "attendance_cost": {
+   "id": "latest.cost.attendance.academic_year",
+   "name": "Cost of attendance",
+   "description": "average cost of attendance, academic-year institutions (cost)",
+   "endpoint": "schools"
+  },
+  "median_debt": {
+   "id": "latest.aid.median_debt.completers.overall",
+   "name": "Median debt of completers",
+   "description": "median federal loan debt of students who completed (student debt, loans)",
+   "endpoint": "schools"
+  },
+  "pell_rate": {
+   "id": "latest.aid.pell_grant_rate",
+   "name": "Pell grant rate",
+   "description": "share of undergraduates receiving Pell grants (low income)",
+   "endpoint": "schools"
+  },
+  "loan_rate": {
+   "id": "latest.aid.federal_loan_rate",
+   "name": "Federal loan rate",
+   "description": "share of undergraduates with federal loans",
+   "endpoint": "schools"
+  },
+  "completion_rate": {
+   "id": "latest.completion.rate_suppressed.overall",
+   "name": "Completion rate",
+   "description": "completion (graduation) rate within 150% of normal time, share 0-1, small cohorts suppressed",
+   "endpoint": "schools"
+  },
+  "retention_rate": {
+   "id": "latest.student.retention_rate.four_year.full_time",
+   "name": "Retention rate",
+   "description": "first-time full-time retention rate, four-year institutions",
+   "endpoint": "schools"
+  },
+  "earnings_10yr": {
+   "id": "latest.earnings.10_yrs_after_entry.median",
+   "name": "Median earnings 10 years after entry",
+   "description": "median earnings of federally aided students working, 10 years after entry (salary, income)",
+   "endpoint": "schools"
+  },
+  "earnings_6yr": {
+   "id": "latest.earnings.6_yrs_after_entry.median",
+   "name": "Median earnings 6 years after entry",
+   "description": "median earnings 6 years after entry (salary, income)",
+   "endpoint": "schools"
+  },
+  "earnings_7yr": {
+   "id": "latest.earnings.7_yrs_after_entry.median",
+   "name": "Median earnings 7 years after entry",
+   "description": "median earnings 7 years after entry (salary, income); live in the API from October 2026",
+   "endpoint": "schools"
+  },
+  "default_rate_3yr": {
+   "id": "latest.repayment.3_yr_default_rate",
+   "name": "3-year cohort default rate",
+   "description": "official three-year cohort default rate (loan default); near zero for recent cohorts because federal loan repayment was paused 2020-2023",
+   "endpoint": "schools"
+  },
+  "share_white": {
+   "id": "latest.student.demographics.race_ethnicity.white",
+   "name": "Share White",
+   "description": "share of undergraduates who are White (race ethnicity demographics)",
+   "endpoint": "schools"
+  },
+  "share_black": {
+   "id": "latest.student.demographics.race_ethnicity.black",
+   "name": "Share Black",
+   "description": "share of undergraduates who are Black (race ethnicity demographics)",
+   "endpoint": "schools"
+  },
+  "share_hispanic": {
+   "id": "latest.student.demographics.race_ethnicity.hispanic",
+   "name": "Share Hispanic",
+   "description": "share of undergraduates who are Hispanic (race ethnicity demographics)",
+   "endpoint": "schools"
+  },
+  "share_first_generation": {
+   "id": "latest.student.share_firstgeneration",
+   "name": "First-generation share",
+   "description": "share of students who are first-generation college students",
+   "endpoint": "schools"
+  },
+  "locale": {
+   "id": "school.locale",
+   "name": "Locale",
+   "description": "urban-centric locale code (city, suburb, town, rural)",
+   "endpoint": "schools"
+  },
+  "carnegie_basic": {
+   "id": "school.carnegie_basic",
+   "name": "Carnegie classification",
+   "description": "Carnegie basic classification code",
+   "endpoint": "schools"
+  },
+  "hbcu": {
+   "id": "school.minority_serving.historically_black",
+   "name": "HBCU flag",
+   "description": "historically Black college or university (minority serving)",
+   "endpoint": "schools"
+  },
+  "operating": {
+   "id": "school.operating",
+   "name": "Operating flag",
+   "description": "1 if currently operating (closed schools have 0)",
+   "endpoint": "schools"
+  },
+  "programs_cip4": {
+   "id": "latest.programs.cip_4_digit",
+   "name": "Field-of-study records",
+   "description": "field of study (program, major) records with earnings and debt by credential; very large: request one school at a time",
+   "endpoint": "schools"
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+  "base_url": "https://ohss.dhs.gov",
+  "timeout": 60,
+  "endpoints": {
+    "yearbook_table": {
+      "path": "/topics/immigration/yearbook/{fiscal_year}",
+      "description": "One table (one sheet) of the Yearbook of Immigration Statistics workbook for a topic and fiscal year. The pack reads the year page, finds the topic's published .xlsx (FY2022 on) or .zip of one .xlsx per table (FY2015-2021), and returns the sheet as published: the header row is detected (a two-row header is joined), section label rows (REGION, COUNTRY, NEW ARRIVALS ...) become a `section` column, and the footnote, Notes and Source lines go into the fetch notes.",
+      "params": {
+        "topic": {"in": "spec", "required": true,
+                  "enum": ["lpr", "lpr_supplementary", "lpr_expanded", "refugees", "asylees", "refugees_asylees",
+                           "naturalizations", "naturalizations_supplementary", "nonimmigrant",
+                           "nonimmigrant_supplementary", "enforcement"],
+                  "desc": "which workbook of the year: lpr (Tables 1-12, plus the LPR supplemental tables from FY2022), lpr_expanded (Tables 8-11 split into adjustments of status and new arrivals), refugees, asylees (refugees_asylees: the combined workbook up to FY2022), naturalizations, nonimmigrant, enforcement; *_supplementary = the separate supplementary zip of FY2015-2021"},
+        "fiscal_year": {"in": "path", "desc": "fiscal year of the yearbook (Oct-Sep), e.g. 2024; default: the newest year page that has the topic's file"},
+        "table": {"in": "spec", "desc": "sheet name as published, e.g. \"Table 6\", \"LPRSuppTable 1\", \"NISuppTable1\" (also \"6\" or \"table6\"); a wrong or missing name fails with the workbook's sheets and their titles"},
+        "header_row": {"in": "spec", "desc": "optional: 1-based row (among the rows the workbook stores) that holds the column names; default: detected"}
+      },
+      "records": "$xlsx",
+      "paging": {"type": "none"}
+    },
+    "lir_table": {
+      "path": "/topics/immigration/legal-immigration-and-adjustment-status-report",
+      "description": "One table of the quarterly Legal Immigration and Adjustment of Status Report workbook (preliminary quarterly LPR, refugee, naturalization and nonimmigrant counts for the fiscal year so far, FY2016 on). Read the same way as yearbook_table.",
+      "params": {
+        "fiscal_year": {"in": "spec", "desc": "fiscal year of the report, e.g. 2025; default: the newest posted"},
+        "table": {"in": "spec", "desc": "sheet name, e.g. \"Table 1A\" (LPR by nationality and quarter), \"Table 1B\" (LPR by class of admission), \"Table 2\" (refugee arrivals), \"Table 3\" (naturalizations), \"Table 4A\"/\"Table 4B\" (nonimmigrant admissions)"},
+        "header_row": {"in": "spec", "desc": "optional: 1-based header row; default: detected"}
+      },
+      "records": "$xlsx",
+      "paging": {"type": "none"}
+    },
+    "yearbook_files": {
+      "path": "/topics/immigration/yearbook/{fiscal_year}",
+      "description": "The data files posted on a yearbook year page (one row per file: fiscal_year, topic, title, url, format), scraped from the page because the file names carry upload dates. Use it to see what a year has before asking for a table.",
+      "params": {
+        "fiscal_year": {"in": "path", "desc": "one year (2015 on has data files), a list of years, or omit for the newest year page"},
+        "topic": {"in": "spec", "desc": "optional: keep only this topic's files (same names as yearbook_table)"}
+      },
+      "paging": {"type": "none"}
+    },
+    "lir_files": {
+      "path": "/topics/immigration/legal-immigration-and-adjustment-status-report",
+      "description": "The Legal Immigration and Adjustment of Status Report workbooks posted (one row per fiscal year: fiscal_year, through_quarter, title, url).",
+      "params": {},
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "lpr": {"id": "lpr", "endpoint": "yearbook_table", "name": "Lawful permanent residents (green cards), Yearbook Tables 1-12",
+            "description": "persons obtaining lawful permanent resident status (green card holders) by year, country of birth, last residence, state, metro area, class of admission (family, employment, diversity, refugee, asylee), adjustments of status vs new arrivals, sex, age, occupation"},
+    "lpr_expanded": {"id": "lpr_expanded", "endpoint": "yearbook_table", "name": "Expanded Tables 8-11 (adjustments of status and new arrivals)",
+                     "description": "LPR demographic and country tables split by adjustment of status and new arrival"},
+    "refugees": {"id": "refugees", "endpoint": "yearbook_table", "name": "Refugee arrivals, Yearbook Tables 13-15",
+                 "description": "refugee arrivals by year, country of nationality, relationship, sex, age"},
+    "asylees": {"id": "asylees", "endpoint": "yearbook_table", "name": "Individuals granted asylum, Yearbook Tables 16-20",
+                "description": "asylum granted affirmatively (USCIS) or defensively (immigration courts) by country of nationality"},
+    "naturalizations": {"id": "naturalizations", "endpoint": "yearbook_table", "name": "Naturalizations, Yearbook Tables 21-25",
+                        "description": "persons naturalized (new U.S. citizens), applications filed and denied, by country of birth, state, metro area"},
+    "nonimmigrant": {"id": "nonimmigrant", "endpoint": "yearbook_table", "name": "Nonimmigrant admissions, Yearbook Tables 26-33",
+                     "description": "temporary visitor admissions (I-94) by class of admission (tourist, student F-1, H-1B worker), country of citizenship, state of destination, month"},
+    "enforcement": {"id": "enforcement", "endpoint": "yearbook_table", "name": "Immigration enforcement actions, Yearbook Tables 33-42",
+                    "description": "apprehensions, encounters, inadmissibility determinations, removals (deportations), returns, expulsions by country of nationality and criminal status"},
+    "lir": {"id": "lir", "endpoint": "lir_table", "name": "Legal Immigration and Adjustment of Status Report (quarterly)",
+            "description": "preliminary quarterly green card, refugee, naturalization and nonimmigrant admission counts for the current fiscal year"}
+  }
+}

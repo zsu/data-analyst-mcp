@@ -1,0 +1,89 @@
+{
+  "base_url": "https://www.federalreserve.gov",
+  "timeout": 120,
+  "endpoints": {
+    "ddp": {
+      "path": "/datadownload/Output.aspx",
+      "description": "One preformatted Data Download Program package of a Board release as CSV, reshaped to one row per series and date: date, series, value, value_flag (ND = no data), description, unit, multiplier, currency, unique_id. The value times multiplier is in unit (Currency x 1000000 = millions of dollars).",
+      "params": {
+        "rel": {"in": "spec", "desc": "release code: G19 (consumer credit), Z1 (Financial Accounts), SLOOS, SCOOS, H8 (bank balance sheets), H6 (money stock), H15 (interest rates), H41 (Fed balance sheet), G17 (industrial production), G20 (finance companies), CHGDEL (charge-offs and delinquencies), DSR / FOR (debt service ratios), CP (commercial paper), H10 (exchange rates), H3, E2, PRATES. Optional with a catalog package alias"},
+        "package": {"in": "spec", "required": true, "catalog": true, "desc": "the package: its 32-character id, its title as listed by ddp_packages (exact, or a unique start or part: 'Consumer Credit Outstanding (S.A.)', 'S1M.b (Q)'), or a catalog alias (g19_all, g19_sa, sloos, z1_b101 ...)"},
+        "series_ids": {"in": "spec", "desc": "optional list of series codes (the Time Period header, e.g. DTCTL.M) or unique identifiers (G19/CCOUT/DTCTL.M) to keep"},
+        "lastobs": {"in": "spec", "desc": "optional: only the last N observations of each series (applied by the pack to the whole package)"},
+        "from": {"in": "spec", "desc": "optional first date: YYYY, YYYY-MM, YYYY-MM-DD or YYYYQn (applied by the pack)"},
+        "to": {"in": "spec", "desc": "optional last date, inclusive: YYYY, YYYY-MM, YYYY-MM-DD or YYYYQn"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"},
+      "max_rows": 300000
+    },
+    "ddp_packages": {
+      "path": "/datadownload/Choose.aspx",
+      "description": "The preformatted packages of one release (scraped from its Choose page): package_title, package (id), listed (format, default observations, size).",
+      "params": {
+        "rel": {"in": "query", "required": true, "desc": "release code, e.g. G19, Z1 (435 packages), SLOOS"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"}
+    },
+    "z1": {
+      "path": "/releases/z1/current/z1_csv_files.zip",
+      "description": "One table of the Financial Accounts of the United States (Z.1) from the Board's bulk CSV zip (8 MB, current release), one row per series and date: date (1945:Q4 ... 2026:Q2), series, value (millions of dollars unless the units say otherwise), value_flag (ND), description, line, units, table, table_published.",
+      "params": {
+        "table": {"in": "spec", "required": true, "desc": "table code, new style (S1M.b, S1M.s, F3.2.s, S1311.s) or the published name it replaced (B.101, L.101, F.101, L.210, L.106); z1_tables lists both"},
+        "series_ids": {"in": "spec", "desc": "optional list of series codes to keep, e.g. FL152000005.Q (with or without the .Q)"},
+        "start": {"in": "spec", "desc": "optional first date, YYYY or YYYY:Qn"},
+        "end": {"in": "spec", "desc": "optional last date, YYYY or YYYY:Qn"}
+      },
+      "records": "$zip:csv/*.csv",
+      "paging": {"type": "none"}
+    },
+    "z1_tables": {
+      "path": "/releases/z1/current/z1_table_mapping.csv",
+      "description": "Z.1 table list: new (the code the zip and DDP use, e.g. S1M.b), old (the published table name, e.g. B.101), title.",
+      "params": {},
+      "records": "$csv",
+      "paging": {"type": "none"}
+    },
+    "scf_chart": {
+      "path": "/econres/scf/dataviz/download/zips/scf.zip",
+      "description": "Survey of Consumer Finances interactive chart data, 1989-2025 (triennial): one row per survey year and group (Category), one column per item (Before_Tax_Income, Net_Worth, Assets, Financial_Assets, Retirement_Accounts, Primary_Residence, Debt, Credit_Card_Balances, Education_Installment_Loans ...). Mean and median in thousands of 2025 dollars; have = percent of families holding the item.",
+      "params": {
+        "group": {"in": "spec", "required": true, "enum": ["all", "agecl", "edcl", "famstruct", "housecl", "inccat", "nwcat", "occat1", "occat2", "racecl4"], "desc": "family grouping: all, agecl (age of head), edcl (education), famstruct, housecl (owner/renter), inccat (income percentile), nwcat (net worth percentile), occat1 / occat2 (work status / occupation), racecl4 (race and ethnicity)"},
+        "stat": {"in": "spec", "required": true, "enum": ["median", "mean", "have"], "desc": "median or mean (among families that hold the item, thousands of 2025 dollars) or have (percent of families holding it)"}
+      },
+      "records": "$zip:*.csv",
+      "paging": {"type": "none"}
+    },
+    "scf_table": {
+      "path": "/econres/files/{file}.xlsx",
+      "description": "One sheet of the 2025 SCF published summary tables (1989-2025), as a raw grid: row (sheet row number) and c1..cN (cells as stored); the sheets have titles and multi-row headers, so read the grid, do not expect tidy columns.",
+      "params": {
+        "file": {"in": "path", "required": true, "enum": ["scf2025_tables_public_real_historical", "scf2025_tables_public_nominal_historical"], "desc": "real = thousands of 2025 dollars; nominal = dollars of each survey year"},
+        "sheet": {"in": "spec", "required": true, "desc": "sheet name, e.g. 'Table 4' (net worth by family characteristics), 'Table 1 01-25' (income); a wrong name lists the sheets"}
+      },
+      "records": "$xlsx",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "g19_all": {"id": "56a37b655eef16e2ede83467282a6e95", "rel": "G19", "endpoint": "ddp", "name": "G.19 Consumer Credit Outstanding - All", "description": "monthly since 1943: totals, revolving, nonrevolving, SA and NSA levels, percent changes, holders (millions of dollars)"},
+    "g19_sa": {"id": "696245eb361e0a8bc89b8e5b01cc971b", "rel": "G19", "endpoint": "ddp", "name": "G.19 Consumer Credit Outstanding (S.A.)", "description": "seasonally adjusted totals and percent changes (headline)"},
+    "g19_terms": {"id": "10264fd36110a9c4906bd99f1daccf29", "rel": "G19", "endpoint": "ddp", "name": "G.19 Terms of Credit", "description": "interest rates on credit cards, auto loans, personal loans; loan terms"},
+    "g19_holders_nsa": {"id": "417121472f75218035c6ba3770a5ebf5", "rel": "G19", "endpoint": "ddp", "name": "G.19 Major Holders (N.S.A.)", "description": "consumer credit by holder: banks, finance companies, credit unions, federal government (student loans), ..."},
+    "g19_flows": {"id": "8605d1da650f3e18ed4d8ebd31c1cab2", "rel": "G19", "endpoint": "ddp", "name": "G.19 Consumer Credit Outstanding - (Flow)", "description": "monthly changes (flows)"},
+    "sloos": {"id": "e64f07187815f0e7ed89237d8cb91eeb", "rel": "SLOOS", "endpoint": "ddp", "name": "Senior Loan Officer Opinion Survey - All chart data", "description": "quarterly net percentages of banks tightening standards and reporting stronger demand, by loan type"},
+    "scoos": {"id": "d7ddcd636ef03b879c632a42477a0535", "rel": "SCOOS", "endpoint": "ddp", "name": "Senior Credit Officer Opinion Survey - all active questions", "description": "dealer financing terms, quarterly since 2010:Q2"},
+    "z1_b101": {"id": "551e7dfea97fff844e2d605f0716a500", "rel": "Z1", "endpoint": "ddp", "name": "Z.1 S1M.b (Q) Households and nonprofit organizations balance sheet (B.101)", "description": "quarterly balance sheet, net worth, millions of dollars"},
+    "z1_l101": {"id": "fe354c3d420803392448004ea863b975", "rel": "Z1", "endpoint": "ddp", "name": "Z.1 S1M.s (Q) Households and nonprofit organizations levels (L.101)", "description": "financial assets and liabilities outstanding"},
+    "z1_f101": {"id": "088b1e81bdf443c73231e042c3a744db", "rel": "Z1", "endpoint": "ddp", "name": "Z.1 S1M.t (Q) Households and nonprofit organizations transactions (F.101)", "description": "flows, seasonally adjusted annual rates"},
+    "z1_l106": {"id": "43e1df4e46d36e9501b35cd92bc7266f", "rel": "Z1", "endpoint": "ddp", "name": "Z.1 S1311.s (Q) Federal government levels (L.106)", "description": "federal financial assets and liabilities"},
+    "h15_treasury_cmt": {"id": "bf17364827e38702b42a58cf8eaa3f78", "rel": "H15", "endpoint": "ddp", "name": "H.15 Treasury Constant Maturities", "description": "daily market yields, 1-month to 30-year (also in treasury-yields and fred)"},
+    "h6_monthly": {"id": "798e2796917702a5f8423426ba7e6b42", "rel": "H6", "endpoint": "ddp", "name": "H.6 M1, M2 and other release data, monthly", "description": "billions of dollars"},
+    "h8_all_banks_sa": {"id": "17951c643555bee48d63bb6957a4a92e", "rel": "H8", "endpoint": "ddp", "name": "H.8 All Commercial Banks, SA (Weekly)", "description": "assets and liabilities of commercial banks, weekly, seasonally adjusted"},
+    "g17_summary": {"id": "809009461b1cba2fd5b4cf5557d9d663", "rel": "G17", "endpoint": "ddp", "name": "G.17 Summary Table Data", "description": "industrial production and capacity utilization summary"},
+    "chgdel_rates_all": {"id": "929faaa8d5e6bf375839d7fc2b7760fe", "rel": "CHGDEL", "endpoint": "ddp", "name": "Charge-off rates/All banks", "description": "quarterly charge-off rates by loan type, percent"},
+    "debt_service": {"id": "e38200c11a744800391ad51150cee181", "rel": "DSR", "endpoint": "ddp", "name": "Household Debt Service Ratios", "description": "quarterly, percent of disposable income"},
+    "prates_daily": {"id": "c27939ee810cb2e929a920a6bd77d9f6", "rel": "PRATES", "endpoint": "ddp", "name": "Policy Rates - Daily", "description": "interest on reserve balances, discount rate, ON RRP rate"}
+  }
+}

@@ -1,0 +1,432 @@
+{
+ "base_url": "https://www.ncei.noaa.gov",
+ "endpoints": {
+  "data": {
+   "path": "/access/services/data/v1",
+   "method": "GET",
+   "description": "Keyless NCEI Access Data Service: station observations (one row per station and date, one column per data type).",
+   "params": {
+    "dataset": {
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (daily, monthly, annual, normals_monthly ...) or ADS dataset id (daily-summaries)"
+    },
+    "stations": {
+     "desc": "station id(s), comma-separated, e.g. USW00094728 (a GHCND: prefix is removed)",
+     "required": true
+    },
+    "startDate": {
+     "required": true,
+     "desc": "YYYY-MM-DD (also for monthly and annual datasets: ADS refuses YYYY-MM; the pack pads YYYY-MM to the 1st and YYYY to Jan 1)"
+    },
+    "endDate": {
+     "required": true,
+     "desc": "YYYY-MM-DD (the pack pads YYYY-MM to the month's last day and YYYY to Dec 31)"
+    },
+    "dataTypes": {
+     "desc": "comma-separated, case-sensitive: TMAX,TMIN,TAVG,PRCP,SNOW,SNWD,AWND ... (a misspelled type is silently absent)"
+    },
+    "units": {
+     "desc": "standard (F, inches; default here) or metric (C, mm); never omitted: without units GHCN-Daily values come in tenths",
+     "enum": [
+      "standard",
+      "metric"
+     ]
+    },
+    "includeAttributes": {
+     "desc": "true adds <TYPE>_ATTRIBUTES flag columns"
+    },
+    "includeStationName": {
+     "desc": "true adds NAME"
+    },
+    "includeStationLocation": {
+     "desc": "1 adds LATITUDE, LONGITUDE, ELEVATION"
+    }
+   },
+   "defaults": {
+    "format": "json",
+    "units": "standard"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 500000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "station_search": {
+   "path": "/access/services/search/v1/data",
+   "method": "GET",
+   "description": "Keyless NCEI search: stations with data for a dataset in a bounding box and period (one row per station).",
+   "params": {
+    "dataset": {
+     "required": true,
+     "catalog": true,
+     "desc": "alias or ADS dataset id"
+    },
+    "bbox": {
+     "desc": "north,west,south,east"
+    },
+    "startDate": {
+     "desc": "YYYY-MM-DDT00:00:00"
+    },
+    "endDate": {
+     "desc": "YYYY-MM-DDT23:59:59"
+    },
+    "dataTypes": {
+     "desc": "comma-separated data types the station must have"
+    },
+    "stations": {
+     "desc": "station id(s), comma-separated, e.g. USW00094728: that station's period and data types (the free-text search was removed: `text` answers HTTP 400 \"Invalid search options\", verified 2026-10)"
+    }
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 100
+   },
+   "max_rows": 5000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "cdo_data": {
+   "path": "/cdo-web/api/v2/data",
+   "method": "GET",
+   "description": "Observations in long form (one row per station, date, data type) (CDO v2, needs NOAA_API_KEY)",
+   "params": {
+    "datasetid": {
+     "desc": "GHCND, GSOM, GSOY, NORMAL_DLY, NORMAL_MLY ...",
+     "required": true
+    },
+    "locationid": {
+     "desc": "FIPS:36 (state), FIPS:36061 (county), CITY:US360019 ..."
+    },
+    "stationid": {
+     "desc": "GHCND:USW00094728"
+    },
+    "datatypeid": {
+     "desc": "TMAX, PRCP ..."
+    },
+    "startdate": {
+     "desc": "YYYY-MM-DD",
+     "required": true
+    },
+    "enddate": {
+     "desc": "YYYY-MM-DD",
+     "required": true
+    },
+    "sortfield": {
+     "desc": "id, name, mindate, maxdate, datacoverage"
+    },
+    "sortorder": {
+     "desc": "asc or desc"
+    },
+    "extent": {
+     "desc": "stations only: south,west,north,east bounding box"
+    },
+    "locationcategoryid": {
+     "desc": "locations only: ST, CNTY, CITY, CLIM_REG, CNTRY ..."
+    }
+   },
+   "defaults": {
+    "offset": 1,
+    "units": "standard"
+   },
+   "records": "results",
+   "total": "metadata.resultset.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "cdo_stations": {
+   "path": "/cdo-web/api/v2/stations",
+   "method": "GET",
+   "description": "Stations by dataset, location (FIPS) or extent (CDO v2, needs NOAA_API_KEY)",
+   "params": {
+    "datasetid": {
+     "desc": "GHCND, GSOM, GSOY, NORMAL_DLY, NORMAL_MLY ..."
+    },
+    "locationid": {
+     "desc": "FIPS:36 (state), FIPS:36061 (county), CITY:US360019 ..."
+    },
+    "stationid": {
+     "desc": "GHCND:USW00094728"
+    },
+    "datatypeid": {
+     "desc": "TMAX, PRCP ..."
+    },
+    "startdate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "sortfield": {
+     "desc": "id, name, mindate, maxdate, datacoverage"
+    },
+    "sortorder": {
+     "desc": "asc or desc"
+    },
+    "extent": {
+     "desc": "stations only: south,west,north,east bounding box"
+    },
+    "locationcategoryid": {
+     "desc": "locations only: ST, CNTY, CITY, CLIM_REG, CNTRY ..."
+    }
+   },
+   "defaults": {
+    "offset": 1
+   },
+   "records": "results",
+   "total": "metadata.resultset.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 20000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "cdo_locations": {
+   "path": "/cdo-web/api/v2/locations",
+   "method": "GET",
+   "description": "Location ids (states FIPS:nn, counties, cities, climate regions) (CDO v2, needs NOAA_API_KEY)",
+   "params": {
+    "datasetid": {
+     "desc": "GHCND, GSOM, GSOY, NORMAL_DLY, NORMAL_MLY ..."
+    },
+    "locationid": {
+     "desc": "FIPS:36 (state), FIPS:36061 (county), CITY:US360019 ..."
+    },
+    "stationid": {
+     "desc": "GHCND:USW00094728"
+    },
+    "datatypeid": {
+     "desc": "TMAX, PRCP ..."
+    },
+    "startdate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "sortfield": {
+     "desc": "id, name, mindate, maxdate, datacoverage"
+    },
+    "sortorder": {
+     "desc": "asc or desc"
+    },
+    "extent": {
+     "desc": "stations only: south,west,north,east bounding box"
+    },
+    "locationcategoryid": {
+     "desc": "locations only: ST, CNTY, CITY, CLIM_REG, CNTRY ..."
+    }
+   },
+   "defaults": {
+    "offset": 1
+   },
+   "records": "results",
+   "total": "metadata.resultset.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 50000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "cdo_datasets": {
+   "path": "/cdo-web/api/v2/datasets",
+   "method": "GET",
+   "description": "Dataset list with date coverage (CDO v2, needs NOAA_API_KEY)",
+   "params": {
+    "datasetid": {
+     "desc": "GHCND, GSOM, GSOY, NORMAL_DLY, NORMAL_MLY ..."
+    },
+    "locationid": {
+     "desc": "FIPS:36 (state), FIPS:36061 (county), CITY:US360019 ..."
+    },
+    "stationid": {
+     "desc": "GHCND:USW00094728"
+    },
+    "datatypeid": {
+     "desc": "TMAX, PRCP ..."
+    },
+    "startdate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "sortfield": {
+     "desc": "id, name, mindate, maxdate, datacoverage"
+    },
+    "sortorder": {
+     "desc": "asc or desc"
+    },
+    "extent": {
+     "desc": "stations only: south,west,north,east bounding box"
+    },
+    "locationcategoryid": {
+     "desc": "locations only: ST, CNTY, CITY, CLIM_REG, CNTRY ..."
+    }
+   },
+   "defaults": {
+    "offset": 1
+   },
+   "records": "results",
+   "total": "metadata.resultset.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 1000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "cdo_datatypes": {
+   "path": "/cdo-web/api/v2/datatypes",
+   "method": "GET",
+   "description": "Data types available for a dataset, station or location (CDO v2, needs NOAA_API_KEY)",
+   "params": {
+    "datasetid": {
+     "desc": "GHCND, GSOM, GSOY, NORMAL_DLY, NORMAL_MLY ..."
+    },
+    "locationid": {
+     "desc": "FIPS:36 (state), FIPS:36061 (county), CITY:US360019 ..."
+    },
+    "stationid": {
+     "desc": "GHCND:USW00094728"
+    },
+    "datatypeid": {
+     "desc": "TMAX, PRCP ..."
+    },
+    "startdate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddate": {
+     "desc": "YYYY-MM-DD"
+    },
+    "sortfield": {
+     "desc": "id, name, mindate, maxdate, datacoverage"
+    },
+    "sortorder": {
+     "desc": "asc or desc"
+    },
+    "extent": {
+     "desc": "stations only: south,west,north,east bounding box"
+    },
+    "locationcategoryid": {
+     "desc": "locations only: ST, CNTY, CITY, CLIM_REG, CNTRY ..."
+    }
+   },
+   "defaults": {
+    "offset": 1
+   },
+   "records": "results",
+   "total": "metadata.resultset.count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 5000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "daily": {
+   "id": "daily-summaries",
+   "name": "GHCN-Daily (CDO GHCND)",
+   "description": "daily max/min temperature, precipitation, snowfall, snow depth, wind by station",
+   "endpoint": "data"
+  },
+  "monthly": {
+   "id": "global-summary-of-the-month",
+   "name": "Global Summary of the Month (CDO GSOM)",
+   "description": "monthly mean/max/min temperature, total precipitation and snow, degree days",
+   "endpoint": "data"
+  },
+  "annual": {
+   "id": "global-summary-of-the-year",
+   "name": "Global Summary of the Year (CDO GSOY)",
+   "description": "annual temperature and precipitation summaries",
+   "endpoint": "data"
+  },
+  "normals_monthly": {
+   "id": "normals-monthly-1991-2020",
+   "name": "U.S. Climate Normals 1991-2020, monthly",
+   "description": "30-year monthly normals (MLY-TAVG-NORMAL, MLY-PRCP-NORMAL ...)",
+   "endpoint": "data"
+  },
+  "normals_daily": {
+   "id": "normals-daily-1991-2020",
+   "name": "U.S. Climate Normals 1991-2020, daily",
+   "description": "30-year daily normals (DLY-TMAX-NORMAL ...)",
+   "endpoint": "data"
+  },
+  "normals_annual": {
+   "id": "normals-annualseasonal-1991-2020",
+   "name": "U.S. Climate Normals 1991-2020, annual/seasonal",
+   "description": "annual and seasonal normals (ANN-TAVG-NORMAL ...)",
+   "endpoint": "data"
+  },
+  "hourly": {
+   "id": "global-hourly",
+   "name": "Global Hourly (ISD)",
+   "description": "hourly surface observations (large; short periods only)",
+   "endpoint": "data"
+  },
+  "GHCND": {
+   "id": "daily-summaries",
+   "name": "GHCND (CDO name)",
+   "description": "same as daily-summaries",
+   "endpoint": "data"
+  },
+  "GSOM": {
+   "id": "global-summary-of-the-month",
+   "name": "GSOM (CDO name)",
+   "description": "same as global-summary-of-the-month",
+   "endpoint": "data"
+  },
+  "GSOY": {
+   "id": "global-summary-of-the-year",
+   "name": "GSOY (CDO name)",
+   "description": "same as global-summary-of-the-year",
+   "endpoint": "data"
+  }
+ }
+}

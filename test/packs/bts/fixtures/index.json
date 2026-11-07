@@ -1,0 +1,4 @@
+{
+ "GET https://data.bts.gov/resource/crem-w557.json?%24order=date&%24select=date%2C+transportation_services_index_freight%2C+highway_fuel_prices_regular%2C+u_s_airline_traffic_total_non_seasonally_adjusted&%24where=date+%3E%3D+%272024-01-01%27+AND+date+%3C%3D+%272024-06-01%27&%24limit=5000&%24offset=0": "r001.json",
+ "GET https://data.bts.gov/resource/keg4-3bc2.json?%24order=trucks+DESC&%24select=port_name%2C+sum%28value%29+AS+trucks&%24where=state+%3D+%27Texas%27+AND+measure+%3D+%27Trucks%27+AND+date+%3D+%272025-01-01T00%3A00%3A00%27&%24group=port_name&%24limit=5000&%24offset=0": "r002.json"
+}

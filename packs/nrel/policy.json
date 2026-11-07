@@ -1,0 +1,96 @@
+{
+  "id": "nrel",
+  "title": "NREL / NLR Developer APIs (alt fuel stations, utility rates, solar resource, PVWatts)",
+  "agency": "National Laboratory of the Rockies (formerly NREL), U.S. Department of Energy",
+  "depth": "standard",
+  "domains": [
+    "energy",
+    "transportation",
+    "environment"
+  ],
+  "keywords": [
+    "ev charging",
+    "electric vehicle",
+    "charging station",
+    "charger",
+    "alternative fuel",
+    "alt fuel",
+    "hydrogen station",
+    "cng",
+    "e85",
+    "biodiesel",
+    "afdc",
+    "station locator",
+    "electricity rate",
+    "utility rate",
+    "solar resource",
+    "solar irradiance",
+    "ghi",
+    "dni",
+    "pvwatts",
+    "solar pv output",
+    "nrel",
+    "nlr"
+  ],
+  "questions": [
+    "how many public EV charging stations are in each state",
+    "DC fast chargers by network in a state",
+    "average residential electricity rate for a location",
+    "solar potential of a city",
+    "expected output of a rooftop solar system"
+  ],
+  "homepage": "https://developer.nlr.gov/",
+  "terms_url": "https://developer.nlr.gov/docs/rate-limits/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://developer.nlr.gov/signup/",
+    "echoes_key": false,
+    "key_only": [
+      "1,000 requests an hour instead of DEMO_KEY's 30 an hour and 50 a day per IP address (live headers have shown as few as 10 an hour)"
+    ],
+    "demo_key": "DEMO_KEY"
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "daily_quota": null,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://developer.nlr.gov/api",
+      "probe": "https://developer.nlr.gov/api/alt-fuel-stations/v1.json?limit=1",
+      "hosts": [
+        "developer.nlr.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser after replacing {API_KEY} with your free api.data.gov key (or DEMO_KEY for a few requests), save the JSON under the name shown and upload it. Stations without a key: https://afdc.energy.gov/stations (Station Locator) > filter > Download Results (CSV) or https://afdc.energy.gov/data_download; PVWatts: https://pvwatts.nlr.gov (monthly results > Download CSV)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Station data change daily; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Data produced for the U.S. Department of Energy and published openly through the developer network and the Alternative Fuels Data Center; cite the laboratory and the API, and do not imply endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "National Laboratory of the Rockies (formerly NREL), U.S. Department of Energy, {dataset}, developer.nlr.gov API, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Count stations or charging ports? One station can have many EV ports (ev_level2_evse_num, ev_dc_fast_num).",
+    "Open public stations only (pass status=E, access=public) or every station? Without them the API returns all statuses (open, planned, temporarily unavailable) and private stations too."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

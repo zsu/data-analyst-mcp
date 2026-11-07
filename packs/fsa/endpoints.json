@@ -1,0 +1,150 @@
+{
+ "base_url": "https://studentaid.gov/sites/default/files/fsawg/datacenter/library",
+ "timeout": 90,
+ "endpoints": {
+  "portfolio_summary": {
+   "path": "/PortfolioSummary.xls",
+   "method": "GET",
+   "description": "Federal student loan portfolio outstanding (principal + interest, $ billions) and recipients (millions) by program: Direct Loans, FFEL, Perkins and Total (unduplicated recipients); one row per federal fiscal year (FY2007-2012) or fiscal-year quarter (FY2013 Q1 on) and program. Quarterly.",
+   "params": {},
+   "records": "$xls",
+   "sheet": 1,
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_loan_status": {
+   "path": "/PortfoliobyLoanStatus.xls",
+   "method": "GET",
+   "description": "Portfolio by loan status (in-school, grace, repayment, deferment, forbearance, cumulative in default, other): $ billions outstanding and recipients (millions) by fiscal-year quarter. Sheet: Direct Loan (default, FY2013 Q3 on), FFEL (all FFEL, FY2013 Q3 on), ED-Held FFEL (FY2016 on), Federally Managed (Direct Loans + ED-held FFEL, FY2016 Q4 on). Quarterly.",
+   "params": {
+    "sheet": {"in": "records", "desc": "Direct Loan (default), FFEL, ED-Held FFEL or Federally Managed",
+              "enum": ["Direct Loan", "FFEL", "ED-Held FFEL", "Federally Managed"]}
+   },
+   "records": "$xls",
+   "sheet": "Direct Loan",
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_loan_type": {
+   "path": "/PortfoliobyLoanType.xls",
+   "method": "GET",
+   "description": "Portfolio by loan type, all programs (Stafford subsidized, unsubsidized, combined with unique recipients; Grad PLUS; Parent PLUS; Perkins; Consolidation): $ billions and recipients (millions) by fiscal-year quarter, FY2014 Q2 on. Quarterly.",
+   "params": {},
+   "records": "$xls",
+   "sheet": 1,
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_delinquency": {
+   "path": "/DLPortfoliobyDelinquencyStatus.xls",
+   "method": "GET",
+   "description": "Loans in repayment status by days delinquent (current, 31-90, 91-180, 181-270, 271-360, transferring to DMCS): $ billions and recipients (millions) by fiscal-year quarter. Sheet: DLPortfoliobyDelinquencyStatus (Direct Loans, default, FY2013 Q3 on), ED-HeldFFELbyDelinquencyStatus, FedManagedPortbyDelinquencyStat. Quarterly.",
+   "params": {
+    "sheet": {"in": "records", "desc": "DLPortfoliobyDelinquencyStatus (default), ED-HeldFFELbyDelinquencyStatus or FedManagedPortbyDelinquencyStat",
+              "enum": ["DLPortfoliobyDelinquencyStatus", "ED-HeldFFELbyDelinquencyStatus", "FedManagedPortbyDelinquencyStat"]}
+   },
+   "records": "$xls",
+   "sheet": "DLPortfoliobyDelinquencyStatus",
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_repayment_plan": {
+   "path": "/DLPortfoliobyRepaymentPlan.xls",
+   "method": "GET",
+   "description": "Loans in repayment, deferment and forbearance by repayment plan (level, graduated, income-contingent, income-based, PAYE, SAVE, alternative, other; ED-held FFEL: income-sensitive): $ billions and recipients (millions) by fiscal-year quarter. Sheet: DLPortfoliobyRepaymentPlan (default), DL-IDRbyPFH, ED-HeldFFELbyRepaymentPlan, ED-HeldFFEL-IDRbyPFH, FedManagedPortbyRepaymentPlan, FedManaged-IDRbyPFH (IDR plans by partial financial hardship). Quarterly.",
+   "params": {
+    "sheet": {"in": "records", "desc": "DLPortfoliobyRepaymentPlan (default), DL-IDRbyPFH, ED-HeldFFELbyRepaymentPlan, ED-HeldFFEL-IDRbyPFH, FedManagedPortbyRepaymentPlan or FedManaged-IDRbyPFH",
+              "enum": ["DLPortfoliobyRepaymentPlan", "DL-IDRbyPFH", "ED-HeldFFELbyRepaymentPlan", "ED-HeldFFEL-IDRbyPFH",
+                       "FedManagedPortbyRepaymentPlan", "FedManaged-IDRbyPFH"]}
+   },
+   "records": "$xls",
+   "sheet": "DLPortfoliobyRepaymentPlan",
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_location": {
+   "path": "/Portfolio-by-Location.xls",
+   "method": "GET",
+   "description": "Outstanding balance ($ billions) and borrowers (thousands) by borrower state of residence (plus Other, Not Reported), all programs, latest quarter only (as_of column; FFEL/Perkins borrowers of commercial lenders mostly Not Reported). Updated quarterly with a lag.",
+   "params": {},
+   "records": "$xls",
+   "sheet": 1,
+   "header_row": 1,
+   "layout": "snapshot",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_age": {
+   "path": "/Portfolio-by-Age.xls",
+   "method": "GET",
+   "description": "Outstanding balance ($ billions) and borrowers (millions) by borrower age band (24 and younger, 25-34, 35-49, 50-61, 62 and older, not reported), all programs, by fiscal-year quarter from FY2017 Q2. Updated quarterly with a lag.",
+   "params": {},
+   "records": "$xls",
+   "sheet": 1,
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "portfolio_by_debt_size": {
+   "path": "/Portfolio-by-Debt-Size.xls",
+   "method": "GET",
+   "description": "Outstanding balance ($ billions) and borrowers (millions) by the borrower's total federal loan balance (less than $5K ... $200K+), all programs, by fiscal-year quarter from FY2017 Q2. Updated quarterly with a lag.",
+   "params": {},
+   "records": "$xls",
+   "sheet": 1,
+   "header_row": 1,
+   "layout": "portfolio",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "dl_volume_by_school": {
+   "path": "/dl-dashboard-ay{ay_long}-q{q}.xls",
+   "method": "GET",
+   "description": "Direct Loan volume by school for one award year (July 1-June 30) and award-year quarter: recipients, loans originated (count, $) and disbursements (count, $) by school (OPE ID, name, state, ZIP, type) and loan program (subsidized, unsubsidized undergraduate and graduate, Parent PLUS, Grad PLUS). Sheet Award Year Summary (default: cumulative through the quarter) or Quarterly Activity. Award years 2018-19 on (file names verified 2026-10).",
+   "params": {
+    "award_year": {"in": "spec", "required": true, "desc": "award year, e.g. 2025-26 (July 1, 2025 - June 30, 2026); 2018-19 or later"},
+    "quarter": {"in": "spec", "required": true, "desc": "award-year quarter 1-4 (1 = Jul-Sep, 4 = Apr-Jun); 4 holds the whole year"},
+    "sheet": {"in": "records", "desc": "Award Year Summary (default, cumulative) or Quarterly Activity",
+              "enum": ["Award Year Summary", "Quarterly Activity"]},
+    "state": {"in": "spec", "desc": "two-letter state code(s) to keep (school location); foreign schools have none"},
+    "school": {"in": "spec", "desc": "keep schools whose name contains this text (case-insensitive)"}
+   },
+   "records": "$xls",
+   "sheet": "Award Year Summary",
+   "header_row": 1,
+   "layout": "school",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  },
+  "grant_volume_by_school": {
+   "path": "/grants-ay{ay_short}-q{q}.xls",
+   "method": "GET",
+   "description": "Grant volume by school for one award year and award-year quarter: recipients and disbursements ($) by school and program (Federal Pell Grant, TEACH; Iraq Afghanistan Service Grant in older years). Sheet Award Year Summary (default, cumulative) or Quarterly Activity. Award years 2018-19 on.",
+   "params": {
+    "award_year": {"in": "spec", "required": true, "desc": "award year, e.g. 2024-25; 2018-19 or later (the file name uses the short form ay24-25)"},
+    "quarter": {"in": "spec", "required": true, "desc": "award-year quarter 1-4 (1 = Jul-Sep, 4 = Apr-Jun); 4 holds the whole year"},
+    "sheet": {"in": "records", "desc": "Award Year Summary (default, cumulative) or Quarterly Activity",
+              "enum": ["Award Year Summary", "Quarterly Activity"]},
+    "state": {"in": "spec", "desc": "two-letter state code(s) to keep (school location)"},
+    "school": {"in": "spec", "desc": "keep schools whose name contains this text (case-insensitive)"}
+   },
+   "records": "$xls",
+   "sheet": "Award Year Summary",
+   "header_row": 1,
+   "layout": "school",
+   "paging": {"type": "none"},
+   "missing": ["", "-", "NA", "NA*", "NA**", "NA***"]
+  }
+ }
+}

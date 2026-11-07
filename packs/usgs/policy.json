@@ -1,0 +1,95 @@
+{
+  "id": "usgs",
+  "title": "USGS earthquakes (ComCat) and Water Data (streamflow, groundwater)",
+  "agency": "U.S. Geological Survey (U.S. Department of the Interior)",
+  "depth": "standard",
+  "domains": [
+    "natural hazards",
+    "earthquakes",
+    "water",
+    "environment"
+  ],
+  "keywords": [
+    "earthquake",
+    "earthquakes",
+    "seismic",
+    "magnitude",
+    "quake",
+    "tsunami",
+    "usgs",
+    "streamflow",
+    "stream flow",
+    "river flow",
+    "discharge",
+    "gage height",
+    "river level",
+    "flood stage",
+    "groundwater",
+    "water level",
+    "water temperature",
+    "nwis",
+    "drought",
+    "peak flow"
+  ],
+  "questions": [
+    "earthquakes of magnitude 5 or more in California since 2000",
+    "how many earthquakes hit Oklahoma each year",
+    "daily streamflow of the Potomac River last year",
+    "current river levels in a state",
+    "groundwater level trend at a well"
+  ],
+  "homepage": "https://www.usgs.gov/products/data",
+  "terms_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "header",
+    "param": "X-Api-Key",
+    "home": "data-gov",
+    "signup_url": "https://api.waterdata.usgs.gov/signup/",
+    "echoes_key": false,
+    "key_only": [
+      "more than a few water-data requests an hour (an api.data.gov key allows about 1,000 an hour); earthquakes never need a key"
+    ]
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.waterdata.usgs.gov/ogcapi/v1",
+      "probe": "https://earthquake.usgs.gov/fdsnws/event/1/version",
+      "hosts": [
+        "earthquake.usgs.gov",
+        "api.waterdata.usgs.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the JSON under the name shown (earthquakes: add &format=csv for CSV; water: change f=json to f=csv), then upload. Without the links: earthquakes at https://earthquake.usgs.gov/earthquakes/search/ (Output Options > CSV); water at https://waterdata.usgs.gov (site page > Download data)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Earthquake locations and magnitudes are revised for days to months and provisional water data change; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "USGS data are U.S. government works in the public domain (17 U.S.C. 105; https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits); credit the USGS."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Geological Survey, {dataset}, retrieved {retrieved_long} (earthquake.usgs.gov / api.waterdata.usgs.gov).",
+  "audit_hooks": [],
+  "clarify": [
+    "Which magnitude threshold and area (circle or box)? Counts depend strongly on both; small events are missing from older years.",
+    "Provisional or only approved water data? Recent values are provisional (approval_status) and may be revised."
+  ],
+  "formats": [
+    "geojson",
+    "json",
+    "csv"
+  ]
+}

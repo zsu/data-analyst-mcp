@@ -1,0 +1,17 @@
+{
+  "name": "A_LINENO",
+  "label": "Demographics, Line number, Unique person identifier",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "MARSUPWT",
+  "values": {
+    "range": [
+      {
+        "min": "1",
+        "max": "39",
+        "description": "Range"
+      }
+    ]
+  }
+}

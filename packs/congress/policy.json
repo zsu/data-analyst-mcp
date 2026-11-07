@@ -1,0 +1,117 @@
+{
+  "id": "congress",
+  "title": "Congress.gov API (Library of Congress) with House and Senate roll-call votes",
+  "agency": "Library of Congress (Congress.gov); Clerk of the House; Secretary of the Senate",
+  "depth": "standard",
+  "domains": [
+    "legislation",
+    "congress",
+    "votes"
+  ],
+  "keywords": [
+    "veto",
+    "vetoes",
+    "veto override",
+    "congress",
+    "bill",
+    "bills",
+    "legislation",
+    "sponsor",
+    "cosponsor",
+    "cosponsors",
+    "bill status",
+    "actions",
+    "roll call",
+    "roll-call vote",
+    "vote",
+    "votes",
+    "house vote",
+    "senate vote",
+    "party line",
+    "member of congress",
+    "senator",
+    "representative",
+    "committee",
+    "committee report",
+    "hearing",
+    "nomination",
+    "confirmation",
+    "treaty",
+    "crs report",
+    "public law",
+    "enacted",
+    "laws passed",
+    "congressional review act",
+    "cra resolution",
+    "disapproval resolution",
+    "committee meetings",
+    "committee hearings held",
+    "markups"
+  ],
+  "questions": [
+    "how did each party vote on a bill",
+    "how many bills became law in each Congress",
+    "cosponsors of a bill by party",
+    "bills a member sponsored",
+    "status and actions of a bill",
+    "CRS reports on a topic",
+    "nominations confirmed by the Senate"
+  ],
+  "homepage": "https://www.congress.gov/",
+  "terms_url": "https://www.loc.gov/legal/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "demo_key": "DEMO_KEY",
+    "key_only": [
+      "more than about 10 Congress.gov requests an hour (DEMO_KEY limit); roll-call XML needs no key"
+    ]
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 6,
+    "daily_quota": null,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.congress.gov/v3",
+      "probe": "https://api.congress.gov/v3/congress/119?format=json",
+      "hosts": [
+        "api.congress.gov",
+        "clerk.house.gov",
+        "www.senate.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in INSTRUCTIONS.md in a browser and save the file under the given name: Congress.gov links carry the public DEMO_KEY (about 10 requests an hour; put your own api.data.gov key in its place for more), roll-call links are the official XML files at clerk.house.gov/evs/<year>/roll<NNN>.xml and www.senate.gov/legislative/LIS/roll_call_votes/. On congress.gov, a bill's page (Actions, Cosponsors tabs) and search results can also be downloaded; upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Bill status, actions and cosponsors change daily while Congress sits; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Legislative data from Congress.gov, the House Clerk and the Senate are U.S. government works without copyright (17 U.S.C. 105); the Library of Congress asks for attribution. CRS report texts are public; Congress.gov's terms allow reuse of its data."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Library of Congress, Congress.gov API, {dataset}, api.congress.gov (roll-call votes: Clerk of the U.S. House of Representatives and U.S. Senate), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which Congress (two-year term) or session? Default: the current Congress.",
+    "Which vote on a bill: final passage, cloture, a motion or an amendment? A bill often has several recorded votes; default: final passage in each chamber.",
+    "Bills only (hr, s) or resolutions too? Joint resolutions can become law; simple and concurrent resolutions cannot."
+  ],
+  "formats": [
+    "json",
+    "xml"
+  ]
+}

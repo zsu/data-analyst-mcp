@@ -1,0 +1,8 @@
+{
+  "name": "MARSUPWT",
+  "label": "Weight, March supplement - Person",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true
+}

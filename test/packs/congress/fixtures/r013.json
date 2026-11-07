@@ -1,0 +1,62 @@
+{
+    "CRSReports": [
+        {
+            "contentType": "Reports",
+            "id": "R48033",
+            "publishDate": "2026-10-19T04:00:00Z",
+            "status": "Active",
+            "title": "Class VI Carbon Sequestration Wells: Permitting and State Program Primacy",
+            "updateDate": "2026-10-20T17:08:44Z",
+            "url": "https://api.congress.gov/v3/crsreport/R48033",
+            "version": 4
+        },
+        {
+            "contentType": "Reports",
+            "id": "R48645",
+            "publishDate": "2026-10-19T04:00:00Z",
+            "status": "Active",
+            "title": "Establishment Clause Limits on Government Support for Religion",
+            "updateDate": "2026-10-20T17:08:40Z",
+            "url": "https://api.congress.gov/v3/crsreport/R48645",
+            "version": 1
+        },
+        {
+            "contentType": "Reports",
+            "id": "R46833",
+            "publishDate": "2026-10-20T04:00:00Z",
+            "status": "Active",
+            "title": "The Office of Personnel Management (OPM): An Overview",
+            "updateDate": "2026-10-20T17:08:38Z",
+            "url": "https://api.congress.gov/v3/crsreport/R46833",
+            "version": 5
+        },
+        {
+            "contentType": "Posts",
+            "id": "LSB11170",
+            "publishDate": "2026-10-19T04:00:00Z",
+            "status": "Active",
+            "title": "Circuit Split on Constitutionality of Federal Felon-in-Possession Prohibition Persists After Supreme Court Denies Review",
+            "updateDate": "2026-10-20T17:08:36Z",
+            "url": "https://api.congress.gov/v3/crsreport/LSB11170",
+            "version": 1
+        },
+        {
+            "contentType": "Resources",
+            "id": "IF12809",
+            "publishDate": "2026-10-20T04:00:00Z",
+            "status": "Active",
+            "title": "The Section 45X Advanced Manufacturing Production Credit",
+            "updateDate": "2026-10-20T17:08:35Z",
+            "url": "https://api.congress.gov/v3/crsreport/IF12809",
+            "version": 1
+        }
+    ],
+    "pagination": {
+        "count": 14191,
+        "next": "https://api.congress.gov/v3/crsreport?offset=5&limit=5&format=json"
+    },
+    "request": {
+        "contentType": "application/json",
+        "format": "json"
+    }
+}

@@ -1,0 +1,93 @@
+{
+  "base_url": "https://api.gsa.gov/acquisition/calc/v3/api",
+  "endpoints": {
+    "rates": {
+      "path": "/ceilingrates/",
+      "description": "Awarded ceiling rates (fully burdened, not-to-exceed hourly prices) on GSA MAS labor categories: one row per labor category per contract and worksite. JSON, pages of 500, at most 10,000 rows (use rates_export for more).",
+      "params": {
+        "keyword": {"desc": "wildcard search over labor category, vendor and contract number (2+ characters): 'data scientist'"},
+        "search": {"desc": "exact, case-sensitive match field:value: 'labor_category:Data Scientist', 'vendor_name:BOOZ ALLEN HAMILTON INC', 'idv_piid:47QREA22D000R'"},
+        "education_level": {"desc": "filter: HS, AA, BA, MA, PHD (upper case); several with |: BA|MA"},
+        "experience_range": {"desc": "filter: min,max years, e.g. 3,10"},
+        "min_years_experience": {"desc": "filter: exact minimum years, e.g. 5"},
+        "price_range": {"desc": "filter: min,max dollars per hour, e.g. 50,150"},
+        "current_price": {"desc": "filter: exact current price"},
+        "worksite": {"desc": "filter: customer, contractor or virtual (lower case; the pack lowercases)"},
+        "business_size": {"desc": "filter: S (small) or O (other than small)"},
+        "security_clearance": {"desc": "filter: yes or no"},
+        "sin": {"desc": "filter: GSA Special Item Number, e.g. 54151S"},
+        "category": {"desc": "filter: e.g. Information Technology, Professional Services"},
+        "subcategory": {"desc": "filter: e.g. IT Services"},
+        "filter": {"desc": "raw filters as a list of field:value strings (sent as repeated filter=)"},
+        "ordering": {"desc": "sort field: current_price (default), labor_category, vendor_name, education_level, min_years_experience"},
+        "sort": {"enum": ["asc", "desc"], "desc": "asc (default) or desc"},
+        "exclude": {"desc": "record ids to leave out, separated by |"}
+      },
+      "defaults": {"ordering": "current_price", "sort": "asc"},
+      "records": "hits.hits", "total": "hits.total.value",
+      "paging": {"type": "page", "page_param": "page", "size_param": "page_size", "size": 500, "start": 1, "max_pages": 20},
+      "max_rows": 10000
+    },
+    "rates_export": {
+      "path": "/ceilingrates/",
+      "description": "The same search as one CSV export (export=y): every matching row, no 10,000 cap (55,000+ rows for 'engineer'); columns renamed to the rates names.",
+      "params": {
+        "keyword": {"desc": "as in rates"}, "search": {"desc": "as in rates"},
+        "education_level": {"desc": "as in rates"}, "experience_range": {"desc": "as in rates"},
+        "min_years_experience": {"desc": "as in rates"}, "price_range": {"desc": "as in rates"},
+        "current_price": {"desc": "as in rates"}, "worksite": {"desc": "as in rates"},
+        "business_size": {"desc": "as in rates"}, "security_clearance": {"desc": "as in rates"},
+        "sin": {"desc": "as in rates"}, "category": {"desc": "as in rates"}, "subcategory": {"desc": "as in rates"},
+        "filter": {"desc": "raw filters"}, "ordering": {"desc": "sort field"}, "sort": {"enum": ["asc", "desc"], "desc": "asc or desc"}
+      },
+      "defaults": {"export": "y"},
+      "records": "$csv", "paging": {"type": "none"}, "max_rows": 200000
+    },
+    "rate_stats": {
+      "path": "/ceilingrates/",
+      "description": "Summary of current_price over every matching rate (all matches, not only 10,000): count, min, max, mean, standard deviation, percentiles 10-90. One row.",
+      "params": {
+        "keyword": {"desc": "as in rates"}, "search": {"desc": "as in rates"},
+        "education_level": {"desc": "as in rates"}, "experience_range": {"desc": "as in rates"},
+        "min_years_experience": {"desc": "as in rates"}, "price_range": {"desc": "as in rates"},
+        "worksite": {"desc": "as in rates"}, "business_size": {"desc": "as in rates"},
+        "security_clearance": {"desc": "as in rates"}, "sin": {"desc": "as in rates"},
+        "category": {"desc": "as in rates"}, "subcategory": {"desc": "as in rates"}, "filter": {"desc": "raw filters"}
+      },
+      "defaults": {"page": 1, "page_size": 0},
+      "records": "aggregations", "paging": {"type": "none"}
+    },
+    "rate_facets": {
+      "path": "/ceilingrates/",
+      "description": "Counts of matching rates by education level, worksite, business size, security clearance, minimum years of experience and labor category (top 500): rows facet, key, doc_count.",
+      "params": {
+        "keyword": {"desc": "as in rates"}, "search": {"desc": "as in rates"},
+        "education_level": {"desc": "as in rates"}, "experience_range": {"desc": "as in rates"},
+        "price_range": {"desc": "as in rates"}, "worksite": {"desc": "as in rates"},
+        "business_size": {"desc": "as in rates"}, "security_clearance": {"desc": "as in rates"},
+        "sin": {"desc": "as in rates"}, "category": {"desc": "as in rates"}, "filter": {"desc": "raw filters"}
+      },
+      "defaults": {"page": 1, "page_size": 0},
+      "records": "aggregations", "paging": {"type": "none"}
+    },
+    "suggest_labor_category": {
+      "path": "/ceilingrates/",
+      "description": "Labor category titles containing a text (suggest-contains), with counts: the exact spellings for search=labor_category:...",
+      "params": {"prefix": {"required": true, "desc": "2+ characters, e.g. 'data sci'"}},
+      "records": "aggregations.labor_category.buckets", "paging": {"type": "none"}
+    },
+    "suggest_vendor_name": {
+      "path": "/ceilingrates/",
+      "description": "Vendor names containing a text, with counts.",
+      "params": {"prefix": {"required": true, "desc": "2+ characters, e.g. 'booz'"}},
+      "records": "aggregations.vendor_name.buckets", "paging": {"type": "none"}
+    },
+    "suggest_contract": {
+      "path": "/ceilingrates/",
+      "description": "Contract numbers (IDV PIID) containing a text, with counts.",
+      "params": {"prefix": {"required": true, "desc": "2+ characters, e.g. '47QTCA'"}},
+      "records": "aggregations.idv_piid.buckets", "paging": {"type": "none"}
+    }
+  },
+  "catalog": {}
+}

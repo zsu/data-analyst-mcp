@@ -1,0 +1,9 @@
+{
+ "GET https://apps.bea.gov/national/Release/TXT/SeriesRegister.txt": "bulk_SeriesRegister.txt",
+ "GET https://apps.bea.gov/national/Release/TXT/NipaDataA.txt": "bulk_NipaDataA.txt",
+ "GET https://apps.bea.gov/national/Release/TXT/NipaDataQ.txt": "bulk_NipaDataQ.txt",
+ "GET https://apps.bea.gov/national/Release/TXT/TablesRegister.txt": "bulk_TablesRegister.txt",
+ "GET https://apps.bea.gov/regional/zip/SAGDP.zip": "bulk_SAGDP.zip",
+ "GET https://apps.bea.gov/api/data?method=GetDataSetList&ResultFormat=JSON": "doc_getdatasetlist.json",
+ "GET https://apps.bea.gov/api/data?method=GetData&ResultFormat=JSON&DataSetName=NIPA&TableName=T20305&Year=2015&Frequency=Q": "doc_nipa_getdata.json"
+}

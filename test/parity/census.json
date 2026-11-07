@@ -1,0 +1,13 @@
+{
+ "documented_example": {"description": "Hmong population by state, ACS 1-year 2019 (documented example)", "requests": [{"name": "hmong_2019", "endpoint": "query", "params": {"dataset": "2019/acs/acs1", "get": "NAME,B02015_009E", "for": "state:*"}}]},
+ "sipp": {"requests": [{"name": "sipp_dec", "endpoint": "query", "params": {"dataset": "2024/sipp", "get": "TAGE,RHLTHMTH", "MONTHCODE": "12"}}]},
+ "pulse_homeownership": {"requests": [
+  {"name": "pulse_expense_2024", "endpoint": "query", "params": {"dataset": "pulse", "get": "MEASURE_NAME,MEASURE_LABEL,RATE,RATE_MOE,TOTAL,UNIVERSE,CYCLE,PHASE,COL_START_DATE,COL_END_DATE", "for": "us:*", "time": "2024", "MEASURE_NAME": "EXPENSE"}},
+  {"name": "pulse_covid_expense_2023", "endpoint": "query", "params": {"dataset": "pulse_covid", "get": "EXPENSE_RATE,EXPENSE_RT_MOE,EXPENSE_TOTAL,EXPENSE_UNIV,WEEK,COL_START_DATE,COL_END_DATE", "for": "us:*", "time": "2023"}},
+  {"name": "homeownership_2025", "endpoint": "query", "params": {"dataset": "eits_homeownership", "get": "cell_value,data_type_code,category_code,seasonally_adj,time_slot_id,geo_level_code,error_data", "for": "us:*", "time": "2025", "category_code": "RATE"}}]},
+ "micro": {"description": "fixtures: ACS PUMS Wyoming ages 90+, replicates; ASEC and CPS basic Wyoming ages 80-85", "requests": [
+  {"name": "wy_pums", "endpoint": "query", "params": {"dataset": "2024/acs/acs1/pums", "get": "AGEP,HICOV,PINCP", "state": "WY", "AGEP": "90:99", "replicates": true}},
+  {"name": "wy_asec", "endpoint": "query", "params": {"dataset": "2026/cps/asec/mar", "get": "A_AGE,NOW_COV", "state": "WY", "A_AGE": "80:85"}},
+  {"name": "wy_basic", "endpoint": "query", "params": {"dataset": "2026/cps/basic/sep", "get": "PRTAGE,PEMLR", "state": "WY", "PRTAGE": "80:85"}}]},
+ "asec_replicates": {"requests": [{"name": "wy_asec_rw", "endpoint": "query", "params": {"dataset": "2026/cps/asec/mar", "get": "A_AGE,NOW_COV", "state": "WY", "A_AGE": "80:85", "replicates": true}}]}
+}

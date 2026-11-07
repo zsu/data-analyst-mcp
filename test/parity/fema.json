@@ -1,0 +1,6 @@
+{
+ "vermont": {"description": "Vermont FY2023 major disaster declarations; Vermont NFIP claims from the July 2023 flood", "requests": [
+  {"name": "vt_dr_fy2023", "endpoint": "disaster_declarations", "params": {"$filter": "state eq 'VT' and fyDeclared eq 2023 and declarationType eq 'DR'", "$orderby": "id"}, "max_rows": 3},
+  {"name": "vt_claims_2023", "endpoint": "nfip_claims", "params": {"$filter": "state eq 'VT' and yearOfLoss eq 2023", "$select": "id,dateOfLoss,yearOfLoss,floodEvent,state,countyCode,ratedFloodZone,netBuildingPaymentAmount,netContentsPaymentAmount"}, "max_rows": 3},
+  {"name": "regions_csv", "endpoint": "query", "params": {"version": "v2", "entity": "FemaRegions", "$select": "region,name,city,state"}, "max_rows": 3}]}
+}

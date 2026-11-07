@@ -1,0 +1,79 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "monitoring_location_number": "01129400",
+        "monitoring_location_name": "BLACK BROOK AT AVERILL, VT",
+        "county_name": "Essex County",
+        "drainage_area": 0.58
+      },
+      "id": "USGS-01129400",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.6923141271396,
+          45.0039350382815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "monitoring_location_number": "01129420",
+        "monitoring_location_name": "CAPON BROOK AT VT 102, NEAR CANAAN, VT",
+        "county_name": "Essex County",
+        "drainage_area": 4.71
+      },
+      "id": "USGS-01129420",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.5261111111111,
+          44.9369444444444
+        ]
+      }
+    }
+  ],
+  "numberReturned": 2,
+  "links": [
+    {
+      "rel": "next",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?cursor=VVNHUy0wMTEyOTQyMA&state_code=50&site_type_code=ST&properties=monitoring_location_number,monitoring_location_name,county_name,drainage_area&skipGeometry=false&limit=2&f=json",
+      "type": "application/geo+json",
+      "title": "Items (next)"
+    },
+    {
+      "type": "application/geo+json",
+      "rel": "self",
+      "title": "This document as GeoJSON",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=json&state_code=50&site_type_code=ST&properties=monitoring_location_number,monitoring_location_name,county_name,drainage_area&skipGeometry=false&limit=2"
+    },
+    {
+      "rel": "alternate",
+      "type": "application/ld+json",
+      "title": "This document as RDF (JSON-LD)",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=jsonld&state_code=50&site_type_code=ST&properties=monitoring_location_number,monitoring_location_name,county_name,drainage_area&skipGeometry=false&limit=2"
+    },
+    {
+      "type": "text/html",
+      "rel": "alternate",
+      "title": "This document as HTML",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=html&state_code=50&site_type_code=ST&properties=monitoring_location_number,monitoring_location_name,county_name,drainage_area&skipGeometry=false&limit=2"
+    },
+    {
+      "type": "text/csv; charset=utf-8",
+      "rel": "alternate",
+      "title": "This document as CSV",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=csv&state_code=50&site_type_code=ST&properties=monitoring_location_number,monitoring_location_name,county_name,drainage_area&skipGeometry=false&limit=2"
+    },
+    {
+      "type": "application/json",
+      "title": "Monitoring locations",
+      "rel": "collection",
+      "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations"
+    }
+  ],
+  "timeStamp": "2026-10-20T21:06:12.474890Z"
+}

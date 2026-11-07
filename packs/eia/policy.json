@@ -1,0 +1,112 @@
+{
+  "id": "eia",
+  "title": "EIA Open Data API v2 (U.S. Energy Information Administration)",
+  "agency": "U.S. Energy Information Administration",
+  "depth": "standard",
+  "domains": [
+    "energy",
+    "prices",
+    "environment"
+  ],
+  "keywords": [
+    "eia",
+    "energy",
+    "electricity",
+    "electricity prices",
+    "power",
+    "retail sales",
+    "natural gas",
+    "gas prices",
+    "gasoline",
+    "diesel",
+    "crude oil",
+    "oil prices",
+    "wti",
+    "brent",
+    "petroleum",
+    "coal",
+    "nuclear",
+    "renewables",
+    "solar",
+    "wind",
+    "generation",
+    "energy consumption",
+    "energy production",
+    "seds",
+    "state energy",
+    "co2 emissions",
+    "energy expenditures",
+    "monthly energy review",
+    "steo",
+    "annual energy outlook",
+    "aeo",
+    "kilowatt-hour",
+    "btu"
+  ],
+  "questions": [
+    "average retail electricity price by state",
+    "weekly gasoline prices",
+    "WTI crude oil price trend",
+    "energy consumption per capita by state",
+    "natural gas price for residential customers",
+    "electricity generation by fuel type",
+    "CO2 emissions from power plants by state"
+  ],
+  "homepage": "https://www.eia.gov/opendata/",
+  "terms_url": "https://www.eia.gov/about/copyrights_reuse.php",
+  "auth": {
+    "env": "EIA_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "prefix": "",
+    "home": "eia",
+    "signup_url": "https://www.eia.gov/opendata/register.php",
+    "echoes_key": false,
+    "demo_key": "DEMO_KEY",
+    "key_only": [
+      "more than a handful of requests an hour (without a key the pack uses api.data.gov's DEMO_KEY, which allowed 10 requests an hour from one address when checked)"
+    ]
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.eia.gov/v2",
+      "probe": "https://api.eia.gov/v2/",
+      "hosts": [
+        "api.eia.gov"
+      ]
+    },
+    "manual": {
+      "keyless_citation": "U.S. Energy Information Administration, {dataset}, Petroleum & Other Liquids data series history (www.eia.gov/dnav/pet), retrieved {retrieved_long}.",
+      "keyless_file": "Petroleum series without a key (when DEMO_KEY is rate-limited): EIA's history file https://www.eia.gov/dnav/pet/hist_xls/<series><d|w|m|a>.xls (d daily, w weekly, m monthly, a annual; one series per file, 30-500 KB), e.g. EMM_EPMR_PTE_NUS_DPGm.xls (U.S. regular gasoline, monthly), EMD_EPD2D_PTE_NUS_DPGw.xls (diesel, weekly), RWTCd.xls (WTI, daily), MGFUPUS2m.xls (finished motor gasoline product supplied, monthly). Covers a data request of any petroleum/* route that gives facets {\"series\": [one id]}, no other facet, and the value column; --check lists the exact files in keyless_files. Pass the .xls as downloaded to ingest_command (reading it needs the xlrd package), which keeps the request's dates. Not for electricity, natural gas, SEDS or other routes, or several series in one request.",
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each returns JSON with up to 5,000 rows; the links carry DEMO_KEY: replace it with your own free key from https://www.eia.gov/opendata/register.php if the hourly limit is hit), save each under the name shown, upload them, then --ingest. Without the bundle: the API browser https://www.eia.gov/opendata/browser/ builds the same query (route, frequency, facets, dates) and downloads CSV or Excel; or the data pages on eia.gov (e.g. Electric Power Monthly, State Energy Data System) have spreadsheets. Upload the file and say which it is."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Series are updated weekly to annually and revised; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "EIA data are U.S. government works in the public domain (17 U.S.C. 105); EIA's copyright and reuse page asks that EIA be cited as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Energy Information Administration, {dataset}, EIA Open Data API v2 (api.eia.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Nominal or real (inflation-adjusted) prices? EIA prices are nominal unless the series says otherwise.",
+    "Which frequency and sector (residential, commercial, industrial, all sectors)? Averages across sectors mix very different prices."
+  ],
+  "formats": [
+    "json",
+    "csv (API browser)",
+    "xlsx (data pages)"
+  ]
+}

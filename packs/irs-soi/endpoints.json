@@ -1,0 +1,114 @@
+{
+  "base_url": "https://www.irs.gov/pub/irs-soi",
+  "timeout": 120,
+  "endpoints": {
+    "zip_agi": {
+      "path": "/{yy}zpallagi.csv",
+      "method": "GET",
+      "description": "Individual income tax returns by ZIP code and AGI size class (6 classes): number of returns (N*), amounts in thousands of dollars (A*), about 160 items. One all-states file per tax year (216 MB for TY2022), streamed to a temporary file and filtered by state while reading. agi_classes=false reads {yy}zpallnoagi.csv (one row per ZIP, AGI_STUB 0). Tax years 2011-2023.",
+      "first_year": 2011,
+      "last_year_verified": 2023,
+      "stream": true,
+      "params": {
+        "tax_year": {"in": "spec", "desc": "tax year, e.g. 2022 (or start_year/end_year for several; each is one file)"},
+        "start_year": {"in": "spec", "desc": "first tax year of a range"},
+        "end_year": {"in": "spec", "desc": "last tax year of a range"},
+        "state": {"in": "spec", "desc": "state(s): USPS code, FIPS code or name, or a list (required unless zipcode is given)"},
+        "zipcode": {"in": "spec", "desc": "5-digit ZIP code(s) to keep; 00000 = state total, 99999 = small and nonresidential ZIPs combined"},
+        "agi_stub": {"in": "spec", "desc": "AGI size class(es) to keep, 1-6 (see source.md)"},
+        "agi_classes": {"in": "spec", "desc": "false: read the file without AGI classes (one row per ZIP); default true"},
+        "columns": {"in": "spec", "desc": "variables to keep, e.g. [\"N1\", \"A00100\"]; the identifier columns are always kept"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    },
+    "county_agi": {
+      "path": "/{yy}incyallagi.csv",
+      "method": "GET",
+      "description": "Individual income tax returns by county and AGI size class (8 classes), with each state's total as COUNTYFIPS 000: number of returns (N*), amounts in thousands of dollars (A*), about 160 items. One all-states file per tax year (36 MB). agi_classes=false reads {yy}incyallnoagi.csv (one row per county, AGI_STUB 0). Tax years 2011-2023.",
+      "first_year": 2011,
+      "last_year_verified": 2023,
+      "params": {
+        "tax_year": {"in": "spec", "desc": "tax year, e.g. 2022 (or start_year/end_year)"},
+        "start_year": {"in": "spec", "desc": "first tax year of a range"},
+        "end_year": {"in": "spec", "desc": "last tax year of a range"},
+        "state": {"in": "spec", "desc": "state(s): USPS code, FIPS code or name, or a list (default: all states)"},
+        "county": {"in": "spec", "desc": "county(ies): 3-digit county FIPS (with state), 5-digit state+county FIPS, or the county name as published (\"Montgomery County\"); 000 = the state total"},
+        "agi_stub": {"in": "spec", "desc": "AGI size class(es) to keep, 1-8 (see source.md)"},
+        "agi_classes": {"in": "spec", "desc": "false: read the file without AGI classes; default true"},
+        "columns": {"in": "spec", "desc": "variables to keep; the identifier columns are always kept"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    },
+    "state_agi": {
+      "path": "/{yy}in55cmcsv.csv",
+      "method": "GET",
+      "description": "Historic Table 2: individual income tax returns by state and AGI size class (AGI_STUB 0 = all returns, 1-10 = classes), for 50 states, DC, Puerto Rico (PR), other areas (OA) and the United States (US); amounts in thousands of dollars. One file per tax year (0.8 MB): tax years 2012 and 2014-2023 (2013 is published only as .xlsx). File names vary by year (12/14-17in54cmcsv.csv, 18in55cmagi.csv, 19-23in55cmcsv.csv); the adapter picks the right one.",
+      "first_year": 2012,
+      "last_year_verified": 2023,
+      "params": {
+        "tax_year": {"in": "spec", "desc": "tax year, e.g. 2022 (or start_year/end_year)"},
+        "start_year": {"in": "spec", "desc": "first tax year of a range"},
+        "end_year": {"in": "spec", "desc": "last tax year of a range"},
+        "state": {"in": "spec", "desc": "state(s): USPS code, FIPS code or name, or US / PR / OA; default all"},
+        "agi_stub": {"in": "spec", "desc": "AGI size class(es) to keep, 0-10 (0 = all returns)"},
+        "columns": {"in": "spec", "desc": "variables to keep; STATE and AGI_STUB are always kept"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    },
+    "migration": {
+      "path": "/{level}{direction}{y1y2}.csv",
+      "method": "GET",
+      "description": "Taxpayer migration from matched returns of two consecutive filing years: number of returns (N1, about households), individuals (N2) and AGI (thousands of dollars, year-2 return) moving between states or counties. level state|county, direction inflow (into the state/county, by origin) | outflow (out of it, by destination); y1 = first filing year (2022 = 2022-2023). Filing-year pairs 2011-2012 to 2022-2023.",
+      "first_year": 2011,
+      "last_year_verified": 2022,
+      "params": {
+        "level": {"in": "spec", "required": true, "enum": ["state", "county"], "desc": "state-to-state or county-to-county flows"},
+        "direction": {"in": "spec", "required": true, "enum": ["inflow", "outflow"], "desc": "inflow: into the state/county by origin; outflow: out of it by destination"},
+        "y1": {"in": "spec", "desc": "first filing year of the pair, e.g. 2022 for 2022-2023 (or start_y1/end_y1)"},
+        "start_y1": {"in": "spec", "desc": "first y1 of a range of pairs"},
+        "end_y1": {"in": "spec", "desc": "last y1 of a range of pairs"},
+        "state": {"in": "spec", "desc": "the state(s) whose inflow or outflow to keep (destination for inflow, origin for outflow); default all"},
+        "county": {"in": "spec", "desc": "county level: the county(ies) whose flows to keep: 3-digit county FIPS (with state) or 5-digit FIPS"}
+      },
+      "records": "$csv",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    }
+  },
+  "catalog": {
+    "zip": {
+      "id": "zpallagi",
+      "name": "SOI ZIP Code Data (all states, by AGI class)",
+      "endpoint": "zip_agi",
+      "description": "income tax returns, adjusted gross income AGI, wages, credits by ZIP code and income size class; zip code income"
+    },
+    "county": {
+      "id": "incyallagi",
+      "name": "SOI County Data (all states, by AGI class)",
+      "endpoint": "county_agi",
+      "description": "income tax returns, adjusted gross income AGI, wages, earned income credit by county and income size class; county income"
+    },
+    "state": {
+      "id": "in55cmcsv",
+      "name": "SOI Historic Table 2 (state data by AGI class)",
+      "endpoint": "state_agi",
+      "description": "income tax returns and AGI by state and income size class including $1 million or more; national total"
+    },
+    "migration": {
+      "id": "migration",
+      "name": "SOI Migration Data (state-to-state and county-to-county)",
+      "endpoint": "migration",
+      "description": "taxpayer migration inflow outflow between states and counties; households, people and income moving; net migration"
+    }
+  }
+}

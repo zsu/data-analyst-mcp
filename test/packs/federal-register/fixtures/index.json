@@ -1,0 +1,4 @@
+{
+ "GET https://www.federalregister.gov/api/v1/documents.json?conditions%5Btype%5D%5B%5D=PRESDOCU&conditions%5Bpresidential_document_type%5D%5B%5D=executive_order&conditions%5Bcorrection%5D=0&order=newest&fields%5B%5D=executive_order_number&fields%5B%5D=document_number&fields%5B%5D=citation&fields%5B%5D=title&fields%5B%5D=signing_date&fields%5B%5D=publication_date&fields%5B%5D=president&fields%5B%5D=disposition_notes&fields%5B%5D=html_url&fields%5B%5D=pdf_url&conditions%5Bpresident%5D%5B%5D=joe-biden&conditions%5Bpublication_date%5D%5Byear%5D=2024&page=1&per_page=1000": "r001.json",
+ "GET https://www.federalregister.gov/api/v1/documents/facets/yearly?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bagencies%5D%5B%5D=environmental-protection-agency": "r002.json"
+}

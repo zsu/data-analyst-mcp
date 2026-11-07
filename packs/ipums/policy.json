@@ -1,0 +1,215 @@
+{
+  "id": "ipums",
+  "title": "IPUMS microdata (USA/ACS, CPS and other collections)",
+  "agency": "IPUMS, University of Minnesota (Census Bureau and BLS survey microdata)",
+  "depth": "deep",
+  "domains": [
+    "labor",
+    "earnings",
+    "income",
+    "poverty",
+    "demographics",
+    "immigration",
+    "health insurance",
+    "health care spending",
+    "access to care",
+    "survey microdata"
+  ],
+  "keywords": [
+    "ipums",
+    "microdata",
+    "acs",
+    "american community survey",
+    "cps",
+    "current population survey",
+    "asec",
+    "march supplement",
+    "census microdata",
+    "pums",
+    "public use microdata",
+    "immigrants",
+    "foreign born",
+    "nativity",
+    "citizenship",
+    "veterans",
+    "wages",
+    "earnings",
+    "hourly wage",
+    "employment rate",
+    "public vs private pay",
+    "federal pay gap",
+    "health insurance coverage",
+    "poverty",
+    "minimum wage",
+    "education",
+    "weighted estimates",
+    "replicate weights",
+    "atus",
+    "nhis",
+    "national health interview survey",
+    "meps",
+    "medical expenditure panel survey",
+    "health care spending",
+    "medical spending",
+    "out-of-pocket",
+    "out-of-pocket spending",
+    "health expenditures",
+    "uninsured",
+    "usual source of care",
+    "delayed care",
+    "chronic conditions",
+    "union membership",
+    "union members"
+  ],
+  "questions": [
+    "employment rates of immigrants by education",
+    "federal vs private sector wages by education",
+    "share of workers without health insurance by state",
+    "veterans labor force participation",
+    "workers earning near the minimum wage",
+    "custom tabulations from ACS or CPS microdata harmonized across years (codes, CPI99, attached spouse or parent traits)",
+    "uninsured adults by income and age (NHIS)",
+    "out-of-pocket medical spending by age and insurance type (MEPS)"
+  ],
+  "use_instead": [
+    {
+      "question": "A tabulation from one or a few recent ACS PUMS years, one CPS month or one CPS ASEC year (standard errors from 2005 on)",
+      "source": "census",
+      "terms": [
+        "PUMS",
+        "replicate weights",
+        "ASEC"
+      ],
+      "why": "The census pack serves the same Census files with the census key, in seconds, public domain (shareable), with ACS PUMS replicate weights and the ASEC's from Census's replicate weight file."
+    }
+  ],
+  "homepage": "https://www.ipums.org/",
+  "terms_url": "https://www.ipums.org/about/terms",
+  "auth": {
+    "env": "IPUMS_API_KEY",
+    "required": "required",
+    "placement": "header",
+    "param": "Authorization",
+    "prefix": "",
+    "home": "ipums",
+    "signup_url": "https://account.ipums.org/api_keys",
+    "echoes_key": false,
+    "key_only": [
+      "any extract through the API (the website builds the same extract with a free account and no key)"
+    ]
+  },
+  "limits": {
+    "rps": 1.5,
+    "burst": 5,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": null
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.ipums.org",
+      "probe": "https://api.ipums.org/metadata/samples?collection=usa&version=2&pageSize=1",
+      "hosts": [
+        "api.ipums.org"
+      ]
+    },
+    "manual": {
+      "how": "Build the extract on the collection's website (usa.ipums.org, cps.ipums.org, ...) with a free account and no API key, following manual_download/ipums/INSTRUCTIONS.md (exact samples, variables, case selections, CSV format), or run download_ipums.sh / download_ipums.ps1 there with one command (the extract is built in; it asks for your key with hidden input); upload the .csv.gz data file and the .xml DDI codebook, then --ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Extracts are personal to the requesting account and governed by the IPUMS terms; data/ipums/ is reused within a run (reuse_existing) and never cached across analyses."
+  },
+  "redistribution": {
+    "mode": "definition_only",
+    "microdata_globs": [
+      "ipums_extract.csv",
+      "ipums_extract.csv.part",
+      "*.csv.gz",
+      "*.dat",
+      "*.dat.gz",
+      "*_[0-9][0-9][0-9][0-9][0-9].csv",
+      "*_[0-9][0-9][0-9][0-9][0-9].csv.gz",
+      "*.dta",
+      "*.sav",
+      "*.sas7bdat",
+      "*.parquet",
+      "data/ipums/raw/*",
+      "raw/*"
+    ],
+    "package_include": [
+      "extract_spec.json",
+      "README.md",
+      "codebook.csv",
+      "variables.csv",
+      "request.json",
+      "*.xml"
+    ],
+    "why": "IPUMS terms of use: users may not redistribute the data (extracts) without permission, except a subset to meet journal requirements, and must cite IPUMS with the dataset DOI. Ship the extract definition and the reproduce scripts; readers request the same extract under their own account. Aggregated estimates may be published."
+  },
+  "notices": [
+    "IPUMS microdata were used under the IPUMS terms of use; the extract itself is not redistributed. Its definition (extract_spec.json) and the reproduce scripts are included so the extract can be requested again."
+  ],
+  "retention": {
+    "upstream_days": 3,
+    "note": "IPUMS deletes extract files about 72 hours after they are built. Keep data/ipums/extract_spec.json (the definition); it can be resubmitted at any time."
+  },
+  "citation": "{dataset} IPUMS, University of Minnesota, www.ipums.org. Cite the collection and its versioned DOI exactly as data/ipums/README.md gives them (taken from the extract's DDI codebook; for example IPUMS CPS, DOI 10.18128/D030.V13.0). Extract retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "ipums_uncertainty",
+      "kind": "require_text",
+      "any": [
+        "standard error",
+        "replicate weight",
+        "margin of error"
+      ],
+      "why": "Survey microdata estimates are sample-based: the report must state their standard errors or margins of error."
+    },
+    {
+      "id": "ipums_weights",
+      "kind": "require_text",
+      "any": [
+        "weighted by",
+        "survey weight",
+        "person weight",
+        "household weight",
+        "perwt",
+        "asecwt",
+        "wtfinl",
+        "earnwt"
+      ],
+      "why": "Every IPUMS estimate must be weighted; the methods must name the weight."
+    },
+    {
+      "id": "ipums_definition",
+      "kind": "require_file",
+      "glob": "data/ipums/extract_spec.json",
+      "why": "The extract definition is what a replication package ships instead of the microdata."
+    },
+    {
+      "id": "ipums_no_microdata",
+      "kind": "forbid_in_package",
+      "globs": [
+        "data/ipums/ipums_extract.csv",
+        "data/ipums/*.csv.gz",
+        "data/ipums/*.dat*"
+      ],
+      "why": "IPUMS terms forbid redistributing extracts."
+    }
+  ],
+  "clarify": [
+    "Which survey and years (samples)? ACS 1-year for states and small groups, ACS 5-year for very small areas, CPS ASEC for annual income, poverty and insurance (income refers to the previous year), CPS monthly for labor force and hourly earnings, NHIS for insurance at the interview, access and health conditions (no trends across 2019), MEPS for health care spending over a calendar year.",
+    "Universe: ages, civilians only (CPS CLASSWLY 25 includes active-duty military), household vs. group-quarters population, full-time full-year workers?",
+    "Weights and uncertainty: person or household weight, and standard errors by replicate weights (request REPWTP) or design-based (ACS STRATA/CLUSTER)?",
+    "Dollars: nominal or constant (which year, which deflator: CPI99 must be requested)?"
+  ],
+  "formats": [
+    "csv",
+    "csv.gz",
+    "xml"
+  ]
+}

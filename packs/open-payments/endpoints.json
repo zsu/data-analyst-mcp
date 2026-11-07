@@ -1,0 +1,298 @@
+{
+ "base_url": "https://openpaymentsdata.cms.gov",
+ "endpoints": {
+  "query": {
+   "path": "/api/1/datastore/query/{dataset}/{index}",
+   "method": "GET",
+   "description": "DKAN datastore query on one Open Payments dataset (payments by program year, or a summary table).",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (general_2024, state_totals) or dataset id (UUID)"
+    },
+    "index": {
+     "in": "path",
+     "desc": "distribution index; 0 = the dataset's CSV (each dataset has one, checked 2026-10)"
+    },
+    "where": {
+     "desc": "equality filters {column: value}; a list value means IN (recipient_state, program_year, covered_recipient_npi)"
+    },
+    "conditions": {
+     "desc": "list of {property, value, operator}; operators = <> < <= > >= LIKE IN 'NOT IN' BETWEEN CONTAINS 'STARTS WITH'; LIKE uses % and is case-insensitive"
+    },
+    "sort": {
+     "desc": "column or -column (descending), or a list; slow on the payment files"
+    },
+    "columns": {
+     "desc": "list of columns to return (default all, about 90 in the payment files)"
+    }
+   },
+   "defaults": {
+    "index": "0",
+    "schema": "false"
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 500
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "general_2019": {
+   "id": "4e54dd6c-30f8-4f86-86a7-3c109a89528e",
+   "name": "2019 General Payment Data",
+   "description": "Program year 2019. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/4e54dd6c-30f8-4f86-86a7-3c109a89528e"
+  },
+  "research_2019": {
+   "id": "713a6016-1930-4a0c-b7c2-3e3de4f244c5",
+   "name": "2019 Research Payment Data",
+   "description": "Program year 2019. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/713a6016-1930-4a0c-b7c2-3e3de4f244c5"
+  },
+  "ownership_2019": {
+   "id": "0b5c9710-7edb-484e-abc8-39293849ccb2",
+   "name": "2019 Ownership Payment Data",
+   "description": "Program year 2019. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/0b5c9710-7edb-484e-abc8-39293849ccb2"
+  },
+  "general_2020": {
+   "id": "a08c4b30-5cf3-4948-ad40-36f404619019",
+   "name": "2020 General Payment Data",
+   "description": "Program year 2020. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/a08c4b30-5cf3-4948-ad40-36f404619019"
+  },
+  "research_2020": {
+   "id": "9c248e7e-7c7f-478b-ab84-ce0919d72c1c",
+   "name": "2020 Research Payment Data",
+   "description": "Program year 2020. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/9c248e7e-7c7f-478b-ab84-ce0919d72c1c"
+  },
+  "ownership_2020": {
+   "id": "a9a0bf48-6b96-4589-b4c2-3c5dcfbeaca2",
+   "name": "2020 Ownership Payment Data",
+   "description": "Program year 2020. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/a9a0bf48-6b96-4589-b4c2-3c5dcfbeaca2"
+  },
+  "general_2021": {
+   "id": "0380bbeb-aea1-58b6-b708-829f92a48202",
+   "name": "2021 General Payment Data",
+   "description": "Program year 2021. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/0380bbeb-aea1-58b6-b708-829f92a48202"
+  },
+  "research_2021": {
+   "id": "ce1d28dd-0094-5060-a036-580329439600",
+   "name": "2021 Research Payment Data",
+   "description": "Program year 2021. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/ce1d28dd-0094-5060-a036-580329439600"
+  },
+  "ownership_2021": {
+   "id": "b0c03b8d-06df-58f2-8ce2-4daeffee147e",
+   "name": "2021 Ownership Payment Data",
+   "description": "Program year 2021. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/b0c03b8d-06df-58f2-8ce2-4daeffee147e"
+  },
+  "general_2022": {
+   "id": "df01c2f8-dc1f-4e79-96cb-8208beaf143c",
+   "name": "2022 General Payment Data",
+   "description": "Program year 2022. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/df01c2f8-dc1f-4e79-96cb-8208beaf143c"
+  },
+  "research_2022": {
+   "id": "fdc3c773-018a-412c-8a81-d7b8a13a037b",
+   "name": "2022 Research Payment Data",
+   "description": "Program year 2022. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/fdc3c773-018a-412c-8a81-d7b8a13a037b"
+  },
+  "ownership_2022": {
+   "id": "37792388-800f-427a-9e02-b11601454eeb",
+   "name": "2022 Ownership Payment Data",
+   "description": "Program year 2022. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/37792388-800f-427a-9e02-b11601454eeb"
+  },
+  "general_2023": {
+   "id": "fb3a65aa-c901-4a38-a813-b04b00dfa2a9",
+   "name": "2023 General Payment Data",
+   "description": "Program year 2023. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/fb3a65aa-c901-4a38-a813-b04b00dfa2a9"
+  },
+  "research_2023": {
+   "id": "ec9521bf-9d97-4603-814c-f4132d34bc4f",
+   "name": "2023 Research Payment Data",
+   "description": "Program year 2023. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/ec9521bf-9d97-4603-814c-f4132d34bc4f"
+  },
+  "ownership_2023": {
+   "id": "ac0bc85c-02e3-45d9-89e8-2ff43da85df7",
+   "name": "2023 Ownership Payment Data",
+   "description": "Program year 2023. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/ac0bc85c-02e3-45d9-89e8-2ff43da85df7"
+  },
+  "general_2024": {
+   "id": "e6b17c6a-2534-4207-a4a1-6746a14911ff",
+   "name": "2024 General Payment Data",
+   "description": "Program year 2024. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/e6b17c6a-2534-4207-a4a1-6746a14911ff"
+  },
+  "research_2024": {
+   "id": "2f15cb85-8887-4dcc-a318-1f8ec1d815b3",
+   "name": "2024 Research Payment Data",
+   "description": "Program year 2024. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/2f15cb85-8887-4dcc-a318-1f8ec1d815b3"
+  },
+  "ownership_2024": {
+   "id": "9ac4f7f8-b6e4-4d80-8410-4aba7e71dd02",
+   "name": "2024 Ownership Payment Data",
+   "description": "Program year 2024. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/9ac4f7f8-b6e4-4d80-8410-4aba7e71dd02"
+  },
+  "general_2025": {
+   "id": "fb0b1734-1410-429d-92f6-3f4b35218e5e",
+   "name": "2025 General Payment Data",
+   "description": "Program year 2025. General (non-research) payments: one row per payment, with recipient, company, amount, date, nature of payment, product",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/fb0b1734-1410-429d-92f6-3f4b35218e5e"
+  },
+  "research_2025": {
+   "id": "f0d1de67-6852-4093-a036-c9328c256a05",
+   "name": "2025 Research Payment Data",
+   "description": "Program year 2025. Research payments: one row per payment, with study name, principal investigators, amount",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/f0d1de67-6852-4093-a036-c9328c256a05"
+  },
+  "ownership_2025": {
+   "id": "800aed1b-20ed-4d19-b0c9-dcd10f197ffc",
+   "name": "2025 Ownership Payment Data",
+   "description": "Program year 2025. Ownership and investment interests held by physicians or their immediate family",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/800aed1b-20ed-4d19-b0c9-dcd10f197ffc"
+  },
+  "national_totals": {
+   "id": "aaaddc12-a3a7-4cc5-9c12-4a726317aa1c",
+   "name": "National level payment total and averages for all years",
+   "description": "National totals, counts and mean/median payments by program year, payment type and recipient type",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/aaaddc12-a3a7-4cc5-9c12-4a726317aa1c"
+  },
+  "national_by_specialty": {
+   "id": "04c3355f-955b-4620-b3a8-08020cc9c1f2",
+   "name": "National level payment total and averages by provider specialty for all years",
+   "description": "National totals and averages by provider specialty and program year",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/04c3355f-955b-4620-b3a8-08020cc9c1f2"
+  },
+  "state_totals": {
+   "id": "02157882-0f43-473a-a777-c96eb5b1b623",
+   "name": "State level payment total and averages for all years",
+   "description": "State totals, counts, mean and median payments by program year, payment type and recipient type",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/02157882-0f43-473a-a777-c96eb5b1b623"
+  },
+  "state_by_nature": {
+   "id": "7c5144d9-1b2a-5039-a91a-cccb8ed7805c",
+   "name": "State payment totals and averages grouped by Nature of Payment for all years",
+   "description": "State totals by nature of payment (food, consulting, royalty...) and program year",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/7c5144d9-1b2a-5039-a91a-cccb8ed7805c"
+  },
+  "by_reporting_entity": {
+   "id": "d5762bed-26ca-4035-91c9-9d67297dc77c",
+   "name": "Payments grouped by reporting entities",
+   "description": "Totals by company (applicable manufacturer or GPO) and program year",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/d5762bed-26ca-4035-91c9-9d67297dc77c"
+  },
+  "by_entity_and_nature": {
+   "id": "61efcbef-b01d-47c5-a996-b6f09613f856",
+   "name": "Payments grouped by reporting entities and nature of payments for all years",
+   "description": "Totals by company, nature of payment and program year",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/61efcbef-b01d-47c5-a996-b6f09613f856"
+  },
+  "by_recipient_and_entity": {
+   "id": "e49defac-4013-408d-b36f-665fc0ad51b2",
+   "name": "Payments grouped by covered recipient and reporting entities for all years",
+   "description": "Totals by recipient and company, all program years",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/e49defac-4013-408d-b36f-665fc0ad51b2"
+  },
+  "by_recipient_and_nature": {
+   "id": "8d4d1fa0-9419-4993-97ff-9134c95c27a9",
+   "name": "Payments grouped by covered recipient and nature of payments for all years",
+   "description": "Totals by recipient and nature of payment, all program years",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/8d4d1fa0-9419-4993-97ff-9134c95c27a9"
+  },
+  "by_physician": {
+   "id": "895260f5-1ce9-4e7d-9cb2-90564322eed2",
+   "name": "Payments grouped by physician (distinct) for all years",
+   "description": "Totals per physician, all program years",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/895260f5-1ce9-4e7d-9cb2-90564322eed2"
+  },
+  "by_teaching_hospital": {
+   "id": "217ad1a7-b659-41f6-8159-c41b73f47de4",
+   "name": "Payments grouped by Teaching Hospital",
+   "description": "Totals per teaching hospital",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/217ad1a7-b659-41f6-8159-c41b73f47de4"
+  },
+  "summary_dashboard": {
+   "id": "e0d225fc-8230-401d-8fad-e2262fb22b4c",
+   "name": "Summary Dashboard - all years",
+   "description": "Headline totals shown on the Open Payments summary dashboard",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/e0d225fc-8230-401d-8fad-e2262fb22b4c"
+  },
+  "recipient_profiles": {
+   "id": "23160558-6742-54ff-8b9f-cac7d514ff4e",
+   "name": "Covered Recipient Profile Supplement",
+   "description": "Covered recipient profiles: profile id, NPI, name, specialty, address",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/23160558-6742-54ff-8b9f-cac7d514ff4e"
+  },
+  "entity_profiles": {
+   "id": "1cf0c6c0-c377-466e-b78f-037b442559f8",
+   "name": "Reporting entity profile information",
+   "description": "Reporting entity (company) profiles",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/1cf0c6c0-c377-466e-b78f-037b442559f8"
+  },
+  "teaching_hospital_profiles": {
+   "id": "8219fcb3-fb3d-4b51-9f65-be8a048c0608",
+   "name": "Teaching Hospital profile information",
+   "description": "Teaching hospital profiles: CCN, name, address",
+   "endpoint": "query",
+   "page": "https://openpaymentsdata.cms.gov/dataset/8219fcb3-fb3d-4b51-9f65-be8a048c0608"
+  }
+ }
+}

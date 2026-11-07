@@ -1,0 +1,17 @@
+{
+ "data": {
+  "county_name": "Rutland County, VT",
+  "counties_msa": "",
+  "town_name": "Wallingford town",
+  "metro_status": "0",
+  "metro_name": "",
+  "basicdata": {
+   "Efficiency": "758.0",
+   "One-Bedroom": "769.0",
+   "Two-Bedroom": "948.0",
+   "Three-Bedroom": "1186.0",
+   "Four-Bedroom": "1386.0",
+   "year": "2017"
+  }
+ }
+}

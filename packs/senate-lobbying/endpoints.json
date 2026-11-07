@@ -1,0 +1,554 @@
+{
+ "base_url": "https://lda.gov/api/v1",
+ "endpoints": {
+  "filings": {
+   "path": "/filings/",
+   "method": "GET",
+   "description": "LD-1 registrations and LD-2 quarterly activity reports: one row per filing (registrant, client, income or expenses, period, posted date; activities as JSON).",
+   "params": {
+    "filing_year": {
+     "desc": "year, e.g. 2024"
+    },
+    "filing_period": {
+     "desc": "first_quarter | second_quarter | third_quarter | fourth_quarter | mid_year | year_end (older semiannual reports)"
+    },
+    "filing_type": {
+     "desc": "code, e.g. Q1, 1A (Q1 amendment), RR (registration); endpoint filing_types lists all"
+    },
+    "registrant_name": {
+     "desc": "lobbying firm or self-filing organization (substring match)"
+    },
+    "registrant_id": {
+     "desc": "registrant id"
+    },
+    "client_name": {
+     "desc": "client (who the lobbying is for; substring match)"
+    },
+    "client_id": {
+     "desc": "client id"
+    },
+    "client_state": {
+     "desc": "client state, two-letter code"
+    },
+    "client_country": {
+     "desc": "client country code, e.g. US, CN"
+    },
+    "lobbyist_name": {
+     "desc": "lobbyist name (substring)"
+    },
+    "lobbyist_covered_position": {
+     "desc": "former covered government position text, e.g. Chief of Staff"
+    },
+    "filing_specific_lobbying_issues": {
+     "desc": "words in the specific-issues text, e.g. semiconductor or H.R. 4763"
+    },
+    "foreign_entity_name": {
+     "desc": "foreign entity name"
+    },
+    "foreign_entity_country": {
+     "desc": "two-letter country code"
+    },
+    "affiliated_organization_name": {
+     "desc": "affiliated organization"
+    },
+    "filing_amount_reported_min": {
+     "desc": "income or expenses at least (dollars)"
+    },
+    "filing_amount_reported_max": {
+     "desc": "income or expenses at most (dollars)"
+    },
+    "filing_dt_posted_after": {
+     "desc": "posted on or after YYYY-MM-DD"
+    },
+    "filing_dt_posted_before": {
+     "desc": "posted on or before YYYY-MM-DD"
+    },
+    "ordering": {
+     "desc": "e.g. -dt_posted, filing_year, registrant__name"
+    },
+    "client_ppb_state": {
+     "desc": "client principal place of business state"
+    },
+    "lobbyist_conviction_disclosure_indicator": {
+     "desc": "true = a listed lobbyist disclosed a conviction"
+    },
+    "foreign_entity_listed_indicator": {
+     "desc": "true = the filing lists a foreign entity"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "filing_activities": {
+   "path": "/filings/",
+   "method": "GET",
+   "description": "The same filings, one row per lobbying activity (issue code, specific issues text, lobbyists, government entities contacted). Optional issue_code filters client-side (the API has no issue filter).",
+   "params": {
+    "filing_year": {
+     "desc": "year, e.g. 2024"
+    },
+    "filing_period": {
+     "desc": "first_quarter | second_quarter | third_quarter | fourth_quarter | mid_year | year_end (older semiannual reports)"
+    },
+    "filing_type": {
+     "desc": "code, e.g. Q1, 1A (Q1 amendment), RR (registration); endpoint filing_types lists all"
+    },
+    "registrant_name": {
+     "desc": "lobbying firm or self-filing organization (substring match)"
+    },
+    "registrant_id": {
+     "desc": "registrant id"
+    },
+    "client_name": {
+     "desc": "client (who the lobbying is for; substring match)"
+    },
+    "client_id": {
+     "desc": "client id"
+    },
+    "client_state": {
+     "desc": "client state, two-letter code"
+    },
+    "client_country": {
+     "desc": "client country code, e.g. US, CN"
+    },
+    "lobbyist_name": {
+     "desc": "lobbyist name (substring)"
+    },
+    "lobbyist_covered_position": {
+     "desc": "former covered government position text, e.g. Chief of Staff"
+    },
+    "filing_specific_lobbying_issues": {
+     "desc": "words in the specific-issues text, e.g. semiconductor or H.R. 4763"
+    },
+    "foreign_entity_name": {
+     "desc": "foreign entity name"
+    },
+    "foreign_entity_country": {
+     "desc": "two-letter country code"
+    },
+    "affiliated_organization_name": {
+     "desc": "affiliated organization"
+    },
+    "filing_amount_reported_min": {
+     "desc": "income or expenses at least (dollars)"
+    },
+    "filing_amount_reported_max": {
+     "desc": "income or expenses at most (dollars)"
+    },
+    "filing_dt_posted_after": {
+     "desc": "posted on or after YYYY-MM-DD"
+    },
+    "filing_dt_posted_before": {
+     "desc": "posted on or before YYYY-MM-DD"
+    },
+    "ordering": {
+     "desc": "e.g. -dt_posted, filing_year, registrant__name"
+    },
+    "issue_code": {
+     "desc": "general issue code kept after download, e.g. TAX, HCR, TRD (filter applied by the pack)"
+    },
+    "client_ppb_state": {
+     "desc": "client principal place of business state"
+    },
+    "lobbyist_conviction_disclosure_indicator": {
+     "desc": "true = a listed lobbyist disclosed a conviction"
+    },
+    "foreign_entity_listed_indicator": {
+     "desc": "true = the filing lists a foreign entity"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "filing": {
+   "path": "/filings/{filing_uuid}/",
+   "method": "GET",
+   "description": "One filing with every field.",
+   "params": {
+    "filing_uuid": {
+     "in": "path",
+     "required": true,
+     "desc": "filing uuid"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "contributions": {
+   "path": "/contributions/",
+   "method": "GET",
+   "description": "LD-203 contribution reports (semiannual): one row per contribution item (contributor, payee, honoree, amount, date); reports with no contributions give one row with no_contributions=True.",
+   "params": {
+    "filing_year": {
+     "desc": "year"
+    },
+    "filing_period": {
+     "desc": "mid_year | year_end"
+    },
+    "filing_type": {
+     "desc": "MM (mid-year) | YE (year-end) and amendments"
+    },
+    "registrant_name": {
+     "desc": "registrant (substring)"
+    },
+    "registrant_id": {
+     "desc": "registrant id"
+    },
+    "lobbyist_name": {
+     "desc": "lobbyist (substring)"
+    },
+    "lobbyist_id": {
+     "desc": "lobbyist id"
+    },
+    "contribution_contributor": {
+     "desc": "contributor name"
+    },
+    "contribution_payee": {
+     "desc": "payee name, e.g. a campaign committee"
+    },
+    "contribution_honoree": {
+     "desc": "honoree name, e.g. a member of Congress"
+    },
+    "contribution_type": {
+     "desc": "feca | he (honorary expense) | me (meeting expense) | ple (presidential library) | pic (inaugural committee)"
+    },
+    "contribution_amount_min": {
+     "desc": "item amount at least"
+    },
+    "contribution_amount_max": {
+     "desc": "item amount at most"
+    },
+    "contribution_date_after": {
+     "desc": "YYYY-MM-DD"
+    },
+    "contribution_date_before": {
+     "desc": "YYYY-MM-DD"
+    },
+    "filing_dt_posted_after": {
+     "desc": "YYYY-MM-DD"
+    },
+    "filing_dt_posted_before": {
+     "desc": "YYYY-MM-DD"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "registrants": {
+   "path": "/registrants/",
+   "method": "GET",
+   "description": "Registrants (lobbying firms and self-filers).",
+   "params": {
+    "registrant_name": {
+     "desc": "name (substring)"
+    },
+    "id": {
+     "desc": "registrant id (registrant_id is accepted and sent as id)"
+    },
+    "state": {
+     "desc": "two-letter"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "clients": {
+   "path": "/clients/",
+   "method": "GET",
+   "description": "Clients (organizations on whose behalf lobbying is done).",
+   "params": {
+    "client_name": {
+     "desc": "name (substring)"
+    },
+    "id": {
+     "desc": "client id (client_id is accepted and sent as id)"
+    },
+    "client_state": {
+     "desc": "two-letter (state is accepted and sent as client_state)"
+    },
+    "registrant_name": {
+     "desc": "registrant"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "lobbyists": {
+   "path": "/lobbyists/",
+   "method": "GET",
+   "description": "Individual lobbyists and their registrants.",
+   "params": {
+    "lobbyist_name": {
+     "desc": "name (substring)"
+    },
+    "registrant_name": {
+     "desc": "registrant"
+    }
+   },
+   "defaults": {
+    "page_size": 25
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "next"
+   },
+   "max_rows": 20000
+  },
+  "issue_codes": {
+   "path": "/constants/filing/lobbyingactivityissues/",
+   "method": "GET",
+   "description": "General issue codes (value, name).",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "filing_types": {
+   "path": "/constants/filing/filingtypes/",
+   "method": "GET",
+   "description": "Filing type codes (value, name), amendments and terminations included.",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "government_entities": {
+   "path": "/constants/filing/governmententities/",
+   "method": "GET",
+   "description": "Government entities that can be listed as contacted.",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "hcr": {
+   "id": "HCR",
+   "name": "Health Issues",
+   "description": "general issue code HCR: Health Issues (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "mmm": {
+   "id": "MMM",
+   "name": "Medicare/Medicaid",
+   "description": "general issue code MMM: Medicare/Medicaid (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "pha": {
+   "id": "PHA",
+   "name": "Pharmacy",
+   "description": "general issue code PHA: Pharmacy (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "tax": {
+   "id": "TAX",
+   "name": "Taxation/Internal Revenue Code",
+   "description": "general issue code TAX: Taxation/Internal Revenue Code (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "bud": {
+   "id": "BUD",
+   "name": "Budget/Appropriations",
+   "description": "general issue code BUD: Budget/Appropriations (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "def": {
+   "id": "DEF",
+   "name": "Defense",
+   "description": "general issue code DEF: Defense (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "env": {
+   "id": "ENV",
+   "name": "Environment/Superfund",
+   "description": "general issue code ENV: Environment/Superfund (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "eng": {
+   "id": "ENG",
+   "name": "Energy/Nuclear",
+   "description": "general issue code ENG: Energy/Nuclear (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "fue": {
+   "id": "FUE",
+   "name": "Fuel/Gas/Oil",
+   "description": "general issue code FUE: Fuel/Gas/Oil (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "trd": {
+   "id": "TRD",
+   "name": "Trade (domestic/foreign)",
+   "description": "general issue code TRD: Trade (domestic/foreign) (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "fin": {
+   "id": "FIN",
+   "name": "Financial Institutions/Investments/Securities",
+   "description": "general issue code FIN: Financial Institutions/Investments/Securities (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "ban": {
+   "id": "BAN",
+   "name": "Banking",
+   "description": "general issue code BAN: Banking (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "sci": {
+   "id": "SCI",
+   "name": "Science/Technology",
+   "description": "general issue code SCI: Science/Technology (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "tec": {
+   "id": "TEC",
+   "name": "Telecommunications",
+   "description": "general issue code TEC: Telecommunications (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "cpi": {
+   "id": "CPI",
+   "name": "Computer Industry",
+   "description": "general issue code CPI: Computer Industry (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "edu": {
+   "id": "EDU",
+   "name": "Education",
+   "description": "general issue code EDU: Education (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "imm": {
+   "id": "IMM",
+   "name": "Immigration",
+   "description": "general issue code IMM: Immigration (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "lbr": {
+   "id": "LBR",
+   "name": "Labor Issues/Antitrust/Workplace",
+   "description": "general issue code LBR: Labor Issues/Antitrust/Workplace (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "tra": {
+   "id": "TRA",
+   "name": "Transportation",
+   "description": "general issue code TRA: Transportation (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "agr": {
+   "id": "AGR",
+   "name": "Agriculture",
+   "description": "general issue code AGR: Agriculture (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "hou": {
+   "id": "HOU",
+   "name": "Housing",
+   "description": "general issue code HOU: Housing (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "csp": {
+   "id": "CSP",
+   "name": "Consumer Issues/Safety/Products",
+   "description": "general issue code CSP: Consumer Issues/Safety/Products (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "gov": {
+   "id": "GOV",
+   "name": "Government Issues",
+   "description": "general issue code GOV: Government Issues (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "law": {
+   "id": "LAW",
+   "name": "Law Enforcement/Crime/Criminal Justice",
+   "description": "general issue code LAW: Law Enforcement/Crime/Criminal Justice (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "hom": {
+   "id": "HOM",
+   "name": "Homeland Security",
+   "description": "general issue code HOM: Homeland Security (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "ins": {
+   "id": "INS",
+   "name": "Insurance",
+   "description": "general issue code INS: Insurance (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "cpt": {
+   "id": "CPT",
+   "name": "Copyright/Patent/Trademark",
+   "description": "general issue code CPT: Copyright/Patent/Trademark (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "ret": {
+   "id": "RET",
+   "name": "Retirement",
+   "description": "general issue code RET: Retirement (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "vet": {
+   "id": "VET",
+   "name": "Veterans",
+   "description": "general issue code VET: Veterans (use issue_code with filing_activities)",
+   "endpoint": "filing_activities"
+  },
+  "filing_type_codes": {
+   "id": "Q1 Q2 Q3 Q4; 1A-4A amendments; 1T-4T terminations; RR registration; RA registration amendment; MM / YE contribution periods",
+   "name": "Filing types",
+   "description": "filing_type values; endpoint filing_types lists every code with its name",
+   "endpoint": "filing_types"
+  }
+ }
+}

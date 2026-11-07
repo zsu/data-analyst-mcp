@@ -1,0 +1,114 @@
+{
+  "base_url": "https://acf.gov",
+  "timeout": 60,
+  "endpoints": {
+    "tanf_financial": {
+      "path": "/ofa/data/tanf-financial-data-fy-{fiscal_year}",
+      "description": "One table of the TANF and MOE Financial Data workbook for a fiscal year (federal TANF and state maintenance-of-effort expenditures reported on the ACF-196R): A.1 national spending by category (federal, state MOE, all funds), A.2-A.4 comparisons with the prior year, A.5 federal funds available, A.6 federal funds by state (awards, carryover, transfers to CCDF and SSBG, expenditures, unliquidated and unobligated), B total (federal + MOE) by state and category, C.1 federal by state and category, C.2 state MOE by state and category, C.3 MOE spending against the 80%/75% requirement, a state's own category table (table = the state), E.1-E.5 by funding stream (SFAG, MOE in TANF, MOE in separate state programs, Contingency Fund), F transitional services and Job Access. Manual download only (acf.gov refuses scripts): --check writes the browser link, --ingest reads the saved .xlsx.",
+      "params": {
+        "fiscal_year": {"in": "spec", "required": true, "desc": "federal fiscal year (October-September), e.g. 2024; workbooks with the ACF-196R categories cover FY 2015 on"},
+        "table": {"in": "spec", "desc": "table code (A.1, A.2 ... A.6, B, C.1, C.2, C.3, E.1 ... E.5, F), a state name or USPS code for that state's category table (Alabama, DC), or the exact sheet name; default A.1"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names, e.g. 2 or [4, 5]; default: detected"}
+      }
+    },
+    "tanf_caseload": {
+      "path": "/ofa/data/tanf-caseload-data-{fiscal_year}",
+      "description": "One table of the TANF caseload workbook for a fiscal year: families (total, two-parent, one-parent, no-parent) or recipients (total, adults, children) by state and month with the fiscal-year (and, in the 15-month files, calendar-year) average; one month's table by state (all seven counts); or the fiscal/calendar-year averages. program picks the TANF, separate state program (SSP-MOE) or combined TANF & SSP-MOE workbook. Manual download only (acf.gov refuses scripts).",
+      "params": {
+        "fiscal_year": {"in": "spec", "required": true, "desc": "federal fiscal year, e.g. 2025 (the FY 2018, 2024 and 2025 workbooks run 15 months, October to the next December, and add calendar-year averages)"},
+        "program": {"in": "spec", "enum": ["tanf", "ssp", "tanf_ssp"], "desc": "tanf (default): families and recipients in TANF; ssp: separate state programs funded with MOE (SSP-MOE); tanf_ssp: the two combined"},
+        "table": {"in": "spec", "desc": "families (default), two_parent, one_parent, no_parent, recipients, adults, children (by state and month); avg_families or avg_recipients (fiscal- and calendar-year averages); a month as YYYY-MM (one month, all counts by state); or the exact sheet name"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names; default: detected"}
+      }
+    },
+    "ccdf_expenditures": {
+      "path": "/occ/data/fy-{fiscal_year}-ccdf-state-expenditure-data",
+      "description": "One table of the CCDF expenditure workbooks (ACF-696 reports): file all_years = spending during a fiscal year from all grant years (Table 1a by fund and grant year, 2a unliquidated funds, 3a by state and category: admin, quality, infant/toddler quality, direct services, non-direct services; 4a by state and fund: mandatory, federal and state matching, discretionary, MOE, CARES, CRRSA, ARP); file grant_year = one grant year's award as of a quarter end (Table 1b by category, 2b awards and TANF transfers by state, 3b mandatory, 4b matching, 5b state match, 6b discretionary, 7b-8b MOE, later tables the supplemental funds). Manual download only (acf.gov refuses scripts).",
+      "params": {
+        "fiscal_year": {"in": "spec", "required": true, "desc": "fiscal year (file all_years) or grant year (file grant_year), e.g. 2022"},
+        "file": {"in": "spec", "enum": ["all_years", "grant_year"], "desc": "all_years (default): FY spending from all appropriation years (tables 1a-4a); grant_year: one grant year's award (tables 1b-8b, more for 2020-2021)"},
+        "as_of": {"in": "spec", "desc": "grant_year only: year of the September 30 quarter end of the report (a grant year is reported as of 9/30 of the grant year and of up to two later years); default the latest known"},
+        "table": {"in": "spec", "desc": "table number such as 4a, 3a, 1b, 2b (or 'Table 4a'), or the exact sheet name; default 4a (all_years) or 1b (grant_year)"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names; default: detected"}
+      }
+    }
+  },
+  "pages": {
+    "tanf_financial": "/ofa/data/tanf-financial-data-fy-{year}",
+    "tanf_caseload": "/ofa/data/tanf-caseload-data-{year}",
+    "ccdf_year": "/occ/data/fy-{year}-ccdf-state-expenditure-data",
+    "ccdf_year_2011_2017": "/occ/resource/fy-{year}-ccdf-state-expenditure-data",
+    "ccdf_list": "/occ/data/child-care-and-development-fund-expenditure-data-list-all-years",
+    "tanf_data_reports": "/ofa/programs/tanf/data-reports"
+  },
+  "verified": "2026-10-30, from Internet Archive captures of the acf.gov pages (acf.gov itself refuses scripts)",
+  "tanf_financial_files": {
+    "2014": "/sites/default/files/documents/ofa/tanf_financial_data_fy_2014.xlsx",
+    "2015": "/sites/default/files/documents/ofa/tanf_financial_data_fy_2015_8217.xlsx",
+    "2016": "/sites/default/files/documents/ofa/tanf_financial_data_fy_2016_121817.xlsx",
+    "2017": "/sites/default/files/documents/ofa/tanf_financial_data_fy_2017_12819_values.xlsx",
+    "2018": "/sites/default/files/documents/ofa/tanf_financial_data_fy_2018_8719.xlsx",
+    "2020": "/sites/default/files/documents/ofa/fy2020_tanf_financial_data_table_092221.xlsx",
+    "2021": "/sites/default/files/documents/ofa/fy2021_tanf_financial_data_table_20221201.xlsx",
+    "2022": "/sites/default/files/documents/ofa/fy2022_tanf_and_moe_financial_data_table-final.xlsx",
+    "2023": "/sites/default/files/documents/ofa/fy2023_tanf_and_moe_financial_data_table-final.xlsx",
+    "2024": "/sites/default/files/documents/ofa/fy-2024-tanf-moe-financial-data.xlsx"
+  },
+  "tanf_caseload_files": {
+    "2018": {"tanf": "/sites/default/files/documents/ofa/2018_15months_tan_web_03252019.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/2018_15months_ssp_web_03252019.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/2018_15months_tanssp_web_03252019.xlsx"},
+    "2019": {"tanf": "/sites/default/files/documents/ofa/fy2019_tanf_caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2019_ssp_caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2019_tanfssp_caseload.xlsx"},
+    "2020": {"tanf": "/sites/default/files/documents/ofa/fy2020_tanf_caseload_0.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2020__ssp_caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2020_tanfssp_caseload_0.xlsx"},
+    "2021": {"tanf": "/sites/default/files/documents/ofa/fy2021_tanf_caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2021_ssp_caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2021_tanfssp_caseload.xlsx"},
+    "2022": {"tanf": "/sites/default/files/documents/ofa/fy2022_tanf_caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2022_ssp_caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2022_tanfssp_caseload.xlsx"},
+    "2023": {"tanf": "/sites/default/files/documents/ofa/fy2023_tanf_caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2023_ssp_caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2023_tanssp_caseload.xlsx"},
+    "2024": {"tanf": "/sites/default/files/documents/ofa/fy2024-15months-tanf-caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2024-15months-ssp-caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2024-15months-tanssp-caseload.xlsx"},
+    "2025": {"tanf": "/sites/default/files/documents/ofa/fy2025-tanf-caseload.xlsx",
+             "ssp": "/sites/default/files/documents/ofa/fy2025-ssp-caseload.xlsx",
+             "tanf_ssp": "/sites/default/files/documents/ofa/fy2025-tanssp-caseload.xlsx"}
+  },
+  "ccdf_files": {
+    "all_years": {
+      "2019": {"page": "/occ/data/ccdf-expenditures-fy-2019-all-appropriation-years",
+               "file": "/sites/default/files/documents/occ/ALL%20YEARS%20FY%202019%20Expenditures.xlsx"},
+      "2020": {"page": "/occ/data/ccdf-expenditures-fy-2020-all-appropriation-years",
+               "file": "/sites/default/files/documents/occ/CCDF_Expenditures_for_FY_2020_all_appropriation_years.xlsx"},
+      "2021": {"page": "/occ/data/ccdf-expenditures-fy-2021-all-appropriation-years",
+               "file": "/sites/default/files/documents/occ/ccdf-expenditures-for-fy-2021-all-appropriation-years.xlsx"},
+      "2022": {"page": "/occ/data/ccdf-expenditures-fy-2022-all-appropriation-years",
+               "file": "/sites/default/files/documents/occ/ccdf-expenditures-for-fy-2022-all-appropriation-years.xlsx"}
+    },
+    "grant_year": {
+      "2020": {"2022": {"page": "/occ/data/ccdf-expenditures-gy-2020-9-30-2022-tables-1b-10b",
+                        "file": "/sites/default/files/documents/occ/ccdf-expenditures-for-gy-2020-as-of-9-30-2022-tables-1b-10b.xlsx"}},
+      "2021": {"2022": {"page": "/occ/data/ccdf-expenditures-gy-2021-9-30-2022-tables-1b-12b",
+                        "file": "/sites/default/files/documents/occ/ccdf-expenditures-for-gy-2021-as-of-9-30-2022-tables-1b-12b.xlsx"}},
+      "2022": {"2022": {"page": "/occ/data/ccdf-expenditures-gy-2022-9-30-2022-tables-1b-8b",
+                        "file": "/sites/default/files/documents/occ/ccdf-expenditures-for-gy-2022-as-of-9-30-2022-tables-1b-8b.xlsx"}}
+    }
+  },
+  "caseload_tables": {
+    "families": "total number of families",
+    "two_parent": "two parent families",
+    "one_parent": "one parent families",
+    "no_parent": "no parent families",
+    "recipients": "total number of recipients",
+    "adults": "adult recipients",
+    "children": "child recipients",
+    "avg_families": "average monthly number of families",
+    "avg_recipients": "average monthly number of recipients"
+  }
+}

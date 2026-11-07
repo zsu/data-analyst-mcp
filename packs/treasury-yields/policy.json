@@ -1,0 +1,86 @@
+{
+  "id": "treasury-yields",
+  "title": "Treasury Daily Interest Rate Statistics (home.treasury.gov)",
+  "agency": "U.S. Department of the Treasury, Office of Debt Management",
+  "depth": "standard",
+  "domains": [
+    "interest rates",
+    "bond market",
+    "finance"
+  ],
+  "keywords": [
+    "treasury yield",
+    "yield curve",
+    "par yield",
+    "10-year yield",
+    "2-year yield",
+    "30-year yield",
+    "constant maturity",
+    "cmt",
+    "term spread",
+    "inversion",
+    "real yield",
+    "tips",
+    "breakeven",
+    "bill rates",
+    "t-bill",
+    "long-term rate",
+    "market yields",
+    "interest rates"
+  ],
+  "questions": [
+    "10-year Treasury yield since 2020",
+    "is the yield curve inverted",
+    "2s10s spread history",
+    "TIPS real yields",
+    "3-month bill rate",
+    "30-year Treasury yield"
+  ],
+  "homepage": "https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics",
+  "terms_url": "https://home.treasury.gov/footer/privacy-act",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates",
+      "probe": "https://home.treasury.gov/robots.txt",
+      "hosts": [
+        "home.treasury.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics, pick the rate type (Daily Treasury Par Yield Curve Rates, Par Real Yield Curve, Bill Rates, Long-Term Rates, Real Long-Term Rates) and the year, choose Download CSV, and upload one file per year; or open the links in INSTRUCTIONS.md."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "One small CSV per year (5-20 KB); the current year grows daily, so data/ is reused within a run only."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Treasury interest rate statistics are U.S. government works in the public domain (17 U.S.C. 105); cite Treasury and the retrieval date."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of the Treasury, Daily Treasury Interest Rate Statistics, {dataset}, home.treasury.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Nominal par yields (CMT) or real (TIPS) yields? Bill rates come as bank discount and coupon equivalent: say which.",
+    "Daily values, or monthly or annual averages of business days (Treasury's own averages use business days with data)?"
+  ],
+  "formats": [
+    "csv",
+    "xml"
+  ]
+}

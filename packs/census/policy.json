@@ -1,0 +1,238 @@
+{
+  "id": "census",
+  "title": "Census Bureau Data API (ACS, decennial census, population estimates, SIPP, economic indicators, international trade, government finances)",
+  "agency": "U.S. Census Bureau",
+  "depth": "standard",
+  "domains": [
+    "demographics",
+    "population",
+    "income",
+    "housing",
+    "poverty",
+    "education",
+    "program participation",
+    "international trade",
+    "state and local government finance",
+    "economic indicators",
+    "survey microdata"
+  ],
+  "keywords": [
+    "census",
+    "acs",
+    "american community survey",
+    "population",
+    "median household income",
+    "household income",
+    "poverty",
+    "poverty rate",
+    "median home value",
+    "home value",
+    "rent",
+    "median rent",
+    "housing",
+    "homeownership",
+    "renters",
+    "education attainment",
+    "bachelor's degree",
+    "age",
+    "median age",
+    "race",
+    "hispanic",
+    "language",
+    "commute",
+    "health insurance",
+    "uninsured",
+    "county",
+    "counties",
+    "zip code",
+    "zcta",
+    "tract",
+    "city",
+    "place",
+    "decennial",
+    "2020 census",
+    "population estimates",
+    "per capita",
+    "per 1,000 residents",
+    "per 100,000 residents",
+    "per resident",
+    "demographic profile",
+    "state profile",
+    "pums",
+    "acs pums",
+    "public use microdata",
+    "census microdata",
+    "microdata",
+    "replicate weights",
+    "cps microdata",
+    "current population survey",
+    "asec",
+    "march supplement",
+    "cps basic monthly",
+    "custom tabulations",
+    "sipp",
+    "survey of income and program participation",
+    "program participation",
+    "month to month income",
+    "income dynamics",
+    "snap participation",
+    "ssi",
+    "health coverage spells",
+    "assets and debts",
+    "retail sales",
+    "housing starts",
+    "building permits",
+    "construction spending",
+    "economic indicators",
+    "qtax",
+    "state and local tax revenue",
+    "state tax collections",
+    "government finances",
+    "state and local government spending",
+    "public pensions",
+    "pension assets",
+    "imports",
+    "exports",
+    "international trade",
+    "hs code",
+    "customs duty",
+    "tariff revenue",
+    "trade deficit",
+    "household pulse",
+    "pulse survey",
+    "household hardship",
+    "difficulty paying expenses",
+    "food scarcity",
+    "unable to pay energy bill",
+    "homeownership rate",
+    "vacancy rate",
+    "rental vacancy rate",
+    "homeowner vacancy rate"
+  ],
+  "questions": [
+    "median household income by county in a state",
+    "poverty rate by state",
+    "population of a city",
+    "median home value and rent in a county",
+    "share of adults with a bachelor's degree by state",
+    "population for per-capita calculations",
+    "month-to-month income and program participation from SIPP",
+    "custom tabulation from ACS PUMS with replicate-weight standard errors (uninsured adults by age and income in a state)",
+    "custom tabulation from one CPS month, or one CPS ASEC year with replicate-weight standard errors (poverty, income, insurance)",
+    "monthly retail sales or housing starts",
+    "quarterly state and local tax revenue by state (QTAX)",
+    "state and local government revenue, spending and debt by state",
+    "imports from a country by HS chapter and the duty calculated on them",
+    "share of adults with difficulty paying usual household expenses (Household Pulse)",
+    "quarterly homeownership rate and rental vacancy rate"
+  ],
+  "homepage": "https://www.census.gov/data/developers.html",
+  "terms_url": "https://www.census.gov/data/developers/about/terms-of-service.html",
+  "auth": {
+    "env": "CENSUS_API_KEY",
+    "required": "required",
+    "placement": "query",
+    "param": "key",
+    "prefix": "",
+    "home": "census",
+    "signup_url": "https://api.census.gov/data/key_signup.html",
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 10,
+    "max_rows": 500000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.census.gov/data",
+      "probe": "https://api.census.gov/data/2020/dec/pl/variables/NAME.json",
+      "hosts": [
+        "api.census.gov",
+        "www2.census.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser after replacing {API_KEY} with your own free Census key (https://api.census.gov/data/key_signup.html), or run download_data.sh / download_data.ps1 (one command; asks for the key with hidden input); save each JSON file under the name shown and upload it, then --ingest. Without the bundle: on https://data.census.gov search the table (e.g. B19013), choose the geography and year, and use Download Table (CSV); upload it and say it is a data.census.gov export (its layout differs: one estimate and one margin-of-error column per geography)."
+    }
+  },
+  "cache": {
+    "mode": "persistent",
+    "ttl_hours": 720,
+    "why": "Only API metadata is cached on disk (variables.json lists for --search and the dataset discovery checks behind 'latest'); it changes once a release. Data queries are never cached: data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Census Bureau statistics are U.S. government works in the public domain (17 U.S.C. 105); the Census Data API Terms of Service require the notice that the product uses the API but is not endorsed or certified by the Census Bureau."
+  },
+  "notices": [
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+  ],
+  "retention": null,
+  "citation": "U.S. Census Bureau, {dataset}, Census Data API (api.census.gov), retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "census_moe",
+      "kind": "require_text",
+      "any": [
+        "margin of error",
+        "moe"
+      ],
+      "why": "ACS figures are survey estimates; a report must give or discuss their margins of error (90% level) before comparing places or years."
+    }
+  ],
+  "clarify": [
+    "ACS 1-year (latest single year, only areas of 65,000+ people) or 5-year (all areas, pooled over five years, less current)? Do not compare a 1-year with a 5-year estimate.",
+    "Report estimates alone or with margins of error (90%), and test differences for significance? Small areas often have large margins.",
+    "Which geography vintage? County and place boundaries and codes change (Connecticut planning regions replaced counties from ACS 2022); 5-year estimates use the boundaries of their final year."
+  ],
+  "formats": [
+    "json"
+  ],
+  "use_instead": [
+    {
+      "question": "Monthly unemployment and payroll jobs",
+      "source": "bls",
+      "terms": [
+        "unemployment",
+        "CES"
+      ],
+      "why": "BLS produces both."
+    },
+    {
+      "question": "GDP and personal income by state",
+      "source": "bea",
+      "terms": [
+        "personal income"
+      ],
+      "why": "BEA regional accounts."
+    },
+    {
+      "question": "Microdata series harmonized across decades, ASEC standard errors before 2005, NHIS, MEPS or historical censuses",
+      "source": "ipums",
+      "terms": [
+        "NHIS",
+        "MEPS",
+        "harmonized"
+      ],
+      "why": "IPUMS codes each variable the same way across years and carries ASEC replicate weights for every year; ACS PUMS and single CPS files (ASEC replicates from 2005) come from this pack."
+    },
+    {
+      "question": "International comparisons",
+      "source": "world-bank",
+      "terms": [
+        "World Development Indicators"
+      ],
+      "why": "World Bank indicators across countries."
+    },
+    {
+      "question": "Federal spending by state",
+      "source": "usaspending",
+      "terms": [
+        "obligations"
+      ],
+      "why": "USAspending awards by place of performance."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "SPORDER",
+  "label": "Person number",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "PWGTP",
+  "values": {
+    "range": [
+      {
+        "min": "1",
+        "max": "20",
+        "description": "Person number"
+      }
+    ]
+  }
+}

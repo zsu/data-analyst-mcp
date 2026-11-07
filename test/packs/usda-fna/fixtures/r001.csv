@@ -1,0 +1,31 @@
+Option Selection,Policy Option with Aliases,State,Policy Option Field,Policy Option with Aliases,% Counting Option Selection ,Counting Option Selection
+"4,6,12",Certification Period Lengths ,Texas,Certification Period Lengths Months,Certification Period Lengths ,0.113207547,6
+"12,24",Certification Period Lengths ,California,Certification Period Lengths Months,Certification Period Lengths ,0.339622642,18
+BBCE,Broad-Based Categorical Eligibility (BBCE),California,Broad-Based Categorical Eligibility (BBCE),Broad-Based Categorical Eligibility (BBCE),0.830188679,44
+BBCE,Broad-Based Categorical Eligibility (BBCE),Texas,Broad-Based Categorical Eligibility (BBCE),Broad-Based Categorical Eligibility (BBCE),0.830188679,44
+Deducted from income,Treatment of Child Support Payments,Texas,Treatment of Child Support Payments,Treatment of Child Support Payments,0.735849057,39
+Disqualify only the individual who fails to comply,Work Req: Option to Disqualify the Entire Household,California,Work Requirements: Option to Disqualify the Entire Household,Work Req: Option to Disqualify the Entire Household,0.849056604,45
+Disqualify the entire household if the head of household fails to comply,Work Req: Option to Disqualify the Entire Household,Texas,Work Requirements: Option to Disqualify the Entire Household,Work Req: Option to Disqualify the Entire Household,0.150943396,8
+Excluded from income,Treatment of Child Support Payments,California,Treatment of Child Support Payments,Treatment of Child Support Payments,0.264150943,14
+Mandatory SUAs,Treatment of Utility Expenses,California,Treatment of Utility Expenses,Treatment of Utility Expenses,0.924528302,49
+Mandatory SUAs,Treatment of Utility Expenses,Texas,Treatment of Utility Expenses,Treatment of Utility Expenses,0.924528302,49
+Minimum disqualification periods,Work Req: Disqualification Period Policy,California,Work Requirements: Disqualification Period Policy,Work Req: Disqualification Period Policy,0.716981132,38
+Minimum disqualification periods,Work Req: Disqualification Period Policy,Texas,Work Requirements: Disqualification Period Policy,Work Req: Disqualification Period Policy,0.716981132,38
+Modified disqualification,Drug Felony Disqualifications,California,Drug Felony Disqualifications,Drug Felony Disqualifications,0.452830189,24
+Modified disqualification,Drug Felony Disqualifications,Texas,Drug Felony Disqualifications,Drug Felony Disqualifications,0.452830189,24
+No comparable disqualifications,Comparable Disqualifications,California,Comparable Disqualifications,Comparable Disqualifications,0.849056604,45
+No comparable disqualifications,Comparable Disqualifications,Texas,Comparable Disqualifications,Comparable Disqualifications,0.849056604,45
+No TBA,Transitional Benefits Alternative,Texas,Transitional Benefits Alternative,Transitional Benefits Alternative,0.547169811,29
+No use of discretionary exemptions,ABAWD Discretionary Exemptions,California,ABAWD Discretionary Exemptions,ABAWD Discretionary Exemptions,0.301886792,16
+None,Child Support–Related Disqualifications,California,Child Support–Related Disqualifications,Child Support–Related Disqualifications,0.849056604,45
+None,Child Support–Related Disqualifications,Texas,Child Support–Related Disqualifications,Child Support–Related Disqualifications,0.849056604,45
+Not a pledge State,Pledge States,California,Pledge States,Pledge States,0.943396226,50
+Not a pledge State,Pledge States,Texas,Pledge States,Pledge States,0.943396226,50
+"Region, district, or county administered",Program Administration,California,Program Administration,Program Administration,0.188679245,10
+Simplified and change reporting,Reporting Requirements,Texas,Reporting Requirements,Reporting Requirements,0.339622642,18
+Simplified reporting only,Reporting Requirements,California,Reporting Requirements,Reporting Requirements,0.622641509,33
+State-administered,Program Administration,Texas,Program Administration,Program Administration,0.811320755,43
+TBA,Transitional Benefits Alternative,California,Transitional Benefits Alternative,Transitional Benefits Alternative,0.452830189,24
+Use of discretionary exemptions,ABAWD Discretionary Exemptions,Texas,ABAWD Discretionary Exemptions,ABAWD Discretionary Exemptions,0.698113208,37
+Voluntary and mandatory,Voluntary and Mandatory SNAP Employment and Training Programs,Texas,Voluntary and Mandatory SNAP Employment and Training Programs,Voluntary and Mandatory SNAP Employment and Training Programs,0.094339623,5
+Voluntary only,Voluntary and Mandatory SNAP Employment and Training Programs,California,Voluntary and Mandatory SNAP Employment and Training Programs,Voluntary and Mandatory SNAP Employment and Training Programs,0.849056604,45

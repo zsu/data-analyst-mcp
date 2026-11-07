@@ -1,0 +1,5 @@
+{
+ "leading_causes": {"description": "Leading causes of death, New York, 2017", "requests": [{"name": "ny_causes_2017", "endpoint": "query", "params": {"dataset": "leading_death", "$where": "state = 'New York' AND year = '2017'", "$order": "deaths DESC"}}]},
+ "places": {"requests": [{"name": "places_place_obesity", "endpoint": "query", "params": {"dataset": "places_city", "$where": "stateabbr = 'VT' AND locationname = 'Burlington' AND measureid = 'OBESITY'"}}]},
+ "weekly_deaths": {"requests": [{"name": "vt_deaths_by_year", "endpoint": "query", "params": {"dataset": "weekly_deaths", "$select": "`group`, year, state, total_deaths", "$where": "`group` = 'By Year' AND state = 'Vermont'", "$order": "year"}}]}
+}

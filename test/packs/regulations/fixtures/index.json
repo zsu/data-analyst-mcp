@@ -1,0 +1,4 @@
+{
+ "GET https://api.regulations.gov/v4/documents?sort=-postedDate&filter%5BdocketId%5D=EPA-HQ-OAR-2023-0072&filter%5BdocumentType%5D=Proposed+Rule&page%5Bnumber%5D=1&page%5Bsize%5D=250": "r001.json",
+ "GET https://api.regulations.gov/v4/comments?page%5Bsize%5D=5&filter%5BdocketId%5D=EPA-HQ-OAR-2023-0072": "r002.json"
+}

@@ -1,0 +1,69 @@
+{
+  "base_url": "https://data.cms.gov",
+  "endpoints": {
+    "provider": {
+      "path": "/provider-data/api/1/datastore/query/{dataset}/{index}",
+      "method": "GET",
+      "description": "Provider Data Catalog (Care Compare) datasets: hospitals, nursing homes, home health, hospice, dialysis. DKAN datastore query by dataset id.",
+      "params": {
+        "dataset": {"in": "path", "required": true, "catalog": true, "desc": "catalog alias (hospital_info) or Provider Data dataset id (xubh-q36u)"},
+        "index": {"in": "path", "desc": "distribution index inside the dataset; 0 = the dataset's CSV (every Provider Data dataset has one, verified 2026-10)"},
+        "where": {"desc": "equality filters {column: value}; a list value means IN. Column names are snake_case (state, citytown, facility_id)"},
+        "conditions": {"desc": "list of {property, value, operator}; operators = <> < <= > >= LIKE IN 'NOT IN' BETWEEN; LIKE uses % and is case-insensitive"},
+        "sort": {"desc": "column or -column (descending), or a list of them"},
+        "columns": {"desc": "list of columns to return (default all)"}
+      },
+      "defaults": {"index": "0", "schema": "false"},
+      "records": "results",
+      "total": "count",
+      "paging": {"type": "offset", "limit_param": "limit", "offset_param": "offset", "size": 500},
+      "max_rows": 100000,
+      "missing": [""],
+      "flatten": true
+    },
+    "medicare": {
+      "path": "/data-api/v1/dataset/{dataset}/data",
+      "method": "GET",
+      "description": "data.cms.gov data-api datasets (Medicare enrollment, geographic variation, spending by drug, inpatient and physician utilization) by dataset UUID.",
+      "params": {
+        "dataset": {"in": "path", "required": true, "catalog": true, "desc": "catalog alias (geo_variation) or data.cms.gov dataset UUID"},
+        "where": {"desc": "equality filters {COLUMN: value}; column names are as published (BENE_GEO_LVL). An unknown column is ignored by the API, so the adapter checks every filter column exists"},
+        "keyword": {"desc": "full-text keyword over all columns"},
+        "columns": {"desc": "list of columns to return (sent as column=A,B)"},
+        "sort": {"desc": "column or -column (descending)"}
+      },
+      "defaults": {},
+      "records": "",
+      "paging": {"type": "offset", "limit_param": "size", "offset_param": "offset", "size": 5000},
+      "max_rows": 300000,
+      "missing": [""],
+      "flatten": true
+    }
+  },
+  "catalog": {
+    "hospital_info": {"id": "xubh-q36u", "name": "Hospital General Information", "description": "All Medicare-registered hospitals: address, type, ownership, emergency services, overall star rating", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/xubh-q36u"},
+    "hospital_mortality": {"id": "ynj2-r877", "name": "Complications and Deaths - Hospital", "description": "Hospital 30-day mortality, hip/knee complications, patient safety indicators", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/ynj2-r877"},
+    "hospital_readmissions": {"id": "9n3s-kdb3", "name": "Hospital Readmissions Reduction Program", "description": "Excess readmission ratios by hospital and condition", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/9n3s-kdb3"},
+    "hospital_infections": {"id": "77hc-ibv8", "name": "Healthcare Associated Infections - Hospital", "description": "CLABSI, CAUTI, SSI, MRSA, C. difficile standardized infection ratios by hospital", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/77hc-ibv8"},
+    "hospital_timely_care": {"id": "yv7e-xc69", "name": "Timely and Effective Care - Hospital", "description": "Emergency department times, sepsis, stroke, immunization and preventive care measures", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/yv7e-xc69"},
+    "hospital_spending": {"id": "rrqw-56er", "name": "Medicare Spending Per Beneficiary - Hospital", "description": "Medicare spending per episode relative to the national median, by hospital", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/rrqw-56er"},
+    "hospital_patient_survey": {"id": "dgck-syfz", "name": "Patient survey (HCAHPS) - Hospital", "description": "HCAHPS patient experience measures and star ratings by hospital", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/dgck-syfz"},
+    "nursing_home_info": {"id": "4pq5-n9py", "name": "Nursing homes: Provider Information", "description": "Every Medicare/Medicaid nursing home: beds, ownership, five-star ratings, staffing, fines", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/4pq5-n9py"},
+    "nursing_home_deficiencies": {"id": "r5ix-sfxw", "name": "Nursing homes: Health Deficiencies", "description": "Health inspection citations of the last three cycles: tag, scope and severity, correction date", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/r5ix-sfxw"},
+    "nursing_home_quality": {"id": "djen-97ju", "name": "Nursing homes: MDS Quality Measures", "description": "Minimum Data Set quality measures: falls, pressure ulcers, antipsychotic use", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/djen-97ju"},
+    "home_health_info": {"id": "6jpm-sxkc", "name": "Home Health Care Agencies", "description": "Medicare-certified home health agencies: services offered, quality star rating", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/6jpm-sxkc"},
+    "hospice_info": {"id": "yc9t-dgbk", "name": "Hospice - General Information", "description": "Medicare-certified hospices: address, ownership, certification date", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/yc9t-dgbk"},
+    "dialysis_info": {"id": "23ew-n7w9", "name": "Dialysis Facility - Listing by Facility", "description": "Dialysis facilities: stations, ownership, star rating, quality measures", "endpoint": "provider", "page": "https://data.cms.gov/provider-data/dataset/23ew-n7w9"},
+    "monthly_enrollment": {"id": "d7fabe1e-d19b-4333-9eff-e80e0643f2fd", "name": "Medicare Monthly Enrollment", "description": "Medicare beneficiaries by month (and year totals, MONTH='Year'): Original Medicare vs Medicare Advantage, Part D; national, state, county; 2013-present", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-beneficiary-enrollment/medicare-and-medicaid-reports/medicare-monthly-enrollment"},
+    "geo_variation": {"id": "6219697b-8f6c-4164-bed4-cd9317c58ebc", "name": "Medicare Geographic Variation - by National, State & County", "description": "Fee-for-service spending per capita (actual and standardized), utilization and demographics by year, state and county, 2014-2024", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-geographic-comparisons/medicare-geographic-variation-by-national-state-county"},
+    "ma_geo_variation": {"id": "8e989bc0-2260-49a7-9c6d-8e9e10af7cea", "name": "Medicare Advantage Geographic Variation - National & State", "description": "Medicare Advantage utilization by national and state level (encounter-based)", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-geographic-comparisons/medicare-advantage-geographic-variation-national-state"},
+    "partd_spending_by_drug": {"id": "7e0b4365-fd63-4a29-8f5e-e0ac9f66a81b", "name": "Medicare Part D Spending by Drug", "description": "Part D spending, claims, beneficiaries and unit cost by brand and generic name; wide format with one column set per year (Tot_Spndng_2020 ... _2024)", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-spending-by-drug/medicare-part-d-spending-by-drug"},
+    "partb_spending_by_drug": {"id": "76a714ad-3a2c-43ac-b76d-9dadf8f7d890", "name": "Medicare Part B Spending by Drug", "description": "Part B drug spending, claims and beneficiaries by HCPCS code; wide format by year", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-spending-by-drug/medicare-part-b-spending-by-drug"},
+    "partd_opioid_geo": {"id": "94d00f36-73ce-4520-9b3f-83cd3cded25c", "name": "Medicare Part D Opioid Prescribing Rates - by Geography", "description": "Opioid claims and prescribing rates by national, state and county level and year", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-opioid-prescribing-rates/medicare-part-d-opioid-prescribing-rates-by-geography"},
+    "inpatient_geo_2024": {"id": "2941ab09-8cee-49d8-9703-f3c5b854e388", "name": "Medicare Inpatient Hospitals - by Geography and Service (2024)", "description": "Fee-for-service discharges and average charges/payments by DRG, national and state; one year per dataset", "endpoint": "medicare", "page": "https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-geography-and-service"},
+    "inpatient_provider_2024": {"id": "690ddc6c-2767-4618-b277-420ffb2bf27c", "name": "Medicare Inpatient Hospitals - by Provider and Service (2024)", "description": "Discharges and average charges/payments by hospital (CCN) and DRG; one year per dataset", "endpoint": "medicare", "page": "https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service"},
+    "physician_geo_2024": {"id": "6fea9d79-0129-4e4c-b1b8-23cd86a4f435", "name": "Medicare Physician & Other Practitioners - by Geography and Service (2024)", "description": "Services, beneficiaries and average payments by HCPCS code, national and state; one year per dataset", "endpoint": "medicare", "page": "https://data.cms.gov/provider-summary-by-type-of-service/medicare-physician-other-practitioners/medicare-physician-other-practitioners-by-geography-and-service"},
+    "partd_prescribers_geo_2024": {"id": "c8ea3f8e-3a09-4fea-86f2-8902fb4b0920", "name": "Medicare Part D Prescribers - by Geography and Drug (2024)", "description": "Part D claims, costs and beneficiaries by drug, national and state; one year per dataset", "endpoint": "medicare", "page": "https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-geography-and-drug"},
+    "market_saturation_county": {"id": "8900b9c5-50b7-43de-9bdd-0d7113a8355e", "name": "Market Saturation & Utilization State-County", "description": "Providers, users and payments per type of service by state and county", "endpoint": "medicare", "page": "https://data.cms.gov/summary-statistics-on-use-and-payments/program-integrity-market-saturation-by-type-of-service/market-saturation-utilization-state-county"}
+  }
+}

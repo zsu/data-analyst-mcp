@@ -1,0 +1,46 @@
+{
+ "data": {
+  "county_name": "",
+  "counties_msa": "Alexandria city, VA; Arlington County, VA; Calvert County, MD; Charles County, MD; Clarke County, VA; District of Columbia, DC; Fairfax city, VA; Fairfax County, VA; Falls Church city, VA; Fauquier County, VA; Frederick County, MD; Fredericksburg city, VA; Loudoun County, VA; Manassas city, VA; Manassas Park city, VA; Montgomery County, MD; Prince George's County, MD; Prince William County, VA; Spotsylvania County, VA; and Stafford County, VA",
+  "town_name": "",
+  "metro_status": "1",
+  "metro_name": "Washington-Arlington-Alexandria, DC-VA-MD-WV",
+  "area_name": "Washington-Arlington-Alexandria, DC-VA-MD HUD Metro FMR Area",
+  "smallarea_status": "1",
+  "year": "2024",
+  "basicdata": [
+   {
+    "zip_code": "MSA level",
+    "Efficiency": 1772,
+    "One-Bedroom": 1803,
+    "Two-Bedroom": 2045,
+    "Three-Bedroom": 2544,
+    "Four-Bedroom": 3015
+   },
+   {
+    "zip_code": "20001",
+    "Efficiency": 2460,
+    "One-Bedroom": 2500,
+    "Two-Bedroom": 2840,
+    "Three-Bedroom": 3530,
+    "Four-Bedroom": 4190
+   },
+   {
+    "zip_code": "20002",
+    "Efficiency": 1750,
+    "One-Bedroom": 1780,
+    "Two-Bedroom": 2020,
+    "Three-Bedroom": 2510,
+    "Four-Bedroom": 2980
+   },
+   {
+    "zip_code": "20003",
+    "Efficiency": 2660,
+    "One-Bedroom": 2710,
+    "Two-Bedroom": 3070,
+    "Three-Bedroom": 3820,
+    "Four-Bedroom": 4530
+   }
+  ]
+ }
+}

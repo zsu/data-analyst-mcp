@@ -1,0 +1,132 @@
+{
+  "base_url": "https://api.nhtsa.gov",
+  "endpoints": {
+    "recalls_by_vehicle": {
+      "path": "/recalls/recallsByVehicle",
+      "description": "Safety recall campaigns for one make + model + model year (all three required).",
+      "params": {
+        "make": {"required": true, "desc": "make, case-insensitive: honda, toyota, ford, tesla"},
+        "model": {"required": true, "desc": "model as NHTSA spells it: civic, camry, f-150, model 3 (see products_models)"},
+        "modelYear": {"required": true, "desc": "model year, e.g. 2019"},
+        "variants": {"in": "spec", "desc": "pack option, not sent (default false): true also fetches the names products_models lists as this model plus only powertrain/body/cab/drive words (HYBRID, PHEV, EV, SEDAN, (CREW CAB), AWD), one campaign once; other names starting with the model are listed in a note, never merged"}
+      },
+      "records": "results", "total": "Count", "paging": {"type": "none"}, "max_rows": 5000
+    },
+    "recall_campaign": {
+      "path": "/recalls/campaignNumber",
+      "description": "One recall campaign by NHTSA campaign number (one row per make/model/year covered).",
+      "params": {"campaignNumber": {"required": true, "desc": "campaign number, e.g. 23V838000 (YY + V/E/T/C + 3 digits + 000)"}},
+      "records": "results", "total": "Count", "paging": {"type": "none"}, "max_rows": 5000
+    },
+    "complaints_by_vehicle": {
+      "path": "/complaints/complaintsByVehicle",
+      "description": "Consumer complaints (ODI) for one make + model + model year, all on one page.",
+      "params": {
+        "make": {"required": true, "desc": "make"},
+        "model": {"required": true, "desc": "model"},
+        "modelYear": {"required": true, "desc": "model year"},
+        "variants": {"in": "spec", "desc": "pack option, not sent (default false): true also fetches the names products_models lists as this model plus only powertrain/body/cab/drive words (complaints use those exact names), one complaint once; other names are listed in a note, never merged"}
+      },
+      "records": "results", "total": "count", "paging": {"type": "none"}, "max_rows": 20000
+    },
+    "complaint_odi": {
+      "path": "/complaints/odinumber",
+      "description": "One complaint by ODI number.",
+      "params": {"odinumber": {"required": true, "desc": "ODI number, e.g. 11675912"}},
+      "records": "results", "paging": {"type": "none"}
+    },
+    "products_model_years": {
+      "path": "/products/vehicle/modelYears",
+      "description": "Model years that have recalls (issueType r) or complaints (c).",
+      "params": {"issueType": {"required": true, "enum": ["r", "c"], "desc": "r = recalls, c = complaints"}},
+      "defaults": {"max": 10000},
+      "records": "results", "paging": {"type": "none"}
+    },
+    "products_makes": {
+      "path": "/products/vehicle/makes",
+      "description": "Makes for a model year that have recalls (r) or complaints (c).",
+      "params": {"modelYear": {"required": true, "desc": "model year"},
+                 "issueType": {"required": true, "enum": ["r", "c"], "desc": "r or c"}},
+      "records": "results", "paging": {"type": "none"}
+    },
+    "products_models": {
+      "path": "/products/vehicle/models",
+      "description": "Models of a make and year that have recalls (r) or complaints (c): the exact names to use (the full list: the pack sends a large max).",
+      "params": {"modelYear": {"required": true, "desc": "model year"}, "make": {"required": true, "desc": "make"},
+                 "issueType": {"required": true, "enum": ["r", "c"], "desc": "r or c"}},
+      "defaults": {"max": 10000},
+      "records": "results", "paging": {"type": "none"}
+    },
+    "ratings_model_years": {
+      "path": "/SafetyRatings",
+      "description": "Model years with NCAP 5-Star Safety Ratings.",
+      "params": {}, "records": "Results", "paging": {"type": "none"}
+    },
+    "ratings_makes": {
+      "path": "/SafetyRatings/modelyear/{modelYear}",
+      "description": "Makes with NCAP ratings for a model year.",
+      "params": {"modelYear": {"in": "path", "required": true, "desc": "model year"}},
+      "records": "Results", "paging": {"type": "none"}
+    },
+    "ratings_models": {
+      "path": "/SafetyRatings/modelyear/{modelYear}/make/{make}",
+      "description": "Models with NCAP ratings for a make and model year.",
+      "params": {"modelYear": {"in": "path", "required": true, "desc": "model year"},
+                 "make": {"in": "path", "required": true, "desc": "make"}},
+      "records": "Results", "paging": {"type": "none"}
+    },
+    "ratings_vehicles": {
+      "path": "/SafetyRatings/modelyear/{modelYear}/make/{make}/model/{model}",
+      "description": "Rated variants (VehicleId, description: body style, drive) of a make + model + year.",
+      "params": {"modelYear": {"in": "path", "required": true, "desc": "model year"},
+                 "make": {"in": "path", "required": true, "desc": "make"},
+                 "model": {"in": "path", "required": true, "desc": "model"}},
+      "records": "Results", "paging": {"type": "none"}
+    },
+    "ratings_detail": {
+      "path": "/SafetyRatings/VehicleId/{vehicleId}",
+      "description": "NCAP star ratings (overall, frontal, side, rollover), rollover probability, ADAS fitment, and complaint/recall/investigation counts for one VehicleId.",
+      "params": {"vehicleId": {"in": "path", "required": true, "desc": "VehicleId from ratings_vehicles, e.g. 14009"}},
+      "records": "Results", "paging": {"type": "none"}
+    },
+    "vin_decode": {
+      "path": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{vin}",
+      "description": "vPIC: decode a VIN (17 characters; partial VINs with * allowed) into about 150 flat fields.",
+      "params": {"vin": {"in": "path", "required": true, "desc": "VIN, e.g. 1HGCM82633A123456"},
+                 "modelyear": {"desc": "optional model year, helps pre-1980 and partial VINs"}},
+      "defaults": {"format": "json"},
+      "records": "Results", "paging": {"type": "none"}
+    },
+    "vpic_models_for_make_year": {
+      "path": "https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/{make}/modelyear/{modelYear}",
+      "description": "vPIC: every model a make produced for a model year (Make_ID, Model_ID, Model_Name).",
+      "params": {"make": {"in": "path", "required": true, "desc": "make"},
+                 "modelYear": {"in": "path", "required": true, "desc": "model year"}},
+      "defaults": {"format": "json"}, "records": "Results", "paging": {"type": "none"}
+    },
+    "vpic_models_for_make": {
+      "path": "https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/{make}",
+      "description": "vPIC: every model of a make, all years.",
+      "params": {"make": {"in": "path", "required": true, "desc": "make"}},
+      "defaults": {"format": "json"}, "records": "Results", "paging": {"type": "none"}
+    },
+    "vpic_all_makes": {
+      "path": "https://vpic.nhtsa.dot.gov/api/vehicles/GetAllMakes",
+      "description": "vPIC: every make registered with NHTSA (about 12,000 rows, includes trailers and motorcycles).",
+      "params": {}, "defaults": {"format": "json"}, "records": "Results", "paging": {"type": "none"}, "max_rows": 50000
+    },
+    "car_seat_stations_state": {
+      "path": "/CSSIStation/state/{state}",
+      "description": "Child car seat inspection stations in a state (two-letter code); 100 a page, paged with offset.",
+      "params": {"state": {"in": "path", "required": true, "desc": "two-letter state code, upper case: CA"}},
+      "records": "Results", "paging": {"type": "offset", "offset_param": "offset", "size": 100}, "max_rows": 20000
+    },
+    "car_seat_stations_zip": {
+      "path": "/CSSIStation/zip/{zip}",
+      "description": "Child car seat inspection stations for a ZIP code.",
+      "params": {"zip": {"in": "path", "required": true, "desc": "5-digit ZIP"}},
+      "records": "Results", "paging": {"type": "offset", "offset_param": "offset", "size": 100}, "max_rows": 20000
+    }
+  },
+  "catalog": {}
+}

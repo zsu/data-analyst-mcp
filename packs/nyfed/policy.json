@@ -1,0 +1,92 @@
+{
+  "id": "nyfed",
+  "title": "New York Fed Markets Data API (reference rates, SOMA, Treasury operations, primary dealers)",
+  "agency": "Federal Reserve Bank of New York",
+  "depth": "standard",
+  "domains": [
+    "monetary policy",
+    "interest rates",
+    "federal debt financing",
+    "financial conditions"
+  ],
+  "keywords": [
+    "sofr",
+    "effr",
+    "federal funds rate",
+    "effective federal funds rate",
+    "obfr",
+    "tgcr",
+    "bgcr",
+    "reference rate",
+    "overnight rate",
+    "soma",
+    "system open market account",
+    "fed holdings",
+    "fed balance sheet",
+    "treasury holdings",
+    "quantitative tightening",
+    "runoff",
+    "reserve management purchases",
+    "primary dealer",
+    "dealer positions",
+    "open market operations",
+    "reverse repo",
+    "debt service",
+    "interest cost",
+    "term premium",
+    "monetary policy"
+  ],
+  "questions": [
+    "how much of the Treasury debt does the Federal Reserve hold, by maturity",
+    "SOFR and the effective federal funds rate over the last year, as an input to a debt-service projection",
+    "weighted average maturity of the Fed's Treasury holdings",
+    "Fed purchases of Treasury bills in recent weeks",
+    "primary dealer net positions in Treasury securities"
+  ],
+  "homepage": "https://markets.newyorkfed.org/static/docs/markets-api.html",
+  "terms_url": "https://www.newyorkfed.org/terms-of-use",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://markets.newyorkfed.org/api",
+      "probe": "https://markets.newyorkfed.org/api/soma/asofdates/latest.json",
+      "hosts": [
+        "markets.newyorkfed.org"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the JSON page (File > Save as) under the name shown, then upload it. Without the links: reference rates at https://www.newyorkfed.org/markets/reference-rates, SOMA holdings at https://www.newyorkfed.org/markets/soma-holdings (Download), Treasury operations at https://www.newyorkfed.org/markets/desk-operations/treasury, primary dealer statistics at https://www.newyorkfed.org/markets/counterparties/primary-dealers-statistics."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Rates and operations update daily, SOMA weekly; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The Markets Data APIs are published openly by the Federal Reserve Bank of New York for public use; the Bank's terms of use allow use of its published data with attribution."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Federal Reserve Bank of New York, Markets Data APIs ({dataset}), markets.newyorkfed.org, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which rate: SOFR (secured, Treasury repo), EFFR (unsecured, the policy-rate benchmark) or another? Default: both, stated as separate series.",
+    "Which date for SOMA holdings: the latest weekly as-of date, or a past date for a comparison? Default: the latest (see source.md for how to find it)."
+  ],
+  "formats": [
+    "json"
+  ]
+}

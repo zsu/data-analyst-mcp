@@ -1,0 +1,4 @@
+{
+ "GET https://api.nal.usda.gov/fdc/v1/foods/search?query=cheddar&dataType=Foundation&pageNumber=1&pageSize=200": "r001.json",
+ "GET https://api.nal.usda.gov/fdc/v1/foods?format=abridged&fdcIds=328637%2C169901&nutrients=203%2C204%2C208": "r002.json"
+}

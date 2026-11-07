@@ -1,0 +1,117 @@
+{
+ "number": 11,
+ "status": "completed",
+ "email": "[REDACTED]",
+ "downloadLinks": {
+  "basicCodebook": {
+   "url": "https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.cbk",
+   "bytes": 7639,
+   "sha256": "d680111c430882f421d773573760d9f5caa76d73c6a9bc441e870a11c70a35ee"
+  },
+  "data": {
+   "url": "https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.csv.gz",
+   "bytes": 1094719,
+   "sha256": "c621b055d75d8da5e47722f01f40d9e6bedeeefeaec3ea65876e1ec76972c65d"
+  },
+  "stsCommandFile": {
+   "url": "https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.sts",
+   "bytes": 4549,
+   "sha256": "cd14d72b6640d58cab5d60a9d9e7eb51abc050184c5a79dbafdae44a69f2c947"
+  },
+  "ddiCodebook": {
+   "url": "https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.xml",
+   "bytes": 45432,
+   "sha256": "7fc356970cdb0a7312bd27b17f53e9a95c403b92ae61a5a75e9fbe4d046be4f2"
+  }
+ },
+ "extractDefinition": {
+  "version": 2,
+  "dataStructure": {
+   "rectangular": {
+    "on": "P"
+   }
+  },
+  "dataFormat": "csv",
+  "caseSelectWho": "individuals",
+  "description": "Employment and wages of people ages 25-54 by sex and education, CPS ASEC 2023 (smoke test)",
+  "samples": {
+   "cps2023_03s": {}
+  },
+  "variables": {
+   "YEAR": {
+    "preselected": true
+   },
+   "SERIAL": {
+    "preselected": true
+   },
+   "MONTH": {
+    "preselected": true
+   },
+   "CPSID": {
+    "preselected": true
+   },
+   "ASECFLAG": {
+    "preselected": true
+   },
+   "ASECWTH": {
+    "preselected": true
+   },
+   "PERNUM": {
+    "preselected": true
+   },
+   "CPSIDP": {
+    "preselected": true
+   },
+   "CPSIDV": {
+    "preselected": true
+   },
+   "ASECWT": {
+    "preselected": true
+   },
+   "AGE": {
+    "caseSelections": {
+     "general": [
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51",
+      "52",
+      "53",
+      "54"
+     ]
+    }
+   },
+   "SEX": {},
+   "EMPSTAT": {},
+   "EDUC": {},
+   "CLASSWLY": {},
+   "WKSWORK1": {},
+   "UHRSWORKLY": {},
+   "INCWAGE": {}
+  },
+  "collection": "cps"
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "GET https://api.weather.gov/points/38.8894,-77.0352": "r001.json",
+ "GET https://api.weather.gov/gridpoints/LWX/97,71/forecast": "r002.json",
+ "GET https://api.weather.gov/alerts/active?area=NM": "r003.json",
+ "GET https://api.weather.gov/stations/KDCA/observations?limit=3": "r004.json",
+ "GET https://api.weather.gov/points/38.8894,-77.0352/stations": "r005.json"
+}

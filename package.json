@@ -1,0 +1,54 @@
+{
+  "name": "data-analyst-mcp",
+  "version": "0.3.0",
+  "description": "MCP server for U.S. government data: asks the critical questions first, fetches from the agency, cites every number.",
+  "type": "module",
+  "bin": {
+    "data-analyst-mcp": "dist/bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "packs",
+    "guide",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json",
+    "test": "vitest run",
+    "start": "node dist/bin/cli.js",
+    "import-python": "tsx scripts/copy-from-python.ts",
+    "parity": "tsx scripts/parity.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "smoke:http": "tsx scripts/smoke-http.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "csv-parse": "^7.0.3",
+    "csv-stringify": "^6.6.0",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "fflate": "^0.8.3",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.19.2",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  }
+}

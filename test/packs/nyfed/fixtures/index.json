@@ -1,0 +1,9 @@
+{
+ "GET https://markets.newyorkfed.org/api/rates/secured/sofr/search.json?startDate=2026-10-01&endDate=2026-10-29": "r001.json",
+ "GET https://markets.newyorkfed.org/api/rates/unsecured/effr/search.json?startDate=2026-10-01&endDate=2026-10-29": "r002.json",
+ "GET https://markets.newyorkfed.org/api/soma/tsy/wam/all/asof/2026-10-28.json": "r003.json",
+ "GET https://markets.newyorkfed.org/api/soma/asofdates/list.json": "r004.json",
+ "GET https://markets.newyorkfed.org/api/tsy/purchases/results/summary/search.json?startDate=2026-10-01&endDate=2026-10-29": "r005.json",
+ "GET https://markets.newyorkfed.org/api/pd/get/PDPOSGST-TOT.json": "r006.json",
+ "GET https://markets.newyorkfed.org/api/soma/tsy/get/asof/2026-10-28.json": "r007.json"
+}

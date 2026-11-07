@@ -1,0 +1,95 @@
+{
+  "id": "noaa",
+  "title": "NOAA NCEI climate data (Access Data Service, Climate Data Online)",
+  "agency": "National Centers for Environmental Information, National Oceanic and Atmospheric Administration",
+  "depth": "standard",
+  "domains": [
+    "weather",
+    "climate",
+    "environment"
+  ],
+  "keywords": [
+    "weather",
+    "climate",
+    "temperature",
+    "precipitation",
+    "rainfall",
+    "snowfall",
+    "snow",
+    "heat",
+    "cold",
+    "ghcn",
+    "ghcnd",
+    "daily weather",
+    "monthly temperature",
+    "climate normals",
+    "normals",
+    "weather station",
+    "ncei",
+    "noaa",
+    "historical weather",
+    "degree days"
+  ],
+  "questions": [
+    "daily high and low temperatures in a city last year",
+    "monthly precipitation at a station since 2000",
+    "how this year's temperature compares with the 1991-2020 normal",
+    "weather stations near a place",
+    "annual snowfall trend at a station"
+  ],
+  "homepage": "https://www.ncei.noaa.gov/",
+  "terms_url": "https://www.noaa.gov/disclaimer",
+  "auth": {
+    "env": "NOAA_API_KEY",
+    "required": "optional",
+    "placement": "header",
+    "param": "token",
+    "prefix": "",
+    "home": "noaa",
+    "signup_url": "https://www.ncei.noaa.gov/cdo-web/token",
+    "echoes_key": false,
+    "key_only": [
+      "Climate Data Online v2 endpoints (cdo_*): station and location search by FIPS code, data for a whole state or county, dataset and data-type lists"
+    ]
+  },
+  "limits": {
+    "rps": 4,
+    "burst": 5,
+    "daily_quota": 10000,
+    "max_rows": 500000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.ncei.noaa.gov",
+      "probe": "https://www.ncei.noaa.gov/access/services/data/v1?dataset=global-summary-of-the-year&stations=USW00094728&startDate=2020-01-01&endDate=2020-12-31&dataTypes=TAVG&format=json",
+      "hosts": [
+        "www.ncei.noaa.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (keyless Access Data Service; change format=json to format=csv for a spreadsheet) and upload the files. A station's whole record is one CSV: https://www.ncei.noaa.gov/data/daily-summaries/access/<STATION>.csv (also global-summary-of-the-month/access/ and global-summary-of-the-year/access/). Station finder: https://www.ncei.noaa.gov/cdo-web/ (Search Tool) or https://www.ncei.noaa.gov/access/search/data-search/daily-summaries."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Recent days are revised as quality control runs; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NOAA NCEI data are U.S. government works in the public domain (17 U.S.C. 105); NCEI asks that the data source be cited (GHCN-Daily: Menne et al., NOAA NCEI)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "NOAA National Centers for Environmental Information, {dataset}, www.ncei.noaa.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which station? A city has several (airport vs downtown); name the station id used, e.g. USW00094728 Central Park.",
+    "Daily, monthly or annual values, and which measure (TMAX, TMIN, TAVG, PRCP, SNOW)?",
+    "Compare with which normal? Default: U.S. Climate Normals 1991-2020."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

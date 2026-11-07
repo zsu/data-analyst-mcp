@@ -1,0 +1,7 @@
+{
+ "GET https://ohss.dhs.gov/topics/immigration/yearbook": "yearbook_index.html",
+ "GET https://ohss.dhs.gov/topics/immigration/yearbook/2024": "yearbook_2024.html",
+ "GET https://ohss.dhs.gov/system/files/2026-06/2026_0604_ohss_yearbook_lawful_permanent_residents_fy2024.xlsx": "lpr_fy2024_trimmed.xlsx",
+ "GET https://ohss.dhs.gov/topics/immigration/legal-immigration-and-adjustment-status-report": "lir.html",
+ "GET https://ohss.dhs.gov/system/files/2026-06/2026_0604_ohss_legal-immigration-adjustment-of-status-fy-2025q4.xlsx": "lir_fy2025.xlsx"
+}

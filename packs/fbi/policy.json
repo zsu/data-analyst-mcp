@@ -1,0 +1,118 @@
+{
+  "id": "fbi",
+  "title": "FBI Crime Data Explorer (UCR, NIBRS, hate crime, arrests, police employees)",
+  "agency": "Federal Bureau of Investigation, Criminal Justice Information Services Division (U.S. Department of Justice)",
+  "depth": "standard",
+  "domains": [
+    "crime",
+    "justice",
+    "public safety",
+    "policing"
+  ],
+  "keywords": [
+    "crime",
+    "crime rate",
+    "violent crime",
+    "property crime",
+    "murder",
+    "homicide",
+    "robbery",
+    "assault",
+    "burglary",
+    "larceny",
+    "theft",
+    "motor vehicle theft",
+    "arson",
+    "rape",
+    "arrest",
+    "arrests",
+    "hate crime",
+    "bias",
+    "nibrs",
+    "ucr",
+    "srs",
+    "police",
+    "law enforcement",
+    "officers",
+    "clearance",
+    "fbi",
+    "cde",
+    "drug arrests",
+    "supplementary homicide"
+  ],
+  "questions": [
+    "violent crime rate trend in the United States",
+    "murders in a state by year",
+    "hate crimes by bias type",
+    "drug arrests by year",
+    "number of police officers per 1,000 people",
+    "crime clearance rates",
+    "homicide victims by weapon"
+  ],
+  "homepage": "https://cde.ucr.cjis.gov/",
+  "terms_url": "https://www.fbi.gov/how-we-can-help-you/more-fbi-services-and-information/ucr",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "API_KEY",
+    "home": "data-gov",
+    "signup_url": "https://api.data.gov/signup/",
+    "echoes_key": false,
+    "key_only": [
+      "more than 30 requests an hour or 50 a day (DEMO_KEY limits per IP address; a personal key allows 1,000 an hour)"
+    ],
+    "demo_key": "DEMO_KEY"
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "daily_quota": null,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.usa.gov/crime/fbi/cde",
+      "probe": "https://api.usa.gov/crime/fbi/cde/summarized/national/V?from=01-2022&to=12-2022",
+      "hosts": [
+        "api.usa.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each carries api.data.gov's public DEMO_KEY; replace it with your own free key if it answers OVER_RATE_LIMIT), save the JSON under the name shown, and upload the files. Without the links: the Crime Data Explorer at https://cde.ucr.cjis.gov/ (Explorer > choose crime, location and years > download CSV) or its Documents & Downloads page for full NIBRS and SRS files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small chart queries; CDE refreshes monthly and revises past years, so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Uniform Crime Reporting data published by the FBI are U.S. government works in the public domain (17 U.S.C. 105); attribute the FBI UCR Program and do not imply endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Federal Bureau of Investigation, Crime Data Explorer, {dataset}, api.usa.gov/crime/fbi/cde, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "fbi_participation",
+      "kind": "require_text",
+      "any": [
+        "coverage",
+        "participat",
+        "reporting agencies",
+        "nibrs transition"
+      ],
+      "why": "Counts depend on which agencies reported; 2021 coverage fell to about 77% of the population during the NIBRS transition, so a report must state coverage or participation."
+    }
+  ],
+  "clarify": [
+    "Counts or rates? Counts depend on how many agencies reported (2021 coverage fell to about 77% of the population); compare years with rates per 100,000 and state the coverage.",
+    "Which years? 2021 is not comparable with earlier and later years at the state and national level because of the NIBRS transition; say whether to include or flag it.",
+    "Reported offenses (agency submissions, this pack) or the FBI's published national estimates (Crime in the Nation tables; not fetched by this pack)?"
+  ],
+  "formats": [
+    "json"
+  ]
+}

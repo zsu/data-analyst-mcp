@@ -1,0 +1,7 @@
+{
+ "GET https://snapqcdata.net/datafiles?page=0": "datafiles_p0.html",
+ "GET https://snapqcdata.net/datafiles?page=1": "datafiles_p1.html",
+ "GET https://snapqcdata.net/datafiles?page=2": "datafiles_p2.html",
+ "GET https://snapqcdata.net/sites/default/files/2026-08/qcfy2024_csv.zip": "qcfy2024_csv_GU_VI.zip",
+ "GET https://snapqcdata.net/sites/default/files/2020-08/qcfy2018_csv_0.zip": "qcfy2018_csv_0_GU.zip"
+}

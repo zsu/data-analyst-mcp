@@ -1,0 +1,520 @@
+{
+ "base_url": "https://api.govinfo.gov",
+ "endpoints": {
+  "search": {
+   "path": "/search",
+   "method": "POST",
+   "description": "Full-text and metadata search across GovInfo collections (bills, laws, Federal Register, CFR, reports, hearings). The pack builds the query string from text/phrase plus filters and escapes the user text.",
+   "params": {
+    "text": {
+     "in": "body",
+     "desc": "plain words (all must match); query operators and punctuation are removed"
+    },
+    "phrase": {
+     "in": "body",
+     "desc": "exact phrase of two or more words, e.g. child tax credit (quoted: only that exact form matches; one word is searched unquoted). GovInfo's quoted search can miss documents: the fetch counts the all-words search too and notes when the phrase result is under half of it (and 20 or more short)"
+    },
+    "all_words": {
+     "in": "body",
+     "desc": "words that must all appear, anywhere, unquoted: the complete candidate list for a phrase (an upper bound: the words may stand apart)"
+    },
+    "any": {
+     "in": "body",
+     "desc": "list of words or phrases, any of which may match (OR), e.g. every form of a term: [\"levy\", \"levies\", \"levied\"]; escaped like text"
+    },
+    "title": {
+     "in": "body",
+     "desc": "words or a phrase that must be in the document's title field (for bills: official, short and display titles), sent as title:\"...\" and escaped like text. This is the title search: phrase and text search the full text instead"
+    },
+    "query": {
+     "in": "body",
+     "desc": "raw GovInfo query syntax for experts, passed unchanged (field:value, AND/OR/NOT, quotes)"
+    },
+    "collection": {
+     "in": "body",
+     "desc": "collection code or list, e.g. BILLS, PLAW, CRPT, FR (catalog lists all)"
+    },
+    "congress": {
+     "in": "body",
+     "desc": "Congress number, e.g. 118"
+    },
+    "billtype": {
+     "in": "body",
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres"
+    },
+    "publisher": {
+     "in": "body",
+     "desc": "government author / publisher, e.g. Government Accountability Office"
+    },
+    "date_from": {
+     "in": "body",
+     "desc": "published on or after YYYY-MM-DD"
+    },
+    "date_to": {
+     "in": "body",
+     "desc": "published on or before YYYY-MM-DD"
+    },
+    "sort": {
+     "in": "body",
+     "desc": "relevance (default) | newest | oldest"
+    }
+   },
+   "body": {
+    "offsetMark": "*",
+    "resultLevel": "default"
+   },
+   "records": "results",
+   "total": "count",
+   "paging": {
+    "type": "cursor",
+    "cursor_param": "offsetMark",
+    "next": "offsetMark",
+    "size_param": "pageSize",
+    "size": 100,
+    "in": "body"
+   },
+   "max_rows": 10000
+  },
+  "published": {
+   "path": "/published/{start_date}/{end_date}",
+   "method": "GET",
+   "description": "Packages of one or more collections issued between two dates, both included (a complete list, unlike search; fetch.py turns the inclusive end_date into GovInfo's exclusive one).",
+   "params": {
+    "start_date": {
+     "in": "path",
+     "required": true,
+     "desc": "YYYY-MM-DD"
+    },
+    "end_date": {
+     "in": "path",
+     "required": true,
+     "desc": "YYYY-MM-DD"
+    },
+    "collection": {
+     "required": true,
+     "desc": "comma-separated codes, e.g. PLAW or BILLS,BILLSTATUS"
+    },
+    "congress": {
+     "desc": "Congress number"
+    },
+    "docClass": {
+     "desc": "e.g. hr, s (BILLS) or PUBLIC (PLAW)"
+    },
+    "billVersion": {
+     "desc": "BILLS version code, e.g. enr"
+    },
+    "modifiedSince": {
+     "desc": "ISO timestamp"
+    }
+   },
+   "defaults": {
+    "offsetMark": "*",
+    "pageSize": 1000
+   },
+   "records": "packages",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "nextPage"
+   },
+   "max_rows": 100000
+  },
+  "package": {
+   "path": "/packages/{packageId}/summary",
+   "method": "GET",
+   "description": "One package's metadata (title, dates, congress, pages, references, download links; committees only where the collection records them at package level: committee reports and hearings carry them per granule).",
+   "params": {
+    "packageId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. PLAW-117publ169, BILLS-117hr5376enr, CRPT-118hrpt100"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "granules": {
+   "path": "/packages/{packageId}/granules",
+   "method": "GET",
+   "description": "Granules (sections, articles, CFR parts) inside a package.",
+   "params": {
+    "packageId": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. CREC-2024-03-07, FR-2024-01-02"
+    }
+   },
+   "defaults": {
+    "offsetMark": "*",
+    "pageSize": 1000
+   },
+   "records": "granules",
+   "total": "count",
+   "paging": {
+    "type": "link",
+    "next": "nextPage"
+   },
+   "max_rows": 100000
+  },
+  "related": {
+   "path": "/related/{accessId}",
+   "method": "GET",
+   "description": "Related collections for a package (bill versions, bill status, reports, Congressional Record, signing statements).",
+   "params": {
+    "accessId": {
+     "in": "path",
+     "required": true,
+     "desc": "package id, e.g. BILLS-117hr5376enr"
+    }
+   },
+   "records": "relationships",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "related_collection": {
+   "path": "/related/{accessId}/{collection}",
+   "method": "GET",
+   "description": "The packages of one collection related to a package: the public law of an enrolled bill (collection PLAW: packageId, citation, dateIssued, title), its committee reports (CRPT), its Congressional Record pages (CREC).",
+   "params": {
+    "accessId": {
+     "in": "path",
+     "required": true,
+     "desc": "package id, e.g. BILLS-119s5enr"
+    },
+    "collection": {
+     "in": "path",
+     "required": true,
+     "desc": "collection code from the related endpoint, e.g. PLAW, CRPT, CREC, BILLS"
+    }
+   },
+   "records": "results",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "text": {
+   "path": "/packages/{packageId}/htm",
+   "method": "GET",
+   "description": "Plain text of a bill version, law, report or other package (one row: package_id, title, date_issued, characters, text_status (full, pdf_only, partial_pdf, near_empty: GPO serves a 'TEXT NOT AVAILABLE, REFER TO PDF' placeholder as text for some documents), pdf_url, text). Give packageId, or congress + billtype + number (+ version, default enr) for a bill; add granuleId for one granule.",
+   "params": {
+    "packageId": {
+     "desc": "e.g. PLAW-118publ201 or BILLS-117hr5376enr"
+    },
+    "congress": {
+     "desc": "with billtype and number: builds BILLS-{congress}{billtype}{number}{version}"
+    },
+    "billtype": {
+     "desc": "hr | s | hjres | sjres | hconres | sconres | hres | sres"
+    },
+    "number": {
+     "desc": "bill number"
+    },
+    "version": {
+     "desc": "version code, default enr (enrolled)"
+    },
+    "granuleId": {
+     "desc": "one granule of the package (from endpoint granules): a Congressional Record article, CFR part, report part; e.g. CREC-2025-06-30-pt1-PgS4067"
+    },
+    "max_chars": {
+     "desc": "cut the text at this many characters (default: no cut)"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "sections": {
+   "path": "/packages/{packageId}/uslm",
+   "method": "GET",
+   "description": "One row per section of a public law, from GPO's USLM XML (113th Congress on): identifier, number, heading, enclosing titles, the U.S. Code sections it amends, cites, or is classified to, amending-action count, text.",
+   "params": {
+    "packageId": {
+     "desc": "PLAW package id, e.g. PLAW-117publ169"
+    },
+    "max_chars": {
+     "desc": "cut each section's text at this many characters (default: no cut)"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {
+  "bills": {
+   "id": "BILLS",
+   "name": "Congressional Bills (every printed version)",
+   "description": "GovInfo collection BILLS: Congressional Bills (every printed version)",
+   "endpoint": "search"
+  },
+  "billstatus": {
+   "id": "BILLSTATUS",
+   "name": "Bill Status XML (from Congress.gov)",
+   "description": "GovInfo collection BILLSTATUS: Bill Status XML (from Congress.gov)",
+   "endpoint": "search"
+  },
+  "billsum": {
+   "id": "BILLSUM",
+   "name": "Bill summaries (CRS)",
+   "description": "GovInfo collection BILLSUM: Bill summaries (CRS)",
+   "endpoint": "search"
+  },
+  "plaw": {
+   "id": "PLAW",
+   "name": "Public and Private Laws (slip laws)",
+   "description": "GovInfo collection PLAW: Public and Private Laws (slip laws)",
+   "endpoint": "search"
+  },
+  "statute": {
+   "id": "STATUTE",
+   "name": "Statutes at Large",
+   "description": "GovInfo collection STATUTE: Statutes at Large",
+   "endpoint": "search"
+  },
+  "uscode": {
+   "id": "USCODE",
+   "name": "United States Code",
+   "description": "GovInfo collection USCODE: United States Code",
+   "endpoint": "search"
+  },
+  "crpt": {
+   "id": "CRPT",
+   "name": "Congressional Reports (committee reports; many reprint cost estimates)",
+   "description": "GovInfo collection CRPT: Congressional Reports (committee reports; many reprint cost estimates)",
+   "endpoint": "search"
+  },
+  "crec": {
+   "id": "CREC",
+   "name": "Congressional Record (daily)",
+   "description": "GovInfo collection CREC: Congressional Record (daily)",
+   "endpoint": "search"
+  },
+  "crecb": {
+   "id": "CRECB",
+   "name": "Congressional Record (bound)",
+   "description": "GovInfo collection CRECB: Congressional Record (bound)",
+   "endpoint": "search"
+  },
+  "chrg": {
+   "id": "CHRG",
+   "name": "Congressional Hearings",
+   "description": "GovInfo collection CHRG: Congressional Hearings",
+   "endpoint": "search"
+  },
+  "cprt": {
+   "id": "CPRT",
+   "name": "Congressional Committee Prints",
+   "description": "GovInfo collection CPRT: Congressional Committee Prints",
+   "endpoint": "search"
+  },
+  "cdoc": {
+   "id": "CDOC",
+   "name": "Congressional Documents",
+   "description": "GovInfo collection CDOC: Congressional Documents",
+   "endpoint": "search"
+  },
+  "ccal": {
+   "id": "CCAL",
+   "name": "Congressional Calendars",
+   "description": "GovInfo collection CCAL: Congressional Calendars",
+   "endpoint": "search"
+  },
+  "cdir": {
+   "id": "CDIR",
+   "name": "Congressional Directory",
+   "description": "GovInfo collection CDIR: Congressional Directory",
+   "endpoint": "search"
+  },
+  "serialset": {
+   "id": "SERIALSET",
+   "name": "U.S. Congressional Serial Set",
+   "description": "GovInfo collection SERIALSET: U.S. Congressional Serial Set",
+   "endpoint": "search"
+  },
+  "hjournal": {
+   "id": "HJOURNAL",
+   "name": "House Journal",
+   "description": "GovInfo collection HJOURNAL: House Journal",
+   "endpoint": "search"
+  },
+  "sjournal": {
+   "id": "SJOURNAL",
+   "name": "Senate Journal",
+   "description": "GovInfo collection SJOURNAL: Senate Journal",
+   "endpoint": "search"
+  },
+  "fr": {
+   "id": "FR",
+   "name": "Federal Register (daily issues, official edition)",
+   "description": "GovInfo collection FR: Federal Register (daily issues, official edition)",
+   "endpoint": "search"
+  },
+  "cfr": {
+   "id": "CFR",
+   "name": "Code of Federal Regulations (annual edition)",
+   "description": "GovInfo collection CFR: Code of Federal Regulations (annual edition)",
+   "endpoint": "search"
+  },
+  "ecfr": {
+   "id": "ECFR",
+   "name": "Electronic CFR (point-in-time, limited)",
+   "description": "GovInfo collection ECFR: Electronic CFR (point-in-time, limited)",
+   "endpoint": "search"
+  },
+  "lsa": {
+   "id": "LSA",
+   "name": "List of CFR Sections Affected",
+   "description": "GovInfo collection LSA: List of CFR Sections Affected",
+   "endpoint": "search"
+  },
+  "cpd": {
+   "id": "CPD",
+   "name": "Compilation of Presidential Documents",
+   "description": "GovInfo collection CPD: Compilation of Presidential Documents",
+   "endpoint": "search"
+  },
+  "ppp": {
+   "id": "PPP",
+   "name": "Public Papers of the Presidents",
+   "description": "GovInfo collection PPP: Public Papers of the Presidents",
+   "endpoint": "search"
+  },
+  "budget": {
+   "id": "BUDGET",
+   "name": "Budget of the United States Government",
+   "description": "GovInfo collection BUDGET: Budget of the United States Government",
+   "endpoint": "search"
+  },
+  "erp": {
+   "id": "ERP",
+   "name": "Economic Report of the President",
+   "description": "GovInfo collection ERP: Economic Report of the President",
+   "endpoint": "search"
+  },
+  "econi": {
+   "id": "ECONI",
+   "name": "Economic Indicators",
+   "description": "GovInfo collection ECONI: Economic Indicators",
+   "endpoint": "search"
+  },
+  "gaoreports": {
+   "id": "GAOREPORTS",
+   "name": "GAO Reports and Comptroller General Decisions (1994-2008)",
+   "description": "GovInfo collection GAOREPORTS: GAO Reports and Comptroller General Decisions, an archive dated 1989-06-22 to 2008-09-18 (1989-2008)",
+   "endpoint": "search"
+  },
+  "govpub": {
+   "id": "GOVPUB",
+   "name": "Government publications catalogued by GPO (agency reports, including some from legislative-branch agencies)",
+   "description": "GovInfo collection GOVPUB: Government publications catalogued by GPO (agency reports, including some from legislative-branch agencies)",
+   "endpoint": "search"
+  },
+  "uscourts": {
+   "id": "USCOURTS",
+   "name": "U.S. Courts opinions",
+   "description": "GovInfo collection USCOURTS: U.S. Courts opinions",
+   "endpoint": "search"
+  },
+  "usreports": {
+   "id": "USREPORTS",
+   "name": "U.S. Reports (Supreme Court)",
+   "description": "GovInfo collection USREPORTS: U.S. Reports (Supreme Court)",
+   "endpoint": "search"
+  },
+  "govman": {
+   "id": "GOVMAN",
+   "name": "U.S. Government Manual",
+   "description": "GovInfo collection GOVMAN: U.S. Government Manual",
+   "endpoint": "search"
+  },
+  "cmr": {
+   "id": "CMR",
+   "name": "Congressionally Mandated Reports",
+   "description": "GovInfo collection CMR: Congressionally Mandated Reports",
+   "endpoint": "search"
+  },
+  "pai": {
+   "id": "PAI",
+   "name": "Privacy Act Issuances",
+   "description": "GovInfo collection PAI: Privacy Act Issuances",
+   "endpoint": "search"
+  },
+  "hob": {
+   "id": "HOB",
+   "name": "History of Bills",
+   "description": "GovInfo collection HOB: History of Bills",
+   "endpoint": "search"
+  },
+  "comps": {
+   "id": "COMPS",
+   "name": "Statute Compilations",
+   "description": "GovInfo collection COMPS: Statute Compilations",
+   "endpoint": "search"
+  },
+  "cri": {
+   "id": "CRI",
+   "name": "Congressional Research Index",
+   "description": "GovInfo collection CRI: Congressional Research Index",
+   "endpoint": "search"
+  },
+  "czic": {
+   "id": "CZIC",
+   "name": "Coastal Zone Information Center",
+   "description": "GovInfo collection CZIC: Coastal Zone Information Center",
+   "endpoint": "search"
+  },
+  "eric": {
+   "id": "ERIC",
+   "name": "Education Reports from ERIC",
+   "description": "GovInfo collection ERIC: Education Reports from ERIC",
+   "endpoint": "search"
+  },
+  "gpo": {
+   "id": "GPO",
+   "name": "GPO publications",
+   "description": "GovInfo collection GPO: GPO publications",
+   "endpoint": "search"
+  },
+  "hman": {
+   "id": "HMAN",
+   "name": "House Rules and Manual",
+   "description": "GovInfo collection HMAN: House Rules and Manual",
+   "endpoint": "search"
+  },
+  "sman": {
+   "id": "SMAN",
+   "name": "Senate Manual",
+   "description": "GovInfo collection SMAN: Senate Manual",
+   "endpoint": "search"
+  },
+  "annualrep": {
+   "id": "ANNUALREP",
+   "name": "Annual reports",
+   "description": "GovInfo collection ANNUALREP: Annual reports",
+   "endpoint": "search"
+  },
+  "cbo_publications": {
+   "id": "GOVPUB",
+   "name": "Budget office publications catalogued by GPO",
+   "description": "search with collection GOVPUB and publisher \"Congressional Budget Office\": a GPO-catalogued subset of the budget office's reports (765 records in Oct 2026, of which 129 mention \"cost estimate\"), not its full list of publications",
+   "endpoint": "search"
+  },
+  "cost_estimates_in_committee_reports": {
+   "id": "CRPT",
+   "name": "Committee reports that reprint cost estimates",
+   "description": "search with collection CRPT and phrase \"cost estimate\": House and Senate committee reports, which usually reprint the budget office's cost estimate for a reported bill as text",
+   "endpoint": "search"
+  },
+  "bill_versions": {
+   "id": "ih; is; rh; rs; eh; es; enr; pcs; ats; rfs; rfh; cph; cps",
+   "name": "Bill version codes",
+   "description": "BILLS package id = BILLS-{congress}{type}{number}{version}: ih/is introduced, rh/rs reported, eh/es engrossed (passed one chamber), enr enrolled (passed both, sent to the President)",
+   "endpoint": "text"
+  }
+ }
+}

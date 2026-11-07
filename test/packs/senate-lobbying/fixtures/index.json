@@ -1,0 +1,4 @@
+{
+ "GET https://lda.gov/api/v1/filings/?page_size=25&registrant_name=Pfizer&client_name=Pfizer&filing_year=2024&filing_period=first_quarter": "r001.json",
+ "GET https://lda.gov/api/v1/contributions/?page_size=25&lobbyist_name=Pomper&filing_year=2024": "r002.json"
+}

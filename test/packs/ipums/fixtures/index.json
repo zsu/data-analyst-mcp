@@ -1,0 +1,11 @@
+{
+ "GET https://api.ipums.org/metadata/samples?collection=cps&pageSize=1&version=2": "ping_cps.json",
+ "GET https://api.ipums.org/metadata/samples?collection=usa&pageSize=1&version=2": "ping_usa.json",
+ "GET https://api.ipums.org/metadata/samples?collection=cps&pageNumber=1&pageSize=500&version=2": "samples_cps_p1.json",
+ "GET https://api.ipums.org/metadata/samples?collection=cps&pageNumber=2&pageSize=500&version=2": "samples_cps_p2.json",
+ "GET https://api.ipums.org/extracts/11?collection=cps&version=2": "extract_cps_11.json",
+ "GET https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.csv.gz": "synthetic_cps_00011.csv.gz",
+ "GET https://api.ipums.org/downloads/cps/api/v1/extracts/0000000/cps_00011.xml": "ddi_cps_00011.xml",
+ "GET https://api.ipums.org/metadata/samples?collection=nhis&pageNumber=1&pageSize=500&version=2": "samples_nhis_p1.json",
+ "GET https://api.ipums.org/metadata/samples?collection=meps&pageNumber=1&pageSize=500&version=2": "samples_meps_p1.json"
+}

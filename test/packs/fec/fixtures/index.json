@@ -1,0 +1,7 @@
+{
+ "GET https://api.open.fec.gov/v1/elections/?election_full=true&sort=-total_receipts&office=senate&state=PA&cycle=2024&page=1&per_page=100": "r001.json",
+ "GET https://api.open.fec.gov/v1/schedules/schedule_a/by_size/by_candidate/?candidate_id=S6PA00217&cycle=2024&page=1&per_page=100": "r002.json",
+ "GET https://api.open.fec.gov/v1/schedules/schedule_e/totals/by_candidate/?election_full=true&candidate_id=S6PA00217&cycle=2024&page=1&per_page=100": "r003.json",
+ "GET https://api.open.fec.gov/v1/schedules/schedule_a/?sort=-contribution_receipt_date&sort_null_only=false&committee_id=C00431056&two_year_transaction_period=2024&is_individual=false&per_page=5": "r004.json",
+ "GET https://api.open.fec.gov/v1/schedules/schedule_a/?sort=-contribution_receipt_date&sort_null_only=false&committee_id=C00431056&two_year_transaction_period=2024&is_individual=false&per_page=5&last_contribution_receipt_date=2024-12-20&last_index=4092920261599839770": "r005.json"
+}

@@ -1,0 +1,10 @@
+{
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?sort=created_date_desc&product=Student+loan&state=WY&date_received_min=2025-01-01&date_received_max=2025-12-31&size=2&no_aggs=true": "r001.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?sort=created_date_desc&product=Student+loan&state=WY&date_received_min=2025-01-01&date_received_max=2025-12-31&size=2&no_aggs=true&search_after=1764095764000_17892924": "r002.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?state=WY&date_received_min=2025-01-01&date_received_max=2025-12-31&size=0": "r003.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?product=Student+loan&state=WY&date_received_min=2025-01-01&date_received_max=2025-03-31&size=0&no_aggs=true": "r004.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?product=Student+loan&state=WY&date_received_min=2025-04-01&date_received_max=2025-06-30&size=0&no_aggs=true": "r005.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?product=Student+loan&state=WY&date_received_min=2025-07-01&date_received_max=2025-09-30&size=0&no_aggs=true": "r006.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?product=Student+loan&state=WY&date_received_min=2025-10-01&date_received_max=2025-12-31&size=0&no_aggs=true": "r007.json",
+ "GET https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?sort=created_date_desc&product=Debt+collection%E2%80%A2Medical+debt&issue=Attempts+to+collect+debt+not+owed%E2%80%A2Debt+is+not+yours&issue=Attempts+to+collect+debt+not+owed%E2%80%A2Debt+was+paid&state=WY&date_received_min=2025-01-01&date_received_max=2025-12-31&size=3&no_aggs=true": "r008.json"
+}

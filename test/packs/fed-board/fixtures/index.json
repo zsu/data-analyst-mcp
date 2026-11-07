@@ -1,0 +1,14 @@
+{
+ "GET https://www.federalreserve.gov/datadownload/Choose.aspx?rel=G19": "ddp_choose_G19.html",
+ "GET https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=696245eb361e0a8bc89b8e5b01cc971b&filetype=csv&label=include&layout=seriescolumn&type=package": "ddp_G19_sa.csv",
+ "GET https://www.federalreserve.gov/datadownload/Output.aspx?rel=SLOOS&series=e64f07187815f0e7ed89237d8cb91eeb&filetype=csv&label=include&layout=seriescolumn&type=package": "ddp_SLOOS_all.csv",
+ "GET https://www.federalreserve.gov/releases/z1/current/z1_table_mapping.csv": "z1_table_mapping.csv",
+ "GET https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=00000000000000000000000000000000&filetype=csv&label=include&layout=seriescolumn&type=package": "ddp_empty_bad_package.csv",
+ "GET https://www.federalreserve.gov/datadownload/Choose.aspx?rel=NOPE": {
+  "file": "ddp_choose_NOPE_400.html",
+  "status": 400
+ },
+ "GET https://www.federalreserve.gov/releases/z1/current/z1_csv_files.zip": "z1_csv_files_trim.zip",
+ "GET https://www.federalreserve.gov/econres/scf/dataviz/download/zips/scf.zip": "scf_chart_trim.zip",
+ "GET https://www.federalreserve.gov/econres/files/scf2025_tables_public_real_historical.xlsx": "scf2025_tables_real_trim.xlsx"
+}

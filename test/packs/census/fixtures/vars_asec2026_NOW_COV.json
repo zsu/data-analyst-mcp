@@ -1,0 +1,14 @@
+{
+  "name": "NOW_COV",
+  "label": "Currently covered by health insurance coverage",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "MARSUPWT",
+  "values": {
+    "item": {
+      "2": "No",
+      "1": "Yes"
+    }
+  }
+}

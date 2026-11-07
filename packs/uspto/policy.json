@@ -1,0 +1,95 @@
+{
+  "id": "uspto",
+  "title": "USPTO Open Data Portal (patent applications, PTAB, petitions, bulk datasets)",
+  "agency": "United States Patent and Trademark Office (U.S. Department of Commerce)",
+  "depth": "standard",
+  "domains": [
+    "patents",
+    "innovation",
+    "intellectual property",
+    "research"
+  ],
+  "keywords": [
+    "patent",
+    "patents",
+    "patent application",
+    "uspto",
+    "inventor",
+    "assignee",
+    "assignment",
+    "grant",
+    "granted patents",
+    "cpc",
+    "continuation",
+    "prosecution",
+    "ptab",
+    "inter partes review",
+    "ipr",
+    "petition",
+    "patent term adjustment",
+    "file wrapper",
+    "intellectual property",
+    "innovation"
+  ],
+  "questions": [
+    "patents granted to a company in a year",
+    "status and history of a patent application",
+    "who owns a patent (assignments)",
+    "PTAB inter partes review proceedings for a patent",
+    "patent applications filed in a CPC class over time"
+  ],
+  "homepage": "https://data.uspto.gov/",
+  "terms_url": "https://www.uspto.gov/terms-use-uspto-websites",
+  "auth": {
+    "env": "USPTO_API_KEY",
+    "required": "required",
+    "placement": "header",
+    "param": "X-API-KEY",
+    "prefix": "",
+    "home": "uspto",
+    "signup_url": "https://data.uspto.gov/apis/getting-started",
+    "echoes_key": false,
+    "key_only": [
+      "every ODP API call"
+    ]
+  },
+  "limits": {
+    "rps": 4,
+    "burst": 1,
+    "daily_quota": null,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.uspto.gov",
+      "probe": "https://api.uspto.gov/api/v1/patent/applications/search?q=applicationNumberText:14412875&limit=1&fields=applicationNumberText",
+      "hosts": [
+        "api.uspto.gov"
+      ]
+    },
+    "manual": {
+      "how": "The ODP API needs a key in the X-API-KEY header, so browser links do not work: on your own computer run download_data.sh / download_data.ps1 from manual_download/ (one command; it asks for USPTO_API_KEY with hidden input), then upload the JSON files. Without a key: sign in at https://data.uspto.gov (USPTO.gov account with MFA, required since 2026-06-18), open Patent File Wrapper search (https://data.uspto.gov/patent-file-wrapper/search), run the query, download the results as JSON or CSV and upload them."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Application data are refreshed daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Patent bibliographic data published by the USPTO are U.S. government information, not subject to copyright (17 U.S.C. 105; USPTO terms of use at https://www.uspto.gov/terms-use-uspto-websites). Records name inventors, attorneys and addresses: report aggregates, not people."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "United States Patent and Trademark Office, Open Data Portal API, {dataset}, api.uspto.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Count by filing date, publication date or grant date? They differ by years; say which date defines the period.",
+    "Applications or granted patents? Search returns both; filter on grant (applicationMetaData.patentNumber present, or status 150) for grants.",
+    "Count organizations by first applicant or by current assignee? Ownership changes after filing (assignments)."
+  ],
+  "formats": [
+    "json"
+  ]
+}

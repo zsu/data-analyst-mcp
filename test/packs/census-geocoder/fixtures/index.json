@@ -1,0 +1,7 @@
+{
+ "GET https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?benchmark=Public_AR_Current&vintage=Current_Current&format=json&address=1600+Pennsylvania+Ave+NW%2C+Washington%2C+DC+20500": "r001.json",
+ "GET https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?benchmark=Public_AR_Current&vintage=Current_Current&format=json&address=1+Nowhere+Lane%2C+Nowhere%2C+ZZ+00000": "r002.json",
+ "GET https://geocoding.geo.census.gov/geocoder/geographies/coordinates?benchmark=Public_AR_Current&vintage=Census2020_Current&format=json&x=-76.6122&y=39.2904": "r003.json",
+ "GET https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=Public_AR_Current&format=json&address=1600+Pennsylvania+Ave+NW%2C+Washington%2C+DC+20500": "r004.json",
+ "GET https://geocoding.geo.census.gov/geocoder/benchmarks": "r005.json"
+}

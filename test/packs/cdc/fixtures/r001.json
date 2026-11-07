@@ -1,0 +1,11 @@
+[{"year":"2017","_113_cause_name":"All Causes","cause_name":"All causes","state":"New York","deaths":"155358","aadr":"623.6"}
+,{"year":"2017","_113_cause_name":"Diseases of heart (I00-I09,I11,I13,I20-I51)","cause_name":"Heart disease","state":"New York","deaths":"44092","aadr":"171.2"}
+,{"year":"2017","_113_cause_name":"Malignant neoplasms (C00-C97)","cause_name":"Cancer","state":"New York","deaths":"34956","aadr":"141.2"}
+,{"year":"2017","_113_cause_name":"Accidents (unintentional injuries) (V01-X59,Y85-Y86)","cause_name":"Unintentional injuries","state":"New York","deaths":"7687","aadr":"35.5"}
+,{"year":"2017","_113_cause_name":"Chronic lower respiratory diseases (J40-J47)","cause_name":"CLRD","state":"New York","deaths":"7258","aadr":"28.9"}
+,{"year":"2017","_113_cause_name":"Cerebrovascular diseases (I60-I69)","cause_name":"Stroke","state":"New York","deaths":"6264","aadr":"24.6"}
+,{"year":"2017","_113_cause_name":"Influenza and pneumonia (J09-J18)","cause_name":"Influenza and pneumonia","state":"New York","deaths":"4517","aadr":"17.7"}
+,{"year":"2017","_113_cause_name":"Diabetes mellitus (E10-E14)","cause_name":"Diabetes","state":"New York","deaths":"4176","aadr":"16.8"}
+,{"year":"2017","_113_cause_name":"Alzheimer's disease (G30)","cause_name":"Alzheimer's disease","state":"New York","deaths":"3521","aadr":"13.2"}
+,{"year":"2017","_113_cause_name":"Nephritis, nephrotic syndrome and nephrosis (N00-N07,N17-N19,N25-N27)","cause_name":"Kidney disease","state":"New York","deaths":"2296","aadr":"9.1"}
+,{"year":"2017","_113_cause_name":"Intentional self-harm (suicide) (*U03,X60-X84,Y87.0)","cause_name":"Suicide","state":"New York","deaths":"1696","aadr":"8.1"}]

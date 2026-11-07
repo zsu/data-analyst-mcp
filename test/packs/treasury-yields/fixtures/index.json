@@ -1,0 +1,5 @@
+{
+ "GET https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2024/all?type=daily_treasury_yield_curve&_format=csv&field_tdr_date_value=2024": "r001.csv",
+ "GET https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2025/all?type=daily_treasury_yield_curve&_format=csv&field_tdr_date_value=2025": "r002.csv",
+ "GET https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2025/all?type=daily_treasury_long_term_rate&_format=csv&field_tdr_date_value=2025": "r003.csv"
+}

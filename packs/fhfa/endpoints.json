@@ -1,0 +1,105 @@
+{
+ "base_url": "https://www.fhfa.gov",
+ "timeout": 180,
+ "endpoints": {
+  "hpi_master": {
+   "path": "/hpi/download/monthly/hpi_master.csv",
+   "method": "GET",
+   "description": "Every FHFA House Price Index series in one file (17 MB, about 186,000 rows): purchase-only monthly U.S. and census divisions (NSA and SA), quarterly purchase-only, all-transactions and expanded-data indexes for the U.S., divisions, states and metro areas, plus distress-free, non-metro, manufactured-home and Puerto Rico indexes. The pack reads the whole file and keeps the rows that match the filters.",
+   "params": {
+    "hpi_type": {"in": "spec", "column": "hpi_type", "enum": ["traditional", "non-metro", "distress-free", "developmental", "manufactured"], "desc": "index family (traditional = the standard FHFA HPI)"},
+    "hpi_flavor": {"in": "spec", "column": "hpi_flavor", "enum": ["purchase-only", "all-transactions", "expanded-data"], "desc": "purchase-only (flagship; sales only), all-transactions (adds refinance appraisals), expanded-data (purchase-only plus county recorder and FHA data)"},
+    "frequency": {"in": "spec", "column": "frequency", "enum": ["monthly", "quarterly"], "desc": "monthly exists only for purchase-only U.S. and census divisions"},
+    "level": {"in": "spec", "column": "level", "enum": ["USA or Census Division", "State", "MSA", "Puerto Rico"], "desc": "geography level"},
+    "place_id": {"in": "spec", "column": "place_id", "desc": "USA, a division code (DV_ENC, DV_PAC, ...), a state abbreviation, or a CBSA code; a list matches any"},
+    "place_name": {"in": "spec", "column": "place_name", "desc": "exact place name (United States, Vermont, ...); a list matches any"},
+    "where": {"in": "spec", "desc": "more equality filters {column: value or list}; matching ignores case and surrounding spaces"},
+    "min_year": {"in": "spec", "desc": "first year (yr) to keep"},
+    "max_year": {"in": "spec", "desc": "last year (yr) to keep"}
+   },
+   "year_column": "yr",
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 400000,
+   "missing": [""],
+   "flatten": false
+  },
+  "hpi_state": {
+   "path": "/hpi/download/quarterly_datasets/hpi_at_state.csv",
+   "method": "GET",
+   "description": "Quarterly all-transactions HPI for the 50 states and DC, 1975Q1 on, NSA, 1980Q1 = 100 (188 KB; the same numbers as hpi_master all-transactions State rows). The file has no header row: the pack names the columns state, yr, qtr, index_nsa.",
+   "params": {
+    "state": {"in": "spec", "column": "state", "desc": "state abbreviation (VT) or a list"},
+    "where": {"in": "spec", "desc": "more equality filters {column: value or list}"},
+    "min_year": {"in": "spec", "desc": "first year to keep"},
+    "max_year": {"in": "spec", "desc": "last year to keep"}
+   },
+   "header": ["state", "yr", "qtr", "index_nsa"],
+   "year_column": "yr",
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 100000,
+   "missing": [""],
+   "flatten": false
+  },
+  "hpi_annual": {
+   "path": "/hpi/download/annual/hpi_at_{geography}.xlsx",
+   "method": "GET",
+   "description": "Annual all-transactions HPI (developmental) for the nation, states, CBSAs, counties or three-digit ZIP codes: annual change (%) and the index on three bases (first year = 100, 1990 = 100, 2000 = 100), NSA, through the last full year. County 5.3 MB, CBSA 2.1 MB, ZIP3 1.9 MB.",
+   "params": {
+    "geography": {"in": "path", "required": true, "enum": ["national", "state", "cbsa", "county", "zip3"], "desc": "national, state, cbsa, county or zip3 (ZIP5 and tract files are too large: see source.md)"},
+    "where": {"in": "spec", "desc": "equality filters on the file's columns {column: value or list}: State / Abbreviation / FIPS (state), State / County / FIPS code (county), CBSA / Name (cbsa), Three-Digit ZIP Code (zip3)"},
+    "min_year": {"in": "spec", "desc": "first Year to keep"},
+    "max_year": {"in": "spec", "desc": "last Year to keep"}
+   },
+   "year_column": "Year",
+   "records": "$xlsx",
+   "sheet": 1,
+   "header_row": 6,
+   "paging": {"type": "none"},
+   "max_rows": 200000,
+   "missing": ["", "."],
+   "flatten": false
+  },
+  "loan_limits": {
+   "path": "/document/d/cll/fullcountyloanlimitlist{year}_hera-based_final_flat.csv",
+   "method": "GET",
+   "description": "Conforming loan limits by county for one calendar year (Fannie Mae and Freddie Mac; HERA-based), for one- to four-unit properties: about 3,235 counties. CSV files exist for 2024 on; next year's file appears when FHFA announces the limits in late November. Columns are renamed to snake_case and dollar amounts made plain numbers.",
+   "params": {
+    "year": {"in": "path", "required": true, "desc": "calendar year of the limits, 2024 or later (2022-2023 are .xlsx only: manual)"},
+    "state": {"in": "spec", "column": "state", "desc": "state abbreviation (CA) or a list"},
+    "where": {"in": "spec", "desc": "more equality filters {column: value or list}, snake_case names (county_name, cbsa_number, fips_state_code)"}
+   },
+   "snake_columns": true,
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 10000,
+   "missing": [""],
+   "flatten": false
+  },
+  "fhlb_pudb": {
+   "path": "/document/d/pud/{year}-pudb.csv",
+   "method": "GET",
+   "description": "Federal Home Loan Bank System Public Use Database: one row per single-family mortgage acquired by an FHLBank in the year (loan amount, LTV, note rate, borrower income, census tract, race, sex, age, credit score bucket). 12 MB for 2025. Enterprise (Fannie Mae, Freddie Mac) loan-level files are large zips: manual.",
+   "params": {
+    "year": {"in": "path", "required": true, "enum": ["2023", "2024", "2025"], "desc": "acquisition year (files named {year}-pudb.csv)"},
+    "where": {"in": "spec", "desc": "equality filters {column: value or list} on the file's columns (Bank, FIPSStateNumericCode, FIPSCountyCode, CoreBasedStatisticalAreaCode, LoanPurposeType, BorrowerFirstTimeHomebuyer, PropertyUnitCount)"}
+   },
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 200000,
+   "missing": [""],
+   "flatten": false
+  }
+ },
+ "catalog": {
+  "hpi_us_po_monthly": {"id": "hpi_master", "name": "Purchase-only HPI, U.S. and census divisions, monthly (NSA and SA)", "description": "Flagship monthly FHFA HPI: hpi_master with hpi_flavor purchase-only, frequency monthly, place_id USA (or a division)", "endpoint": "hpi_master"},
+  "hpi_state_po_quarterly": {"id": "hpi_master", "name": "Purchase-only HPI by state, quarterly (NSA and SA)", "description": "hpi_master with hpi_flavor purchase-only, frequency quarterly, level State", "endpoint": "hpi_master"},
+  "hpi_metro": {"id": "hpi_master", "name": "HPI by metro area (CBSA), quarterly", "description": "hpi_master with level MSA: all-transactions and expanded-data for 410 metros and metro divisions, purchase-only for the 100 largest", "endpoint": "hpi_master"},
+  "hpi_state_at": {"id": "hpi_state", "name": "All-transactions HPI by state, quarterly, since 1975", "description": "hpi_state (small file, NSA)", "endpoint": "hpi_state"},
+  "hpi_county_annual": {"id": "hpi_annual", "name": "Annual HPI by county (developmental)", "description": "hpi_annual with geography county", "endpoint": "hpi_annual"},
+  "hpi_zip3_annual": {"id": "hpi_annual", "name": "Annual HPI by three-digit ZIP code (developmental)", "description": "hpi_annual with geography zip3", "endpoint": "hpi_annual"},
+  "conforming_loan_limits": {"id": "loan_limits", "name": "Conforming loan limits by county", "description": "loan_limits with a year; baseline and high-cost (HERA) limits for one to four units", "endpoint": "loan_limits"},
+  "fhlbank_pudb": {"id": "fhlb_pudb", "name": "FHLBank Public Use Database (loan level)", "description": "fhlb_pudb with a year (2023-2025)", "endpoint": "fhlb_pudb"}
+ }
+}

@@ -1,0 +1,109 @@
+{
+  "id": "usda-outlook",
+  "title": "USDA forecasts and projections (WASDE, ERS farm income forecasts, USDA Agricultural Baseline)",
+  "agency": "U.S. Department of Agriculture: World Agricultural Outlook Board (WAOB, Office of the Chief Economist) and Economic Research Service (ERS)",
+  "depth": "standard",
+  "domains": [
+    "agriculture",
+    "food",
+    "economy"
+  ],
+  "keywords": [
+    "wasde",
+    "world agricultural supply and demand estimates",
+    "supply and use",
+    "ending stocks",
+    "stocks-to-use",
+    "season-average farm price",
+    "marketing year",
+    "crop forecast",
+    "usda projection",
+    "farm income",
+    "net farm income",
+    "net cash farm income",
+    "cash receipts",
+    "farm sector balance sheet",
+    "farm debt",
+    "farm equity",
+    "government payments to farmers",
+    "farm income forecast",
+    "agricultural baseline",
+    "usda baseline",
+    "long-term agricultural projections",
+    "ten-year projections",
+    "interagency agricultural projections committee",
+    "corn",
+    "soybeans",
+    "wheat",
+    "cotton",
+    "rice",
+    "beef",
+    "pork",
+    "poultry",
+    "dairy"
+  ],
+  "questions": [
+    "latest USDA projection of U.S. corn ending stocks for the current marketing year",
+    "how the WASDE soybean export forecast changed from month to month",
+    "world wheat production forecast by country",
+    "USDA's 2026 net farm income forecast, nominal and inflation-adjusted",
+    "farm income by state",
+    "how accurate were past net farm income forecasts",
+    "USDA 10-year baseline projection of corn planted acres and prices"
+  ],
+  "homepage": "https://www.usda.gov/about-usda/general-information/staff-offices/office-chief-economist/commodity-markets/wasde-report",
+  "terms_url": "https://www.ers.usda.gov/about-ers/policies-and-standards",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": []
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.ers.usda.gov",
+      "probe": "https://www.ers.usda.gov/data-products/agricultural-baseline-database",
+      "hosts": [
+        "www.usda.gov",
+        "esmis.nal.usda.gov",
+        "www.ers.usda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Download the files in a browser and upload them unchanged. WASDE: the monthly CSV https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-YYYY-MM.csv (January 2021 on), or for older or missing months the consolidated CSV on the Historical WASDE Report Data page (https://www.usda.gov/oce/commodity-markets/wasde/historical-wasde-report-data). Farm income: the release ZIP ('September 3, 2026 release'), the 'U.S. farm sector financial indicators' .xlsx or the data archive ZIP on https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics. Baseline: the ZIP under 'File Downloads' on https://www.ers.usda.gov/data-products/agricultural-baseline-database."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Each WASDE month and each farm income release is a new vintage that revises the last; data/ is reused per run only."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "WASDE, ERS farm income statistics and the USDA baseline are U.S. government works in the public domain (17 U.S.C. 105); USDA asks for attribution."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Agriculture, {dataset}, usda.gov / ers.usda.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which vintage? WASDE is reissued monthly and ERS farm income forecasts three times a year (February, early September, early December); the default is the latest, and a comparison over time needs one vintage per release.",
+    "Nominal or inflation-adjusted dollars? ERS publishes nominal values plus a chain-type GDP price index (latest year = 100); the default is nominal.",
+    "Which marketing year (WASDE) or calendar year (farm income)? Marketing years differ by commodity (corn and soybeans September-August, wheat June-May, cotton and rice August-July)."
+  ],
+  "formats": [
+    "csv",
+    "xlsx",
+    "zip"
+  ]
+}

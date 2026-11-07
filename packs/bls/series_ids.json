@@ -1,0 +1,1375 @@
+{
+ "about": "BLS series-id data for the bls deep pack, converted from the Python skill's sources/bls/lib/series_ids.py (and the state table of scripts/analysis/combine.py). Lists of pairs keep their order.",
+ "verified": "2026-10-20",
+ "surveys": [
+  [
+   "LN",
+   "Current Population Survey (household survey), labor force statistics",
+   true
+  ],
+  [
+   "LE",
+   "Current Population Survey, weekly and hourly earnings",
+   true
+  ],
+  [
+   "CE",
+   "Current Employment Statistics (establishment survey), national",
+   true
+  ],
+  [
+   "SM",
+   "Current Employment Statistics, state and metro area",
+   true
+  ],
+  [
+   "CU",
+   "Consumer Price Index for All Urban Consumers (CPI-U)",
+   true
+  ],
+  [
+   "CW",
+   "Consumer Price Index for Urban Wage Earners and Clerical Workers (CPI-W)",
+   true
+  ],
+  [
+   "SU",
+   "Chained Consumer Price Index for All Urban Consumers (C-CPI-U)",
+   true
+  ],
+  [
+   "AP",
+   "CPI average prices",
+   true
+  ],
+  [
+   "WP",
+   "Producer Price Index, commodities and final demand",
+   true
+  ],
+  [
+   "PC",
+   "Producer Price Index, industries",
+   true
+  ],
+  [
+   "JT",
+   "Job Openings and Labor Turnover Survey (JOLTS)",
+   true
+  ],
+  [
+   "LU",
+   "Union affiliation (Current Population Survey, annual averages)",
+   true
+  ],
+  [
+   "LA",
+   "Local Area Unemployment Statistics (LAUS)",
+   true
+  ],
+  [
+   "EN",
+   "Quarterly Census of Employment and Wages (QCEW)",
+   true
+  ],
+  [
+   "OE",
+   "Occupational Employment and Wage Statistics (OEWS)",
+   true
+  ],
+  [
+   "CI",
+   "Employment Cost Index (ECI)",
+   true
+  ],
+  [
+   "CM",
+   "Employer Costs for Employee Compensation (ECEC)",
+   true
+  ],
+  [
+   "PR",
+   "Labor productivity and costs, major sectors",
+   true
+  ],
+  [
+   "IP",
+   "Labor productivity, detailed industries",
+   true
+  ],
+  [
+   "EI",
+   "Import and export price indexes",
+   true
+  ],
+  [
+   "BD",
+   "Business Employment Dynamics",
+   true
+  ],
+  [
+   "CX",
+   "Consumer Expenditure Surveys",
+   false
+  ],
+  [
+   "TU",
+   "American Time Use Survey",
+   true
+  ],
+  [
+   "NB",
+   "National Compensation Survey, benefits",
+   false
+  ],
+  [
+   "WS",
+   "Major work stoppages",
+   false
+  ],
+  [
+   "CF",
+   "Census of Fatal Occupational Injuries",
+   true
+  ],
+  [
+   "IS",
+   "Survey of Occupational Injuries and Illnesses",
+   true
+  ]
+ ],
+ "catalog": [
+  [
+   "CES0000000001",
+   "Total nonfarm employment (thousands, SA)",
+   "employment"
+  ],
+  [
+   "CEU0000000001",
+   "Total nonfarm employment (thousands, NSA)",
+   "employment"
+  ],
+  [
+   "CES0500000001",
+   "Total private employment (thousands)",
+   "employment"
+  ],
+  [
+   "CES1000000001",
+   "Mining and logging employment",
+   "employment"
+  ],
+  [
+   "CES2000000001",
+   "Construction employment",
+   "employment"
+  ],
+  [
+   "CES3000000001",
+   "Manufacturing employment",
+   "employment"
+  ],
+  [
+   "CES4000000001",
+   "Trade, transportation, and utilities employment",
+   "employment"
+  ],
+  [
+   "CES5000000001",
+   "Information employment",
+   "employment"
+  ],
+  [
+   "CES5500000001",
+   "Financial activities employment",
+   "employment"
+  ],
+  [
+   "CES6000000001",
+   "Professional and business services employment",
+   "employment"
+  ],
+  [
+   "CES6500000001",
+   "Education and health services employment",
+   "employment"
+  ],
+  [
+   "CES7000000001",
+   "Leisure and hospitality employment",
+   "employment"
+  ],
+  [
+   "CES8000000001",
+   "Other services employment",
+   "employment"
+  ],
+  [
+   "CES9000000001",
+   "Government employment",
+   "employment"
+  ],
+  [
+   "CES9091000001",
+   "Federal government employment (thousands, SA; includes USPS)",
+   "employment"
+  ],
+  [
+   "CES9091100001",
+   "Federal government employment except U.S. Postal Service (thousands, SA)",
+   "employment"
+  ],
+  [
+   "CES9091912001",
+   "U.S. Postal Service employment (thousands, SA)",
+   "employment"
+  ],
+  [
+   "CES9092000001",
+   "State government employment (thousands, SA)",
+   "employment"
+  ],
+  [
+   "CES9093000001",
+   "Local government employment (thousands, SA)",
+   "employment"
+  ],
+  [
+   "LNS12500000",
+   "Employed, usually work full time (thousands, SA)",
+   "employment"
+  ],
+  [
+   "LNS12600000",
+   "Employed, usually work part time (thousands, SA)",
+   "employment"
+  ],
+  [
+   "LNU02500062",
+   "Employed, usually work full time, women 25-54 (thousands, NSA)",
+   "employment"
+  ],
+  [
+   "LNU02600062",
+   "Employed, usually work part time, women 25-54 (thousands, NSA)",
+   "employment"
+  ],
+  [
+   "LNU02000062",
+   "Employment level, women 25-54 (thousands, NSA)",
+   "employment"
+  ],
+  [
+   "LNS14000000",
+   "Unemployment rate, U-3, 16 years and over (SA)",
+   "unemployment"
+  ],
+  [
+   "LNU04000000",
+   "Unemployment rate, U-3 (NSA)",
+   "unemployment"
+  ],
+  [
+   "LNS13327709",
+   "U-6 unemployment rate: unemployed, marginally attached and part time for economic reasons (SA)",
+   "unemployment"
+  ],
+  [
+   "LNS14000001",
+   "Unemployment rate, men 16 years and over",
+   "unemployment"
+  ],
+  [
+   "LNS14000002",
+   "Unemployment rate, women 16 years and over",
+   "unemployment"
+  ],
+  [
+   "LNS14000003",
+   "Unemployment rate, White (SA)",
+   "unemployment"
+  ],
+  [
+   "LNS14000006",
+   "Unemployment rate, Black or African American (SA; from 1972)",
+   "unemployment"
+  ],
+  [
+   "LNS14000009",
+   "Unemployment rate, Hispanic or Latino (SA; from 1973)",
+   "unemployment"
+  ],
+  [
+   "LNS14032183",
+   "Unemployment rate, Asian (SA; from 2000)",
+   "unemployment"
+  ],
+  [
+   "LNU04000003",
+   "Unemployment rate, White (NSA)",
+   "unemployment"
+  ],
+  [
+   "LNU04000006",
+   "Unemployment rate, Black or African American (NSA)",
+   "unemployment"
+  ],
+  [
+   "LNS14024887",
+   "Unemployment rate, 16 to 24 years",
+   "unemployment"
+  ],
+  [
+   "LNS14000012",
+   "Unemployment rate, 16 to 19 years",
+   "unemployment"
+  ],
+  [
+   "LNS14000036",
+   "Unemployment rate, 20 to 24 years",
+   "unemployment"
+  ],
+  [
+   "LUU0204899600",
+   "Union members, percent of employed, United States (union membership rate, annual)",
+   "unemployment"
+  ],
+  [
+   "LNS14027659",
+   "Unemployment rate, 25 years and over, less than a high school diploma (education)",
+   "unemployment"
+  ],
+  [
+   "LNS14027660",
+   "Unemployment rate, 25 years and over, high school graduates, no college (education)",
+   "unemployment"
+  ],
+  [
+   "LNS14027689",
+   "Unemployment rate, 25 years and over, some college or associate degree (education)",
+   "unemployment"
+  ],
+  [
+   "LNS14027662",
+   "Unemployment rate, 25 years and over, bachelor's degree and higher (education)",
+   "unemployment"
+  ],
+  [
+   "LNS11300000",
+   "Labor force participation rate",
+   "unemployment"
+  ],
+  [
+   "LNS11300060",
+   "Labor force participation rate, 25 to 54 years",
+   "unemployment"
+  ],
+  [
+   "LNS12300000",
+   "Employment-population ratio",
+   "unemployment"
+  ],
+  [
+   "LNS12300060",
+   "Employment-population ratio, 25 to 54 years",
+   "unemployment"
+  ],
+  [
+   "LNS12300061",
+   "Employment-population ratio, 25 to 54 years, men",
+   "unemployment"
+  ],
+  [
+   "LNS12300062",
+   "Employment-population ratio, 25 to 54 years, women",
+   "unemployment"
+  ],
+  [
+   "LNS12000000",
+   "Employed, level (thousands)",
+   "unemployment"
+  ],
+  [
+   "LNS13000000",
+   "Unemployed, level (thousands)",
+   "unemployment"
+  ],
+  [
+   "CES0500000003",
+   "Average hourly earnings, total private",
+   "wages"
+  ],
+  [
+   "CES0500000008",
+   "Average hourly earnings, production and nonsupervisory employees",
+   "wages"
+  ],
+  [
+   "CES0500000011",
+   "Average weekly earnings, total private",
+   "wages"
+  ],
+  [
+   "CES0500000013",
+   "Real average hourly earnings, total private (1982-84 dollars)",
+   "wages"
+  ],
+  [
+   "CES0500000002",
+   "Average weekly hours, total private",
+   "wages"
+  ],
+  [
+   "CES3000000003",
+   "Average hourly earnings, manufacturing",
+   "wages"
+  ],
+  [
+   "CES6562000003",
+   "Average hourly earnings, health care and social assistance",
+   "wages"
+  ],
+  [
+   "LES1252881500",
+   "Median usual weekly earnings, full-time wage and salary workers (quarterly, SA)",
+   "wages"
+  ],
+  [
+   "LES1252881600",
+   "Median usual weekly earnings, full-time, 1982-84 dollars (quarterly, SA)",
+   "wages"
+  ],
+  [
+   "LEU0252881500",
+   "Median usual weekly earnings, full-time wage and salary workers (quarterly, NSA)",
+   "wages"
+  ],
+  [
+   "LEU0252881600",
+   "Median usual weekly earnings, full-time, 1982-84 dollars (quarterly, NSA)",
+   "wages"
+  ],
+  [
+   "LEU0252916700",
+   "Median usual weekly earnings, full time, 25+, less than a high school diploma (education)",
+   "wages"
+  ],
+  [
+   "LEU0252917300",
+   "Median usual weekly earnings, full time, 25+, high school graduates, no college (education)",
+   "wages"
+  ],
+  [
+   "LEU0252919100",
+   "Median usual weekly earnings, full time, 25+, bachelor's degree only (education)",
+   "wages"
+  ],
+  [
+   "LEU0252918500",
+   "Median usual weekly earnings, full time, 25+, bachelor's degree and higher (education)",
+   "wages"
+  ],
+  [
+   "LEU0252919700",
+   "Median usual weekly earnings, full time, 25+, advanced degree (education)",
+   "wages"
+  ],
+  [
+   "LEU0257368700",
+   "Median usual weekly earnings, full time, 16+, foreign born (nativity, immigrants)",
+   "wages"
+  ],
+  [
+   "LEU0257374100",
+   "Median usual weekly earnings, full time, 16+, native born (nativity)",
+   "wages"
+  ],
+  [
+   "LEU0257370500",
+   "Median weekly earnings of the foreign born as a percent of the native born (nativity)",
+   "wages"
+  ],
+  [
+   "CIS1010000000000I",
+   "Employment Cost Index, total compensation, civilian (index, SA, quarterly)",
+   "wages"
+  ],
+  [
+   "CIU1010000000000A",
+   "Employment Cost Index, total compensation, civilian, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU1020000000000A",
+   "Employment Cost Index, wages and salaries, civilian, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU2010000000000A",
+   "Employment Cost Index, total compensation, private industry, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU2020000000000A",
+   "Employment Cost Index, wages and salaries, private industry, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU2030000000000A",
+   "Employment Cost Index, total benefits, private industry, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU3010000000000A",
+   "Employment Cost Index, total compensation, state and local government, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIU3020000000000A",
+   "Employment Cost Index, wages and salaries, state and local government, 12-month percent change",
+   "wages"
+  ],
+  [
+   "CIS2020000000000I",
+   "Employment Cost Index, wages and salaries, private industry (index, SA, quarterly)",
+   "wages"
+  ],
+  [
+   "CUUR0000SA0",
+   "CPI-U, all items, U.S. city average (1982-84=100, NSA)",
+   "cpi"
+  ],
+  [
+   "CUSR0000SA0",
+   "CPI-U, all items (SA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SAM",
+   "CPI-U, medical care (NSA)",
+   "cpi"
+  ],
+  [
+   "CWSR0000SA0",
+   "CPI-W, all items (SA; the deflator of real earnings of production and nonsupervisory employees)",
+   "cpi"
+  ],
+  [
+   "CES0500000013",
+   "Real average hourly earnings, all employees, total private, 1982-84 dollars (SA)",
+   "wages"
+  ],
+  [
+   "CES0500000032",
+   "Real average hourly earnings, production and nonsupervisory employees, 1982-84 dollars (SA)",
+   "wages"
+  ],
+  [
+   "CUUR0000SAM2",
+   "CPI-U, medical care services (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SETE",
+   "CPI-U, motor vehicle insurance (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SETA02",
+   "CPI-U, used cars and trucks (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SEHA",
+   "CPI-U, rent of primary residence (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SEHC",
+   "CPI-U, owners' equivalent rent of residences (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SAF11",
+   "CPI-U, food at home (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SEFV",
+   "CPI-U, food away from home (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SAS",
+   "CPI-U, services (NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SA0L1E",
+   "CPI-U, all items less food and energy (core, NSA)",
+   "cpi"
+  ],
+  [
+   "CUSR0000SA0L1E",
+   "CPI-U, all items less food and energy (core, SA)",
+   "cpi"
+  ],
+  [
+   "CWUR0000SA0",
+   "CPI-W, all items (NSA)",
+   "cpi"
+  ],
+  [
+   "SUUR0000SA0",
+   "Chained CPI-U, all items (NSA; interim for 10 to 12 months)",
+   "cpi"
+  ],
+  [
+   "CUURS49ASA0",
+   "CPI-U, all items, Los Angeles area (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS11ASA0",
+   "CPI-U, all items, Boston-Cambridge-Newton (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS12ASA0",
+   "CPI-U, all items, New York-Newark-Jersey City (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS12BSA0",
+   "CPI-U, all items, Philadelphia-Camden-Wilmington (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS23ASA0",
+   "CPI-U, all items, Chicago-Naperville-Elgin (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS23BSA0",
+   "CPI-U, all items, Detroit-Warren-Dearborn (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS24ASA0",
+   "CPI-U, all items, Minneapolis-St. Paul-Bloomington (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS24BSA0",
+   "CPI-U, all items, St. Louis (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS35ASA0",
+   "CPI-U, all items, Washington-Arlington-Alexandria (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS35BSA0",
+   "CPI-U, all items, Miami-Fort Lauderdale-West Palm Beach (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS35CSA0",
+   "CPI-U, all items, Atlanta-Sandy Springs-Roswell (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS35DSA0",
+   "CPI-U, all items, Tampa-St. Petersburg-Clearwater (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS35ESA0",
+   "CPI-U, all items, Baltimore-Columbia-Towson (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS37ASA0",
+   "CPI-U, all items, Dallas-Fort Worth-Arlington (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS37BSA0",
+   "CPI-U, all items, Houston-The Woodlands-Sugar Land (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS48ASA0",
+   "CPI-U, all items, Phoenix-Mesa-Scottsdale (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS48BSA0",
+   "CPI-U, all items, Denver-Aurora-Lakewood (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49BSA0",
+   "CPI-U, all items, San Francisco-Oakland-Hayward (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49CSA0",
+   "CPI-U, all items, Riverside-San Bernardino-Ontario (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49DSA0",
+   "CPI-U, all items, Seattle-Tacoma-Bellevue (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49ESA0",
+   "CPI-U, all items, San Diego-Carlsbad (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49FSA0",
+   "CPI-U, all items, Urban Hawaii (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUURS49GSA0",
+   "CPI-U, all items, Urban Alaska (metro CPI, NSA)",
+   "cpi"
+  ],
+  [
+   "CUUR0000SAF1",
+   "CPI-U, food",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SA0E",
+   "CPI-U, energy",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAH1",
+   "CPI-U, shelter",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SETB01",
+   "CPI-U, gasoline (all types)",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAM",
+   "CPI-U, medical care",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAE",
+   "CPI-U, education and communication",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAT",
+   "CPI-U, transportation",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAR",
+   "CPI-U, recreation",
+   "cpi_components"
+  ],
+  [
+   "CUUR0000SAA",
+   "CPI-U, apparel",
+   "cpi_components"
+  ],
+  [
+   "WPSFD4",
+   "PPI final demand (SA)",
+   "ppi"
+  ],
+  [
+   "WPUFD4",
+   "PPI final demand (NSA)",
+   "ppi"
+  ],
+  [
+   "EIUIR",
+   "Import price index, all imports (import prices, NSA)",
+   "mxp"
+  ],
+  [
+   "EIUIR10",
+   "Import price index, fuel imports (import prices, NSA)",
+   "mxp"
+  ],
+  [
+   "EIUIREXFUELS",
+   "Import price index, nonfuel imports (import prices, NSA)",
+   "mxp"
+  ],
+  [
+   "EIUIQ",
+   "Export price index, all exports (export prices, NSA)",
+   "mxp"
+  ],
+  [
+   "EIUIQAG",
+   "Export price index, agricultural exports (export prices, NSA)",
+   "mxp"
+  ],
+  [
+   "EIUIQEXAG",
+   "Export price index, nonagricultural exports (export prices, NSA)",
+   "mxp"
+  ],
+  [
+   "PRS85006092",
+   "Nonfarm business labor productivity, percent change at annual rate (quarterly)",
+   "productivity"
+  ],
+  [
+   "PRS85006112",
+   "Nonfarm business unit labor costs, percent change at annual rate (quarterly)",
+   "productivity"
+  ],
+  [
+   "PRS85006093",
+   "Nonfarm business labor productivity, index 2017=100 (quarterly; for growth since a date)",
+   "productivity"
+  ],
+  [
+   "PRS85006103",
+   "Nonfarm business hourly compensation, index 2017=100 (quarterly)",
+   "productivity"
+  ],
+  [
+   "PRS85006153",
+   "Nonfarm business real hourly compensation (CPI-deflated), index 2017=100 (quarterly)",
+   "productivity"
+  ],
+  [
+   "PRS85006173",
+   "Nonfarm business labor share, index 2017=100 (quarterly)",
+   "productivity"
+  ],
+  [
+   "PRS85006143",
+   "Nonfarm business value-added output price deflator, index 2017=100 (quarterly)",
+   "productivity"
+  ],
+  [
+   "JTS000000000000000JOL",
+   "Job openings, total nonfarm (thousands)",
+   "jolts"
+  ],
+  [
+   "JTS000000000000000JOR",
+   "Job openings rate",
+   "jolts"
+  ],
+  [
+   "JTS000000000000000HIR",
+   "Hires rate",
+   "jolts"
+  ],
+  [
+   "JTS000000000000000QUR",
+   "Quits rate",
+   "jolts"
+  ],
+  [
+   "JTS000000000000000TSR",
+   "Total separations rate",
+   "jolts"
+  ],
+  [
+   "JTS000000000000000LDR",
+   "Layoffs and discharges rate",
+   "jolts"
+  ],
+  [
+   "OEUN000000000000000000004",
+   "OEWS annual mean wage, all occupations, United States (latest year only)",
+   "oews"
+  ]
+ ],
+ "laus_measures": [
+  [
+   "unemployment_rate",
+   "03"
+  ],
+  [
+   "unemployment",
+   "04"
+  ],
+  [
+   "employment",
+   "05"
+  ],
+  [
+   "labor_force",
+   "06"
+  ]
+ ],
+ "oews_measures": [
+  [
+   "employment",
+   "01"
+  ],
+  [
+   "hourly_mean_wage",
+   "03"
+  ],
+  [
+   "annual_mean_wage",
+   "04"
+  ],
+  [
+   "hourly_median_wage",
+   "08"
+  ],
+  [
+   "annual_10th_percentile_wage",
+   "11"
+  ],
+  [
+   "annual_median_wage",
+   "13"
+  ],
+  [
+   "annual_90th_percentile_wage",
+   "15"
+  ]
+ ],
+ "jolts_industries": [
+  [
+   "000000",
+   "Total nonfarm"
+  ],
+  [
+   "100000",
+   "Total private"
+  ],
+  [
+   "110099",
+   "Mining and logging"
+  ],
+  [
+   "230000",
+   "Construction"
+  ],
+  [
+   "300000",
+   "Manufacturing"
+  ],
+  [
+   "320000",
+   "Durable goods manufacturing"
+  ],
+  [
+   "340000",
+   "Nondurable goods manufacturing"
+  ],
+  [
+   "400000",
+   "Trade, transportation, and utilities"
+  ],
+  [
+   "420000",
+   "Wholesale trade"
+  ],
+  [
+   "440000",
+   "Retail trade"
+  ],
+  [
+   "480099",
+   "Transportation, warehousing, and utilities"
+  ],
+  [
+   "510000",
+   "Information"
+  ],
+  [
+   "510099",
+   "Financial activities"
+  ],
+  [
+   "520000",
+   "Finance and insurance"
+  ],
+  [
+   "530000",
+   "Real estate and rental and leasing"
+  ],
+  [
+   "540099",
+   "Professional and business services"
+  ],
+  [
+   "600000",
+   "Private education and health services"
+  ],
+  [
+   "610000",
+   "Private educational services"
+  ],
+  [
+   "620000",
+   "Health care and social assistance"
+  ],
+  [
+   "700000",
+   "Leisure and hospitality"
+  ],
+  [
+   "710000",
+   "Arts, entertainment, and recreation"
+  ],
+  [
+   "720000",
+   "Accommodation and food services"
+  ],
+  [
+   "810000",
+   "Other services"
+  ],
+  [
+   "900000",
+   "Government"
+  ],
+  [
+   "910000",
+   "Federal"
+  ],
+  [
+   "920000",
+   "State and local"
+  ],
+  [
+   "923000",
+   "State and local government education"
+  ],
+  [
+   "929000",
+   "State and local government, excluding education"
+  ]
+ ],
+ "jolts_elements": [
+  [
+   "job_openings",
+   "JO"
+  ],
+  [
+   "hires",
+   "HI"
+  ],
+  [
+   "total_separations",
+   "TS"
+  ],
+  [
+   "quits",
+   "QU"
+  ],
+  [
+   "layoffs",
+   "LD"
+  ],
+  [
+   "other_separations",
+   "OS"
+  ]
+ ],
+ "builders": [
+  "laus",
+  "oews",
+  "state",
+  "ces_state",
+  "jolts"
+ ],
+ "states": [
+  [
+   "AL",
+   "01",
+   "Alabama"
+  ],
+  [
+   "AK",
+   "02",
+   "Alaska"
+  ],
+  [
+   "AZ",
+   "04",
+   "Arizona"
+  ],
+  [
+   "AR",
+   "05",
+   "Arkansas"
+  ],
+  [
+   "CA",
+   "06",
+   "California"
+  ],
+  [
+   "CO",
+   "08",
+   "Colorado"
+  ],
+  [
+   "CT",
+   "09",
+   "Connecticut"
+  ],
+  [
+   "DE",
+   "10",
+   "Delaware"
+  ],
+  [
+   "DC",
+   "11",
+   "District of Columbia"
+  ],
+  [
+   "FL",
+   "12",
+   "Florida"
+  ],
+  [
+   "GA",
+   "13",
+   "Georgia"
+  ],
+  [
+   "HI",
+   "15",
+   "Hawaii"
+  ],
+  [
+   "ID",
+   "16",
+   "Idaho"
+  ],
+  [
+   "IL",
+   "17",
+   "Illinois"
+  ],
+  [
+   "IN",
+   "18",
+   "Indiana"
+  ],
+  [
+   "IA",
+   "19",
+   "Iowa"
+  ],
+  [
+   "KS",
+   "20",
+   "Kansas"
+  ],
+  [
+   "KY",
+   "21",
+   "Kentucky"
+  ],
+  [
+   "LA",
+   "22",
+   "Louisiana"
+  ],
+  [
+   "ME",
+   "23",
+   "Maine"
+  ],
+  [
+   "MD",
+   "24",
+   "Maryland"
+  ],
+  [
+   "MA",
+   "25",
+   "Massachusetts"
+  ],
+  [
+   "MI",
+   "26",
+   "Michigan"
+  ],
+  [
+   "MN",
+   "27",
+   "Minnesota"
+  ],
+  [
+   "MS",
+   "28",
+   "Mississippi"
+  ],
+  [
+   "MO",
+   "29",
+   "Missouri"
+  ],
+  [
+   "MT",
+   "30",
+   "Montana"
+  ],
+  [
+   "NE",
+   "31",
+   "Nebraska"
+  ],
+  [
+   "NV",
+   "32",
+   "Nevada"
+  ],
+  [
+   "NH",
+   "33",
+   "New Hampshire"
+  ],
+  [
+   "NJ",
+   "34",
+   "New Jersey"
+  ],
+  [
+   "NM",
+   "35",
+   "New Mexico"
+  ],
+  [
+   "NY",
+   "36",
+   "New York"
+  ],
+  [
+   "NC",
+   "37",
+   "North Carolina"
+  ],
+  [
+   "ND",
+   "38",
+   "North Dakota"
+  ],
+  [
+   "OH",
+   "39",
+   "Ohio"
+  ],
+  [
+   "OK",
+   "40",
+   "Oklahoma"
+  ],
+  [
+   "OR",
+   "41",
+   "Oregon"
+  ],
+  [
+   "PA",
+   "42",
+   "Pennsylvania"
+  ],
+  [
+   "RI",
+   "44",
+   "Rhode Island"
+  ],
+  [
+   "SC",
+   "45",
+   "South Carolina"
+  ],
+  [
+   "SD",
+   "46",
+   "South Dakota"
+  ],
+  [
+   "TN",
+   "47",
+   "Tennessee"
+  ],
+  [
+   "TX",
+   "48",
+   "Texas"
+  ],
+  [
+   "UT",
+   "49",
+   "Utah"
+  ],
+  [
+   "VT",
+   "50",
+   "Vermont"
+  ],
+  [
+   "VA",
+   "51",
+   "Virginia"
+  ],
+  [
+   "WA",
+   "53",
+   "Washington"
+  ],
+  [
+   "WV",
+   "54",
+   "West Virginia"
+  ],
+  [
+   "WI",
+   "55",
+   "Wisconsin"
+  ],
+  [
+   "WY",
+   "56",
+   "Wyoming"
+  ],
+  [
+   "AS",
+   "60",
+   "American Samoa"
+  ],
+  [
+   "GU",
+   "66",
+   "Guam"
+  ],
+  [
+   "MP",
+   "69",
+   "Northern Mariana Islands"
+  ],
+  [
+   "PR",
+   "72",
+   "Puerto Rico"
+  ],
+  [
+   "VI",
+   "78",
+   "U.S. Virgin Islands"
+  ]
+ ]
+}

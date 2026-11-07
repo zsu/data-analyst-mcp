@@ -1,0 +1,108 @@
+{
+  "id": "medicaid",
+  "title": "Medicaid and CHIP open data (data.medicaid.gov)",
+  "agency": "Centers for Medicare & Medicaid Services",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "health care",
+    "medicaid",
+    "federal spending",
+    "prescription drugs"
+  ],
+  "keywords": [
+    "medicaid",
+    "chip",
+    "children's health insurance program",
+    "medicaid enrollment",
+    "chip enrollment",
+    "medicaid expansion",
+    "expansion adults",
+    "new adult group",
+    "viii group",
+    "unwinding",
+    "medicaid renewals",
+    "disenrollment",
+    "managed care",
+    "mco",
+    "cms-64",
+    "medicaid spending",
+    "medicaid expenditures",
+    "fmap",
+    "federal share",
+    "ffcra",
+    "state drug utilization",
+    "sdud",
+    "medicaid drug spending",
+    "nadac",
+    "drug acquisition cost",
+    "eligibility levels"
+  ],
+  "questions": [
+    "total Medicaid and CHIP enrollment nationally in the latest month",
+    "Medicaid enrollment by state over time",
+    "how many adults are enrolled through the ACA Medicaid expansion",
+    "Medicaid renewals and procedural disenrollments by state",
+    "share of Medicaid enrollees in managed care by state",
+    "federal share of Medicaid expansion spending by state and quarter",
+    "Medicaid prescriptions and reimbursement for a drug by state",
+    "NADAC price of a drug over time"
+  ],
+  "homepage": "https://data.medicaid.gov/",
+  "terms_url": "https://www.usa.gov/publicdomain/label/1.0/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 500000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.medicaid.gov",
+      "probe": "https://data.medicaid.gov/api/1/metastore/schemas/dataset/items/6165f45b-ca93-5bb5-9d06-db29c692a360",
+      "hosts": [
+        "data.medicaid.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (a JSON page of up to 8,000 rows with the request's filters) and save it under the name shown, then upload it. Without the links: open https://data.medicaid.gov/dataset/<dataset id>, use the Download button (the full CSV, display-style column names), or https://data.medicaid.gov/api/1/datastore/query/<dataset id>/0/download?format=csv (the full CSV; it takes the same conditions[...] filters). Current CMS-64 expenditure files (after fiscal year 2016) are only on https://www.medicaid.gov/medicaid/financial-management/state-expenditure-reporting-for-medicaid-chip/expenditure-reports-mbescbes (open in a browser; the site refuses scripts)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Enrollment updates monthly and NADAC weekly; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "data.medicaid.gov datasets carry the U.S. Public Domain label (https://www.usa.gov/publicdomain/label/1.0/); CMS data are U.S. government works (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Centers for Medicare & Medicaid Services, {dataset}, data.medicaid.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Medicaid only, or Medicaid and CHIP together? Default: report total Medicaid and CHIP enrollment and give Medicaid and CHIP separately.",
+    "Which month: the latest (preliminary) report, or the latest updated (final) month? Default: the latest month, said to be preliminary.",
+    "Total computable spending or the federal share only? Default: both, labeled."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

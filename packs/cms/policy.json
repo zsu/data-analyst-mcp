@@ -1,0 +1,96 @@
+{
+  "id": "cms",
+  "title": "CMS Provider Data and Medicare data (data.cms.gov)",
+  "agency": "Centers for Medicare & Medicaid Services",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "health care",
+    "medicare"
+  ],
+  "keywords": [
+    "medicare",
+    "hospital",
+    "hospitals",
+    "nursing home",
+    "nursing homes",
+    "star rating",
+    "readmission",
+    "readmissions",
+    "hospital mortality",
+    "infection",
+    "hcahps",
+    "patient survey",
+    "home health",
+    "hospice",
+    "dialysis",
+    "care compare",
+    "medicare enrollment",
+    "medicare advantage",
+    "part d",
+    "part b",
+    "drug spending",
+    "medicare spending",
+    "geographic variation",
+    "drg",
+    "inpatient",
+    "opioid prescribing"
+  ],
+  "questions": [
+    "hospital star ratings in a state",
+    "nursing home ratings and deficiencies",
+    "hospital readmission penalties",
+    "Medicare enrollment by state over time",
+    "Medicare spending per beneficiary by state",
+    "Medicare Part D spending on a drug",
+    "Medicare Advantage share of beneficiaries"
+  ],
+  "homepage": "https://data.cms.gov/",
+  "terms_url": "https://data.cms.gov/terms-of-use",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 300000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.cms.gov",
+      "probe": "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items/xubh-q36u",
+      "hosts": [
+        "data.cms.gov"
+      ]
+    },
+    "manual": {
+      "how": "Provider data: open https://data.cms.gov/provider-data/dataset/<id> and click Download (full CSV), or open the JSON links in INSTRUCTIONS.md (filtered, 500 rows a page). Medicare data-api datasets: open the dataset page on data.cms.gov, use Export or Download, or open the JSON links. Upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Queries are filtered and small; provider data refresh monthly or quarterly. data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CMS data on data.cms.gov are U.S. government works in the public domain (17 U.S.C. 105); see https://data.cms.gov/terms-of-use. Cite CMS and the dataset."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Centers for Medicare & Medicaid Services, {dataset}, data.cms.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which reporting period? Provider Data measures cover rolling multi-year windows that differ by measure (see each row's start_date and end_date); Medicare datasets are by calendar year.",
+    "Original Medicare (fee-for-service) only, or including Medicare Advantage? Geographic Variation, inpatient and physician files cover fee-for-service only.",
+    "Actual or price-standardized spending? Geographic comparisons should use standardized amounts."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

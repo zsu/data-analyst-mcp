@@ -1,0 +1,10 @@
+[["MEASURE_NAME","MEASURE_LABEL","RATE","RATE_MOE","TOTAL","UNIVERSE","CYCLE","PHASE","COL_START_DATE","COL_END_DATE","time","MEASURE_NAME","us"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","36.0","0.6","79271728","220376693","01","4.0","January 9, 2024","February 5, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","36.2","0.6","79475476","219369466","02","4.0","February 6, 2024","March 4, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","35.7","0.6","78043892","218570055","03","4.0","March 5, 2024","April 1, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","37.1","0.7","87697083","236337862","09","4.2","August 20, 2024","September 16, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","36.4","0.6","80618422","221724537","04","4.1","April 2, 2024","April 29, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","36.5","0.5","80902140","221423493","05","4.1","April 30, 2024","May 27, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","37.0","0.7","81936613","221568330","06","4.1","May 28, 2024","June 24, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","37.4","0.6","82907312","221388120","07","4.1","June 25, 2024","July 22, 2024","2024","EXPENSE","1"],
+["EXPENSE","Difficulty Paying for Usual Household Expenses","37.4","0.6","89248835","238895647","08","4.2","July 23, 2024","August 19, 2024","2024","EXPENSE","1"]]

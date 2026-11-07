@@ -1,0 +1,12 @@
+SEARCH VALUES
+keyword
+data scientist
+
+FILTER VALUES
+education_level,price_range
+PHD,"150,200"
+
+Contract #,Labor Category,Business Size,Schedule,Site,Security Clearance,Category,Subcategory,Begin Date,End Date,SIN,Vendor Name,Education Level,Minimum Years Experience,Current Year Labor Price,Next Year Labor Price,Second Year Labor Price
+47QRAA25D0009,Data Scientist,small business,MAS,Customer_Facility,No,Miscellaneous; Professional Services,Technical and Engineering Services (Non IT); Complementary SINs,2024-10-04,2029-10-03,"541715,541690","RANCHO BIOSCIENCES, LLC",PhD,1,176.75,182.93,189.34
+47QRAA25D0009,Data Scientist,small business,MAS,Contractor_Facility,No,Miscellaneous; Professional Services,Technical and Engineering Services (Non IT); Complementary SINs,2024-10-04,2029-10-03,"541715,541690","RANCHO BIOSCIENCES, LLC",PhD,1,176.75,182.93,189.34
+47QTCA22D009H,Artificial Intelligence/Machine Learning Engineer/Data Scientist (Level V),small business,MAS,Customer_Facility,No,Information Technology; Miscellaneous,Complementary SINs; IT Services,2022-06-13,2027-06-12,54151S,ST JARDINS INC,PhD,5,182.9694,187.4704,192.0822

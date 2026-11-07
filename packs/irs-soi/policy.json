@@ -1,0 +1,107 @@
+{
+  "id": "irs-soi",
+  "title": "IRS Statistics of Income: individual income tax data by ZIP code, county, state and migration (irs.gov)",
+  "agency": "Internal Revenue Service, Statistics of Income Division",
+  "depth": "standard",
+  "domains": [
+    "taxes",
+    "income",
+    "migration",
+    "geography"
+  ],
+  "keywords": [
+    "irs",
+    "statistics of income",
+    "soi",
+    "income tax",
+    "tax returns",
+    "adjusted gross income",
+    "agi",
+    "agi by zip code",
+    "zip code income",
+    "county income",
+    "income by county",
+    "state income tax data",
+    "number of returns",
+    "salaries and wages",
+    "earned income credit",
+    "eitc",
+    "child tax credit",
+    "capital gains",
+    "itemized deductions",
+    "salt deduction",
+    "tax liability",
+    "migration",
+    "domestic migration",
+    "people moving",
+    "inflow",
+    "outflow",
+    "taxpayer migration",
+    "income moving between states"
+  ],
+  "questions": [
+    "average adjusted gross income by ZIP code in Maryland",
+    "number of tax returns and total AGI by county",
+    "share of returns with income over $200,000 by state",
+    "earned income tax credit claims by county",
+    "how many taxpayers moved from New York to Florida and how much income they took",
+    "net migration of tax filers into Texas counties",
+    "state and local tax deduction by ZIP code"
+  ],
+  "homepage": "https://www.irs.gov/statistics/soi-tax-stats-data-by-geographic-area",
+  "terms_url": "https://www.irs.gov/statistics/soi-tax-stats-about-soi",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.irs.gov/pub/irs-soi",
+      "probe": "https://www.irs.gov/robots.txt",
+      "hosts": [
+        "www.irs.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the product's index page on irs.gov (ZIP code data: https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics-zip-code-data-soi; county data: https://www.irs.gov/statistics/soi-tax-stats-county-data; state data: https://www.irs.gov/statistics/soi-tax-stats-historic-table-2; migration data: https://www.irs.gov/statistics/soi-tax-stats-migration-data), open the tax year (or filing-year pair) and download the all-states CSV named in INSTRUCTIONS.md (for example 22incyallagi.csv), then upload it unchanged; --ingest filters it by the spec. The per-state Excel files are not read by --ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Each request downloads one published all-states CSV (0.1 MB for state migration up to 216 MB for ZIP code data) and keeps only the asked rows; data/ is reused within a run only."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "SOI tax statistics are U.S. government works in the public domain (17 U.S.C. 105) and are published already aggregated with disclosure protection; cite IRS SOI and the retrieval date."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Internal Revenue Service, Statistics of Income Division, {dataset}, irs.gov/statistics, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which tax year (ZIP, county and state data) or which pair of filing years (migration: 2022-2023 compares addresses on returns filed in 2022 and 2023)? Default: the latest posted (tax year 2023; migration 2022-2023).",
+    "All returns combined, or broken out by AGI size class (agi_stub)? Averages such as AGI per return need the all-classes total (ZIP 00000 / county 000 rows or the no-AGI-class file).",
+    "Migration: people moving into the place (inflow) or out of it (outflow), between states or between counties? Net migration needs both."
+  ],
+  "formats": [
+    "csv"
+  ]
+}

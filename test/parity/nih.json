@@ -1,0 +1,55 @@
+{
+ "sample": {
+  "description": "NCI breast cancer projects at Vermont organizations, FY2024; opioid (RCDC) projects in Vermont, FY2024; publications of one project",
+  "requests": [
+   {
+    "name": "vt_nci_breast_2024",
+    "endpoint": "projects",
+    "params": {
+     "fiscal_years": [
+      2024
+     ],
+     "org_states": [
+      "VT"
+     ],
+     "agencies": [
+      "NCI"
+     ],
+     "text": "breast cancer"
+    }
+   },
+   {
+    "name": "vt_opioids_2024",
+    "endpoint": "projects",
+    "params": {
+     "fiscal_years": [
+      2024
+     ],
+     "org_states": [
+      "VT"
+     ],
+     "spending_categories": [
+      "Opioids"
+     ],
+     "include_fields": [
+      "ApplId",
+      "CoreProjectNum",
+      "FiscalYear",
+      "ProjectTitle",
+      "AwardAmount",
+      "AgencyIcAdmin"
+     ]
+    }
+   },
+   {
+    "name": "pubs_r01ca282725",
+    "endpoint": "publications",
+    "params": {
+     "core_project_nums": [
+      "R01CA282725"
+     ]
+    }
+   }
+  ]
+ }
+}

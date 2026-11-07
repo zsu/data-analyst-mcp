@@ -1,0 +1,708 @@
+{
+ "base_url": "https://api.open.fec.gov/v1",
+ "endpoints": {
+  "candidates_search": {
+   "path": "/candidates/search/",
+   "method": "GET",
+   "description": "Find candidates by name, state, office, party or election year.",
+   "params": {
+    "q": {
+     "desc": "name words, e.g. casey"
+    },
+    "state": {
+     "desc": "two-letter"
+    },
+    "office": {
+     "desc": "H | S | P",
+     "enum": [
+      "H",
+      "S",
+      "P"
+     ]
+    },
+    "party": {
+     "desc": "DEM | REP | LIB | GRE | IND ..."
+    },
+    "election_year": {
+     "desc": "e.g. 2024"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "district": {
+     "desc": "two digits, e.g. 07"
+    },
+    "incumbent_challenge": {
+     "desc": "I | C | O (open seat)"
+    },
+    "candidate_status": {
+     "desc": "C current | F future | N not yet | P prior"
+    },
+    "has_raised_funds": {
+     "desc": "true"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "name"
+   }
+  },
+  "candidate": {
+   "path": "/candidate/{candidate_id}/",
+   "method": "GET",
+   "description": "One candidate's record (party, office, cycles, principal committees).",
+   "params": {
+    "candidate_id": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. S6PA00217 (H, S or P + state + digits)"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "candidate_totals": {
+   "path": "/candidate/{candidate_id}/totals/",
+   "method": "GET",
+   "description": "A candidate's financial totals per cycle (receipts, disbursements, cash, debts, contributions by source).",
+   "params": {
+    "candidate_id": {
+     "in": "path",
+     "required": true,
+     "desc": "candidate id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "election_full": {
+     "desc": "true (default) = whole election period (6 years for Senate, 4 for President); false = the two-year cycle"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "election_full": "true"
+   }
+  },
+  "candidates_totals": {
+   "path": "/candidates/totals/",
+   "method": "GET",
+   "description": "Financial totals for every candidate in a race or office (rank by receipts).",
+   "params": {
+    "office": {
+     "desc": "H | S | P",
+     "enum": [
+      "H",
+      "S",
+      "P"
+     ]
+    },
+    "election_year": {
+     "desc": "e.g. 2024"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "state": {
+     "desc": "two-letter"
+    },
+    "district": {
+     "desc": "two digits"
+    },
+    "party": {
+     "desc": "DEM | REP ..."
+    },
+    "is_active_candidate": {
+     "desc": "true = only candidates active in that election"
+    },
+    "election_full": {
+     "desc": "true = whole election period"
+    },
+    "sort": {
+     "desc": "-receipts (default), -disbursements, -cash_on_hand_end_period"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-receipts",
+    "sort_null_only": "false"
+   }
+  },
+  "elections": {
+   "path": "/elections/",
+   "method": "GET",
+   "description": "Race summary: each candidate's receipts, disbursements and cash for one office, state and district.",
+   "params": {
+    "office": {
+     "required": true,
+     "desc": "house | senate | president",
+     "enum": [
+      "house",
+      "senate",
+      "president"
+     ]
+    },
+    "cycle": {
+     "required": true,
+     "desc": "election year, e.g. 2024"
+    },
+    "state": {
+     "desc": "two-letter (house, senate)"
+    },
+    "district": {
+     "desc": "two digits (house)"
+    },
+    "election_full": {
+     "desc": "true (default) = whole election period"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "election_full": "true",
+    "sort": "-total_receipts"
+   }
+  },
+  "committees": {
+   "path": "/committees/",
+   "method": "GET",
+   "description": "Find committees (campaigns, PACs, super PACs, party committees).",
+   "params": {
+    "q": {
+     "desc": "name words, e.g. pfizer"
+    },
+    "committee_type": {
+     "desc": "P H S (candidate), Q N (PAC), O (super PAC), U (single-candidate IE), V W (hybrid PAC), X Y (party), I (independent expenditure filer)"
+    },
+    "designation": {
+     "desc": "P principal campaign | A authorized | J joint fundraiser | U unauthorized | B lobbyist PAC | D leadership PAC"
+    },
+    "organization_type": {
+     "desc": "C corporation | L labor | M membership | T trade | V cooperative | W corporation without capital stock"
+    },
+    "state": {
+     "desc": "two-letter"
+    },
+    "party": {
+     "desc": "DEM | REP ..."
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "committee": {
+   "path": "/committee/{committee_id}/",
+   "method": "GET",
+   "description": "One committee's registration details.",
+   "params": {
+    "committee_id": {
+     "in": "path",
+     "required": true,
+     "desc": "e.g. C00431056"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "committee_totals": {
+   "path": "/committee/{committee_id}/totals/",
+   "method": "GET",
+   "description": "A committee's financial totals per two-year cycle.",
+   "params": {
+    "committee_id": {
+     "in": "path",
+     "required": true,
+     "desc": "committee id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "schedule_a": {
+   "path": "/schedules/schedule_a/",
+   "method": "GET",
+   "description": "Itemized receipts (Schedule A): contributions with contributor name, employer, occupation, city, state, ZIP, amount, date. Keyset paging; give at least one filter.",
+   "params": {
+    "committee_id": {
+     "desc": "recipient committee id(s)"
+    },
+    "contributor_name": {
+     "desc": "name words"
+    },
+    "contributor_employer": {
+     "desc": "employer words"
+    },
+    "contributor_occupation": {
+     "desc": "occupation words"
+    },
+    "contributor_state": {
+     "desc": "two-letter"
+    },
+    "contributor_city": {
+     "desc": "city"
+    },
+    "contributor_zip": {
+     "desc": "ZIP (5 digits)"
+    },
+    "contributor_type": {
+     "desc": "individual | committee"
+    },
+    "is_individual": {
+     "desc": "true = individuals only (no transfers)"
+    },
+    "two_year_transaction_period": {
+     "desc": "two-year period, e.g. 2024 (recommended; FEC searches the current period without it)"
+    },
+    "min_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "max_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "min_amount": {
+     "desc": "dollars"
+    },
+    "max_amount": {
+     "desc": "dollars"
+    },
+    "sort": {
+     "desc": "-contribution_receipt_date (default) | contribution_receipt_amount | -contribution_receipt_amount"
+    },
+    "per_page": {
+     "desc": "rows per request, at most 100 (default 100)"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "seek",
+    "size": 100
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-contribution_receipt_date",
+    "sort_null_only": "false"
+   }
+  },
+  "schedule_b": {
+   "path": "/schedules/schedule_b/",
+   "method": "GET",
+   "description": "Itemized disbursements (Schedule B): recipient, purpose, amount, date. Keyset paging.",
+   "params": {
+    "committee_id": {
+     "desc": "spending committee id(s)"
+    },
+    "recipient_name": {
+     "desc": "recipient words"
+    },
+    "recipient_committee_id": {
+     "desc": "recipient committee id"
+    },
+    "recipient_state": {
+     "desc": "two-letter"
+    },
+    "disbursement_description": {
+     "desc": "purpose words, e.g. media"
+    },
+    "two_year_transaction_period": {
+     "desc": "two-year period, e.g. 2024 (recommended; FEC searches the current period without it)"
+    },
+    "min_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "max_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "min_amount": {
+     "desc": "dollars"
+    },
+    "max_amount": {
+     "desc": "dollars"
+    },
+    "sort": {
+     "desc": "-disbursement_date (default) | -disbursement_amount"
+    },
+    "per_page": {
+     "desc": "rows per request, at most 100 (default 100)"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "seek",
+    "size": 100
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-disbursement_date",
+    "sort_null_only": "false"
+   }
+  },
+  "schedule_e": {
+   "path": "/schedules/schedule_e/",
+   "method": "GET",
+   "description": "Independent expenditures (Schedule E): spender, candidate supported or opposed, payee, purpose, amount, date. Keyset paging.",
+   "params": {
+    "candidate_id": {
+     "desc": "candidate id(s)"
+    },
+    "committee_id": {
+     "desc": "spender committee id(s)"
+    },
+    "support_oppose_indicator": {
+     "desc": "S support | O oppose",
+     "enum": [
+      "S",
+      "O"
+     ]
+    },
+    "cycle": {
+     "desc": "two-year period"
+    },
+    "min_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "max_date": {
+     "desc": "YYYY-MM-DD"
+    },
+    "min_amount": {
+     "desc": "dollars"
+    },
+    "is_notice": {
+     "desc": "true = 24/48-hour notices only; false = regular reports only"
+    },
+    "sort": {
+     "desc": "-expenditure_date (default) | -expenditure_amount"
+    },
+    "per_page": {
+     "desc": "rows per request, at most 100 (default 100)"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "seek",
+    "size": 100
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-expenditure_date",
+    "sort_null_only": "false"
+   }
+  },
+  "contributions_by_size": {
+   "path": "/schedules/schedule_a/by_size/by_candidate/",
+   "method": "GET",
+   "description": "A candidate's receipts from individuals by contribution size bucket (0 = $200 and under, 200, 500, 1000, 2000).",
+   "params": {
+    "candidate_id": {
+     "required": true,
+     "desc": "candidate id(s)"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "election_full": {
+     "desc": "true = whole election period"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "contributions_by_state": {
+   "path": "/schedules/schedule_a/by_state/by_candidate/",
+   "method": "GET",
+   "description": "A candidate's itemized individual receipts by contributor state.",
+   "params": {
+    "candidate_id": {
+     "required": true,
+     "desc": "candidate id(s)"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "election_full": {
+     "desc": "true = whole election period"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "committee_contributions_by_state": {
+   "path": "/schedules/schedule_a/by_state/",
+   "method": "GET",
+   "description": "A committee's itemized individual receipts by contributor state.",
+   "params": {
+    "committee_id": {
+     "required": true,
+     "desc": "committee id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000
+  },
+  "contributions_by_employer": {
+   "path": "/schedules/schedule_a/by_employer/",
+   "method": "GET",
+   "description": "A committee's itemized individual receipts by contributor employer (as written by contributors).",
+   "params": {
+    "committee_id": {
+     "required": true,
+     "desc": "committee id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "employer": {
+     "desc": "employer words"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-total"
+   }
+  },
+  "contributions_by_occupation": {
+   "path": "/schedules/schedule_a/by_occupation/",
+   "method": "GET",
+   "description": "A committee's itemized individual receipts by contributor occupation.",
+   "params": {
+    "committee_id": {
+     "required": true,
+     "desc": "committee id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "occupation": {
+     "desc": "occupation words"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-total"
+   }
+  },
+  "disbursements_by_recipient": {
+   "path": "/schedules/schedule_b/by_recipient/",
+   "method": "GET",
+   "description": "A committee's disbursements totalled by recipient.",
+   "params": {
+    "committee_id": {
+     "required": true,
+     "desc": "committee id"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "recipient_name": {
+     "desc": "recipient words"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "sort": "-total"
+   }
+  },
+  "independent_expenditures_by_candidate": {
+   "path": "/schedules/schedule_e/totals/by_candidate/",
+   "method": "GET",
+   "description": "Independent expenditure totals for a candidate, support and oppose separately.",
+   "params": {
+    "candidate_id": {
+     "required": true,
+     "desc": "candidate id(s)"
+    },
+    "cycle": {
+     "desc": "two-year period ending in an even year, e.g. 2024"
+    },
+    "election_full": {
+     "desc": "true (default) = whole election period"
+    }
+   },
+   "records": "results",
+   "total": "pagination.count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size_param": "per_page",
+    "size": 100,
+    "start": 1
+   },
+   "max_rows": 50000,
+   "defaults": {
+    "election_full": "true"
+   }
+  }
+ },
+ "catalog": {
+  "committee_types": {
+   "id": "P H S Q N O U V W X Y I",
+   "name": "Committee type codes",
+   "description": "P presidential, H house, S senate, Q qualified PAC, N nonqualified PAC, O super PAC, U single-candidate independent expenditure, V W hybrid PAC, X Y party, I independent expenditure filer (person or group)",
+   "endpoint": "committees"
+  },
+  "candidate_status": {
+   "id": "C F N P",
+   "name": "Candidate status",
+   "description": "C current, F future, N not yet a candidate, P prior",
+   "endpoint": "candidates_search"
+  },
+  "offices": {
+   "id": "H S P",
+   "name": "Offices",
+   "description": "H House, S Senate, P President",
+   "endpoint": "candidates_search"
+  },
+  "race_summary": {
+   "id": "elections",
+   "name": "Race summary",
+   "description": "every candidate's money in one race (elections endpoint)",
+   "endpoint": "elections"
+  },
+  "itemized_contributions": {
+   "id": "schedule_a",
+   "name": "Itemized contributions",
+   "description": "individual and committee contributions over $200 (Schedule A)",
+   "endpoint": "schedule_a"
+  },
+  "outside_spending": {
+   "id": "schedule_e",
+   "name": "Independent expenditures",
+   "description": "outside spending for or against candidates (Schedule E) and totals by candidate",
+   "endpoint": "schedule_e"
+  },
+  "small_donors": {
+   "id": "by_size",
+   "name": "Contributions by size",
+   "description": "share of money from donors giving $200 or less (contributions_by_size)",
+   "endpoint": "contributions_by_size"
+  }
+ }
+}

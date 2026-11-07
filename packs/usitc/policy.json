@@ -1,0 +1,111 @@
+{
+  "id": "usitc",
+  "title": "USITC Harmonized Tariff Schedule (HTS REST API: duty rates by HTS line)",
+  "agency": "U.S. International Trade Commission",
+  "depth": "standard",
+  "domains": [
+    "trade",
+    "tariffs",
+    "customs duties"
+  ],
+  "keywords": [
+    "tariff rate",
+    "duty rate",
+    "hts",
+    "harmonized tariff schedule",
+    "hts code",
+    "mfn rate",
+    "general rate of duty",
+    "column 2",
+    "special rate",
+    "free trade agreement",
+    "preference program",
+    "chapter 99",
+    "section 301",
+    "section 232",
+    "additional duties",
+    "ad valorem",
+    "specific duty",
+    "tariff schedule"
+  ],
+  "questions": [
+    "what is the general (MFN) duty rate on passenger cars, HTS 8703",
+    "which HTS lines for steel flat-rolled products are duty free under the general rate",
+    "the statutory duty rate per HTS line, to multiply by import values for a customs revenue estimate",
+    "which chapter 99 additional duties apply to an HTS subheading",
+    "which free trade agreement partners get duty-free treatment on a product"
+  ],
+  "homepage": "https://hts.usitc.gov/",
+  "terms_url": "https://www.usitc.gov/node/16948",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 30000
+  },
+  "routes": {
+    "api": {
+      "base": "https://hts.usitc.gov/reststop",
+      "probe": "https://hts.usitc.gov/reststop/currentRelease",
+      "hosts": [
+        "hts.usitc.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the JSON page under the name shown, then upload it. Without the links: on https://hts.usitc.gov/ search the HTS number or keyword, or use Export (choose the range of HTS numbers and JSON or CSV) and upload the file; past editions and revisions are under 'Archive' at https://hts.usitc.gov/ (PDF and CSV per revision)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The schedule is revised several times a month; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The HTS is published by the U.S. International Trade Commission, a U.S. government work in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. International Trade Commission, Harmonized Tariff Schedule of the United States ({dataset}), hts.usitc.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which rate: the general (MFN, column 1) rate, a free trade agreement or preference rate (special), or column 2? Default: general, with any chapter 99 additional duties named separately.",
+    "Statutory rate or the rate actually collected? Default: statutory rates from this pack; the duty actually collected on imports (calculated duty by product and country) comes from census international trade."
+  ],
+  "formats": [
+    "json"
+  ],
+  "use_instead": [
+    {
+      "question": "Duties actually collected, import values and quantities by HS code and country",
+      "source": "census",
+      "terms": [
+        "tariff revenue"
+      ],
+      "why": "Census international trade reports import values and calculated duty; the HTS gives the statutory rates only."
+    },
+    {
+      "question": "Total customs duties received by the Treasury, monthly or by fiscal year",
+      "source": "treasury",
+      "terms": [
+        "customs"
+      ],
+      "why": "The Monthly Treasury Statement reports customs duty receipts."
+    }
+  ]
+}

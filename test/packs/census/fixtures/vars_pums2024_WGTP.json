@@ -1,0 +1,20 @@
+{
+  "name": "WGTP",
+  "label": "Housing Unit Weight",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true,
+  "values": {
+    "item": {
+      "0": "Group quarters place holder record"
+    },
+    "range": [
+      {
+        "min": "1",
+        "max": "9999",
+        "description": "Integer weight of housing unit"
+      }
+    ]
+  }
+}

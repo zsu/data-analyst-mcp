@@ -1,0 +1,82 @@
+{
+  "base_url": "https://www.cms.gov",
+  "timeout": 90,
+  "endpoints": {
+    "medicare_tr_files": {
+      "path": "/data-research/statistics-trends-and-reports/trustees-report-trust-funds",
+      "description": "The tables in a Medicare Trustees Report's 'Expanded and Supplementary Tables and Figures' ZIP: one row per workbook sheet (file, sheet, title). The pack finds the year's ZIP on the CMS Trustees Report page.",
+      "params": {
+        "report_year": {"in": "spec", "desc": "report year (2022 on), default the latest on the page"}
+      }
+    },
+    "medicare_tr_table": {
+      "path": "/data-research/statistics-trends-and-reports/trustees-report-trust-funds",
+      "description": "One table of the Medicare Trustees Report ZIP as rows (year rows: historical then projected under the intermediate assumptions unless the table says otherwise), e.g. 'Operations of the Hospital Insurance (HI) Trust Fund', 'HI Cost and Income Rates', or a figure's data from the 'Figures' workbook (sheet = figure number such as III.B2).",
+      "params": {
+        "report_year": {"in": "spec", "desc": "report year (2022 on), default the latest on the page"},
+        "table": {"in": "spec", "required": true, "desc": "file name in the ZIP without .xlsx, or a unique part of it ('HI Cost and Income Rates', 'Figures'); list them with medicare_tr_files"},
+        "sheet": {"in": "spec", "desc": "sheet name or 1-based number; default the first sheet that is not 'Notes' (the Figures workbook: a figure number such as 'III.B2'; 'Notes' gives the table's notes)"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names, e.g. 2 or [5, 6]; default: detected"},
+        "layout": {"in": "spec", "enum": ["wide", "long"], "desc": "wide (as published, default) or long (one row per year column and row label; only for tables with years as columns)"}
+      }
+    },
+    "nhe_files": {
+      "path": "/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical",
+      "description": "The tables in one National Health Expenditure (NHE) download: one row per file and sheet (file, sheet, title).",
+      "params": {
+        "file": {"in": "spec", "required": true, "enum": ["tables", "summary", "service_funds", "projections_tables", "projections_data"], "desc": "which NHE download (see source.md)"}
+      }
+    },
+    "nhe_table": {
+      "path": "/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical",
+      "description": "One NHE table as rows: the historical summary with share of GDP, spending by type of service and source of funds (CY 1960 to the latest year), the NHE Tables, the projections tables, or the historical-and-projected data file. Years are columns (layout long melts them).",
+      "params": {
+        "file": {"in": "spec", "required": true, "enum": ["tables", "summary", "service_funds", "projections_tables", "projections_data"], "desc": "which NHE download (see source.md)"},
+        "table": {"in": "spec", "desc": "file name in the ZIP without extension, or a unique part of it ('Table 03', 'Table03'); not needed when the ZIP holds one table"},
+        "sheet": {"in": "spec", "desc": "sheet name or 1-based number; default the first sheet"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names; default: detected"},
+        "layout": {"in": "spec", "enum": ["wide", "long"], "desc": "wide (as published, default) or long (one row per label and year)"}
+      }
+    },
+    "ssa_tr_table": {
+      "path": "https://www.ssa.gov/oact/TR/{report_year}/lrIndex.html",
+      "description": "One single-year table of the Social Security (OASDI) Trustees Report (sheet of SingleYearTRTables_TR<year>.xlsx, e.g. IV.B1 income and cost rates, V.A3 population, VI.G2 trust fund operations), with one row per year and alternative (historical, intermediate, low-cost, high-cost). www.ssa.gov refuses scripts: always the manual route (download in a browser, then --ingest).",
+      "params": {
+        "report_year": {"in": "spec", "desc": "report year, default the latest known to the pack (ssa_latest_known)"},
+        "table": {"in": "spec", "required": true, "desc": "table number = sheet name, e.g. 'IV.B1', 'V.A3', 'VI.G2'"},
+        "header_row": {"in": "spec", "desc": "1-based row(s) holding the column names; default: detected"}
+      }
+    }
+  },
+  "pages": {
+    "medicare": "/data-research/statistics-trends-and-reports/trustees-report-trust-funds",
+    "historical": "/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical",
+    "projected": "/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected"
+  },
+  "medicare_link": "^(\\d{4}) Expanded (?:and )?Supplementary Tables (?:and )?Figures \\(ZIP\\)$",
+  "medicare_known": {
+    "2026": "/files/zip/2026-expanded-supplementary-tables-figures.zip",
+    "2025": "/files/zip/2025-expanded-and-supplementary-tables-and-figures.zip",
+    "2024": "/files/zip/2024-expanded-and-supplementary-tables-and-figures.zip",
+    "2023": "/files/zip/2023-expanded-and-supplementary-tables-and-figures.zip",
+    "2022": "/files/zip/2022-expanded-and-supplementary-tables-and-figures.zip"
+  },
+  "nhe_downloads": {
+    "tables": {"page": "historical", "link": "^NHE Tables \\(ZIP\\)$", "known": "/files/zip/nhe-tables.zip",
+               "what": "NHE Tables 1-25 (historical, one .xlsx per table)"},
+    "summary": {"page": "historical", "link": "^NHE Summary,? including share of GDP,? CY \\d{4}-\\d{4} \\(ZIP\\)$",
+                "known": "/files/zip/nhe-summary-including-share-gdp-cy-1960-2024.zip",
+                "what": "NHE summary including share of GDP, CY 1960 to the latest year (CSV)"},
+    "service_funds": {"page": "historical", "link": "^National Health Expenditures by type of service and source of funds,? CY \\d{4}-\\d{4} \\(ZIP\\)$",
+                      "known": "/files/zip/national-health-expenditures-type-service-source-funds-cy-1960-2024.zip",
+                      "what": "National health expenditures by type of service and source of funds, CY 1960 to the latest year (CSV)"},
+    "projections_tables": {"page": "projected", "link": "^NHE Projections - Tables \\(ZIP\\)$", "known": "/files/zip/nhe-projections-tables.zip",
+                           "what": "NHE projections tables 1-18 (one .xlsx per table)"},
+    "projections_data": {"page": "projected", "link": "^NHE Historical and Projections - Data \\(ZIP\\)$",
+                         "known": "/files/zip/nhe-historical-projections-data.zip",
+                         "what": "NHE by type of service and source of funds, historical and projected years (CSV)"}
+  },
+  "ssa_latest_known": 2026,
+  "ssa_workbook": "https://www.ssa.gov/oact/TR/{year}/SingleYearTRTables_TR{year}.xlsx",
+  "ssa_index": "https://www.ssa.gov/oact/TR/{year}/lrIndex.html"
+}

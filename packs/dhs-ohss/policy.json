@@ -1,0 +1,107 @@
+{
+  "id": "dhs-ohss",
+  "title": "DHS Office of Homeland Security Statistics: Yearbook of Immigration Statistics",
+  "agency": "U.S. Department of Homeland Security, Office of Homeland Security Statistics",
+  "depth": "standard",
+  "domains": [
+    "immigration",
+    "demographics"
+  ],
+  "keywords": [
+    "immigration statistics",
+    "green card",
+    "green cards",
+    "lawful permanent resident",
+    "lawful permanent residents",
+    "permanent residency",
+    "immigrants",
+    "adjustment of status",
+    "naturalization",
+    "naturalizations",
+    "new citizens",
+    "refugees",
+    "refugee arrivals",
+    "asylum",
+    "asylees",
+    "nonimmigrant admissions",
+    "temporary visitors",
+    "i-94",
+    "h-1b",
+    "student visas",
+    "deportations",
+    "removals",
+    "apprehensions",
+    "immigration enforcement",
+    "yearbook of immigration statistics",
+    "dhs",
+    "uscis"
+  ],
+  "questions": [
+    "how many green cards were issued in fiscal year 2024",
+    "lawful permanent residents by country of birth over the last decade",
+    "family-sponsored vs employment-based green cards",
+    "naturalizations by state",
+    "refugee arrivals by country of nationality",
+    "asylum grants by country",
+    "H-1B and student nonimmigrant admissions",
+    "removals and returns by country of nationality",
+    "green cards so far this fiscal year by quarter"
+  ],
+  "homepage": "https://ohss.dhs.gov/topics/immigration/yearbook",
+  "terms_url": "https://ohss.dhs.gov/about-our-data",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://ohss.dhs.gov",
+      "probe": "https://ohss.dhs.gov/topics/immigration/yearbook",
+      "hosts": [
+        "ohss.dhs.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://ohss.dhs.gov/topics/immigration/yearbook, choose the fiscal year, and download the topic's data tables workbook (e.g. \"Lawful Permanent Residents 2024 Data Tables (xlsx)\"; FY2015-2021 are .zip files); for the quarterly report open https://ohss.dhs.gov/topics/immigration/legal-immigration-and-adjustment-status-report and download the fiscal year's .xlsx. Upload the file unchanged under the name shown in INSTRUCTIONS.md: the pack reads the requested sheet from it."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small published workbooks that are revised and re-posted under new names; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Statistics published by a U.S. federal agency are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Homeland Security, Office of Homeland Security Statistics, {dataset}, ohss.dhs.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which fiscal year? DHS counts by federal fiscal year (October to September), not calendar year; the newest yearbook is the default, and the quarterly report covers the current year with preliminary figures.",
+    "All persons obtaining LPR status, or only new arrivals from abroad (or only adjustments of status inside the U.S.)? The yearbook total counts both.",
+    "By country of birth, country of last residence, or (for refugees, asylees and the quarterly report) country of nationality? They are different tables with different counts."
+  ],
+  "formats": [
+    "xlsx",
+    "zip"
+  ]
+}

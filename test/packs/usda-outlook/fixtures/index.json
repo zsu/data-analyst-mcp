@@ -1,0 +1,18 @@
+{
+ "GET https://esmis.nal.usda.gov/publication/world-agricultural-supply-and-demand-estimates": "esmis.html",
+ "GET https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-2026-10.csv": "wasde_2026-10_trimmed.csv",
+ "GET https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-2026-09.csv": "wasde_2026-09_trimmed.csv",
+ "GET https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-2026-08.csv": "wasde_2026-08_trimmed.csv",
+ "GET https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-2026-07.csv": "wasde_2026-07_trimmed.csv",
+ "GET https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-2026-06.csv": {
+  "body": "<!DOCTYPE html><html><head><title>Page Not Found | USDA</title></head></html>",
+  "status": 404
+ },
+ "GET https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics": "fiw.html",
+ "GET https://www.ers.usda.gov/media/20809/us-farm-sector-financial-indicators-2019-2026f.xlsx": "us-farm-sector-financial-indicators-2019-2026f.xlsx",
+ "GET https://www.ers.usda.gov/media/20807/ers-farm-income-and-wealth-statistics-data-archive.zip": "ers-farm-income-and-wealth-statistics-data-archive.zip",
+ "GET https://www.ers.usda.gov/media/29517/september-3-2026-release.zip": "september-3-2026-release_trimmed.zip",
+ "GET https://www.ers.usda.gov/data-products/agricultural-baseline-database": "baseline.html",
+ "GET https://www.ers.usda.gov/media/5014/usda-agricultural-baseline-projections-to-2035.zip?v=10774": "baseline_2035_full_trimmed.zip",
+ "GET https://www.ers.usda.gov/media/5013/usda-agricultural-baseline-projections-to-2035.zip?v=32463": "baseline_2035_early_trimmed.zip"
+}

@@ -1,0 +1,93 @@
+{
+  "id": "nhtsa",
+  "title": "NHTSA Vehicle Safety APIs (recalls, complaints, NCAP ratings, vPIC)",
+  "agency": "National Highway Traffic Safety Administration (U.S. Department of Transportation)",
+  "depth": "standard",
+  "domains": [
+    "vehicle safety",
+    "transportation",
+    "consumer protection"
+  ],
+  "keywords": [
+    "recall",
+    "recalls",
+    "vehicle recall",
+    "complaint",
+    "complaints",
+    "odi",
+    "nhtsa",
+    "crash test",
+    "safety rating",
+    "ncap",
+    "5-star",
+    "star rating",
+    "rollover",
+    "vin",
+    "decode vin",
+    "vpic",
+    "vehicle make",
+    "model",
+    "car seat",
+    "car",
+    "truck",
+    "suv",
+    "airbag",
+    "tesla",
+    "autopilot"
+  ],
+  "questions": [
+    "recalls for a 2019 Honda Civic",
+    "complaints about a vehicle model by component",
+    "crash test star ratings for a car",
+    "decode a VIN",
+    "car seat inspection stations in a state",
+    "which models of a make have recalls"
+  ],
+  "homepage": "https://www.nhtsa.gov/nhtsa-datasets-and-apis",
+  "terms_url": "https://www.transportation.gov/policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 50000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.nhtsa.gov",
+      "probe": "https://api.nhtsa.gov/SafetyRatings",
+      "hosts": [
+        "api.nhtsa.gov",
+        "vpic.nhtsa.dot.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each returns JSON; save it under the name shown) and upload the files. Without the links: recalls and complaints are searchable at https://www.nhtsa.gov/recalls (enter make, model, year), ratings at https://www.nhtsa.gov/ratings, VIN decoding at https://vpic.nhtsa.dot.gov/decoder/; bulk flat files of all recalls and complaints are at https://www.nhtsa.gov/nhtsa-datasets-and-apis (Flat files)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Small queries; recalls and complaints are added daily, so data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NHTSA data are U.S. government works in the public domain (17 U.S.C. 105); DOT asks for attribution and no implied endorsement."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "National Highway Traffic Safety Administration, {dataset}, api.nhtsa.gov / vpic.nhtsa.dot.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which exact model name and model years? Recalls and complaints are looked up per make + model + model year; a range needs one request per year.",
+    "Complaints are unverified owner reports, not defect findings: count them as reports, and do not compare raw counts across models without sales or fleet size."
+  ],
+  "formats": [
+    "json"
+  ]
+}

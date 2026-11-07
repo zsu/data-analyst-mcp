@@ -1,0 +1,818 @@
+{
+ "base_url": "https://apiprod.dol.gov/v4",
+ "endpoints": {
+  "query": {
+   "path": "/get/{agency}/{endpoint}/json",
+   "method": "GET",
+   "description": "Rows of one DOL dataset (catalog alias or AGENCY/api_url), with filters, fields and sort. Needs DOL_API_KEY.",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (osha_inspection) or AGENCY/endpoint (OSHA/inspection)"
+    },
+    "filters": {
+     "desc": "{field: value} equals; {field: [a, b]} in; {field: {\"gt\": x, \"lt\": y, \"neq\": z, \"like\": \"%x%\"}}"
+    },
+    "search": {
+     "desc": "{field: text}: substring match tolerant of case (OR of the text as typed, UPPER, lower, Title)"
+    },
+    "state": {
+     "desc": "two-letter state code, applied to the dataset's state field (osha_inspection site_state, whd_enforcement st_cd, eta_ui_state_weekly_claims st)"
+    },
+    "filter_object": {
+     "desc": "raw DOL filter_object (JSON object or string); combined with AND with the above"
+    },
+    "fields": {
+     "desc": "comma-separated columns to return"
+    },
+    "sort_by": {
+     "desc": "field to sort by (default: the dataset's date field)"
+    },
+    "sort": {
+     "desc": "asc or desc (default desc)",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "offset",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "datasets": {
+   "path": "/datasets",
+   "method": "GET",
+   "description": "The DOL API data catalog (keyless): id, agency, api_url, name, frequency, tags.",
+   "params": {},
+   "records": "datasets",
+   "total": "meta.total_count",
+   "paging": {
+    "type": "page",
+    "page_param": "page",
+    "size": 10,
+    "start": 1
+   },
+   "max_rows": 1000
+  },
+  "dataset_info": {
+   "path": "/datasets/{dataset_id}",
+   "method": "GET",
+   "description": "Field dictionary of one dataset (keyless): column_name, data_type, column_desc.",
+   "params": {
+    "dataset_id": {
+     "in": "path",
+     "catalog": true,
+     "required": true,
+     "desc": "numeric dataset id, or a catalog alias (resolved to its dataset_id)"
+    }
+   },
+   "records": "dataset.dataset_metadatum",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "ui_trust_fund": {
+   "path": "https://oui.doleta.gov/unemploy/csv/ar2112.csv",
+   "method": "GET",
+   "host": "oui",
+   "description": "ETA 2112 UI financial transaction summary (keyless; DOL Office of Unemployment Insurance): each state's unemployment fund by month since 1979, in dollars: balances (balance_close_utf = the state account in the Unemployment Trust Fund), deposits (UI tax contributions, Treasury interest, reimbursements, federal shares), disbursements (benefits paid), with readable column names (the file's c1..c136 codes, mapped in 'columns'). Filter by state and month after the download (one 23 MB CSV).",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "two-letter state code or a list (53 jurisdictions incl. DC, PR, VI)"
+    },
+    "start": {
+     "in": "spec",
+     "desc": "first month, YYYY-MM or YYYY-MM-DD (rptdate is the month's last day)"
+    },
+    "end": {
+     "in": "spec",
+     "desc": "last month, YYYY-MM or YYYY-MM-DD"
+    },
+    "latest": {
+     "in": "spec",
+     "desc": "true: keep only each state's most recent month (states report with different lags)"
+    },
+    "fields": {
+     "in": "spec",
+     "desc": "columns to keep (readable names or c-codes; st and rptdate always kept); default all"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 100000,
+   "missing": [
+    "",
+    "NA"
+   ],
+   "columns": {
+    "c1": "balance_forward_total",
+    "c2": "balance_forward_clearing",
+    "c3": "balance_forward_utf",
+    "c4": "balance_forward_bpa",
+    "c5": "deposits_total",
+    "c6": "deposits_clearing",
+    "c7": "deposits_utf",
+    "c8": "deposits_bpa",
+    "c9": "dep_ui_contributions_total",
+    "c10": "dep_ui_contributions_clearing",
+    "c11": "dep_penalty_interest_total",
+    "c12": "dep_penalty_interest_clearing",
+    "c13": "dep_treasury_interest_total",
+    "c14": "dep_treasury_interest_utf",
+    "c15": "dep_title_ix_amortization_total",
+    "c16": "dep_title_ix_amortization_clearing",
+    "c90": "dep_title_ix_special_legislation_total",
+    "c91": "dep_title_ix_special_legislation_utf",
+    "c17": "dep_intra_account_transfer_total",
+    "c19": "dep_intra_account_transfer_utf",
+    "c20": "dep_intra_account_transfer_bpa",
+    "c21": "dep_interstate_benefits_total",
+    "c22": "dep_interstate_benefits_clearing",
+    "c23": "dep_interstate_benefits_utf",
+    "c24": "dep_interstate_benefits_bpa",
+    "c25": "dep_ucx_total",
+    "c26": "dep_ucx_utf",
+    "c27": "dep_reimb_local_govt_tribes_total",
+    "c28": "dep_reimb_local_govt_tribes_clearing",
+    "c29": "dep_reimb_state_govt_total",
+    "c30": "dep_reimb_state_govt_clearing",
+    "c31": "dep_reimb_nonprofit_total",
+    "c32": "dep_reimb_nonprofit_clearing",
+    "c33": "dep_federal_share_eb_total",
+    "c34": "dep_federal_share_eb_utf",
+    "c35": "dep_federal_emergency_comp_total",
+    "c36": "dep_federal_emergency_comp_utf",
+    "c116": "dep_temporary_federal_comp_total",
+    "c117": "dep_temporary_federal_comp_utf",
+    "c118": "dep_temporary_federal_comp_bpa",
+    "c122": "dep_fpuc_total",
+    "c123": "dep_fpuc_bpa",
+    "c126": "dep_pua_total",
+    "c127": "dep_pua_utf",
+    "c128": "dep_pua_bpa",
+    "c133": "dep_meuc_total",
+    "c134": "dep_meuc_bpa",
+    "c37": "dep_ucfe_total",
+    "c38": "dep_ucfe_utf",
+    "c39": "dep_other_sources_1_total",
+    "c40": "dep_other_sources_1_clearing",
+    "c41": "dep_other_sources_1_utf",
+    "c42": "dep_other_sources_1_bpa",
+    "c43": "dep_other_sources_2_total",
+    "c44": "dep_other_sources_2_clearing",
+    "c45": "dep_other_sources_2_utf",
+    "c46": "dep_other_sources_2_bpa",
+    "c104": "dep_other_sources_3_total",
+    "c105": "dep_other_sources_3_clearing",
+    "c106": "dep_other_sources_3_utf",
+    "c107": "dep_other_sources_3_bpa",
+    "c108": "dep_other_sources_4_total",
+    "c109": "dep_other_sources_4_clearing",
+    "c110": "dep_other_sources_4_utf",
+    "c111": "dep_other_sources_4_bpa",
+    "c112": "dep_other_sources_5_total",
+    "c113": "dep_other_sources_5_clearing",
+    "c114": "dep_other_sources_5_utf",
+    "c115": "dep_other_sources_5_bpa",
+    "c47": "disbursements_total",
+    "c48": "disbursements_clearing",
+    "c49": "disbursements_utf",
+    "c50": "disbursements_bpa",
+    "c51": "dis_ui_benefits_total",
+    "c52": "dis_ui_benefits_bpa",
+    "c53": "dis_state_share_eb_total",
+    "c54": "dis_state_share_eb_bpa",
+    "c55": "dis_reimb_local_govt_tribes_total",
+    "c92": "dis_reimb_local_govt_tribes_utf",
+    "c56": "dis_reimb_local_govt_tribes_bpa",
+    "c57": "dis_reimb_state_govt_total",
+    "c93": "dis_reimb_state_govt_utf",
+    "c58": "dis_reimb_state_govt_bpa",
+    "c59": "dis_reimb_nonprofit_total",
+    "c94": "dis_reimb_nonprofit_utf",
+    "c60": "dis_reimb_nonprofit_bpa",
+    "c61": "dis_ucx_total",
+    "c62": "dis_ucx_bpa",
+    "c63": "dis_federal_share_regular_total",
+    "c64": "dis_federal_share_regular_bpa",
+    "c65": "dis_federal_share_eb_total",
+    "c66": "dis_federal_share_eb_bpa",
+    "c67": "dis_euc08_total",
+    "c68": "dis_euc08_bpa",
+    "c98": "dis_peuc_total",
+    "c99": "dis_peuc_bpa",
+    "c100": "dis_teuc_total",
+    "c101": "dis_teuc_bpa",
+    "c102": "dis_federal_emergency_comp_total",
+    "c103": "dis_federal_emergency_comp_bpa",
+    "c119": "dis_temporary_federal_comp_total",
+    "c120": "dis_temporary_federal_comp_utf",
+    "c121": "dis_temporary_federal_comp_bpa",
+    "c124": "dis_fpuc_total",
+    "c125": "dis_fpuc_bpa",
+    "c129": "dis_pua_total",
+    "c130": "dis_pua_bpa",
+    "c131": "dis_other_temporary_federal_comp_total",
+    "c132": "dis_other_temporary_federal_comp_bpa",
+    "c135": "dis_meuc_total",
+    "c136": "dis_meuc_bpa",
+    "c69": "dis_interstate_benefits_total",
+    "c89": "dis_interstate_benefits_utf",
+    "c70": "dis_interstate_benefits_bpa",
+    "c71": "dis_title_ix_special_legislation_total",
+    "c72": "dis_title_ix_special_legislation_utf",
+    "c73": "dis_to_special_funds_total",
+    "c74": "dis_to_special_funds_clearing",
+    "c75": "dis_ucfe_total",
+    "c76": "dis_ucfe_bpa",
+    "c77": "dis_intra_account_transfer_total",
+    "c78": "dis_intra_account_transfer_clearing",
+    "c79": "dis_intra_account_transfer_utf",
+    "c81": "dis_other_total",
+    "c82": "dis_other_clearing",
+    "c83": "dis_other_utf",
+    "c84": "dis_other_bpa",
+    "c85": "balance_close_total",
+    "c86": "balance_close_clearing",
+    "c87": "balance_close_utf",
+    "c88": "balance_close_bpa",
+    "c95": "withholding_total",
+    "c96": "withholding_utf",
+    "c97": "withholding_bpa"
+   }
+  },
+  "ui_data_summary": {
+   "path": "https://oui.doleta.gov/unemploy/data_summary/SummaryTables.xlsx",
+   "method": "GET",
+   "host": "oui",
+   "description": "UI Data Summary tables for the latest calendar-year quarter (keyless; quarterly): one row per state and the United States. Sheet Financial (default: revenues, net trust fund balance, trust fund balance, Title XII loan balance, interest earned, in $ thousands; taxable wage base), Wage and Tax Rate (tax rates, trust fund as % of total wages, average high cost multiple AHCM, high cost multiple HCM; two quarters behind), Regular Benefits, Benefits and Duration, Labor Force. The quarter is in the cyq column (2026.2 = April-June 2026).",
+   "params": {
+    "sheet": {
+     "in": "records",
+     "desc": "Financial (default), Wage and Tax Rate, Regular Benefits, Benefits and Duration or Labor Force",
+     "enum": [
+      "Financial",
+      "Wage and Tax Rate",
+      "Regular Benefits",
+      "Benefits and Duration",
+      "Labor Force"
+     ]
+    }
+   },
+   "records": "$xlsx",
+   "sheet": "Financial",
+   "header_row": 1,
+   "paging": {
+    "type": "none"
+   },
+   "missing": [
+    "",
+    "NA"
+   ]
+  }
+ },
+ "catalog": {
+  "ebsa_ocats": {
+   "id": "EBSA/ocats",
+   "dataset_id": 10361,
+   "kind": "dataset",
+   "name": "Office of the Chief Accountant Case Tracking System (OCATS)",
+   "agency": "Employee Benefits Security Administration",
+   "frequency": "Quarterly",
+   "description": "Employee Benefits Security Administration: Office of the Chief Accountant Case Tracking System (OCATS) (Quarterly); tags: investigation, penalties, state, plans, employers",
+   "endpoint": "query"
+  },
+  "eta_apprenticeship_data": {
+   "id": "ETA/apprenticeship_data",
+   "dataset_id": 10264,
+   "kind": "dataset",
+   "name": "Apprenticeship Participant Characteristics and Training Outcomes",
+   "agency": "Employment and Training Administration",
+   "frequency": "Quarterly",
+   "description": "Employment and Training Administration: Apprenticeship Participant Characteristics and Training Outcomes (Quarterly); tags: age, back wages, county, disability, education, industries, labor unions, occupations, race/ethnicity, sex, state, veterans, participant",
+   "endpoint": "query"
+  },
+  "eta_otaa_petition": {
+   "id": "ETA/otaa_petition",
+   "dataset_id": 10363,
+   "kind": "dataset",
+   "name": "OTAA Petition",
+   "agency": "Employment and Training Administration",
+   "frequency": "Daily",
+   "description": "Employment and Training Administration: OTAA Petition (Daily); tags: geospatial, industries, state, trade, services, determinations, certifications, termination, denial",
+   "endpoint": "query"
+  },
+  "eta_ui_national_weekly_claims": {
+   "id": "ETA/ui_national_weekly_claims",
+   "dataset_id": 10305,
+   "kind": "dataset",
+   "name": "Unemployment Insurance National Weekly Claims",
+   "agency": "Employment and Training Administration",
+   "frequency": "Weekly",
+   "description": "Employment and Training Administration: Unemployment Insurance National Weekly Claims (Weekly); tags: unemployment, claims, employees",
+   "endpoint": "query",
+   "sort_by": "rptdate",
+   "columns": {
+    "rptdate": "The ending date for the week in which the claims reported were taken",
+    "c1": "A weekly seasonal adjustment factor applied to initial claims counts. The methodology for producing the season",
+    "c2": "A weekly seasonal adjustment factor applied to continued claims counts. The methodology for producing the seas",
+    "c3": "The count of employees covered by Unemployment Insurance",
+    "c4": "Not seasonally adjusted (raw) count of total initial claims across states",
+    "c5": "Seasonally adjusted count of total initial claims across states",
+    "c6": "Not seasonally adjusted (raw) count of total continued claims across states",
+    "c7": "Seasonally adjusted count of total continued claims across states",
+    "c8": "The 4 week moving average for seasonally adjusted initial claims",
+    "c9": "The 4 week moving average for seasonally adjusted continued claims"
+   }
+  },
+  "eta_ui_state_weekly_claims": {
+   "id": "ETA/ui_state_weekly_claims",
+   "dataset_id": 10306,
+   "kind": "dataset",
+   "name": "Unemployment Insurance State Weekly Claims",
+   "agency": "Employment and Training Administration",
+   "frequency": "Weekly",
+   "description": "Employment and Training Administration: Unemployment Insurance State Weekly Claims (Weekly); tags: state, unemployment, claims, employees",
+   "endpoint": "query",
+   "state_field": "st",
+   "sort_by": "rptdate",
+   "columns": {
+    "st": "the US state or jurisdiction reporting the UI weekly claims data",
+    "rptdate": "The ending date for the week in which the claims reported were taken",
+    "c1": "The week number within the year. The first week of unemployment in the year (i.e. week one appearing in Trigge",
+    "c2": "The week of unemployment claimed",
+    "c3": "Initial claims to determine eligibility for UI in the regular state program.",
+    "c4": "Initial claims to determine eligibility for UI in the Federal employee program.",
+    "c5": "Initial claims to determine eligibility for UI in the ex-servicemember program.",
+    "c6": "Initial claims to determine eligibility in an approved state short-time compensation or worksharing program. S",
+    "c7": "STC or workshare total initial claims normalized to full weeks of unemployment to make them comparable with ot",
+    "c8": "Requests for compensation for a week of ongoing, covered unemployment in the regular state program.",
+    "c9": "Requests for compensation for a week of ongoing, covered unemployment in the Federal employee program.",
+    "c10": "Requests for compensation for a week of ongoing, covered unemployment in the ex-servicemember program.",
+    "c11": "Requests for compensation for a partial week of ongoing, covered unemployment in an approved state short-time ",
+    "c12": "Requests for compensation for a partial week of ongoing, covered unemployment in an approved state short-time ",
+    "c13": "Total continued weeks claimed under the Federal/State Extended Benefit Program. When unemployment rates are hi",
+    "c14": "That share of Total continued weeks claims for Extended Benefits that come from claimants in the regular state",
+    "c15": "Total continued weeks claimed under state Additional Benefit Programs.",
+    "c16": "That share of total continued weeks claims for state Additional Benefit Programs that come from claimants in t",
+    "c17": "Report the average of the sum of the CW and WSECW figures for the most recent calendar week of unemployment ex",
+    "c18": "Report the 12-month average monthly covered employment for the first 4 of the last 6 completed calendar quarte",
+    "c19": "Report the rate of insured unemployment for the current 13-week period. The insured unemployment rate for a 13",
+    "c20": "Report the average of the rates of insured unemployment for the corresponding 13-week periods in the prior 2 y",
+    "c21": "Percent in defined as: P = R/AR; P is to be computed to four decimal places, is not to be otherwise rounded, a",
+    "c22": "Indicates the beginning (B) or ending (E) of a state extended benefit period",
+    "c23": "If Status has changed since the prior week, enter the date the change is effective"
+   }
+  },
+  "ilab_child_labor_report_2016_to_2022": {
+   "id": "ILAB/Child_Labor_Report__2016_to_2022",
+   "dataset_id": 10272,
+   "kind": "dataset",
+   "name": "Child Labor Report (2016 to 2022)",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Static",
+   "description": "Bureau of International Labor Affairs: Child Labor Report (2016 to 2022) (Static); tags: age, education, inspection, penalties, sector, violations, other countries",
+   "endpoint": "query"
+  },
+  "ilab_importwatch_core_data": {
+   "id": "ILAB/ImportWatch_Core_Data",
+   "dataset_id": 10295,
+   "kind": "dataset",
+   "name": "ImportWatch_Core_Data",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: ImportWatch_Core_Data (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "ilab_importwatch_country_codes": {
+   "id": "ILAB/ImportWatch_Country_Codes",
+   "dataset_id": 10296,
+   "kind": "dataset",
+   "name": "ImportWatch_Country_Codes",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: ImportWatch_Country_Codes (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "ilab_importwatch_goods_hs": {
+   "id": "ILAB/ImportWatch_Goods_HS",
+   "dataset_id": 10294,
+   "kind": "dataset",
+   "name": "ImportWatch_Goods_HS",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: ImportWatch_Goods_HS (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "ilab_laborshield_goods": {
+   "id": "ILAB/LaborShield_Goods",
+   "dataset_id": 10300,
+   "kind": "dataset",
+   "name": "LaborShield_Goods",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: LaborShield_Goods (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "ilab_laborshield_reportingdata": {
+   "id": "ILAB/LaborShield_ReportingData",
+   "dataset_id": 10297,
+   "kind": "dataset",
+   "name": "LaborShield_ReportingData",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: LaborShield_ReportingData (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "ilab_laborshield_suggestedactions": {
+   "id": "ILAB/LaborShield_SuggestedActions",
+   "dataset_id": 10302,
+   "kind": "dataset",
+   "name": "LaborShield_SuggestedActions",
+   "agency": "Bureau of International Labor Affairs",
+   "frequency": "Ad-Hoc",
+   "description": "Bureau of International Labor Affairs: LaborShield_SuggestedActions (Ad-Hoc); tags: ",
+   "endpoint": "query"
+  },
+  "msha_accident": {
+   "id": "MSHA/accident",
+   "dataset_id": 10341,
+   "kind": "dataset",
+   "name": "Accident",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Accident (Weekly); tags: accidents, contractors, controllers, fatalities, injury or illness, mines, occupations, operators, state",
+   "endpoint": "query"
+  },
+  "msha_address_of_records_mines": {
+   "id": "MSHA/address_of_records_mines",
+   "dataset_id": 10358,
+   "kind": "dataset",
+   "name": "Address of Records - Mines",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Address of Records - Mines (Weekly); tags: address, industries, mines, state",
+   "endpoint": "query"
+  },
+  "msha_assessed_violations": {
+   "id": "MSHA/assessed_violations",
+   "dataset_id": 10343,
+   "kind": "dataset",
+   "name": "Assessed Violations",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Assessed Violations (Weekly); tags: citations, mines, penalties, violations, violators",
+   "endpoint": "query"
+  },
+  "msha_commodity_lookup": {
+   "id": "MSHA/commodity_lookup",
+   "dataset_id": 10360,
+   "kind": "dataset",
+   "name": "Commodity Lookup",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Commodity Lookup (Weekly); tags: commodities, industries, mines",
+   "endpoint": "query"
+  },
+  "msha_contractor_employment_production_annual": {
+   "id": "MSHA/contractor_employment_production_annual",
+   "dataset_id": 10345,
+   "kind": "dataset",
+   "name": "Contractor Employment / Production (Annual)",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Contractor Employment / Production (Annual) (Weekly); tags: commodities, contractors, employment, hours, mines, production",
+   "endpoint": "query"
+  },
+  "msha_contractor_employment_production_quarterly": {
+   "id": "MSHA/contractor_employment_production_quarterly",
+   "dataset_id": 10354,
+   "kind": "dataset",
+   "name": "Contractor Employment / Production (Quarterly)",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Contractor Employment / Production (Quarterly) (Weekly); tags: commodities, contractors, employment, hours, mines, production",
+   "endpoint": "query"
+  },
+  "msha_contractor_history_at_mines": {
+   "id": "MSHA/contractor_history_at_mines",
+   "dataset_id": 10351,
+   "kind": "dataset",
+   "name": "Contractor History at Mines",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Contractor History at Mines (Weekly); tags: contractors, mines",
+   "endpoint": "query"
+  },
+  "msha_contractor_name_id_lookup": {
+   "id": "MSHA/contractor_name_id_lookup",
+   "dataset_id": 10344,
+   "kind": "dataset",
+   "name": "Contractor Name ID Lookup",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Contractor Name ID Lookup (Weekly); tags: contractors, mines",
+   "endpoint": "query"
+  },
+  "msha_controller_history": {
+   "id": "MSHA/controller_history",
+   "dataset_id": 10359,
+   "kind": "dataset",
+   "name": "Controller History",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Controller History (Weekly); tags: controllers, mines, operators",
+   "endpoint": "query"
+  },
+  "msha_inspection": {
+   "id": "MSHA/inspection",
+   "dataset_id": 10349,
+   "kind": "dataset",
+   "name": "Inspection",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Inspection (Weekly); tags: controllers, industries, inspection, mines, operators, state",
+   "endpoint": "query"
+  },
+  "msha_mines": {
+   "id": "MSHA/mines",
+   "dataset_id": 10350,
+   "kind": "dataset",
+   "name": "Mines",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Mines (Weekly); tags: controllers, county, geospatial, industries, mines, operators, state",
+   "endpoint": "query"
+  },
+  "msha_operator_employment_production_annual": {
+   "id": "MSHA/operator_employment_production_annual",
+   "dataset_id": 10348,
+   "kind": "dataset",
+   "name": "Operator Employment / Production (Annual)",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Operator Employment / Production (Annual) (Weekly); tags: employment, hours, mines, operators, production",
+   "endpoint": "query"
+  },
+  "msha_operator_employment_production_quarterly": {
+   "id": "MSHA/operator_employment_production_quarterly",
+   "dataset_id": 10353,
+   "kind": "dataset",
+   "name": "Operator Employment / Production (Quarterly)",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Operator Employment / Production (Quarterly) (Weekly); tags: employment, hours, mines, operators, production",
+   "endpoint": "query"
+  },
+  "msha_operator_history_at_mines": {
+   "id": "MSHA/operator_history_at_mines",
+   "dataset_id": 10352,
+   "kind": "dataset",
+   "name": "Operator History at Mines",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Operator History at Mines (Weekly); tags: mines, operators",
+   "endpoint": "query"
+  },
+  "msha_violation": {
+   "id": "MSHA/violation",
+   "dataset_id": 10355,
+   "kind": "dataset",
+   "name": "Violation",
+   "agency": "Mine Safety and Health Administration",
+   "frequency": "Weekly",
+   "description": "Mine Safety and Health Administration: Violation (Weekly); tags: contractors, controllers, injury or illness, inspection, mines, violations, violators",
+   "endpoint": "query"
+  },
+  "odep_employer_survey_2018": {
+   "id": "ODEP/employer_survey_2018",
+   "dataset_id": 10388,
+   "kind": "dataset",
+   "name": "Survey of Employer Policies on the Employment of People with Disabilities 2018",
+   "agency": "Office of Disability Employment Policy",
+   "frequency": "Static",
+   "description": "Office of Disability Employment Policy: Survey of Employer Policies on the Employment of People with Disabilities 2018 (Static); tags: disability, employers, survey",
+   "endpoint": "query"
+  },
+  "osha_accident": {
+   "id": "OSHA/accident",
+   "dataset_id": 10331,
+   "kind": "dataset",
+   "name": "Accident",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Accident (Daily); tags: accidents, fatalities, industries, state",
+   "endpoint": "query",
+   "sort_by": "event_date"
+  },
+  "osha_accident_abstract": {
+   "id": "OSHA/accident_abstract",
+   "dataset_id": 10332,
+   "kind": "dataset",
+   "name": "Accident Abstract",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Accident Abstract (Daily); tags: accidents",
+   "endpoint": "query"
+  },
+  "osha_accident_injury": {
+   "id": "OSHA/accident_injury",
+   "dataset_id": 10333,
+   "kind": "dataset",
+   "name": "Accident Injury",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Accident Injury (Daily); tags: accidents, age, fatalities, injury or illness, occupations, sex",
+   "endpoint": "query"
+  },
+  "osha_accident_lookup2": {
+   "id": "OSHA/accident_lookup2",
+   "dataset_id": 10330,
+   "kind": "dataset",
+   "name": "Accident Lookup2",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Accident Lookup2 (Daily); tags: accidents, fatalities, injury or illness, occupations",
+   "endpoint": "query"
+  },
+  "osha_emphasis_codes": {
+   "id": "OSHA/emphasis_codes",
+   "dataset_id": 10337,
+   "kind": "dataset",
+   "name": "Emphasis Codes",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Emphasis Codes (Daily); tags: inspection",
+   "endpoint": "query"
+  },
+  "osha_inspection": {
+   "id": "OSHA/inspection",
+   "dataset_id": 10334,
+   "kind": "dataset",
+   "name": "Inspection",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Inspection (Daily); tags: address, industries, inspection, labor unions, state",
+   "endpoint": "query",
+   "state_field": "site_state",
+   "sort_by": "open_date"
+  },
+  "osha_optional_code_info": {
+   "id": "OSHA/optional_code_info",
+   "dataset_id": 10356,
+   "kind": "dataset",
+   "name": "Optional Code Info",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Optional Code Info (Daily); tags: inspection",
+   "endpoint": "query"
+  },
+  "osha_related_activity": {
+   "id": "OSHA/related_activity",
+   "dataset_id": 10336,
+   "kind": "dataset",
+   "name": "Related Activity",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Related Activity (Daily); tags: accidents, complaints, inspection",
+   "endpoint": "query"
+  },
+  "osha_violation": {
+   "id": "OSHA/violation",
+   "dataset_id": 10338,
+   "kind": "dataset",
+   "name": "Violation",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Violation (Daily); tags: abatements, citations, inspection, penalties, violations",
+   "endpoint": "query",
+   "sort_by": "issuance_date"
+  },
+  "osha_violation_event": {
+   "id": "OSHA/violation_event",
+   "dataset_id": 10357,
+   "kind": "dataset",
+   "name": "Violation Event",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Violation Event (Daily); tags: abatements, citations, inspection, penalties, violations",
+   "endpoint": "query"
+  },
+  "osha_violation_gen_duty_std": {
+   "id": "OSHA/violation_gen_duty_std",
+   "dataset_id": 10340,
+   "kind": "dataset",
+   "name": "Violation Gen Duty Std",
+   "agency": "Occupational Safety and Health Administration",
+   "frequency": "Daily",
+   "description": "Occupational Safety and Health Administration: Violation Gen Duty Std (Daily); tags: citations, inspection",
+   "endpoint": "query"
+  },
+  "owcp_energy_statistics_historical_20190311_20251231": {
+   "id": "OWCP/energy_statistics_historical_20190311_20251231",
+   "dataset_id": 10393,
+   "kind": "dataset",
+   "name": "Energy Statistics (Historical) 20190311 - 20251231",
+   "agency": "Office of Workers' Compensation Programs",
+   "frequency": "Static",
+   "description": "Office of Workers' Compensation Programs: Energy Statistics (Historical) 20190311 - 20251231 (Static); tags: injury or illness, claims",
+   "endpoint": "query"
+  },
+  "owcp_energy_statistics_weekly_20260101_present": {
+   "id": "OWCP/energy_statistics_weekly_20260101_present",
+   "dataset_id": 10392,
+   "kind": "dataset",
+   "name": "Energy Statistics (Weekly) 20260101 – present",
+   "agency": "Office of Workers' Compensation Programs",
+   "frequency": "Weekly",
+   "description": "Office of Workers' Compensation Programs: Energy Statistics (Weekly) 20260101 – present (Weekly); tags: injury or illness, claims",
+   "endpoint": "query"
+  },
+  "trng_training_dataset_industries": {
+   "id": "TRNG/training_dataset_industries",
+   "dataset_id": 10280,
+   "kind": "dataset",
+   "name": "Training Dataset (Industries)",
+   "agency": "API Training",
+   "frequency": "Static",
+   "description": "API Training: Training Dataset (Industries) (Static); tags: ",
+   "endpoint": "query"
+  },
+  "vets_4212": {
+   "id": "VETS/4212",
+   "dataset_id": 10324,
+   "kind": "dataset",
+   "name": "VETS 4212 Federal Contractor Reporting",
+   "agency": "Veterans' Employment and Training Service",
+   "frequency": "Weekly",
+   "description": "Veterans' Employment and Training Service: VETS 4212 Federal Contractor Reporting (Weekly); tags: address, contractors, county, employment, industries, occupations, state, veterans",
+   "endpoint": "query"
+  },
+  "wb_ndcp": {
+   "id": "WB/ndcp",
+   "dataset_id": 10278,
+   "kind": "dataset",
+   "name": "National Database of Childcare Prices (NDCP)",
+   "agency": "Women's Bureau",
+   "frequency": "Ad-Hoc",
+   "description": "Women's Bureau: National Database of Childcare Prices (NDCP) (Ad-Hoc); tags: county, expenditures, childcare, persons",
+   "endpoint": "query"
+  },
+  "whd_enforcement": {
+   "id": "WHD/enforcement",
+   "dataset_id": 10362,
+   "kind": "dataset",
+   "name": "Enforcement",
+   "agency": "Wage and Hour Division",
+   "frequency": "Quarterly",
+   "description": "Wage and Hour Division: Enforcement (Quarterly); tags: address, back wages, compliance, industries, inspection, penalties, state, violations",
+   "endpoint": "query",
+   "state_field": "st_cd",
+   "sort_by": "findings_end_date"
+  }
+ },
+ "codes": {
+  "osha_insp_type": {
+   "A": "Accident",
+   "B": "Complaint",
+   "C": "Referral",
+   "D": "Monitoring",
+   "E": "Variance",
+   "F": "Follow-up",
+   "G": "Unprogrammed related",
+   "H": "Planned",
+   "I": "Unprogrammed other",
+   "J": "Programmed related",
+   "K": "Programmed other",
+   "L": "Programmed high hazard"
+  },
+  "osha_viol_type": {
+   "S": "Serious",
+   "W": "Willful",
+   "R": "Repeat",
+   "O": "Other-than-serious",
+   "U": "Unclassified",
+   "F": "Failure to abate"
+  },
+  "osha_degree_of_inj": {
+   "1": "Fatality",
+   "2": "Hospitalized",
+   "3": "Not hospitalized"
+  }
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "base_url": "https://www.huduser.gov/hudapi/public",
+ "headers": {
+  "Accept": "application/json"
+ },
+ "endpoints": {
+  "fmr": {
+   "path": "/fmr/data/{entityid}",
+   "method": "GET",
+   "description": "Fair Market Rents for one county, town or metro area: monthly gross rent by bedroom count (Efficiency to Four-Bedroom); Small Area FMR metros give one row per ZIP plus 'MSA level'.",
+   "params": {
+    "entityid": {
+     "in": "path",
+     "required": true,
+     "desc": "10-character county code (state FIPS + county FIPS + 99999, e.g. 5100199999), a New England town code, or a metro code (METRO47900M47900)"
+    },
+    "year": {
+     "desc": "fiscal year, e.g. 2027 (default: latest). FMRs take effect October 1 before the fiscal year (FY2027 on 2026-10-01)"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "fmr_state": {
+   "path": "/fmr/statedata/{statecode}",
+   "method": "GET",
+   "description": "Fair Market Rents for every metro area and county (towns in New England) of a state: one row per area, area_type metro or county.",
+   "params": {
+    "statecode": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, e.g. MA"
+    },
+    "year": {
+     "desc": "fiscal year, e.g. 2027 (default: latest). FMRs take effect October 1 before the fiscal year (FY2027 on 2026-10-01)"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "income_limits": {
+   "path": "/il/data/{entityid}",
+   "method": "GET",
+   "description": "Section 8 income limits for one area: median family income and Very Low (50%), Extremely Low (30%) and Low (80%) limits for 1-8 person households (il50_p1 ... il80_p8).",
+   "params": {
+    "entityid": {
+     "in": "path",
+     "required": true,
+     "desc": "10-character county code (state FIPS + county FIPS + 99999, e.g. 5100199999), a New England town code, or a metro code (METRO47900M47900)"
+    },
+    "year": {
+     "desc": "fiscal year, e.g. 2026 (default: latest). Income limits take effect when HUD publishes them in spring, not October 1 (FY2026: May 1, 2026), so the latest IL year can trail the latest FMR year"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "il_state": {
+   "path": "/il/statedata/{statecode}",
+   "method": "GET",
+   "description": "Income limits for every area of a state (response shape not documented by HUD; unverified).",
+   "params": {
+    "statecode": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, e.g. MA"
+    },
+    "year": {
+     "desc": "fiscal year, e.g. 2026 (default: latest). Income limits take effect when HUD publishes them in spring, not October 1 (FY2026: May 1, 2026), so the latest IL year can trail the latest FMR year"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "mtspil": {
+   "path": "/mtspil/data/{entityid}",
+   "method": "GET",
+   "description": "Multifamily Tax Subsidy Project (LIHTC) income limits for one area: 20% to 140% limits by household size.",
+   "params": {
+    "entityid": {
+     "in": "path",
+     "required": true,
+     "desc": "10-character county code (state FIPS + county FIPS + 99999, e.g. 5100199999), a New England town code, or a metro code (METRO47900M47900)"
+    },
+    "year": {
+     "desc": "fiscal year, e.g. 2026 (default: latest). MTSP limits are released with the income limits in spring, not October 1 (FY2026 income limits: May 1, 2026)"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "list_states": {
+   "path": "/fmr/listStates",
+   "method": "GET",
+   "description": "States and territories with HUD state codes.",
+   "params": {},
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "list_counties": {
+   "path": "/fmr/listCounties/{statecode}",
+   "method": "GET",
+   "description": "Counties (and New England towns) of a state with their 10-character fips_code entity ids.",
+   "params": {
+    "statecode": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code, e.g. MA"
+    },
+    "updated": {
+     "desc": "2025 = the FIPS codes used by Income Limits 2025 (some counties changed)"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "list_metro_areas": {
+   "path": "/fmr/listMetroAreas",
+   "method": "GET",
+   "description": "HUD metro FMR areas with their cbsa_code entity ids (METRO10180M10180).",
+   "params": {
+    "updated": {
+     "desc": "2025 = the area codes used by Income Limits 2025"
+    }
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  }
+ },
+ "catalog": {}
+}

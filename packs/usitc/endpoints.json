@@ -1,0 +1,74 @@
+{
+ "base_url": "https://hts.usitc.gov/reststop",
+ "timeout": 90,
+ "endpoints": {
+  "schedule": {
+   "path": "/exportList",
+   "description": "Lines of the current Harmonized Tariff Schedule (HTS) from one HTS number to another, in schedule order: htsno, indent, description, units, general (column 1 general / MFN), special (FTA and preference programs, with program codes), other (column 2), footnotes (chapter 99 references), quota. The pack adds the rate inherited by statistical (10-digit) lines, the rate type, a numeric ad valorem percent where the rate is Free or a plain percent, and the chapter 99 headings the footnotes point to.",
+   "params": {
+    "from": {
+     "required": true,
+     "desc": "first HTS number, 4 to 10 digits with or without dots (e.g. \"7208\", \"8703.80\"); chapter 99 lines (additional duties: Sections 232, 301 and other actions) start at 9903"
+    },
+    "to": {
+     "required": true,
+     "desc": "last HTS number, including every line under it (from=8703, to=8703 returns the whole heading 8703); keep ranges to a few chapters per request"
+    },
+    "format": {
+     "desc": "fixed by the pack",
+     "enum": [
+      "JSON"
+     ]
+    },
+    "styles": {
+     "desc": "fixed by the pack",
+     "enum": [
+      "false"
+     ]
+    }
+   },
+   "defaults": {
+    "format": "JSON",
+    "styles": "false"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 30000
+  },
+  "search": {
+   "path": "/search",
+   "description": "Keyword search of the current HTS (descriptions and HTS numbers), one row per matching line, in schedule order, with the same rate columns as schedule.",
+   "params": {
+    "keyword": {
+     "required": true,
+     "desc": "a word, phrase or HTS number, e.g. \"copper\", \"lithium-ion\", \"8507.60\""
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 5000
+  },
+  "current_release": {
+   "path": "/currentRelease",
+   "description": "The HTS revision the API serves now (name, description, title), one row. Record it with every rate: the schedule changes several times a month.",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "releases": {
+   "path": "/releaseList",
+   "description": "Every published HTS edition and revision since 2015 (name, description, date posted, status current or archive), newest first; about 185 rows.",
+   "params": {},
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  }
+ }
+}

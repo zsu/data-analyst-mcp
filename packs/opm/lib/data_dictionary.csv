@@ -1,0 +1,73 @@
+field,definition,sample_value,employment,accessions,separations
+accession_category,The text description of the personnel action that resulted in the onboarding of a new employee.,NEW HIRE - COMPETITIVE SERVICE APPOINTMENT,,Y,
+accession_category_code,The code representing the personnel action that resulted in the onboarding of a new employee.,AC,,Y,
+age_bracket,The range that a given employee's age falls into.,45-49,Y,Y,Y
+agency,The text description of a high-level employing organization.,DEPARTMENT OF INTERIOR,Y,Y,Y
+agency_code,The code representing a high-level employing organization.,IN,Y,Y,Y
+agency_subelement,The text description of an administrative subdivision of the agency.,BUREAU OF LAND MANAGEMENT,Y,Y,Y
+agency_subelement_code,The code representing an administrative subdivision of the agency.,IN05,Y,Y,Y
+annualized_adjusted_basic_pay,"The sum of an employee's rate of basic pay and any basic pay supplement (standard OR special), after applying any applicable pay cap, on an annualized basis.",35729.44,Y,Y,Y
+appointment_not_to_exceed_date,End date of the employee's temporary not-to-exceed appointment.,2019-03-16 00:00:00,,Y,Y
+appointment_type,The text description of the type of appointment an employee is serving under in terms of permanence and competitiveness.,CAREER (COMPETITIVE SERVICE PERMANENT),Y,Y,Y
+appointment_type_code,The code representing the type of appointment an employee is serving under in terms of permanence and competitiveness.,10,Y,Y,Y
+bargaining_unit,The text description of the bargaining unit within the labor union representing the employee.,"NTEU/- INTERNAL REVENUE SERVICE; WASHINGTON, DC",Y,Y,Y
+bargaining_unit_code,The code representing the bargaining unit within the labor union representing the employee.,1724,Y,Y,Y
+bargaining_unit_status,The text description of the employee's eligibility to be represented by a labor union within the federal government.,ELIGIBLE_IN_BU,Y,Y,Y
+cfo_act_agency_indicator,Identifies whether the agency is subject to the CFO Act.,CFO ACT AGENCY,Y,Y,Y
+consolidated_statistical_area,The text description of a U.S. Office of Management and Budget defined entity containing two or more adjacent core based statistical areas.,"BOSTON-WORCESTER-PROVIDENCE, MA-RI-NH",Y,Y,Y
+consolidated_statistical_area_code,The code representing a U.S. Office of Management and Budget defined entity containing two or more adjacent core based statistical areas.,148,Y,Y,Y
+core_based_statistical_area,"The text description of a geographic entity associated with at least one core of 10,000 or more population, plus adjacent territory that has a high degree of social and economic integration with the core as measured by commuting ties.","CHICO, CA METROPOLITAN STATISTICAL AREA",Y,Y,Y
+core_based_statistical_area_code,"The code representing a geographic entity associated with at least one core of 10,000 or more population, plus adjacent territory that has a high degree of social and economic integration with the core as measured by commuting ties.",17020,Y,Y,Y
+count,"The integer value 1, used for counting or aggregating values over the data set.",1,Y,Y,Y
+department,"Name of the department of the employee, aiding in the classification of roles within the organization.",DEPARTMENT OF AGRICULTURE,Y,Y,Y
+department_code,"Code representing the department to which the employee belongs, important for organizational structure.",AG,Y,Y,Y
+drp_indicator,Identifies whether a separation took place under the deferred resignation program.,N,,,Y
+duty_station_city,The text description of the city of an employee's official worksite.,BLOOMINGTON,Y,Y,Y
+duty_station_code,The code representing an employee's official worksite.,270675053,Y,Y,Y
+duty_station_country,The text description of the country of an employee's official worksite.,UNITED STATES,Y,Y,Y
+duty_station_country_code,The code representing the country of an employee's official worksite.,US,Y,Y,Y
+duty_station_county,The text description of the county of an employee's official worksite.,HENNEPIN,Y,Y,Y
+duty_station_county_code,The code representing the county of an employee's official worksite.,53,Y,Y,Y
+duty_station_state,The text description of the state of an employee's official worksite.,MINNESOTA,Y,Y,Y
+duty_station_state_abbreviation,The text abbreviation of the state of an employee's official worksite.,MN,Y,Y,Y
+duty_station_state_country_territory_code,"The code representing the state, country, or territory, as appropriate, of an employee's official worksite.",27,Y,Y,Y
+education_level,The text description of the highest level of an employee's educational attainment from an accredited institution.,MASTER'S DEGREE,Y,Y,Y
+education_level_bracket,The text description of the simplified category for the highest level of education attained by the employee.,MASTERS OR PROFESSIONAL DEGREE,Y,Y,Y
+education_level_code,The code representing the highest level of an employee's educational attainment from an accredited institution.,17,Y,Y,Y
+flsa_category,"The text description of the status of a Federal civilian employee under the authority of Section 13 of the Fair Labor Standards Act (29 U.S.C. 213), as amended.",EXEMPT EMPLOYEE,Y,Y,Y
+flsa_category_code,"The code representing the status of a Federal civilian employee under the authority of Section 13 of the Fair Labor Standards Act (29 U.S.C. 213), as amended.",E,Y,Y,Y
+grade,An indicator of hierarchical relationships among positions covered by the same pay plan or system.,08,Y,Y,Y
+length_of_service_years,"The number of years of Federal civilian employment, creditable military service, and other service made creditable by specific legislation.",15.5,Y,Y,Y
+locality_pay_area,The text description of a specific geographic region used to determine pay adjustments for federal employees based on local non-federal salary rates.,"AUSTIN-ROUND ROCK, TX",Y,Y,Y
+locality_pay_area_code,The code representing a specific geographic region used to determine pay adjustments for federal employees based on local non-federal salary rates.,AU,Y,Y,Y
+nsftp_indicator,"Identifies whether an employee is a non-seasonal, full time, permanent employee.",Y,Y,Y,Y
+occupational_category,"The text description of the highest-level grouping of occupational series into Professional, Administrative, Technical, Clerical, Other White Collar and Blue Collar categories.",PROFESSIONAL,Y,Y,Y
+occupational_category_code,"The code representing the highest-level grouping of occupational series into Professional, Administrative, Technical, Clerical, Other White Collar and Blue Collar categories.",P,Y,Y,Y
+occupational_group,The text description of a grouping of similar occupational series.,INFORMATION TECHNOLOGY GROUP,Y,Y,Y
+occupational_group_code,The code representing a grouping of similar occupational series.,22,Y,Y,Y
+occupational_series,The text description of the job category that an employee's position falls under based on the duties and required qualifications of the position.,INFORMATION TECHNOLOGY MANAGEMENT,Y,Y,Y
+occupational_series_code,The code representing the job category that an employee's position falls under based on the duties and required qualifications of the position.,2210,Y,Y,Y
+pathways_group,"Classification for employees within the pathways programs, which helps in the development of skills and experience.",RECENT GRAD,Y,Y,Y
+pay_basis,"The text description of the principal condition in terms of time, production, or other criteria that, along with salary rate, determines the compensation paid to an employee.",PER ANNUM,Y,Y,Y
+pay_basis_code,"The code representing the principal condition in terms of time, production, or other criteria that, along with salary rate, determines the compensation paid to an employee.",PA,Y,Y,Y
+pay_plan,The text description of a particular table or array of pay rates prescribed by law or other authoritative source that establishes the basic pay rates for certain employees.,GENERAL SCHEDULE,Y,Y,Y
+pay_plan_code,The code representing a particular table or array of pay rates prescribed by law or other authoritative source that establishes the basic pay rates for certain employees.,GS,Y,Y,Y
+personnel_action_effective_date_yyyymm,The date on which an accession or separation action became effective.,202108,,Y,Y
+personnel_office_identifier_code,"The identification of the Federal civilian personnel office authorized to appoint and separate an employee, and to the extent such functions have been delegated, prepare personnel actions, maintain official personnel records, and administer programs for staff compensation, training and development, benefits and awards, and employee and labor relations.",1559,Y,Y,Y
+position_occupied,"The text description of an employee's position in the Competitive Service, Excepted Service, or the Senior Executive Service.",COMPETITIVE SERVICE,Y,Y,Y
+position_occupied_code,"The code representing an employee's position in the Competitive Service, Excepted Service, or the Senior Executive Service.",1,Y,Y,Y
+separation_category,The text description of the personnel action that resulted in the separation of an employee.,QUIT,,,Y
+separation_category_code,The code representing the personnel action that resulted in the separation of an employee.,SC,,,Y
+service_computation_date_leave,An employee's service computation date for leave accrual purposes.,2020-08-30 00:00:00,Y,Y,Y
+snapshot_yyyymm,The date (year and month) when the snapshot of the data was taken.,202311,Y,,
+stem_occupation,Text field identifying positions that fall under STEM or Health occupations.,STEM OCCUPATIONS,Y,Y,Y
+stem_occupation_type,"A breakout of the STEM Occupation field into its components (i.e. Science, Technology, Engineering, and Mathematics) as well as Health.",SCIENCE OCCUPATIONS,Y,Y,Y
+step_or_rate_type,"The text description of a specific salary within a grade, level, class, rate, or pay band.",RATE 03,Y,Y,Y
+step_or_rate_type_code,"The code representing a specific salary within a grade, level, class, rate, or pay band.",03,Y,Y,Y
+supervisory_status,"The text description of the nature of managerial, supervisory, or non-supervisory responsibility assigned to an employee's position.",SUPERVISOR OR MANAGER,Y,Y,Y
+supervisory_status_code,"The code representing the nature of managerial, supervisory, or non-supervisory responsibility assigned to an employee's position.",2,Y,Y,Y
+tenure,"For purposes of reduction in force, the text description of the retention group in which an employee is placed based on the employee's type of appointment.",TENURE GROUP 1 - CAREER OR SERVING AN APPOINTMENT CARRYING NO RESTRICTION OR CONDITION,Y,Y,Y
+tenure_code,"For purposes of reduction in force, the code representing the retention group in which an employee is placed based on the employee's type of appointment.",1,Y,Y,Y
+veteran_indicator,"Veteran indicator is determined here by using several veteran-related fields in the dataset, including veterans preference, creditable military service, reemployed annuitant codes, and veterans-specific appointment authorities.",Y,Y,Y,Y
+work_schedule,The text description of the time basis on which an employee is scheduled to work.,FULL-TIME,Y,Y,Y
+work_schedule_code,The code representing the time basis on which an employee is scheduled to work.,F,Y,Y,Y

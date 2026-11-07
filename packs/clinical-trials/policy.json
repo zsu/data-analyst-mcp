@@ -1,0 +1,84 @@
+{
+  "id": "clinical-trials",
+  "title": "ClinicalTrials.gov (API v2)",
+  "agency": "National Library of Medicine, National Institutes of Health",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "clinical research"
+  ],
+  "keywords": [
+    "clinical trial",
+    "clinical trials",
+    "trial",
+    "trials",
+    "clinicaltrials.gov",
+    "nct",
+    "recruiting",
+    "phase 3",
+    "phase 2",
+    "study",
+    "studies",
+    "sponsor",
+    "enrollment",
+    "intervention",
+    "trial results",
+    "observational study"
+  ],
+  "questions": [
+    "recruiting trials for a condition",
+    "phase 3 trials of a drug",
+    "trials sponsored by a company",
+    "how many trials by phase or status",
+    "trials near a location",
+    "completed trials with results"
+  ],
+  "homepage": "https://clinicaltrials.gov/",
+  "terms_url": "https://clinicaltrials.gov/about-site/terms-conditions",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://clinicaltrials.gov/api/v2",
+      "probe": "https://clinicaltrials.gov/api/v2/version",
+      "hosts": [
+        "clinicaltrials.gov"
+      ]
+    },
+    "manual": {
+      "how": "Run the same search on https://clinicaltrials.gov/ (Advanced Search: condition, intervention, status, phase), click Download, choose CSV (or JSON) with all studies and the needed columns, and upload the file. INSTRUCTIONS.md also lists the API link for the first 1,000 studies."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The registry is refreshed often (the /version dataTimestamp was the same morning when checked); data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "ClinicalTrials.gov is a U.S. government service of the National Library of Medicine and its registry data are offered for public reuse; records are submitted by sponsors and some linked documents may carry others' copyright (terms: https://clinicaltrials.gov/about-site/terms-conditions; the page is script-rendered and was not re-read for this pack). Attribute ClinicalTrials.gov."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "ClinicalTrials.gov, National Library of Medicine, {dataset}, clinicaltrials.gov API v2, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which statuses count: currently recruiting only, or all trials ever registered (including completed, terminated, withdrawn)?",
+    "Interventional trials only, or observational studies too?",
+    "Condition match: the condition field (query.cond, includes synonyms) or anywhere in the record (query.term)?"
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

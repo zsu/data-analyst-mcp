@@ -1,0 +1,7 @@
+{
+ "fetch": {"description": "2024 Pennsylvania Senate race: candidates' money, small-donor share and outside spending for one candidate, and a sample of committee (PAC) contributions", "requests": [
+  {"name": "pa_senate_2024", "endpoint": "elections", "params": {"office": "senate", "state": "PA", "cycle": 2024}},
+  {"name": "casey_by_size", "endpoint": "contributions_by_size", "params": {"candidate_id": "S6PA00217", "cycle": 2024}},
+  {"name": "casey_outside", "endpoint": "independent_expenditures_by_candidate", "params": {"candidate_id": "S6PA00217", "cycle": 2024}},
+  {"name": "casey_pac_receipts_sample", "endpoint": "schedule_a", "params": {"committee_id": "C00431056", "two_year_transaction_period": 2024, "is_individual": "false", "per_page": 5}, "max_rows": 8}]}
+}

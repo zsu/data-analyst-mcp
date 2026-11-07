@@ -1,0 +1,7 @@
+{
+ "GET https://api.fdic.gov/banks/failures?sort_by=FAILDATE&sort_order=ASC&filters=FAILYR%3A2023+AND+RESTYPE%3A%22FAILURE%22&fields=CERT%2CNAME%2CCITY%2CPSTALP%2CFAILDATE%2CQBFASSET%2CQBFDEP%2CCOST%2CRESTYPE1&limit=1000&offset=0": "r001.json",
+ "GET https://api.fdic.gov/banks/financials?sort_by=REPDTE&sort_order=ASC&filters=CERT%3A3511+AND+REPDTE%3A%5B20240101+TO+20241231%5D&fields=CERT%2CREPDTE%2CASSET%2CDEP%2CNETINC%2CROA&limit=1000&offset=0": "r002.json",
+ "GET https://api.fdic.gov/banks/summary?sort_by=YEAR&sort_order=DESC&filters=STNAME%3A%22Wyoming%22+AND+YEAR%3A2025&fields=STNAME%2CYEAR%2CCB_SI%2CBANKS%2CASSET%2CDEP%2CNETINC&limit=1000&offset=0": "r003.json",
+ "GET https://api.fdic.gov/banks/failures?sort_by=FAILDATE&sort_order=DESC&filters=PSTALP%3AGA+AND+FAILYR%3A%5B2008+TO+2013%5D&agg_by=FAILYR&agg_sum_fields=QBFASSET%2CCOST&agg_term_fields=RESTYPE1&agg_limit=20&limit=1000&offset=0": "r004.json",
+ "GET https://api.fdic.gov/banks/history?sort_by=EFFDATE&sort_order=DESC&filters=PSTALP%3AVT&agg_by=CHANGECODE&agg_term_fields=CLASS&agg_limit=10&limit=1000&offset=0": "r005.json"
+}

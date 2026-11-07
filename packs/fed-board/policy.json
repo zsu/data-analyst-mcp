@@ -1,0 +1,136 @@
+{
+  "id": "fed-board",
+  "title": "Federal Reserve Board data (Data Download Program releases, Z.1 Financial Accounts, Survey of Consumer Finances)",
+  "agency": "Board of Governors of the Federal Reserve System",
+  "depth": "standard",
+  "domains": [
+    "household finance",
+    "credit",
+    "financial accounts",
+    "wealth",
+    "banking",
+    "monetary policy"
+  ],
+  "keywords": [
+    "federal reserve board",
+    "consumer credit",
+    "g.19",
+    "revolving credit",
+    "student loans",
+    "auto loans",
+    "financial accounts",
+    "flow of funds",
+    "z.1",
+    "household net worth",
+    "household balance sheet",
+    "household debt",
+    "sector balance sheets",
+    "federal government debt holders",
+    "senior loan officer",
+    "sloos",
+    "lending standards",
+    "survey of consumer finances",
+    "scf",
+    "wealth distribution",
+    "median net worth",
+    "family income",
+    "h.8",
+    "h.6",
+    "money stock",
+    "g.17",
+    "industrial production",
+    "charge-off",
+    "delinquency",
+    "debt service ratio"
+  ],
+  "questions": [
+    "total consumer credit outstanding, latest month",
+    "household and nonprofit net worth from the Financial Accounts (B.101)",
+    "median family net worth by age or race in the 2025 Survey of Consumer Finances",
+    "share of banks tightening standards on commercial and industrial loans (SLOOS)",
+    "who holds Treasury securities by sector (Z.1)"
+  ],
+  "homepage": "https://www.federalreserve.gov/data.htm",
+  "terms_url": "https://www.federalreserve.gov/disclaimer.htm",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.federalreserve.gov",
+      "probe": "https://www.federalreserve.gov/releases/z1/current/z1_table_mapping.csv",
+      "hosts": [
+        "www.federalreserve.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser and save the file under the name shown, then upload it. A Data Download Program (DDP) link given by package title opens the release's Choose page (https://www.federalreserve.gov/datadownload/Choose.aspx?rel=<release>): pick that preformatted package, click Format package, keep CSV, then Download file. Z.1 tables: https://www.federalreserve.gov/releases/z1/current/z1_csv_files.zip (upload the zip, or the one table CSV from its csv/ folder). SCF: https://www.federalreserve.gov/econres/scfindex.htm (interactive chart data scf.zip, summary tables workbook)."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Releases update weekly to quarterly (SCF every three years); data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Board website terms (https://www.federalreserve.gov/disclaimer.htm): information on the Board's website is in the public domain unless otherwise indicated and may be copied and distributed without permission; cite the Board as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Board of Governors of the Federal Reserve System, {dataset}, federalreserve.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Seasonally adjusted or not? G.19 publishes both; the headline is seasonally adjusted. Default: seasonally adjusted where it exists, named in the answer.",
+    "Levels (amounts outstanding) or flows (transactions, often at seasonally adjusted annual rates)? Default: levels.",
+    "SCF dollars: survey-year (nominal) or inflation-adjusted 2025 dollars? Default: 2025 dollars for comparisons across surveys, nominal for one survey year."
+  ],
+  "formats": [
+    "csv",
+    "xlsx"
+  ],
+  "use_instead": [
+    {
+      "question": "One Board series' long history or its past vintages",
+      "source": "fred",
+      "terms": [
+        "ALFRED"
+      ],
+      "why": "FRED mirrors most Board series; ALFRED keeps vintages."
+    },
+    {
+      "question": "SOFR, EFFR, SOMA holdings, primary dealer positions",
+      "source": "nyfed",
+      "terms": [
+        "SOFR",
+        "SOMA"
+      ],
+      "why": "The New York Fed publishes these."
+    },
+    {
+      "question": "Forecasts of these series",
+      "source": "philfed",
+      "terms": [
+        "Greenbook"
+      ],
+      "why": "SPF and Greenbook forecasts."
+    },
+    {
+      "question": "Bank-level balance sheets and income",
+      "source": "fdic",
+      "terms": [
+        "call report"
+      ],
+      "why": "FDIC institution financials."
+    }
+  ]
+}

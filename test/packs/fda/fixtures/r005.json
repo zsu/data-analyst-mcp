@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-10-22"
+  },
+  "results": [
+    {
+      "term": "Anesthesia",
+      "count": 370
+    },
+    {
+      "term": "Pediatric",
+      "count": 279
+    },
+    {
+      "term": "Psychiatry",
+      "count": 269
+    },
+    {
+      "term": "Neurology",
+      "count": 163
+    },
+    {
+      "term": "Cardiovascular",
+      "count": 161
+    },
+    {
+      "term": "Analgesia/Addiction",
+      "count": 160
+    },
+    {
+      "term": "Gastroenterology",
+      "count": 156
+    },
+    {
+      "term": "Endocrinology/Metabolism",
+      "count": 146
+    },
+    {
+      "term": "Other",
+      "count": 132
+    },
+    {
+      "term": "Oncology",
+      "count": 120
+    },
+    {
+      "term": "Anti-Infective",
+      "count": 100
+    },
+    {
+      "term": "Rheumatology",
+      "count": 79
+    },
+    {
+      "term": "Hematology",
+      "count": 65
+    },
+    {
+      "term": "Pulmonary/Allergy",
+      "count": 42
+    },
+    {
+      "term": "Renal",
+      "count": 42
+    },
+    {
+      "term": "Ophthalmology",
+      "count": 30
+    },
+    {
+      "term": "Dermatology",
+      "count": 28
+    },
+    {
+      "term": "Antiviral",
+      "count": 17
+    },
+    {
+      "term": "Medical Imaging",
+      "count": 15
+    },
+    {
+      "term": "Total Parenteral Nutrition",
+      "count": 15
+    },
+    {
+      "term": "Transplant",
+      "count": 15
+    },
+    {
+      "term": "Musculoskeletal",
+      "count": 7
+    },
+    {
+      "term": "Urology",
+      "count": 3
+    },
+    {
+      "term": "Inborn Errors",
+      "count": 2
+    },
+    {
+      "term": "Reproductive",
+      "count": 1
+    }
+  ]
+}

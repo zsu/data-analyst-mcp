@@ -1,0 +1,292 @@
+{
+ "base_url": "https://data.epa.gov/dmapservice",
+ "endpoints": {
+  "envirofacts": {
+   "path": "/{table}",
+   "kind": "dmap",
+   "description": "Any Envirofacts table (DMAP): TRI, GHGRP, SDWIS, SEMS/Superfund, RCRAInfo, FRS ... filtered by column values.",
+   "params": {
+    "table": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (tri_facility, ghg_emitters, sdwis_systems ...) or schema.table"
+    },
+    "filters": {
+     "desc": "{\"column\": \"value\"} for equals, or [[column, operator, value], ...]; operators: equals, notEquals, lessThan, greaterThan, greaterThanEqual, beginsWith, endsWith, contains"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none",
+    "size": 5000
+   },
+   "max_rows": 200000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "uv_daily": {
+   "path": "/getEnvirofactsUVDAILY/ZIP/{zip}/JSON",
+   "description": "Today's UV index forecast for a ZIP code (forecast, not history).",
+   "params": {
+    "zip": {
+     "in": "path",
+     "required": true,
+     "desc": "5-digit ZIP"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "uv_daily_city": {
+   "path": "/getEnvirofactsUVDAILY/CITY/{city}/STATE/{state}/JSON",
+   "description": "Today's UV index forecast for a city.",
+   "params": {
+    "city": {
+     "in": "path",
+     "required": true,
+     "desc": "city name"
+    },
+    "state": {
+     "in": "path",
+     "required": true,
+     "desc": "two-letter state code"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "uv_hourly": {
+   "path": "/getEnvirofactsUVHOURLY/ZIP/{zip}/JSON",
+   "description": "Today's hourly UV index forecast for a ZIP code.",
+   "params": {
+    "zip": {
+     "in": "path",
+     "required": true,
+     "desc": "5-digit ZIP"
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "echo_facilities": {
+   "path": "https://echodata.epa.gov/echo/{program}_rest_services.get_facilities",
+   "kind": "echo",
+   "description": "ECHO facility compliance search (two steps: query, then pages of rows): air (CAA), cwa (CWA/NPDES), rcra (hazardous waste), sdw (drinking water systems), echo (all programs).",
+   "params": {
+    "program": {
+     "in": "path",
+     "required": true,
+     "enum": [
+      "air",
+      "cwa",
+      "rcra",
+      "sdw",
+      "echo"
+     ],
+     "desc": "air, cwa, rcra, sdw or echo"
+    },
+    "p_st": {
+     "desc": "state code, e.g. TX"
+    },
+    "p_co": {
+     "desc": "county name, with p_st (returns 0 rows for program air, verified 2026-10: use p_fips there)"
+    },
+    "p_fips": {
+     "desc": "5-digit state+county FIPS, e.g. 35015 (air, cwa, rcra, echo)"
+    },
+    "p_ct": {
+     "desc": "city"
+    },
+    "p_zip": {
+     "desc": "5-digit ZIP"
+    },
+    "p_fn": {
+     "desc": "facility name (contains)"
+    },
+    "p_act": {
+     "desc": "Y: active facilities only"
+    },
+    "p_maj": {
+     "desc": "Y: major facilities only (air, cwa)"
+    },
+    "p_ncs": {
+     "desc": "NAICS code, 2 to 6 digits (shorter matches every code it begins; p_naics is ignored by ECHO)"
+    },
+    "p_sic": {
+     "desc": "SIC code"
+    },
+    "p_qiv": {
+     "desc": "quarters in violation, e.g. GT4"
+    },
+    "p_impw": {
+     "desc": "cwa: Y impaired waters"
+    },
+    "p_pen": {
+     "desc": "penalty range"
+    },
+    "qcolumns": {
+     "desc": "comma-separated column ids to return (ids: <program>_rest_services.metadata?output=JSON, ResultColumns); sent to the search and to every get_qid page"
+    }
+   },
+   "records": "Facilities",
+   "paging": {
+    "type": "none",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "echo_cases": {
+   "path": "https://echodata.epa.gov/echo/case_rest_services.get_case_info",
+   "kind": "echo",
+   "description": "EPA civil and criminal enforcement cases (ICIS): penalties, settlements, outcomes (two steps like echo_facilities).",
+   "params": {
+    "p_state": {
+     "desc": "state code (note: p_state here, p_st is ignored)"
+    },
+    "p_law": {
+     "desc": "CAA, CWA, RCRA, SDWA, CERCLA, EPCRA, TSCA, FIFRA"
+    },
+    "p_case_category": {
+     "desc": "JDC judicial, AFR administrative formal ..."
+    },
+    "p_case_status": {
+     "desc": "case status code(s), comma-separated: CLS closed, CNC concluded, FOI final order issued, CFL complaint filed ... (codes, not words: Closed matches nothing)"
+    },
+    "p_milestone_fy": {
+     "desc": "one fiscal year: cases with an administrative or judicial milestone in that FY (p_fy is ignored by ECHO)"
+    },
+    "p_milestone": {
+     "desc": "milestone code(s) to go with p_milestone_fy (codes are not listed in ECHO's service description; unverified)"
+    },
+    "p_civil_criminal_indicator": {
+     "desc": "CI civil, CR criminal, ALL both (p_crim is ignored by ECHO)",
+     "enum": [
+      "CI",
+      "CR",
+      "ALL"
+     ]
+    },
+    "p_fed_penalty": {
+     "desc": "federal penalty assessed: ANY, LE5000, GT5000, GT50000, GT100000, GT500000, GT1000000, GT2500000",
+     "enum": [
+      "ANY",
+      "LE5000",
+      "GT5000",
+      "GT50000",
+      "GT100000",
+      "GT500000",
+      "GT1000000",
+      "GT2500000"
+     ]
+    }
+   },
+   "records": "Cases",
+   "paging": {
+    "type": "none",
+    "size": 1000
+   },
+   "max_rows": 100000,
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "echo_facility_detail": {
+   "path": "https://echodata.epa.gov/echo/dfr_rest_services.get_dfr",
+   "description": "Detailed Facility Report for one FRS registry id: permits, inspections, violations, enforcement (one row; sections as JSON text).",
+   "params": {
+    "p_id": {
+     "required": true,
+     "desc": "FRS RegistryID, e.g. 110008205307"
+    }
+   },
+   "defaults": {
+    "output": "JSON"
+   },
+   "records": "Results",
+   "paging": {
+    "type": "none"
+   },
+   "method": "GET",
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "tri_facility": {
+   "id": "tri.tri_facility",
+   "name": "tri.tri_facility",
+   "description": "TRI reporting facilities: name, address, county, parent company, FRS id (useful filter columns: state_abbr, county_name)",
+   "endpoint": "envirofacts"
+  },
+  "tri_reporting_form": {
+   "id": "tri.tri_reporting_form",
+   "name": "tri.tri_reporting_form",
+   "description": "TRI Form R/A submissions: chemical, reporting year, facility (doc_ctrl_num links releases) (useful filter columns: reporting_year, tri_facility_id, cas_chem_name)",
+   "endpoint": "envirofacts"
+  },
+  "tri_release_qty": {
+   "id": "tri.tri_release_qty",
+   "name": "tri.tri_release_qty",
+   "description": "TRI release quantities by environmental medium per form (doc_ctrl_num) (useful filter columns: doc_ctrl_num, environmental_medium)",
+   "endpoint": "envirofacts"
+  },
+  "ghg_emitters": {
+   "id": "ghg.ghg_emitter_sector",
+   "name": "ghg.ghg_emitter_sector",
+   "description": "GHGRP large emitters: facility, sector, gas, CO2e emissions (metric tons) by year (useful filter columns: state, year, sector_name, gas_code)",
+   "endpoint": "envirofacts"
+  },
+  "sdwis_systems": {
+   "id": "sdwis.water_system",
+   "name": "sdwis.water_system",
+   "description": "SDWIS public water systems: type (CWS, NTNCWS, TNCWS), population served, source, activity (useful filter columns: state_code, primacy_agency_code, pws_type_code)",
+   "endpoint": "envirofacts"
+  },
+  "sdwis_violations": {
+   "id": "sdwis.violation",
+   "name": "sdwis.violation",
+   "description": "SDWIS drinking water violations: rule, contaminant, health-based flag, compliance period (useful filter columns: primacy_agency_code, pwsid, is_health_based_ind)",
+   "endpoint": "envirofacts"
+  },
+  "superfund_sites": {
+   "id": "sems.envirofacts_site",
+   "name": "sems.envirofacts_site",
+   "description": "SEMS Superfund (CERCLA) sites: NPL status, location, federal facility flag (useful filter columns: fk_ref_state_code, npl_status_code)",
+   "endpoint": "envirofacts"
+  }
+ }
+}

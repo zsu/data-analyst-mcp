@@ -1,0 +1,36 @@
+{
+ "sample": {
+  "description": "Pfizer's own lobbying reports for Q1 2024 (original and amendment), by filing and by activity; LD-203 contributions of one lobbyist",
+  "requests": [
+   {
+    "name": "pfizer_q1_2024",
+    "endpoint": "filings",
+    "params": {
+     "registrant_name": "Pfizer",
+     "client_name": "Pfizer",
+     "filing_year": 2024,
+     "filing_period": "first_quarter"
+    }
+   },
+   {
+    "name": "pfizer_q1_2024_tax",
+    "endpoint": "filing_activities",
+    "params": {
+     "registrant_name": "Pfizer",
+     "client_name": "Pfizer",
+     "filing_year": 2024,
+     "filing_period": "first_quarter",
+     "issue_code": "TAX"
+    }
+   },
+   {
+    "name": "pomper_2024",
+    "endpoint": "contributions",
+    "params": {
+     "lobbyist_name": "Pomper",
+     "filing_year": 2024
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,121 @@
+{
+  "id": "fda",
+  "title": "openFDA (api.fda.gov)",
+  "agency": "U.S. Food and Drug Administration",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "drugs",
+    "medical devices",
+    "food safety"
+  ],
+  "keywords": [
+    "fda",
+    "openfda",
+    "adverse event",
+    "adverse events",
+    "side effect",
+    "faers",
+    "maude",
+    "drug recall",
+    "recall",
+    "recalls",
+    "device recall",
+    "food recall",
+    "drug label",
+    "boxed warning",
+    "ndc",
+    "national drug code",
+    "drug approval",
+    "drugs@fda",
+    "510k",
+    "pma",
+    "drug shortage",
+    "shortages",
+    "caers",
+    "supplement",
+    "tobacco",
+    "vaping",
+    "udi",
+    "unii"
+  ],
+  "questions": [
+    "most reported adverse reactions for a drug",
+    "drug recalls by classification and year",
+    "food recalls in a state",
+    "medical device adverse event reports trend",
+    "current drug shortages",
+    "when was a drug approved"
+  ],
+  "homepage": "https://open.fda.gov/",
+  "terms_url": "https://open.fda.gov/terms/",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://open.fda.gov/apis/authentication/",
+    "echoes_key": false,
+    "key_only": [
+      "more than 1,000 requests a day (120,000 with a key)"
+    ],
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 26000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.fda.gov",
+      "probe": "https://api.fda.gov/drug/enforcement.json?limit=1",
+      "hosts": [
+        "api.fda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the links in INSTRUCTIONS.md in a browser (openFDA answers JSON without a key), save each page under the shown name and upload. For whole datasets use https://open.fda.gov/data/downloads/ (zipped JSON partitions) and upload the extracted files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Searches are small; openFDA refreshes most datasets weekly and FAERS quarterly. data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "openFDA content and data are public domain under a CC0 1.0 dedication unless otherwise noted (https://open.fda.gov/license/)."
+  },
+  "notices": [
+    "openFDA data are not validated for clinical use. Adverse event reports are voluntary, unverified reports: a report does not show that a product caused the event, and report counts are not incidence or risk rates."
+  ],
+  "retention": null,
+  "citation": "U.S. Food and Drug Administration, openFDA: {dataset}, api.fda.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "fda_reports_not_rates",
+      "kind": "require_text",
+      "any": [
+        "not incidence",
+        "not rates",
+        "not a rate",
+        "does not show",
+        "do not establish",
+        "causal",
+        "unverified",
+        "voluntary"
+      ],
+      "why": "A report that uses openFDA adverse-event counts must say they are spontaneous reports, not incidence rates or proof of causation."
+    }
+  ],
+  "clarify": [
+    "Adverse events: count reports or count reactions? One report lists several drugs and reactions; say which is counted.",
+    "Which dates: when FDA received the report (receivedate) or when the event happened? Recalls: report_date or recall_initiation_date (device_recall: event_date_posted or event_date_initiated)?",
+    "All recall classes, or Class I (most serious) only?"
+  ],
+  "formats": [
+    "json"
+  ]
+}

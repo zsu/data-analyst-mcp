@@ -1,0 +1,119 @@
+{
+  "id": "cfpb",
+  "title": "CFPB Consumer Complaint Database",
+  "agency": "Consumer Financial Protection Bureau",
+  "depth": "standard",
+  "domains": [
+    "finance",
+    "consumer protection"
+  ],
+  "keywords": [
+    "consumer complaints",
+    "complaint",
+    "cfpb",
+    "credit reporting",
+    "debt collection",
+    "mortgage complaints",
+    "credit card",
+    "student loan",
+    "bank account",
+    "company response",
+    "consumer finance",
+    "servicer",
+    "credit bureau",
+    "older american",
+    "servicemember"
+  ],
+  "questions": [
+    "consumer complaints about debt collection by state",
+    "complaints against a company by product",
+    "monthly complaint trend for student loans",
+    "share of complaints closed with monetary relief"
+  ],
+  "homepage": "https://www.consumerfinance.gov/data-research/consumer-complaints/",
+  "terms_url": "https://www.consumerfinance.gov/complaint/data-use/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1",
+      "probe": "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/?size=1&no_aggs=true",
+      "hosts": [
+        "www.consumerfinance.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the links in INSTRUCTIONS.md (complaint lists as CSV, counts as JSON) in a browser, or use the database page https://www.consumerfinance.gov/data-research/consumer-complaints/search/ (set the filters, Export data > CSV), and upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "The database is refreshed daily and complaints are added for weeks after a date; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CFPB publishes the complaint data under CC0 (the API's _meta.license field says CC0); attribution to CFPB requested."
+  },
+  "notices": [
+    "Complaint counts are not a measure of how common a problem is: complaints are not a statistical sample, larger companies receive more, and CFPB does not verify every claim (CFPB data-use guidance)."
+  ],
+  "retention": null,
+  "citation": "Consumer Financial Protection Bureau, Consumer Complaint Database ({dataset}), consumerfinance.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "cfpb_not_sample",
+      "kind": "require_text",
+      "any": [
+        "not a statistical sample",
+        "not a sample",
+        "not representative"
+      ],
+      "why": "CFPB asks users not to treat complaint counts as representative of all consumers' experience."
+    }
+  ],
+  "clarify": [
+    "Which date: when CFPB received the complaint (date_received, the default) or when it was sent to the company?",
+    "Product names changed over time (e.g. 'Credit reporting, credit repair services, or other personal consumer reports' became 'Credit reporting or other personal consumer reports'): combine the old and new names for a trend?"
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ],
+  "use_instead": [
+    {
+      "question": "Bank financial condition or failures",
+      "source": "fdic",
+      "terms": [
+        "failures"
+      ],
+      "why": "FDIC BankFind holds call-report financials and the failed-bank list."
+    },
+    {
+      "question": "Company financial statements",
+      "source": "sec",
+      "terms": [
+        "XBRL"
+      ],
+      "why": "EDGAR XBRL company facts."
+    },
+    {
+      "question": "Auto safety complaints",
+      "source": "nhtsa",
+      "terms": [
+        "complaints"
+      ],
+      "why": "NHTSA vehicle safety complaints, not consumer-finance complaints."
+    }
+  ]
+}

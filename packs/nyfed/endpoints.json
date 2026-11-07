@@ -1,0 +1,80 @@
+{
+  "base_url": "https://markets.newyorkfed.org/api",
+  "timeout": 60,
+  "endpoints": {
+    "rates": {
+      "path": "/rates/{family}/{ratetype}/search.json",
+      "description": "Daily reference rate with percentiles and volume, one row per business day: secured (sofr, tgcr, bgcr) or unsecured (effr, obfr). Rows come newest first.",
+      "params": {
+        "family": {"in": "path", "required": true, "enum": ["secured", "unsecured"], "desc": "secured (SOFR, TGCR, BGCR) or unsecured (EFFR, OBFR)"},
+        "ratetype": {"in": "path", "required": true, "enum": ["sofr", "tgcr", "bgcr", "effr", "obfr"], "desc": "rate name, lower case; it must belong to the family"},
+        "startDate": {"desc": "first effective date, YYYY-MM-DD"},
+        "endDate": {"desc": "last effective date, YYYY-MM-DD"}
+      },
+      "records": "refRates",
+      "paging": {"type": "none"}
+    },
+    "soma_summary": {
+      "path": "/soma/summary.json",
+      "description": "Weekly (Wednesday) SOMA holdings totals in dollars by asset class (bills, notes and bonds, TIPS, FRN, MBS, agencies) since 2003-07-09: the whole history, about 1,200 rows.",
+      "params": {},
+      "records": "soma.summary",
+      "paging": {"type": "none"}
+    },
+    "soma_tsy_holdings": {
+      "path": "/soma/tsy/get/asof/{date}.json",
+      "description": "SOMA Treasury holdings on one as-of date, one row per CUSIP: maturity date, coupon, par value, inflation compensation, share of the issue outstanding, security type (Bills, NotesBonds, TIPS, FRN).",
+      "params": {
+        "date": {"in": "path", "required": true, "desc": "an as-of date from soma_asofdates, YYYY-MM-DD"}
+      },
+      "records": "soma.holdings",
+      "paging": {"type": "none"}
+    },
+    "soma_tsy_wam": {
+      "path": "/soma/tsy/wam/{holdingtype}/asof/{date}.json",
+      "description": "Weighted average maturity, in years, of the SOMA Treasury holdings on one as-of date. One row.",
+      "params": {
+        "holdingtype": {"in": "path", "required": true, "enum": ["all", "bills", "notesbonds", "tips", "frn"], "desc": "all, or one security type"},
+        "date": {"in": "path", "required": true, "desc": "an as-of date from soma_asofdates, YYYY-MM-DD"}
+      },
+      "records": "soma",
+      "paging": {"type": "none"}
+    },
+    "soma_asofdates": {
+      "path": "/soma/asofdates/list.json",
+      "description": "Every SOMA as-of date published, as one column (asOfDate).",
+      "params": {},
+      "records": "soma.asOfDates",
+      "paging": {"type": "none"}
+    },
+    "tsy_operations": {
+      "path": "/tsy/{operation}/results/{include}/search.json",
+      "description": "Fed Treasury purchase or sale operations in a date range, one row per operation (include=summary) or with the securities bought as JSON text in a details column (include=details).",
+      "params": {
+        "operation": {"in": "path", "required": true, "enum": ["purchases", "sales", "all"], "desc": "purchases, sales or all"},
+        "include": {"in": "path", "required": true, "enum": ["summary", "details"], "desc": "summary (one row per operation) or details (adds the securities)"},
+        "startDate": {"desc": "first operation date, YYYY-MM-DD"},
+        "endDate": {"desc": "last operation date, YYYY-MM-DD"}
+      },
+      "records": "treasury.auctions",
+      "paging": {"type": "none"}
+    },
+    "pd_series": {
+      "path": "/pd/get/{timeseries}.json",
+      "description": "One primary dealer statistics series (positions, financing, transactions), weekly since 2013, in millions of dollars: one row per as-of date (asofdate, keyid, value).",
+      "params": {
+        "timeseries": {"in": "path", "required": true, "desc": "series key from pd_catalog, e.g. PDPOSGST-TOT (net Treasury positions)", "catalog": true}
+      },
+      "records": "pd.timeseries",
+      "paging": {"type": "none"}
+    },
+    "pd_catalog": {
+      "path": "/pd/list/timeseries.json",
+      "description": "Every primary dealer series key with its series break and description (about 1,500 rows; search it for the key you need).",
+      "params": {},
+      "records": "pd.timeseries",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {}
+}

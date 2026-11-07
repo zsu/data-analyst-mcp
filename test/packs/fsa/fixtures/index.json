@@ -1,0 +1,9 @@
+{
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/PortfolioSummary.xls": "PortfolioSummary.xls",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/PortfoliobyLoanStatus.xls": "PortfoliobyLoanStatus.xls",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/Portfolio-by-Location.xls": "Portfolio-by-Location.xls",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/DLPortfoliobyRepaymentPlan.xls": "DLPortfoliobyRepaymentPlan.xls",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/dl-dashboard-ay2025-2026-q4.xls": "trimmed_dl_dashboard_ay2025-2026_q4.xlsx",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/grants-ay24-25-q4.xls": "trimmed_grants_ay24-25_q4.xlsx",
+ "GET https://studentaid.gov/sites/default/files/fsawg/datacenter/library/dl-dashboard-ay2026-2027-q1.xls": {"file": "not_found.html", "status": 404}
+}

@@ -1,0 +1,17 @@
+{
+  "name": "PPPOS",
+  "label": "Unique person identifier",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "MARSUPWT",
+  "values": {
+    "range": [
+      {
+        "min": "41",
+        "max": "56",
+        "description": "Range"
+      }
+    ]
+  }
+}

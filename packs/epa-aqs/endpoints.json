@@ -1,0 +1,174 @@
+{
+ "base_url": "https://aqs.epa.gov/data/api",
+ "endpoints": {
+  "data": {
+   "path": "/{service}/{geo}",
+   "method": "GET",
+   "description": "AQS data: annual, quarterly or daily summaries, raw sample data, or monitors, for a state, county, site, CBSA or box.",
+   "params": {
+    "service": {
+     "in": "path",
+     "required": true,
+     "enum": [
+      "annualData",
+      "quarterlyData",
+      "dailyData",
+      "sampleData",
+      "monitors"
+     ],
+     "desc": "annualData, quarterlyData, dailyData, sampleData, monitors"
+    },
+    "geo": {
+     "in": "path",
+     "required": true,
+     "enum": [
+      "byState",
+      "byCounty",
+      "bySite",
+      "byCBSA",
+      "byBox"
+     ],
+     "desc": "byState, byCounty, bySite, byCBSA, byBox"
+    },
+    "param": {
+     "required": true,
+     "desc": "catalog alias (ozone, pm25, no2 ...) or AQS parameter code(s), up to 5 comma-separated: 44201 ozone, 88101 PM2.5 FRM/FEM, 88502 PM2.5 non-FRM, 81102 PM10, 42401 SO2, 42101 CO, 42602 NO2, 14129 lead",
+     "catalog": true
+    },
+    "bdate": {
+     "required": true,
+     "desc": "begin date YYYYMMDD"
+    },
+    "edate": {
+     "required": true,
+     "desc": "end date YYYYMMDD (several years are split into one call per year)"
+    },
+    "state": {
+     "desc": "state FIPS (06), USPS code (CA) or name; converted to FIPS"
+    },
+    "county": {
+     "desc": "3-digit county FIPS within the state (037)"
+    },
+    "site": {
+     "desc": "4-digit site number (0014)"
+    },
+    "cbsa": {
+     "desc": "CBSA code (16740)"
+    },
+    "minlat": {
+     "desc": "byBox"
+    },
+    "maxlat": {},
+    "minlon": {},
+    "maxlon": {},
+    "duration": {
+     "desc": "sampleData only: sample duration code"
+    },
+    "cbdate": {
+     "desc": "change begin date YYYYMMDD"
+    },
+    "cedate": {
+     "desc": "change end date YYYYMMDD"
+    }
+   },
+   "records": "Data",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 1000000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "list": {
+   "path": "/list/{list}",
+   "method": "GET",
+   "description": "AQS code lists: states, counties, sites, CBSAs, parameter classes and their parameters.",
+   "params": {
+    "list": {
+     "in": "path",
+     "required": true,
+     "enum": [
+      "states",
+      "countiesByState",
+      "sitesByCounty",
+      "cbsas",
+      "classes",
+      "parametersByClass",
+      "pqaos",
+      "mas"
+     ],
+     "desc": "which list"
+    },
+    "state": {
+     "desc": "countiesByState, sitesByCounty"
+    },
+    "county": {
+     "desc": "sitesByCounty"
+    },
+    "pc": {
+     "desc": "parametersByClass: CRITERIA, ALL, ..."
+    }
+   },
+   "records": "Data",
+   "paging": {
+    "type": "none"
+   },
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  }
+ },
+ "catalog": {
+  "ozone": {
+   "id": "44201",
+   "name": "Ozone",
+   "description": "parameter 44201, ppm; design values use the 8-hour average",
+   "endpoint": "data"
+  },
+  "pm25": {
+   "id": "88101",
+   "name": "PM2.5 FRM/FEM",
+   "description": "parameter 88101, micrograms/cubic meter (local conditions)",
+   "endpoint": "data"
+  },
+  "pm25_nonfrm": {
+   "id": "88502",
+   "name": "PM2.5 non-FRM (continuous)",
+   "description": "parameter 88502, acceptable PM2.5 AQI and speciation mass",
+   "endpoint": "data"
+  },
+  "pm10": {
+   "id": "81102",
+   "name": "PM10",
+   "description": "parameter 81102, micrograms/cubic meter (STP)",
+   "endpoint": "data"
+  },
+  "so2": {
+   "id": "42401",
+   "name": "Sulfur dioxide",
+   "description": "parameter 42401, ppb",
+   "endpoint": "data"
+  },
+  "co": {
+   "id": "42101",
+   "name": "Carbon monoxide",
+   "description": "parameter 42101, ppm",
+   "endpoint": "data"
+  },
+  "no2": {
+   "id": "42602",
+   "name": "Nitrogen dioxide",
+   "description": "parameter 42602, ppb",
+   "endpoint": "data"
+  },
+  "lead": {
+   "id": "14129",
+   "name": "Lead (TSP, local conditions)",
+   "description": "parameter 14129, micrograms/cubic meter",
+   "endpoint": "data"
+  }
+ }
+}

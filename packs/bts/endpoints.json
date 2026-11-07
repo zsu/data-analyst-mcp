@@ -1,0 +1,347 @@
+{
+ "base_url": "https://data.bts.gov/resource",
+ "endpoints": {
+  "query": {
+   "path": "/{dataset}.json",
+   "method": "GET",
+   "description": "SODA query against any data.bts.gov dataset (catalog alias or 4x4 id).",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "catalog alias (monthly_stats, border_crossings) or dataset id (crem-w557)"
+    },
+    "$select": {
+     "desc": "SoQL columns, e.g. 'date, transportation_services_index_freight'"
+    },
+    "$where": {
+     "desc": "SoQL filter; quote text and dates: state = 'Texas' AND date >= '2024-01-01'"
+    },
+    "$group": {
+     "desc": "SoQL group by, e.g. 'border, measure' with $select 'border, measure, sum(value)'"
+    },
+    "$order": {
+     "desc": "SoQL order; default :id gives stable paging"
+    },
+    "$q": {
+     "desc": "full-text search"
+    }
+   },
+   "defaults": {
+    "$order": ":id"
+   },
+   "records": "",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$limit",
+    "offset_param": "$offset",
+    "size": 5000
+   },
+   "max_rows": 200000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "csv": {
+   "path": "/{dataset}.csv",
+   "method": "GET",
+   "description": "Same query as CSV (for manual download in a browser).",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "alias or id"
+    },
+    "$select": {},
+    "$where": {},
+    "$group": {},
+    "$order": {}
+   },
+   "defaults": {
+    "$order": ":id"
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$limit",
+    "offset_param": "$offset",
+    "size": 50000
+   },
+   "max_rows": 200000
+  }
+ },
+ "catalog": {
+  "monthly_stats": {
+   "id": "crem-w557",
+   "name": "Monthly Transportation Statistics",
+   "description": "One row per month (1947-present, most series start 2000 or later): airline traffic, on-time performance, transit ridership, freight rail, VMT, fuel prices, vehicle sales, fatalities, Transportation Services Index, border crossings, employment, construction spending. 136 columns (date, index, 134 indicators); see monthly_stats_fields.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/crem-w557"
+  },
+  "border_crossings": {
+   "id": "keg4-3bc2",
+   "name": "Border Crossing Entry Data",
+   "description": "Inbound crossings at U.S.-Canada and U.S.-Mexico land ports by port, state, month (1996-present) and measure (Trucks, Personal Vehicles, Personal Vehicle Passengers, Pedestrians, Buses, Bus Passengers, Trains, Train Passengers).",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/keg4-3bc2"
+  },
+  "tsi": {
+   "id": "bw6n-ddqk",
+   "name": "Transportation Services Index and Seasonally-Adjusted Transportation Data",
+   "description": "Monthly TSI (freight, passenger, combined) with the seasonally adjusted component series.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/bw6n-ddqk"
+  },
+  "supply_chain": {
+   "id": "y5ut-ibwt",
+   "name": "Supply Chain and Freight Indicators",
+   "description": "Interagency freight and supply-chain indicators (port, rail, truck, air cargo).",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/y5ut-ibwt"
+  },
+  "tet": {
+   "id": "tcq5-4pgu",
+   "name": "Transportation Economic Trends (TET) data",
+   "description": "Data behind BTS Transportation Economic Trends: GDP contribution, spending, employment, productivity.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/tcq5-4pgu"
+  },
+  "daily_mobility": {
+   "id": "w96p-f2qv",
+   "name": "Daily Mobility Statistics",
+   "description": "Daily trips and population staying home by national, state and county level (2019-2024; ended April 2024).",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/w96p-f2qv"
+  },
+  "airfare_quarterly": {
+   "id": "h77j-murt",
+   "name": "Average Air Fare by Quarter",
+   "description": "Average domestic itinerary air fare by quarter (nominal and inflation-adjusted).",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/h77j-murt"
+  },
+  "airfare_carrier": {
+   "id": "gjp5-nh2u",
+   "name": "Average Air Fare by Carrier",
+   "description": "Average domestic market air fare by carrier.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/gjp5-nh2u"
+  },
+  "t100_segment_origin": {
+   "id": "r495-tyji",
+   "name": "T-100 Segment Summary by Origin Airport",
+   "description": "Commercial air passengers, seats, freight and mail by origin airport and year.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/r495-tyji"
+  },
+  "t100_segment": {
+   "id": "bu82-4pwz",
+   "name": "T-100 Segment Summary",
+   "description": "Commercial air passengers, seats, freight and mail by year.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/bu82-4pwz"
+  },
+  "motor_fuel_sales": {
+   "id": "kbvr-tyu5",
+   "name": "Monthly Motor Fuel Sales Reported by States",
+   "description": "Monthly gasoline and special-fuel sales by state from the FHWA Monthly Motor Fuel Report.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/kbvr-tyu5"
+  },
+  "motor_fuel_tax": {
+   "id": "e5cn-ri8q",
+   "name": "Tax Rates by Motor Fuel and State",
+   "description": "Motor fuel tax rates by fuel type and state.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/e5cn-ri8q"
+  },
+  "vehicles_entering": {
+   "id": "btpt-uxhx",
+   "name": "Vehicles Entering U.S. by Country",
+   "description": "Passenger vehicles and trucks entering the United States from Canada and Mexico.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/btpt-uxhx"
+  },
+  "container_ports": {
+   "id": "sn74-xpkp",
+   "name": "Top 25 Container Ports by TEU",
+   "description": "Annual TEU volumes and rankings of the top 25 U.S. container ports.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/sn74-xpkp"
+  },
+  "bikeshare_ridership": {
+   "id": "6cfa-ipzd",
+   "name": "Docked Bikeshare Ridership",
+   "description": "Docked bikeshare trips by system and period.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/6cfa-ipzd"
+  },
+  "bikeshare_systems": {
+   "id": "cqdc-cm7d",
+   "name": "Bikeshare and E-scooter Systems by Year and City",
+   "description": "Cities served by docked, dockless bikeshare and e-scooter systems by year (2015-).",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/cqdc-cm7d"
+  },
+  "state_tpfs": {
+   "id": "6aiz-ybqx",
+   "name": "Aggregate State Transportation Public Finance Statistics",
+   "description": "State and local transportation revenues and expenditures by state.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/6aiz-ybqx"
+  },
+  "transport_satellite": {
+   "id": "5yqg-88j3",
+   "name": "Transportation Satellite Accounts Table",
+   "description": "Contribution of transportation (in-house and for-hire) to GDP by industry.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/5yqg-88j3"
+  },
+  "air_fuel_efficiency": {
+   "id": "w8ea-nba4",
+   "name": "Air Carrier Fuel Efficiency by Year",
+   "description": "Air carrier fuel consumption and efficiency by year.",
+   "endpoint": "query",
+   "page": "https://data.bts.gov/d/w8ea-nba4"
+  }
+ },
+ "monthly_stats_fields": {
+  "safety_general_aviation": "Air Safety - General Aviation Fatalities",
+  "safety_highway_fatalities_1": "Highway Fatalities Per 100 Million Vehicle Miles Traveled",
+  "safety_highway_fatalities": "Highway Fatalities",
+  "system_use_u_s_airline_2": "U.S. Airline Traffic - Total - Seasonally Adjusted",
+  "system_use_u_s_airline_1": "U.S. Airline Traffic - International - Seasonally Adjusted",
+  "system_use_u_s_airline": "U.S. Airline Traffic - Domestic - Seasonally Adjusted",
+  "system_use_transit_ridership_2": "Transit Ridership - Other Transit Modes - Adjusted",
+  "system_use_transit_ridership_1": "Transit Ridership - Fixed Route Bus - Adjusted",
+  "system_use_transit_ridership": "Transit Ridership - Urban Rail - Adjusted",
+  "system_use_freight_rail_1": "Freight Rail Intermodal Units",
+  "system_use_freight_rail": "Freight Rail Carloads",
+  "system_use_highway_vehicle_4": "Highway Vehicle Miles Traveled - All Systems",
+  "system_use_highway_vehicle_3": "Highway Vehicle Miles Traveled - Total Rural",
+  "system_use_highway_vehicle_2": "Highway Vehicle Miles Traveled - Other Rural",
+  "system_use_highway_vehicle_1": "Highway Vehicle Miles Traveled - Rural Other Arterial",
+  "system_use_highway_vehicle": "Highway Vehicle Miles Traveled - Rural Interstate",
+  "capital_expenditures_state_65": "State and Local Government Construction Spending - Breakwater/Jetty",
+  "capital_expenditures_state_64": "State and Local Government Construction Spending - Dam/Levee",
+  "capital_expenditures_state_63": "State and Local Government Construction Spending - Conservation and Development",
+  "capital_expenditures_state_62": "State and Local Government Construction Spending - Pump Station",
+  "capital_expenditures_state_61": "State and Local Government Construction Spending - Line",
+  "capital_expenditures_state_60": "State and Local Government Construction Spending - Water Treatment Plant",
+  "capital_expenditures_state_59": "State and Local Government Construction Spending - Water Supply",
+  "capital_expenditures_state_58": "State and Local Government Construction Spending - Line/Drain",
+  "capital_expenditures_state_57": "State and Local Government Construction Spending - Waste Water Treatment Plant",
+  "capital_expenditures_state_56": "State and Local Government Construction Spending - Waste Water",
+  "capital_expenditures_state_55": "State and Local Government Construction Spending - Line/Pump Station",
+  "capital_expenditures_state_54": "State and Local Government Construction Spending - Sewage Treatment Plant",
+  "capital_expenditures_state_53": "State and Local Government Construction Spending - Sewage / Dry Waste",
+  "capital_expenditures_state_52": "State and Local Government Construction Spending - Sewage and Waste Disposal",
+  "capital_expenditures_state_51": "State and Local Government Construction Spending - Rest Facility",
+  "capital_expenditures_state_50": "State and Local Government Construction Spending - Bridge",
+  "capital_expenditures_state_49": "State and Local Government Construction Spending - Lighting",
+  "capital_expenditures_state_48": "State and Local Government Construction Spending - Pavement",
+  "capital_expenditures_state_47": "State and Local Government Construction Spending - Highway and Street",
+  "capital_expenditures_state_46": "State and Local Government Construction Spending - Power",
+  "capital_expenditures_state_45": "State and Local Government Construction Spending - Dock / Marina",
+  "capital_expenditures_state_44": "State and Local Government Construction Spending - Water",
+  "capital_expenditures_state_43": "State and Local Government Construction Spending - Mass Transit",
+  "capital_expenditures_state_42": "State and Local Government Construction Spending - Land Passenger Terminal",
+  "capital_expenditures_state_41": "State and Local Government Construction Spending - Land",
+  "capital_expenditures_state_40": "State and Local Government Construction Spending - Runway",
+  "capital_expenditures_state_39": "State and Local Government Construction Spending - Air Passenger Terminal",
+  "capital_expenditures_state_38": "State and Local Government Construction Spending - Air",
+  "capital_expenditures_state_37": "State and Local Government Construction Spending - Transportation",
+  "capital_expenditures_state_36": "State and Local Government Construction Spending - Park / Camp",
+  "capital_expenditures_state_35": "State and Local Government Construction Spending - Neighborhood Center",
+  "capital_expenditures_state_34": "State and Local Government Construction Spending - Social Center",
+  "capital_expenditures_state_33": "State and Local Government Construction Spending - Convention Center",
+  "capital_expenditures_state_32": "State and Local Government Construction Spending - Performance / Meeting Center",
+  "capital_expenditures_state_31": "State and Local Government Construction Spending - Sports",
+  "capital_expenditures_state_30": "State and Local Government Construction Spending - Amusement and Recreation",
+  "capital_expenditures_state_29": "State and Local Government Construction Spending - Fire & Rescue",
+  "capital_expenditures_state_28": "State and Local Government Construction Spending - Other Public Safety",
+  "capital_expenditures_state_27": "State and Local Government Construction Spending - Police & Sheriff",
+  "capital_expenditures_state_26": "State and Local Government Construction Spending - Detention",
+  "capital_expenditures_state_25": "State and Local Government Construction Spending - Correctional",
+  "capital_expenditures_state_24": "State and Local Government Construction Spending - Public Safety",
+  "capital_expenditures_state_23": "State and Local Government Construction Spending - Library / Archive",
+  "capital_expenditures_state_22": "State and Local Government Construction Spending - Other Educational",
+  "capital_expenditures_state_21": "State and Local Government Construction Spending - Infrastructure",
+  "capital_expenditures_state_20": "State and Local Government Construction Spending - Sports & Recreation",
+  "capital_expenditures_state_19": "State and Local Government Construction Spending - Dormitory",
+  "capital_expenditures_state_18": "State and Local Government Construction Spending - Instructional",
+  "capital_expenditures_state_17": "State and Local Government Construction Spending - Higher Education",
+  "capital_expenditures_state_16": "State and Local Government Construction Spending - High School",
+  "capital_expenditures_state_15": "State and Local Government Construction Spending - Middle School / Junior High",
+  "capital_expenditures_state_14": "State and Local Government Construction Spending - Elementary Schools",
+  "capital_expenditures_state_13": "State and Local Government Construction Spending - Primary/Secondary Schools",
+  "capital_expenditures_state_12": "State and Local Government Construction Spending - Educational",
+  "capital_expenditures_state_11": "State and Local Government Construction Spending - Special Care",
+  "capital_expenditures_state_10": "State and Local Government Construction Spending - Medical Building",
+  "capital_expenditures_state_9": "State and Local Government Construction Spending - Hospital",
+  "capital_expenditures_state_8": "State and Local Government Construction Spending - Health Care",
+  "capital_expenditures_state_7": "State and Local Government Construction Spending - Parking",
+  "capital_expenditures_state_6": "State and Local Government Construction Spending - Automotive",
+  "capital_expenditures_state_5": "State and Local Government Construction Spending - Commercial",
+  "capital_expenditures_state_4": "State and Local Government Construction Spending - Office",
+  "capital_expenditures_state_3": "State and Local Government Construction Spending - Non Residential",
+  "capital_expenditures_state_2": "State and Local Government Construction Spending - Multi Family",
+  "capital_expenditures_state_1": "State and Local Government Construction Spending - Residential",
+  "capital_expenditures_state": "State and Local Government Construction Spending - Total",
+  "capital_expenditures_fhwa": "National Highway Construction Cost Index (NHCCI)",
+  "highway_fuel_prices_on_highway": "Highway Fuel Price - On-highway Diesel",
+  "highway_fuel_prices_regular": "Highway Fuel Price - Regular Gasoline",
+  "transportation_economic_8": "Transportation Employment - Pipeline Transportation",
+  "transportation_economic_7": "Transportation Employment - Water Transportation",
+  "transportation_economic_6": "Transportation Employment - Rail Transportation",
+  "transportation_economic_5": "Transportation Employment - Air Transportation",
+  "transportation_economic_4": "Transportation Employment - Transit and ground passenger transportation",
+  "transportation_economic_3": "Transportation Employment - Truck Transportation",
+  "transportation_economic_2": "Personal Spending on Transportation - Transportation Services - Seasonally Adjusted",
+  "transportation_economic_1": "Personal Spending on Transportation - Gasoline and Other Energy Goods - Seasonally Adjusted",
+  "transportation_economic": "Personal Spending on Transportation - Motor Vehicles and Parts - Seasonally Adjusted",
+  "general_economic_indicators_3": "Unemployment Rate - Seasonally Adjusted",
+  "general_economic_indicators_2": "Labor Force Participation Rate - Seasonally Adjusted",
+  "general_economic_indicators_1": "Unemployed - Seasonally Adjusted",
+  "general_economic_indicators": "Real Gross Domestic Product - Seasonally Adjusted",
+  "passenger_rail_passengers": "Passenger Rail Passengers",
+  "passenger_rail_passenger_miles": "Passenger Rail Passenger Miles",
+  "passenger_rail_total_train_miles": "Passenger Rail Total Train Miles",
+  "passenger_rail_employee_hours_worked": "Passenger Rail Employee Hours Worked",
+  "passenger_rail_yard_switching_miles": "Passenger Rail Yard Switching Miles",
+  "passenger_rail_total_reports": "Passenger Rail Total Reports",
+  "u_s_waterway_tonnage": "U.S. Waterway Tonnage",
+  "amtrak_on_time_performance": "Amtrak On-time Performance",
+  "rail_fatalities": "Rail Fatalities",
+  "rail_fatalities_at_highway_rail_crossings": "Rail Fatalities at Highway-Rail Crossings",
+  "trespasser_fatalities_not_at_highwaya_rail_crossings": "Trespasser Fatalities Not at Highwaya-Rail Crossings",
+  "transportation_services_index_freight": "Transportation Services Index - Freight",
+  "transportation_services_index_passenger": "Transportation Services Index - Passenger",
+  "transportation_services_index_combined": "Transportation Services Index - Combined",
+  "u_s_canada_incoming_person_crossings": "U.S.-Canada Incoming Person Crossings",
+  "u_s_canada_incoming_truck_crossings": "U.S.-Canada Incoming Truck Crossings",
+  "u_s_mexico_incoming_person_crossings": "U.S.-Mexico Incoming Person Crossings",
+  "air_safety_air_taxi_and_commuter_fatalities": "Air Safety - Air Taxi and Commuter Fatalities",
+  "heavy_truck_sales": "Heavy truck sales",
+  "u_s_mexico_incoming_truck_crossings": "U.S.-Mexico Incoming Truck Crossings",
+  "light_truck_sales": "Light truck sales",
+  "auto_sales": "Auto sales",
+  "air_safety_air_carrier_fatalities": "Air Safety - Air Carrier Fatalities",
+  "u_s_air_carrier_cargo_millions_of_revenue_ton_miles_international": "U.S. Air Carrier Cargo (millions of revenue ton-miles) - International",
+  "truck_tonnage_index": "Truck tonnage index",
+  "u_s_air_carrier_cargo_millions_of_revenue_ton_miles_domestic": "U.S. Air Carrier Cargo (millions of revenue ton-miles) - Domestic",
+  "heavy_truck_sales_saar_millions": "Heavy truck sales SAAR (millions)",
+  "u_s_airline_traffic_total_non_seasonally_adjusted": "U.S. Airline Traffic - Total - Non Seasonally Adjusted",
+  "light_truck_sales_saar_millions": "Light truck sales SAAR (millions)",
+  "u_s_airline_traffic_international_non_seasonally_adjusted": "U.S. Airline Traffic - International - Non Seasonally Adjusted",
+  "auto_sales_saar_millions": "Auto sales SAAR (millions)",
+  "u_s_airline_traffic_domestic_non_seasonally_adjusted": "U.S. Airline Traffic - Domestic - Non Seasonally Adjusted",
+  "transborder_total_north_american_freight": "Transborder - Total North American Freight",
+  "transborder_u_s_mexico_freight": "Transborder - U.S. - Mexico Freight",
+  "u_s_marketing_air_carriers_on_time_performance_percent": "U.S. marketing air carriers on-time performance (percent)",
+  "transborder_u_s_canada_freight": "Transborder - U.S. - Canada Freight"
+ }
+}

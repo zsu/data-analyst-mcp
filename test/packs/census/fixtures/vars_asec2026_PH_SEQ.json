@@ -1,0 +1,17 @@
+{
+  "name": "PH_SEQ",
+  "label": "Household sequence number",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "MARSUPWT",
+  "values": {
+    "range": [
+      {
+        "min": "1",
+        "max": "99999",
+        "description": "Range"
+      }
+    ]
+  }
+}

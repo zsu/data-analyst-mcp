@@ -1,0 +1,86 @@
+{
+  "id": "federal-register",
+  "title": "Federal Register (federalregister.gov API)",
+  "agency": "Office of the Federal Register, National Archives and Records Administration",
+  "depth": "standard",
+  "domains": [
+    "legislation",
+    "regulation",
+    "executive actions"
+  ],
+  "keywords": [
+    "federal register",
+    "executive order",
+    "executive orders",
+    "proclamation",
+    "presidential memorandum",
+    "final rule",
+    "proposed rule",
+    "rulemaking",
+    "regulation",
+    "regulations",
+    "notice",
+    "agency rules",
+    "significant rule",
+    "public inspection",
+    "comment period",
+    "cfr"
+  ],
+  "questions": [
+    "how many executive orders did each president sign",
+    "final rules published by EPA each year",
+    "significant rules issued this year",
+    "proposed rules with comment periods closing soon",
+    "documents on public inspection today"
+  ],
+  "homepage": "https://www.federalregister.gov/",
+  "terms_url": "https://www.federalregister.gov/reader-aids/policy/legal-status",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.federalregister.gov/api/v1",
+      "probe": "https://www.federalregister.gov/api/v1/documents.json?per_page=1&fields%5B%5D=document_number",
+      "hosts": [
+        "www.federalregister.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the JSON links in INSTRUCTIONS.md in a browser and save each page; or run the same search on https://www.federalregister.gov/documents/search, choose 'CSV' or 'JSON' under the results (the export button), and upload the file. Replace '/documents.json' with '/documents.csv' in a link for a CSV of the same query."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "New documents publish every business day; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Federal Register documents and their metadata are U.S. government works in the public domain (17 U.S.C. 105). The website's text is not the official legal edition; the official edition is the PDF on govinfo.gov."
+  },
+  "notices": [
+    "Federal Register metadata from federalregister.gov, which is not the official legal edition of the Federal Register; the official edition is published by the Government Publishing Office on govinfo.gov."
+  ],
+  "retention": null,
+  "citation": "Office of the Federal Register (NARA), Federal Register API, {dataset}, federalregister.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which document types count: final rules only (RULE), proposed rules (PRORULE), notices, or presidential documents? Default: final rules.",
+    "Publication date or signing/effective date? Counts by year use publication date unless asked otherwise.",
+    "Leave out correction notices? Default: in counts compared with OFR's statistics, keep them (OFR counts corrections within each type); in lists of documents, leave them out (conditions[correction]=0, the documents default)."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

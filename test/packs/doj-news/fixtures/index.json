@@ -1,0 +1,7 @@
+{
+ "GET https://www.justice.gov/api/v1/press_releases.json?sort=created&direction=DESC&fields=uuid%2Ctitle%2Cdate%2Ccomponent%2Ctopic%2Curl%2Cnumber%2Cteaser%2Ccreated&parameters%5Btitle%5D=%22fentanyl%22&parameters%5Bdate%5D=2025-06-02&page=0&pagesize=50": "r001.json",
+ "GET https://www.justice.gov/api/v1/press_releases/2715a413-eb10-4d71-b4fd-9fd3e3eb0c0a.json?fields=uuid%2Ctitle%2Cdate%2Ccomponent%2Ctopic%2Curl%2Cbody": "r002.json",
+ "GET https://www.justice.gov/api/v1/blog_entries.json?sort=created&direction=DESC&fields=uuid%2Ctitle%2Cdate%2Ccomponent%2Ctopic%2Curl%2Cteaser%2Ccreated&page=0&pagesize=50": "r003.json",
+ "GET https://www.justice.gov/api/v1/press_releases.json?sort=created&direction=DESC&fields=uuid%2Ctitle%2Cdate%2Ccomponent%2Ctopic%2Curl%2Cnumber%2Cteaser%2Ccreated&parameters%5Btitle%5D=sentenced&parameters%5Bdate%5D=2012-11-26&page=0&pagesize=50": "r004.json",
+ "GET https://www.justice.gov/api/v1/press_releases.json?sort=created&direction=DESC&fields=uuid%2Ctitle%2Cdate%2Ccreated%2Cchanged%2Ccomponent%2Ctopic%2Curl&parameters%5Btitle%5D=Office&parameters%5Bdate%5D=2024-03-14&page=0&pagesize=50": "r005.json"
+}

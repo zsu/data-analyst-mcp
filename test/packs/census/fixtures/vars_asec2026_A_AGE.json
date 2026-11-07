@@ -1,0 +1,17 @@
+{
+  "name": "A_AGE",
+  "label": "Demographics, Age",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "suggested-weight": "MARSUPWT",
+  "values": {
+    "range": [
+      {
+        "min": "0",
+        "max": "85",
+        "description": "Range"
+      }
+    ]
+  }
+}

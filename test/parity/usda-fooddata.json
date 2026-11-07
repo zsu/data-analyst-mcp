@@ -1,0 +1,4 @@
+{
+ "long": {"description": "Cheddar cheese (Foundation) nutrients; energy, protein and fat of two cheeses", "requests": [{"name": "cheddar_foundation", "endpoint": "search", "params": {"query": "cheddar", "dataType": ["Foundation"]}}, {"name": "two_cheeses", "endpoint": "foods", "params": {"fdcIds": [328637, 169901], "nutrients": "203,204,208"}}]},
+ "foods_layout": {"description": "Cheddar cheese (Foundation) nutrients; energy, protein and fat of two cheeses", "requests": [{"name": "two_cheeses", "endpoint": "foods", "params": {"fdcIds": [328637, 169901], "nutrients": "203,204,208"}, "layout": "foods"}]}
+}

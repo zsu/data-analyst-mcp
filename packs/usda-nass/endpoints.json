@@ -1,0 +1,324 @@
+{
+ "base_url": "https://quickstats.nass.usda.gov",
+ "endpoints": {
+  "query": {
+   "path": "/api/api_GET/",
+   "method": "GET",
+   "description": "Quick Stats records matching the filters (at most 50,000 per request): one row per published value with Value, CV (%), unit_desc, year, reference period and geography.",
+   "params": {
+    "source_desc": {
+     "desc": "program: SURVEY or CENSUS (Census of Agriculture, every 5 years: 2017, 2022)"
+    },
+    "sector_desc": {
+     "desc": "CROPS, ANIMALS & PRODUCTS, ECONOMICS, DEMOGRAPHICS, ENVIRONMENTAL"
+    },
+    "group_desc": {
+     "desc": "e.g. FIELD CROPS, VEGETABLES, LIVESTOCK, DAIRY, POULTRY, FARMS & LAND & ASSETS, INCOME, PRICES PAID"
+    },
+    "commodity_desc": {
+     "desc": "e.g. CORN, SOYBEANS, WHEAT, COTTON, CATTLE, HOGS, MILK, EGGS"
+    },
+    "class_desc": {
+     "desc": "e.g. ALL CLASSES, WINTER, SPRING, DURUM (wheat)"
+    },
+    "prodn_practice_desc": {
+     "desc": "e.g. ALL PRODUCTION PRACTICES, IRRIGATED"
+    },
+    "util_practice_desc": {
+     "desc": "e.g. ALL UTILIZATION PRACTICES, GRAIN, SILAGE"
+    },
+    "statisticcat_desc": {
+     "desc": "e.g. AREA PLANTED, AREA HARVESTED, PRODUCTION, YIELD, PRICE RECEIVED, INVENTORY, SALES"
+    },
+    "unit_desc": {
+     "desc": "e.g. ACRES, BU, BU / ACRE, $ / BU, HEAD, $, LB"
+    },
+    "short_desc": {
+     "desc": "the full data item, e.g. 'CORN, GRAIN - PRODUCTION, MEASURED IN BU' (most precise filter); or a catalog alias (corn_production, ...)",
+     "catalog": true
+    },
+    "domain_desc": {
+     "desc": "TOTAL (default breakdown) or a domain such as ORGANIC STATUS, AREA OPERATED"
+    },
+    "domaincat_desc": {
+     "desc": "category within the domain"
+    },
+    "agg_level_desc": {
+     "desc": "NATIONAL, STATE, COUNTY, AGRICULTURAL DISTRICT, REGION : MULTI-STATE, ZIP CODE, WATERSHED"
+    },
+    "state_alpha": {
+     "desc": "two-letter state code (US for national rows)"
+    },
+    "state_name": {
+     "desc": "upper-case state name, e.g. IOWA"
+    },
+    "state_fips_code": {
+     "desc": "2-digit state FIPS"
+    },
+    "county_name": {
+     "desc": "upper-case county name"
+    },
+    "county_code": {
+     "desc": "3-digit county FIPS"
+    },
+    "year": {
+     "desc": "year, e.g. 2024"
+    },
+    "year__GE": {
+     "desc": "year >= value"
+    },
+    "year__LE": {
+     "desc": "year <= value"
+    },
+    "freq_desc": {
+     "desc": "ANNUAL, MONTHLY, WEEKLY, POINT IN TIME"
+    },
+    "reference_period_desc": {
+     "desc": "YEAR, MARKETING YEAR, JAN ... DEC, WEEK #nn, FIRST OF MAR, ..."
+    },
+    "format": {
+     "desc": "JSON (set by the pack)"
+    }
+   },
+   "defaults": {
+    "format": "JSON"
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 50000,
+   "missing": [
+    ""
+   ]
+  },
+  "count": {
+   "path": "/api/get_counts/",
+   "method": "GET",
+   "description": "Number of records a query would return (check before a large query; over 50,000 is refused).",
+   "params": {
+    "source_desc": {
+     "desc": "program: SURVEY or CENSUS (Census of Agriculture, every 5 years: 2017, 2022)"
+    },
+    "sector_desc": {
+     "desc": "CROPS, ANIMALS & PRODUCTS, ECONOMICS, DEMOGRAPHICS, ENVIRONMENTAL"
+    },
+    "group_desc": {
+     "desc": "e.g. FIELD CROPS, VEGETABLES, LIVESTOCK, DAIRY, POULTRY, FARMS & LAND & ASSETS, INCOME, PRICES PAID"
+    },
+    "commodity_desc": {
+     "desc": "e.g. CORN, SOYBEANS, WHEAT, COTTON, CATTLE, HOGS, MILK, EGGS"
+    },
+    "class_desc": {
+     "desc": "e.g. ALL CLASSES, WINTER, SPRING, DURUM (wheat)"
+    },
+    "prodn_practice_desc": {
+     "desc": "e.g. ALL PRODUCTION PRACTICES, IRRIGATED"
+    },
+    "util_practice_desc": {
+     "desc": "e.g. ALL UTILIZATION PRACTICES, GRAIN, SILAGE"
+    },
+    "statisticcat_desc": {
+     "desc": "e.g. AREA PLANTED, AREA HARVESTED, PRODUCTION, YIELD, PRICE RECEIVED, INVENTORY, SALES"
+    },
+    "unit_desc": {
+     "desc": "e.g. ACRES, BU, BU / ACRE, $ / BU, HEAD, $, LB"
+    },
+    "short_desc": {
+     "desc": "the full data item, e.g. 'CORN, GRAIN - PRODUCTION, MEASURED IN BU' (most precise filter); or a catalog alias (corn_production, ...)",
+     "catalog": true
+    },
+    "domain_desc": {
+     "desc": "TOTAL (default breakdown) or a domain such as ORGANIC STATUS, AREA OPERATED"
+    },
+    "domaincat_desc": {
+     "desc": "category within the domain"
+    },
+    "agg_level_desc": {
+     "desc": "NATIONAL, STATE, COUNTY, AGRICULTURAL DISTRICT, REGION : MULTI-STATE, ZIP CODE, WATERSHED"
+    },
+    "state_alpha": {
+     "desc": "two-letter state code (US for national rows)"
+    },
+    "state_name": {
+     "desc": "upper-case state name, e.g. IOWA"
+    },
+    "state_fips_code": {
+     "desc": "2-digit state FIPS"
+    },
+    "county_name": {
+     "desc": "upper-case county name"
+    },
+    "county_code": {
+     "desc": "3-digit county FIPS"
+    },
+    "year": {
+     "desc": "year, e.g. 2024"
+    },
+    "year__GE": {
+     "desc": "year >= value"
+    },
+    "year__LE": {
+     "desc": "year <= value"
+    },
+    "freq_desc": {
+     "desc": "ANNUAL, MONTHLY, WEEKLY, POINT IN TIME"
+    },
+    "reference_period_desc": {
+     "desc": "YEAR, MARKETING YEAR, JAN ... DEC, WEEK #nn, FIRST OF MAR, ..."
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "param_values": {
+   "path": "/api/get_param_values/",
+   "method": "GET",
+   "description": "Every value one parameter takes (optionally within other filters): one row per value.",
+   "params": {
+    "param": {
+     "required": true,
+     "desc": "parameter name, e.g. commodity_desc, statisticcat_desc, short_desc"
+    },
+    "source_desc": {
+     "desc": "program: SURVEY or CENSUS (Census of Agriculture, every 5 years: 2017, 2022)"
+    },
+    "sector_desc": {
+     "desc": "CROPS, ANIMALS & PRODUCTS, ECONOMICS, DEMOGRAPHICS, ENVIRONMENTAL"
+    },
+    "group_desc": {
+     "desc": "e.g. FIELD CROPS, VEGETABLES, LIVESTOCK, DAIRY, POULTRY, FARMS & LAND & ASSETS, INCOME, PRICES PAID"
+    },
+    "commodity_desc": {
+     "desc": "e.g. CORN, SOYBEANS, WHEAT, COTTON, CATTLE, HOGS, MILK, EGGS"
+    },
+    "class_desc": {
+     "desc": "e.g. ALL CLASSES, WINTER, SPRING, DURUM (wheat)"
+    },
+    "prodn_practice_desc": {
+     "desc": "e.g. ALL PRODUCTION PRACTICES, IRRIGATED"
+    },
+    "util_practice_desc": {
+     "desc": "e.g. ALL UTILIZATION PRACTICES, GRAIN, SILAGE"
+    },
+    "statisticcat_desc": {
+     "desc": "e.g. AREA PLANTED, AREA HARVESTED, PRODUCTION, YIELD, PRICE RECEIVED, INVENTORY, SALES"
+    },
+    "unit_desc": {
+     "desc": "e.g. ACRES, BU, BU / ACRE, $ / BU, HEAD, $, LB"
+    },
+    "short_desc": {
+     "desc": "the full data item, e.g. 'CORN, GRAIN - PRODUCTION, MEASURED IN BU' (most precise filter)"
+    },
+    "domain_desc": {
+     "desc": "TOTAL (default breakdown) or a domain such as ORGANIC STATUS, AREA OPERATED"
+    },
+    "domaincat_desc": {
+     "desc": "category within the domain"
+    },
+    "agg_level_desc": {
+     "desc": "NATIONAL, STATE, COUNTY, AGRICULTURAL DISTRICT, REGION : MULTI-STATE, ZIP CODE, WATERSHED"
+    },
+    "state_alpha": {
+     "desc": "two-letter state code (US for national rows)"
+    },
+    "state_name": {
+     "desc": "upper-case state name, e.g. IOWA"
+    },
+    "state_fips_code": {
+     "desc": "2-digit state FIPS"
+    },
+    "county_name": {
+     "desc": "upper-case county name"
+    },
+    "county_code": {
+     "desc": "3-digit county FIPS"
+    },
+    "year": {
+     "desc": "year, e.g. 2024"
+    },
+    "year__GE": {
+     "desc": "year >= value"
+    },
+    "year__LE": {
+     "desc": "year <= value"
+    },
+    "freq_desc": {
+     "desc": "ANNUAL, MONTHLY, WEEKLY, POINT IN TIME"
+    },
+    "reference_period_desc": {
+     "desc": "YEAR, MARKETING YEAR, JAN ... DEC, WEEK #nn, FIRST OF MAR, ..."
+    }
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "flatten": false
+  }
+ },
+ "catalog": {
+  "corn_production": {
+   "id": "CORN, GRAIN - PRODUCTION, MEASURED IN BU",
+   "name": "Corn for grain production (bushels)",
+   "description": "short_desc; annual, national/state/county, SURVEY (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "corn_yield": {
+   "id": "CORN, GRAIN - YIELD, MEASURED IN BU / ACRE",
+   "name": "Corn for grain yield (bushels per acre)",
+   "description": "short_desc (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "corn_planted": {
+   "id": "CORN - ACRES PLANTED",
+   "name": "Corn acres planted",
+   "description": "short_desc (all utilizations) (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "corn_price": {
+   "id": "CORN, GRAIN - PRICE RECEIVED, MEASURED IN $ / BU",
+   "name": "Corn price received by farmers",
+   "description": "short_desc; monthly and marketing-year (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "soybean_production": {
+   "id": "SOYBEANS - PRODUCTION, MEASURED IN BU",
+   "name": "Soybean production (bushels)",
+   "description": "short_desc (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "soybean_yield": {
+   "id": "SOYBEANS - YIELD, MEASURED IN BU / ACRE",
+   "name": "Soybean yield",
+   "description": "short_desc (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "wheat_production": {
+   "id": "WHEAT - PRODUCTION, MEASURED IN BU",
+   "name": "All wheat production (bushels)",
+   "description": "short_desc (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "cattle_inventory": {
+   "id": "CATTLE, INCL CALVES - INVENTORY",
+   "name": "Cattle and calves inventory (head)",
+   "description": "short_desc; January 1 and July 1 (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "hogs_inventory": {
+   "id": "HOGS - INVENTORY",
+   "name": "Hogs and pigs inventory (head)",
+   "description": "short_desc; quarterly (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  },
+  "milk_production": {
+   "id": "MILK - PRODUCTION, MEASURED IN LB",
+   "name": "Milk production (pounds)",
+   "description": "short_desc; monthly and annual (name from NASS Quick Stats usage; not verified live: no key)",
+   "endpoint": "query"
+  }
+ }
+}

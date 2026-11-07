@@ -1,0 +1,17 @@
+{
+  "name": "PWGTP",
+  "label": "PUMS person weight",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true,
+  "values": {
+    "range": [
+      {
+        "min": "1",
+        "max": "9999",
+        "description": "Continuous values of PWGTP"
+      }
+    ]
+  }
+}

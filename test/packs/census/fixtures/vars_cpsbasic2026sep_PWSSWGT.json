@@ -1,0 +1,8 @@
+{
+  "name": "PWSSWGT",
+  "label": "Weight-second stage weight (rake 6 final step weight)",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true
+}

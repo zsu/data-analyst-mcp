@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,.10);
+  --accent: #1d3b63; --accent-soft: #eaf0f7; --badge: #7a4b00; --badge-bg: #fbefd6;
+  --warn-bg: #fff8e6; --warn-border: #f2dca4;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+    --accent: #9cc2f0; --accent-soft: #16202c; --badge: #f5c66b; --badge-bg: #33270f;
+    --warn-bg: #2a2214; --warn-border: #5a4520;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+  --accent: #9cc2f0; --accent-soft: #16202c; --badge: #f5c66b; --badge-bg: #33270f;
+    --warn-bg: #2a2214; --warn-border: #5a4520;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+main { max-width: 880px; margin: 0 auto; padding: 32px 16px 64px; }
+a { color: var(--accent); }
+code { font: 0.88em ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; }
+h1, h2, h3 { line-height: 1.25; text-wrap: balance; }
+h1 { font-size: clamp(1.6rem, 4.5vw, 2.25rem); margin: 0.2em 0 0.3em; color: var(--accent); }
+h2 { font-size: 1.3rem; margin: 2.2em 0 0.6em; color: var(--accent); }
+h3 { font-size: 1.05rem; margin: 1.6em 0 0.4em; }
+.masthead { border-bottom: 3px solid var(--accent); padding-bottom: 18px; }
+.kicker { margin: 0; color: var(--ink2); font-size: 0.9rem; letter-spacing: .02em; }
+.badge { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px;
+  background: var(--badge-bg); color: var(--badge); font-size: 0.78rem; font-weight: 600; }
+.dek { margin: 0; color: var(--ink2); font-size: 1.08rem; max-width: 70ch; }
+.summary { background: var(--accent-soft); border-radius: 10px; padding: 4px 20px 12px; margin-top: 24px; }
+.summary h2 { margin-top: 0.9em; }
+.findings { padding-left: 1.2em; margin: 0.4em 0; }
+.findings li { margin: 0.45em 0; max-width: 72ch; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 8px 0 14px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.tile p { margin: 0; }
+.t-label { color: var(--ink2); font-size: 0.85rem; }
+.t-value { font-size: 1.75rem; font-weight: 650; line-height: 1.2; margin: 2px 0 !important; }
+.t-note { color: var(--muted); font-size: 0.8rem; }
+.toc ol { padding-left: 1.4em; margin: 0; }
+.toc li { margin: 0.25em 0; }
+.prose p, .prose li { max-width: 72ch; }
+.exhibit { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 18px 12px; margin: 22px 0; }
+.ex-num { margin: 0; font-size: 0.8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.exhibit h3 { margin: 2px 0 2px; font-size: 1.12rem; }
+.ex-sub { margin: 0 0 8px; color: var(--ink2); font-size: 0.9rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 4px 0 6px; font-size: 0.85rem; color: var(--ink2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.legend i.line { height: 3px; width: 16px; border-radius: 2px; }
+.chart { position: relative; width: 100%; min-height: 40px; }
+.chart svg { display: block; overflow: visible; max-width: 100%; height: auto; }
+.chart text { font: 12px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.chart text.lab { fill: var(--ink2); }
+.chart .grid { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+.chart .base { stroke: var(--axis); stroke-width: 1; shape-rendering: crispEdges; }
+.chart .guide { stroke: var(--axis); stroke-width: 1; }
+.chart .hit { fill: transparent; cursor: default; }
+.chart .rec { fill: var(--ink); opacity: .07; }
+.chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .dot { stroke: var(--surface); stroke-width: 2; }
+.chart .bar.dim { opacity: .45; }
+.f1{fill:var(--s1)} .f2{fill:var(--s2)} .f3{fill:var(--s3)} .f4{fill:var(--s4)}
+.f5{fill:var(--s5)} .f6{fill:var(--s6)} .f7{fill:var(--s7)} .f8{fill:var(--s8)}
+.k1{stroke:var(--s1)} .k2{stroke:var(--s2)} .k3{stroke:var(--s3)} .k4{stroke:var(--s4)}
+.k5{stroke:var(--s5)} .k6{stroke:var(--s6)} .k7{stroke:var(--s7)} .k8{stroke:var(--s8)}
+.b1{background:var(--s1)} .b2{background:var(--s2)} .b3{background:var(--s3)} .b4{background:var(--s4)}
+.b5{background:var(--s5)} .b6{background:var(--s6)} .b7{background:var(--s7)} .b8{background:var(--s8)}
+.tip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.8rem; line-height: 1.4;
+  box-shadow: 0 4px 16px rgba(0,0,0,.14); min-width: 120px; max-width: 260px; display: none; }
+.tip b { display: block; margin-bottom: 2px; }
+.tip .row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.tip .row i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.tip .row span:last-child { margin-left: auto; padding-left: 10px; font-variant-numeric: tabular-nums; font-weight: 600; }
+.notes, .source { font-size: 0.82rem; color: var(--ink2); margin: 8px 0 0; }
+.notes span, .source span { font-weight: 600; }
+.table-view { margin-top: 10px; font-size: 0.85rem; }
+.table-view summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.table-wrap { overflow-x: auto; margin: 8px 0; max-height: 420px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 10px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+.table-view th, .table-view td:first-child { white-space: normal; }   /* long headers and row labels wrap, so wide tables fit the page */
+.table-view td:first-child { min-width: 12ch; }
+th { position: sticky; top: 0; background: var(--surface); color: var(--ink2); font-weight: 600; }
+.dl { font: inherit; font-size: 0.82rem; color: var(--accent); background: transparent; border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.dl:hover { background: var(--accent-soft); }
+blockquote { margin: 0.5em 0; padding: 8px 14px; border-left: 3px solid var(--axis); color: var(--ink2); }
+.cite { font-size: 0.88rem; color: var(--ink2); }
+.files li { margin: 0.3em 0; }
+.files code { color: var(--muted); margin-left: 4px; }
+.disclaimer { margin: 0 0 22px; padding: 12px 16px; border: 1px solid var(--warn-border);
+  border-radius: 8px; background: var(--warn-bg); color: var(--ink); font-size: 0.88rem; line-height: 1.5; }
+.disclaimer p { margin: 0; }
+.disclaimer p + p { margin-top: 6px; }
+.footnotes ol { padding-left: 1.4em; font-size: 0.88rem; color: var(--ink2); }
+.footnotes li { margin: 0.35em 0; }
+sup.fn { font-size: 0.72em; line-height: 0; }
+sup.fn a { text-decoration: none; }
+.about { font-size: 0.92rem; color: var(--ink2); border-top: 1px solid var(--grid); margin-top: 2.4em; }
+/* publication typography in both modes; charts stay in the UI sans */
+:is(.mode-paper, .mode-report) .prose, :is(.mode-paper, .mode-report) .summary, :is(.mode-paper, .mode-report) .dek {
+  font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif; }
+:is(.mode-paper, .mode-report) .prose p, :is(.mode-paper, .mode-report) .summary p { font-size: 1.06rem; line-height: 1.6; }
+:is(.mode-paper, .mode-report) .summary { background: transparent; border-radius: 0; padding: 0; border-bottom: 1px solid var(--grid); }
+:is(.mode-paper, .mode-report) .summary h2 { margin-top: 1.4em; }
+:is(.mode-paper, .mode-report) .summary p { max-width: 70ch; margin: 0.7em 0; }
+:is(.mode-paper, .mode-report) .summary strong { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--accent); }
+:is(.mode-paper, .mode-report) .masthead h1 { font-size: clamp(1.7rem, 4.8vw, 2.5rem); }
+:is(.mode-paper, .mode-report) .prose > .exhibit { margin: 26px 0; }
+/* report mode: exhibit chartbook */
+.mode-report main { max-width: 1120px; }
+.mode-report .masthead.cover { border-bottom: 0; padding: 28px 0 8px; }
+.mode-report .cover h1 { font-size: clamp(1.9rem, 5vw, 2.9rem); max-width: 26ch; }
+.mode-report .cover .dek { font-size: 1.15rem; margin-top: 4px; }
+.cover-chart { margin: 26px 0 0; padding: 18px; background: var(--surface); border: 1px solid var(--border);
+  border-top: 4px solid var(--accent); border-radius: 0 0 10px 10px; }
+.cover-chart-title { margin: 0; font-weight: 650; }
+.mode-report .glance, .mode-report .contents, .mode-report .exhibit-list, .mode-report .notes-page,
+.mode-report .intro, .mode-report .section-opener, .mode-report .appendix, .mode-report .about,
+.mode-report .references, .mode-report .footnotes:not(.part-notes) {
+  border-top: 3px solid var(--accent); margin-top: 48px; padding-top: 4px; }
+.glance { font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif; }
+.glance > p { font-size: 1.08rem; line-height: 1.6; max-width: 76ch; }
+.glance-findings { padding-left: 1.1em; margin: 0.6em 0; }
+.glance-findings li { margin: 0.7em 0; max-width: 76ch; line-height: 1.6; }
+.glance-findings strong { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--accent); }
+.contents-list { padding-left: 1.4em; margin: 0; }
+.contents-list > li { margin: 0.45em 0; }
+.contents-list ul { margin: 0.2em 0; padding-left: 1.2em; font-size: 0.92rem; }
+.contents-list .ex-range { display: block; color: var(--ink2); font-size: 0.85rem; }
+.contents-list li.supp { list-style: none; margin-top: 1em; color: var(--ink2); font-size: 0.9rem; }
+.exhibit-list h3 { margin: 1.1em 0 0.3em; font-size: 0.98rem; color: var(--ink2); }
+.ex-list { list-style: none; padding-left: 0; margin: 0; }
+.ex-list li { margin: 0.3em 0; }
+.ex-list a { text-decoration: none; }
+.ex-list .ex-n { display: inline-block; min-width: 2.2em; font-weight: 600; }
+.mode-report .section-opener p { font-size: 1.1rem; }
+.exhibit-page { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr); gap: 32px;
+  align-items: start; margin: 40px 0; padding-top: 18px; border-top: 1px solid var(--grid); }
+.exhibit-page.no-text { grid-template-columns: minmax(0, 1fr); }
+.exhibit-page .ex-text p { margin: 0 0 0.9em; font-size: 1.02rem; }
+.exhibit-page .exhibit { margin: 0; }
+.part-notes { border-top: 1px solid var(--grid); margin-top: 24px; }
+.part-notes ol { margin-top: 10px; }
+.supplementary { margin-top: 64px; padding-top: 6px; border-top: 1px dashed var(--axis); }
+.supp-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: .06em; margin: 0; }
+@media (max-width: 760px) {
+  .exhibit-page { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+.audit-trail details > summary { cursor: pointer; color: var(--accent); font-weight: 600; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+table.audit { font-size: 0.8rem; }
+table.audit th, table.audit td { text-align: left; vertical-align: top; white-space: normal; }
+table.audit th[scope="row"] { color: var(--ink2); font-weight: 600; white-space: nowrap; position: static; }
+table.audit code { font-size: 0.92em; overflow-wrap: anywhere; }
+.muted { color: var(--muted); font-size: 0.9em; }
+.audit-note { font-size: 0.85rem; color: var(--ink2); }
+pre.code { max-height: 420px; overflow: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+  padding: 10px 12px; font: 0.78rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.code-list { list-style: none; padding-left: 0; }
+.code-list summary { cursor: pointer; }
+.code-list .dl { margin: 6px 0; }
+a.pkg { font-weight: 600; }
+a.cite { text-decoration: none; }
+.references li { margin: 0.5em 0; overflow-wrap: anywhere; }
+footer { margin-top: 40px; color: var(--muted); font-size: 0.8rem; }
+footer p { margin: 0.3em 0; }
+.notices li { margin: 0.3em 0; }
+@media (max-width: 560px) {
+  main { padding: 20px 16px 48px; }
+  .exhibit { padding: 14px 12px 10px; }
+  .summary { padding: 2px 14px 10px; }
+}
+@media print {
+  body { background: #fff; }
+  .exhibit { break-inside: avoid; border: none; padding: 0; }
+  .mode-report main { max-width: none; padding: 0; }
+  .mode-report .glance, .mode-report .contents, .mode-report .exhibit-list, .mode-report .notes-page,
+  .mode-report .intro, .mode-report .section-opener, .mode-report .exhibit-page, .mode-report .appendix,
+  .mode-report .about, .mode-report .supplementary { break-before: page; }
+  .exhibit-page { break-inside: avoid; border-top: 0; }
+  .cover-chart { break-inside: avoid; }
+  .dl { display: none; }
+  .disclaimer { border: 1px solid #999; background: #fff; }
+}
+</style>
+</head>
+<body class="mode-__MODE__">
+<main>
+<!--__BODY__-->
+<footer><!--__FOOTER__--></footer>
+</main>
+<script>
+(() => {
+const DATA = /*__DATA__*/null;
+const NS = "http://www.w3.org/2000/svg";
+const ctx = document.createElement("canvas").getContext("2d");
+const FONT = '12px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+const tw = s => { ctx.font = FONT; return ctx.measureText(String(s)).width; };
+const el = (tag, attrs, parent) => {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const isNum = v => v !== null && v !== undefined && v !== "" && !isNaN(v);
+
+// The style guide never uses "%" in text: the units line ("Percent") carries the unit.
+const PCT = "";
+function fmt(v, f, d, axis) {
+  if (!isNum(v)) return "–";
+  v = +v;
+  if (f === "pct") return (v * 100).toFixed(d ?? 0) + PCT;
+  if (f === "pct100") return v.toFixed(d ?? 0) + PCT;
+  if (f === "dollars") {
+    const a = Math.abs(v), s = v < 0 ? "−$" : "$";
+    if (axis && a >= 1e6) return s + (a / 1e6).toLocaleString("en-US", {maximumFractionDigits: 1}) + "M";
+    return s + a.toLocaleString("en-US", {minimumFractionDigits: d ?? 0, maximumFractionDigits: d ?? 0});
+  }
+  const dd = d ?? (Math.abs(v) >= 100 || Number.isInteger(v) ? 0 : 1);
+  return (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("en-US", {minimumFractionDigits: axis ? 0 : dd, maximumFractionDigits: dd});
+}
+function axisFmt(v, f) {
+  if (f === "pct") return fmt(v, f, Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? 1 : 0, true);
+  if (f === "pct100") return fmt(v, f, Number.isInteger(+(+v).toFixed(6)) ? 0 : 1, true);
+  if (f === "dollars") return fmt(v, f, Number.isInteger(+(+v).toFixed(6)) ? 0 : 2, true);
+  return fmt(v, f, Number.isInteger(+(+v).toFixed(6)) ? 0 : 1, true);
+}
+function niceTicks(lo, hi, n) {
+  if (lo === hi) { hi = lo + 1; }
+  const raw = (hi - lo) / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), r = raw / mag;
+  const step = (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * mag;
+  const t0 = Math.floor(lo / step + 1e-9) * step, t1 = Math.ceil(hi / step - 1e-9) * step, out = [];
+  for (let t = t0; t <= t1 + step / 2; t += step) out.push(+t.toFixed(10));
+  return out;
+}
+function wrap(label, maxW, maxLines = 3) {
+  const words = String(label).split(/\s+/), lines = [];
+  let cur = "";
+  for (const w of words) {
+    const t = cur ? cur + " " + w : w;
+    if (tw(t) <= maxW || !cur) cur = t; else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) { lines.length = maxLines; lines[maxLines - 1] += "…"; }
+  return lines;
+}
+function textLines(parent, lines, x, y, anchor, cls, lh = 14) {
+  const t = el("text", {x, y, "text-anchor": anchor}, parent);
+  if (cls) t.setAttribute("class", cls);
+  lines.forEach((l, i) => { const s = el("tspan", {x, dy: i ? lh : 0}, t); s.textContent = l; });
+  return t;
+}
+
+// ---------- tooltip
+function tooltip(box) {
+  let tip = box.querySelector(".tip");
+  if (!tip) { tip = document.createElement("div"); tip.className = "tip"; box.appendChild(tip); }
+  return {
+    show(html, px, py) {
+      tip.innerHTML = html; tip.style.display = "block";
+      const bw = box.clientWidth, w = tip.offsetWidth, h = tip.offsetHeight;
+      let x = px + 14; if (x + w > bw) x = px - w - 14; if (x < 0) x = Math.max(0, bw - w);
+      let y = py - h - 10; if (y < 0) y = py + 16;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    },
+    hide() { tip.style.display = "none"; }
+  };
+}
+const row = (k, name, val) => `<div class="row"><i class="b${k}"></i><span>${esc(name)}</span><span>${val}</span></div>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const pointer = (ev, box) => { const r = box.getBoundingClientRect(); return [ev.clientX - r.left, ev.clientY - r.top]; };
+
+// ---------- domain
+function domain(spec, stacked, zero) {
+  let vals = [];
+  if (stacked) {
+    spec.categories.forEach((_, i) => {
+      let p = 0, n = 0;
+      spec.series.forEach(s => { const v = s.values[i]; if (isNum(v)) { if (v >= 0) p += +v; else n += +v; } });
+      vals.push(p, n);
+    });
+  } else spec.series.forEach(s => s.values.forEach(v => { if (isNum(v)) vals.push(+v); }));
+  if (!vals.length) vals = [0, 1];
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  if (zero) { lo = Math.min(0, lo); hi = Math.max(0, hi); }
+  else if (lo >= 0 && lo < 0.5 * hi) lo = 0;
+  else { const pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.1 || 1; lo -= pad; hi += pad; }
+  if (isNum(spec.y_min)) lo = +spec.y_min;
+  if (isNum(spec.y_max)) hi = +spec.y_max;
+  const ticks = niceTicks(lo, hi, 5).filter(t => (!isNum(spec.y_min) || t >= +spec.y_min - 1e-9) && (!isNum(spec.y_max) || t <= +spec.y_max + 1e-9));
+  return {ticks, lo: Math.min(ticks[0], lo), hi: Math.max(ticks[ticks.length - 1], hi)};
+}
+
+// ---------- line chart
+function lineChart(box, spec) {
+  const W = box.clientWidth, H = W < 520 ? 250 : 310, cats = spec.categories, S = spec.series;
+  const {ticks, lo, hi} = domain(spec, false, false);
+  const ml = Math.max(...ticks.map(t => tw(axisFmt(t, spec.format)))) + 10;
+  const last = s => { for (let i = s.values.length - 1; i >= 0; i--) if (isNum(s.values[i])) return i; return -1; };
+  // direct end labels only if they fit and do not collide (legend always carries identity)
+  let labelW = S.length <= 4 ? Math.max(...S.map(s => tw(s.name))) + 12 : 0;
+  if (labelW > W * 0.32) labelW = 0;
+  const mr = Math.max(labelW, 12), mt = 10, mb = 30, pw = W - ml - mr, ph = H - mt - mb;
+  // A real date axis when the builder passed ISO dates (time series): spacing follows the calendar, so
+  // a gap in the dates is a gap on the axis, and recessions can be shaded at their true dates.
+  const T = (spec.dates && spec.dates.length === cats.length && spec.dates.every(d => !isNaN(Date.parse(d))))
+    ? spec.dates.map(d => Date.parse(d)) : null;
+  const t0 = T ? T[0] : 0, t1 = T ? T[T.length - 1] : 1;
+  const X = T ? (i => ml + (t1 === t0 ? pw / 2 : (T[i] - t0) / (t1 - t0) * pw))
+              : (i => ml + (cats.length === 1 ? pw / 2 : i * pw / (cats.length - 1)));
+  const Xt = t => ml + (t - t0) / ((t1 - t0) || 1) * pw;
+  const Y = v => mt + ph - (v - lo) / (hi - lo) * ph;
+  const svg = el("svg", {width: W, height: H, viewBox: `0 0 ${W} ${H}`}, box);
+  if (T && spec.recessions) spec.recessions.forEach(([a, b]) => {
+    const s = Math.max(Date.parse(a), t0), e0 = new Date(Date.parse(b)); e0.setUTCMonth(e0.getUTCMonth() + 1);
+    const e = Math.min(e0.getTime(), t1);
+    if (e > s) el("rect", {x: Xt(s), y: mt, width: Math.max(1, Xt(e) - Xt(s)), height: ph, class: "rec"}, svg);
+  });
+  ticks.forEach(t => {
+    el("line", {x1: ml, x2: ml + pw, y1: Y(t), y2: Y(t), class: Math.abs(t) < 1e-12 ? "base" : "grid"}, svg);
+    el("text", {x: ml - 8, y: Y(t) + 4, "text-anchor": "end"}, svg).textContent = axisFmt(t, spec.format);
+  });
+  if (T) {
+    // year ticks at a step that fits (1, 2, 5, 10, 20 years); months when the span is under two years
+    const y0 = new Date(t0).getUTCFullYear(), y1 = new Date(t1).getUTCFullYear(), span = (t1 - t0) / 31557600000;
+    let labels = [];
+    if (span < 2) {
+      for (let d = new Date(Date.UTC(y0, new Date(t0).getUTCMonth(), 1)); d.getTime() <= t1; d.setUTCMonth(d.getUTCMonth() + 3))
+        labels.push([d.getTime(), d.toLocaleString("en-US", {month: "short", timeZone: "UTC"}) + " " + d.getUTCFullYear()]);
+    } else {
+      const fit = Math.max(1, Math.floor(pw / (tw("2000") + 18)));
+      const step = [1, 2, 5, 10, 20, 50].find(s => (y1 - y0) / s + 1 <= fit) || 100;
+      for (let y = Math.ceil(y0 / step) * step; y <= y1; y += step) labels.push([Date.UTC(y, 0, 1), String(y)]);
+    }
+    const lw = Math.max(...labels.map(l => tw(l[1]))) + 10;
+    labels = labels.filter((l, i) => l[0] >= t0 && l[0] <= t1 && (i === 0 || Xt(l[0]) - Xt(labels[i - 1][0]) >= lw));
+    labels.forEach(([t, s]) => {
+      el("line", {x1: Xt(t), x2: Xt(t), y1: mt + ph, y2: mt + ph + 4, class: "base"}, svg);
+      el("text", {x: Xt(t), y: H - 10, "text-anchor": "middle"}, svg).textContent = s;
+    });
+  } else {
+    const maxLab = Math.max(...cats.map(c => tw(c))) + 10;
+    const every = Math.max(1, Math.ceil(cats.length * maxLab / pw));
+    cats.forEach((c, i) => {
+      if (i % every && i !== cats.length - 1) return;
+      if (i !== cats.length - 1 && cats.length - 1 - i < every && (cats.length - 1) % every) return;
+      el("text", {x: X(i), y: H - 10, "text-anchor": "middle"}, svg).textContent = c;
+    });
+  }
+  S.forEach((s, k) => {
+    let d = "", pen = false;
+    s.values.forEach((v, i) => { if (isNum(v)) { d += (pen ? "L" : "M") + X(i).toFixed(1) + "," + Y(+v).toFixed(1); pen = true; } else pen = false; });
+    el("path", {d, class: `ln k${k + 1}`}, svg);
+    if (cats.length <= 12) s.values.forEach((v, i) => { if (isNum(v) && cats.length <= 4) el("circle", {cx: X(i), cy: Y(+v), r: 4, class: `dot f${k + 1}`}, svg); });
+    const li = last(s);
+    if (li >= 0) el("circle", {cx: X(li), cy: Y(+s.values[li]), r: 4, class: `dot f${k + 1}`}, svg);
+  });
+  if (labelW) {
+    const ends = S.map((s, k) => ({k, y: last(s) >= 0 ? Y(+s.values[last(s)]) : null, s})).filter(e => e.y !== null).sort((a, b) => a.y - b.y);
+    const ok = ends.every((e, i) => i === 0 || e.y - ends[i - 1].y >= 14);
+    if (ok) ends.forEach(e => {
+      const li = last(e.s);
+      const t = el("text", {x: X(li) + 8, y: e.y + 4, class: "lab"}, svg);
+      t.textContent = S.length > 1 ? e.s.name : fmt(e.s.values[li], spec.format, spec.decimals);
+    });
+  }
+  // hover: crosshair + all-series tooltip
+  const tip = tooltip(box), guide = el("line", {y1: mt, y2: mt + ph, class: "guide", visibility: "hidden"}, svg);
+  const marks = S.map((s, k) => el("circle", {r: 5, class: `dot f${k + 1}`, visibility: "hidden"}, svg));
+  cats.forEach((c, i) => {
+    // hit area: halfway to each neighbor (uneven on a date axis)
+    const a = i ? (X(i - 1) + X(i)) / 2 : ml, b = i < cats.length - 1 ? (X(i) + X(i + 1)) / 2 : ml + pw;
+    const hit = el("rect", {x: Math.min(a, X(i)), y: mt, width: Math.max(1, b - a), height: ph, class: "hit"}, svg);
+    const on = ev => {
+      guide.setAttribute("x1", X(i)); guide.setAttribute("x2", X(i)); guide.setAttribute("visibility", "visible");
+      S.forEach((s, k) => { const v = s.values[i]; const m = marks[k];
+        if (isNum(v)) { m.setAttribute("cx", X(i)); m.setAttribute("cy", Y(+v)); m.setAttribute("visibility", "visible"); } else m.setAttribute("visibility", "hidden"); });
+      const [px, py] = pointer(ev, box);
+      tip.show(`<b>${esc(c)}</b>` + S.map((s, k) => row(k + 1, s.name, fmt(s.values[i], spec.format, spec.decimals))).join(""), px, py);
+    };
+    hit.addEventListener("pointermove", on); hit.addEventListener("pointerdown", on);
+    hit.addEventListener("pointerleave", () => { tip.hide(); guide.setAttribute("visibility", "hidden"); marks.forEach(m => m.setAttribute("visibility", "hidden")); });
+  });
+}
+
+// ---------- bar charts: vertical/horizontal × grouped/stacked
+function barPath(horiz, a0, a1, b0, b1, r) {
+  // a = value axis from baseline a0 to data end a1; b = category axis b0..b1. Round only the data end.
+  const len = Math.abs(a1 - a0), th = Math.abs(b1 - b0); r = Math.min(r, len, th / 2);
+  const s = Math.sign(a1 - a0) || 1, e = a1, q = e - s * r;
+  if (!horiz) return `M${b0},${a0}V${q}Q${b0},${e} ${b0 + r},${e}H${b1 - r}Q${b1},${e} ${b1},${q}V${a0}Z`;
+  return `M${a0},${b0}H${q}Q${e},${b0} ${e},${b0 + r}V${b1 - r}Q${e},${b1} ${q},${b1}H${a0}Z`;
+}
+function barChart(box, spec, horiz, stacked) {
+  const W = box.clientWidth, cats = spec.categories, S = spec.series, nS = S.length;
+  const {ticks, lo, hi} = domain(spec, stacked, true);
+  const GAP = 2, tip = tooltip(box);
+  const valLabels = !stacked && nS * cats.length <= 24;
+  let ml, mr, mt, mb, pw, ph, H, band, thick;
+  if (horiz) {
+    thick = stacked ? 22 : (nS > 3 ? 14 : 18);
+    const groupT = stacked ? thick : nS * thick + (nS - 1) * GAP;
+    const catW = Math.min(W * 0.38, Math.max(...cats.map(c => tw(c))) + 12);
+    const lines = cats.map(c => wrap(c, catW - 12));
+    band = Math.max(groupT + 16, Math.max(...lines.map(l => l.length)) * 14 + 10);
+    ml = catW; mt = 6; mb = 26;
+    const maxVal = valLabels ? Math.max(...S.flatMap(s => s.values.filter(isNum).map(v => tw(fmt(v, spec.format, spec.decimals))))) + 10 : 12;
+    mr = Math.min(maxVal, W * 0.22);
+    pw = W - ml - mr; ph = band * cats.length; H = mt + ph + mb;
+    const svg = el("svg", {width: W, height: H, viewBox: `0 0 ${W} ${H}`}, box);
+    const V = v => ml + (v - lo) / (hi - lo) * pw;
+    ticks.forEach(t => {
+      el("line", {x1: V(t), x2: V(t), y1: mt, y2: mt + ph, class: Math.abs(t) < 1e-12 ? "base" : "grid"}, svg);
+    });
+    const tickEvery = Math.max(1, Math.ceil(ticks.length * (Math.max(...ticks.map(t => tw(axisFmt(t, spec.format)))) + 12) / pw));
+    ticks.forEach((t, i) => { if (i % tickEvery === 0) el("text", {x: V(t), y: H - 8, "text-anchor": "middle"}, svg).textContent = axisFmt(t, spec.format); });
+    cats.forEach((c, i) => {
+      const cy = mt + i * band + band / 2;
+      textLines(svg, lines[i], ml - 10, cy + 4 - (lines[i].length - 1) * 7, "end", "lab");
+      let start = cy - groupT / 2, pos = 0, neg = 0;
+      S.forEach((s, k) => {
+        const v = s.values[i]; if (!isNum(v)) { if (!stacked) start += thick + GAP; return; }
+        let a0, a1;
+        if (stacked) { a0 = v >= 0 ? V(pos) : V(neg); if (v >= 0) pos += +v; else neg += +v; a1 = v >= 0 ? V(pos) - (k < nS - 1 ? GAP : 0) : V(neg); }
+        else { a0 = V(0); a1 = V(+v); }
+        const b0 = stacked ? cy - thick / 2 : start, b1 = b0 + thick;
+        const topSeg = !stacked || S.slice(k + 1).every(t => !isNum(t.values[i]) || +t.values[i] === 0);
+        const p = el("path", {d: barPath(true, a0, a1, b0, b1, topSeg ? 4 : 0), class: `bar f${k + 1}`}, svg);
+        if (valLabels) el("text", {x: a1 + (v >= 0 ? 6 : -6), y: (b0 + b1) / 2 + 4, "text-anchor": v >= 0 ? "start" : "end", class: "lab"}, svg).textContent = fmt(v, spec.format, spec.decimals);
+        const hit = el("rect", {x: ml, y: b0 - GAP / 2, width: pw, height: thick + GAP, class: "hit"}, svg);
+        const on = ev => { const [px, py] = pointer(ev, box);
+          tip.show(`<b>${esc(c)}</b>` + (stacked ? S.map((t, j) => row(j + 1, t.name, fmt(t.values[i], spec.format, spec.decimals))).join("") : row(k + 1, s.name, fmt(v, spec.format, spec.decimals))), px, py); p.classList.remove("dim"); };
+        hit.addEventListener("pointermove", on); hit.addEventListener("pointerdown", on); hit.addEventListener("pointerleave", () => tip.hide());
+        if (!stacked) start += thick + GAP;
+      });
+    });
+    return;
+  }
+  // vertical
+  H = W < 520 ? 260 : 320; mt = 18; mr = 8;
+  ml = Math.max(...ticks.map(t => tw(axisFmt(t, spec.format)))) + 10;
+  pw = W - ml - mr; band = pw / cats.length;
+  const groupW = Math.min(band * 0.8, stacked ? 48 : nS * 24 + (nS - 1) * GAP);
+  thick = stacked ? Math.min(48, band * 0.6) : Math.min(24, (groupW - (nS - 1) * GAP) / nS);
+  // many categories (a monthly series): one-line labels, thinned so they never overlap
+  const maxLab = Math.max(...cats.map(c => tw(c))) + 8, thin = cats.length > 12 && maxLab > band;
+  const every = thin ? Math.ceil(maxLab / band) : 1;
+  const lines = cats.map(c => thin ? [c] : wrap(c, band - 6));
+  mb = Math.max(...lines.map(l => l.length)) * 14 + 14;
+  ph = H - mt - mb;
+  const svg = el("svg", {width: W, height: H, viewBox: `0 0 ${W} ${H}`}, box);
+  const V = v => mt + ph - (v - lo) / (hi - lo) * ph;
+  ticks.forEach(t => {
+    el("line", {x1: ml, x2: ml + pw, y1: V(t), y2: V(t), class: Math.abs(t) < 1e-12 ? "base" : "grid"}, svg);
+    el("text", {x: ml - 8, y: V(t) + 4, "text-anchor": "end"}, svg).textContent = axisFmt(t, spec.format);
+  });
+  const capOk = valLabels && Math.max(...S.flatMap(s => s.values.filter(isNum).map(v => tw(fmt(v, spec.format, spec.decimals))))) < (nS === 1 ? band * 0.9 : thick + GAP + 6);
+  cats.forEach((c, i) => {
+    const cx = ml + i * band + band / 2;
+    if (!thin || i % every === 0) textLines(svg, lines[i], cx, mt + ph + 18, "middle", "lab");
+    const used = stacked ? thick : nS * thick + (nS - 1) * GAP;
+    let start = cx - used / 2, pos = 0, neg = 0;
+    S.forEach((s, k) => {
+      const v = s.values[i]; if (!isNum(v)) { if (!stacked) start += thick + GAP; return; }
+      let a0, a1;
+      if (stacked) { a0 = v >= 0 ? V(pos) : V(neg); if (v >= 0) pos += +v; else neg += +v; a1 = v >= 0 ? V(pos) + (k < nS - 1 ? GAP : 0) : V(neg); }
+      else { a0 = V(0); a1 = V(+v); }
+      const b0 = stacked ? cx - thick / 2 : start, b1 = b0 + thick;
+      const topSeg = !stacked || S.slice(k + 1).every(t => !isNum(t.values[i]) || +t.values[i] === 0);
+      el("path", {d: barPath(false, a0, a1, b0, b1, topSeg ? 4 : 0), class: `bar f${k + 1}`}, svg);
+      if (capOk) el("text", {x: (b0 + b1) / 2, y: v >= 0 ? a1 - 6 : a1 + 14, "text-anchor": "middle", class: "lab"}, svg).textContent = fmt(v, spec.format, spec.decimals);
+      const hit = el("rect", {x: b0 - GAP / 2, y: mt, width: thick + GAP, height: ph, class: "hit"}, svg);
+      const on = ev => { const [px, py] = pointer(ev, box);
+        tip.show(`<b>${esc(c)}</b>` + (stacked ? S.map((t, j) => row(j + 1, t.name, fmt(t.values[i], spec.format, spec.decimals))).join("") : row(k + 1, s.name, fmt(v, spec.format, spec.decimals))), px, py); };
+      hit.addEventListener("pointermove", on); hit.addEventListener("pointerdown", on); hit.addEventListener("pointerleave", () => tip.hide());
+      if (!stacked) start += thick + GAP;
+    });
+  });
+}
+
+function legend(node, spec) {
+  if (!spec || spec.series.length < 2) return;
+  const line = spec.type === "line";
+  node.innerHTML = spec.series.map((s, k) => `<span><i class="b${k + 1}${line ? " line" : ""}"></i>${esc(s.name)}</span>`).join("");
+}
+
+// ---------- table + CSV download
+function parseCSV(text) {
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+    else if (c === '"') q = true;
+    else if (c === ",") { row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); rows.push(row); row = []; cur = ""; }
+    else cur += c;
+  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  return rows.filter(r => r.length > 1 || r[0] !== "");
+}
+function cell(v) {
+  if (!isNum(v) || /^0\d/.test(v)) return esc(v);
+  if (/^\+/.test(String(v).trim())) return "+" + cell(String(v).trim().slice(1));   // keep explicit + signs
+  const n = +v;
+  // keep the decimals the analysis wrote (80.0 stays 80.0), capped at three for unrounded values
+  const written = (String(v).split(".")[1] || "").length, d = Math.min(written, 3);
+  if (!written) return Math.abs(n) >= 10000 ? n.toLocaleString("en-US") : String(n);
+  return n.toLocaleString("en-US", {minimumFractionDigits: d, maximumFractionDigits: d});
+}
+function table(node, csv) {
+  const rows = parseCSV(csv); if (!rows.length) return;
+  const [h, ...b] = rows;
+  node.innerHTML = `<table><thead><tr>${h.map(x => `<th scope="col">${esc(x)}</th>`).join("")}</tr></thead><tbody>` +
+    b.map(r => `<tr>${r.map(cell).map(x => `<td>${x}</td>`).join("")}</tr>`).join("") + "</tbody></table>";
+}
+
+function render(ex) {
+  const box = document.querySelector(`[data-chart="${ex.id}"]`);
+  if (!box) return;
+  const spec = ex.chart;
+  if (!spec) { box.style.display = "none"; return; }
+  if (!box.clientWidth) {                     // not laid out yet: retry briefly (resize hooks also cover it)
+    ex.tries = (ex.tries || 0) + 1;
+    if (ex.tries < 40) setTimeout(() => render(ex), 100);
+    return;
+  }
+  box.querySelectorAll("svg").forEach(s => s.remove());
+  box.dataset.w = box.clientWidth;
+  if (spec.type === "line") lineChart(box, spec);
+  else barChart(box, spec, spec.type === "hbar" || spec.type === "stacked_h", spec.type === "stacked" || spec.type === "stacked_h");
+}
+
+(DATA || []).forEach(ex => {
+  legend(document.querySelector(`[data-legend="${ex.id}"]`), ex.chart);
+  table(document.querySelector(`[data-table="${ex.id}"]`), ex.csv);
+  const btn = document.querySelector(`[data-download="${ex.id}"]`);
+  if (btn) btn.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([ex.csv], {type: "text/csv"}));
+    const a = document.createElement("a"); a.href = url; a.download = ex.csv_name; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  render(ex);
+  const box = document.querySelector(`[data-chart="${ex.id}"]`);
+  if (box && window.ResizeObserver) {
+    let timer = 0;
+    new ResizeObserver(() => { if (String(box.clientWidth) !== box.dataset.w) { clearTimeout(timer); timer = setTimeout(() => render(ex), 60); } }).observe(box);
+  }
+});
+const ATTACH = /*__ATTACH__*/null;
+(ATTACH || []).forEach(a => {
+  const b = document.querySelector(`[data-attach="${a.id}"]`);
+  if (b) b.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([a.text], {type: "text/plain"}));
+    const l = document.createElement("a"); l.href = url; l.download = a.name; l.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+});
+const rerender = () => (DATA || []).forEach(ex => {
+  const box = document.querySelector(`[data-chart="${ex.id}"]`);
+  if (box && String(box.clientWidth) !== box.dataset.w) render(ex);
+});
+window.addEventListener("load", rerender);
+window.addEventListener("resize", rerender);
+window.addEventListener("beforeprint", () => { document.querySelectorAll("details").forEach(d => d.open = true); rerender(); });
+})();
+</script>
+</body>
+</html>

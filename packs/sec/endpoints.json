@@ -1,0 +1,237 @@
+{
+ "base_url": "https://data.sec.gov",
+ "endpoints": {
+  "company_search": {
+   "path": "https://efts.sec.gov/LATEST/search-index",
+   "method": "GET",
+   "description": "Find companies (and people) by ticker or name: cik, name, tickers (EDGAR's search-box index).",
+   "params": {
+    "text": {
+     "required": true,
+     "desc": "ticker or name, e.g. 'AAPL' or 'apple'"
+    }
+   },
+   "records": "hits.hits",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "submissions": {
+   "path": "/submissions/CIK{cik10}.json",
+   "method": "GET",
+   "description": "A company's filing history: one row per filing (form, filingDate, reportDate, accessionNumber, primaryDocument, url), newest first; profile columns cik, entity_name, sic.",
+   "params": {
+    "cik": {
+     "desc": "CIK number (any length; zero-padded to 10 digits)"
+    },
+    "ticker": {
+     "desc": "ticker (AAPL, BRK-B) or company name; resolved to a CIK with EDGAR's company search"
+    },
+    "forms": {
+     "desc": "comma-separated forms to keep, e.g. '10-K,10-Q' (amendments 10-K/A kept only if listed)"
+    },
+    "since": {
+     "desc": "keep filings on or after YYYY-MM-DD"
+    },
+    "all": {
+     "desc": "true = also read the older-filings files (filings.files); otherwise the latest 1,000 or so"
+    }
+   },
+   "records": "filings.recent",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "company_concept": {
+   "path": "/api/xbrl/companyconcept/CIK{cik10}/{taxonomy}/{tag}.json",
+   "method": "GET",
+   "description": "Every value one company reported for one XBRL concept: one row per fact (start, end, period_days, val, unit, fy, fp, form, filed, accn, frame).",
+   "params": {
+    "cik": {
+     "desc": "CIK number (any length; zero-padded to 10 digits)"
+    },
+    "ticker": {
+     "desc": "ticker (AAPL, BRK-B) or company name; resolved to a CIK with EDGAR's company search"
+    },
+    "tag": {
+     "required": true,
+     "desc": "XBRL concept, e.g. NetIncomeLoss, Revenues, Assets (case-sensitive)"
+    },
+    "taxonomy": {
+     "desc": "us-gaap (default), ifrs-full, dei, srt"
+    },
+    "unit": {
+     "desc": "unit to keep: USD, shares, USD/shares, pure (default: all); USD-per-shares is accepted and sent as USD/shares"
+    },
+    "forms": {
+     "desc": "comma-separated forms to keep, e.g. '10-K' (prefix match: 10-K keeps 10-K/A)"
+    },
+    "frames_only": {
+     "desc": "true = one value per period: the framed fact, or the latest filed when SEC gave a period of the series' own length (annual, quarter, instant) no frame; other lengths (YTD) are skipped"
+    },
+    "duration": {
+     "desc": "annual (350-380 days) or quarter (80-100 days): keep duration facts of that length (period_days column); instant facts are dropped"
+    }
+   },
+   "defaults": {
+    "taxonomy": "us-gaap"
+   },
+   "records": "units",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "company_facts": {
+   "path": "/api/xbrl/companyfacts/CIK{cik10}.json",
+   "method": "GET",
+   "description": "Every XBRL fact a company reported, all concepts: one row per fact with taxonomy and tag columns (large: tens of thousands of rows for big filers; set tags).",
+   "params": {
+    "cik": {
+     "desc": "CIK number (any length; zero-padded to 10 digits)"
+    },
+    "ticker": {
+     "desc": "ticker (AAPL, BRK-B) or company name; resolved to a CIK with EDGAR's company search"
+    },
+    "tags": {
+     "desc": "comma-separated concepts to keep, e.g. 'Revenues,NetIncomeLoss,Assets'"
+    },
+    "taxonomy": {
+     "desc": "keep one taxonomy (us-gaap, dei, ifrs-full)"
+    },
+    "forms": {
+     "desc": "comma-separated forms to keep (prefix match)"
+    },
+    "unit": {
+     "desc": "unit to keep: USD, shares, USD/shares, pure (default: all); USD-per-shares is accepted and sent as USD/shares"
+    },
+    "frames_only": {
+     "desc": "true = one value per period: the framed fact, or the latest filed when SEC gave a period of the series' own length (annual, quarter, instant) no frame; other lengths (YTD) are skipped"
+    },
+    "duration": {
+     "desc": "annual (350-380 days) or quarter (80-100 days): keep duration facts of that length (period_days column); instant facts are dropped"
+    }
+   },
+   "records": "facts",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "frames": {
+   "path": "/api/xbrl/frames/{taxonomy}/{tag}/{unit}/{period}.json",
+   "method": "GET",
+   "description": "One concept for every reporting company in one calendar period: one row per company (cik, entityName, loc, start, end, val, accn).",
+   "params": {
+    "tag": {
+     "required": true,
+     "desc": "XBRL concept, e.g. Assets"
+    },
+    "period": {
+     "required": true,
+     "desc": "CY2023 (annual), CY2023Q1 (quarter), CY2023Q4I (instant: balance-sheet items)"
+    },
+    "unit": {
+     "desc": "USD (default), shares, USD-per-shares, pure; USD/shares is accepted and sent as USD-per-shares"
+    },
+    "taxonomy": {
+     "desc": "us-gaap (default)"
+    }
+   },
+   "defaults": {
+    "taxonomy": "us-gaap",
+    "unit": "USD"
+   },
+   "records": "data",
+   "paging": {
+    "type": "none"
+   }
+  },
+  "full_text_search": {
+   "path": "https://efts.sec.gov/LATEST/search-index",
+   "method": "GET",
+   "description": "EDGAR full-text search (2001-): one row per matching DOCUMENT (a filing's main file and each exhibit are separate hits): adsh, form, file_date, entity, file_type, url.",
+   "params": {
+    "q": {
+     "required": true,
+     "desc": "words; quote phrases: '\"climate risk\"'; AND/OR/NOT supported"
+    },
+    "forms": {
+     "desc": "comma-separated forms, e.g. '10-K' or '8-K,8-K/A'"
+    },
+    "startdt": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddt": {
+     "desc": "YYYY-MM-DD"
+    },
+    "ciks": {
+     "desc": "limit to one company: 10-digit CIK"
+    }
+   },
+   "records": "hits.hits",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "insider_filings": {
+   "path": "https://efts.sec.gov/LATEST/search-index",
+   "method": "GET",
+   "description": "Insider ownership filings (Form 4 by default; 3, 5) where the company is the issuer: one row per filing with insider name and CIK, filing and period dates, link.",
+   "params": {
+    "cik": {
+     "desc": "CIK number (any length; zero-padded to 10 digits)"
+    },
+    "ticker": {
+     "desc": "ticker (AAPL, BRK-B) or company name; resolved to a CIK with EDGAR's company search"
+    },
+    "forms": {
+     "desc": "4 (default), 3, 5 or a comma list"
+    },
+    "startdt": {
+     "desc": "YYYY-MM-DD"
+    },
+    "enddt": {
+     "desc": "YYYY-MM-DD"
+    }
+   },
+   "defaults": {
+    "forms": "4"
+   },
+   "records": "hits.hits",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  }
+ },
+ "catalog": {},
+ "concepts": {
+  "Revenues": "Total revenue (many companies use RevenueFromContractWithCustomerExcludingAssessedTax instead)",
+  "RevenueFromContractWithCustomerExcludingAssessedTax": "Revenue from contracts with customers (ASC 606, 2018-)",
+  "NetIncomeLoss": "Net income (loss) attributable to the parent",
+  "OperatingIncomeLoss": "Operating income (loss)",
+  "GrossProfit": "Gross profit",
+  "Assets": "Total assets (instant)",
+  "Liabilities": "Total liabilities (instant; not reported by every filer)",
+  "LiabilitiesAndStockholdersEquity": "Total liabilities and equity (instant)",
+  "StockholdersEquity": "Total stockholders' equity (instant)",
+  "CashAndCashEquivalentsAtCarryingValue": "Cash and cash equivalents (instant)",
+  "LongTermDebt": "Long-term debt (instant)",
+  "EarningsPerShareBasic": "Basic EPS (unit USD/shares)",
+  "EarningsPerShareDiluted": "Diluted EPS (unit USD/shares)",
+  "CommonStockSharesOutstanding": "Common shares outstanding (unit shares)",
+  "EntityCommonStockSharesOutstanding": "dei: shares outstanding on the cover page",
+  "Goodwill": "Goodwill (instant)",
+  "GoodwillImpairmentLoss": "Goodwill impairment loss",
+  "ResearchAndDevelopmentExpense": "R&D expense",
+  "SellingGeneralAndAdministrativeExpense": "SG&A expense",
+  "InterestExpense": "Interest expense",
+  "IncomeTaxExpenseBenefit": "Income tax expense (benefit)",
+  "NetCashProvidedByUsedInOperatingActivities": "Operating cash flow",
+  "PaymentsForRepurchaseOfCommonStock": "Share buybacks",
+  "PaymentsOfDividends": "Dividends paid"
+ },
+ "headers": {
+  "Accept": "application/json"
+ }
+}

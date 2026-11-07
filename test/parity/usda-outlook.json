@@ -1,0 +1,22 @@
+{
+ "sample": {"description": "Latest WASDE U.S. corn, its 2026/27 ending stocks path, 2026 net farm income, baseline corn", "requests": [
+  {"name": "corn_us", "endpoint": "wasde", "params": {"report_title": "U.S. Feed Grain and Corn Supply and Use", "commodity": "Corn"}},
+  {"name": "corn_path", "endpoint": "wasde", "params": {"start_report": "2026-06", "end_report": "2026-10", "report_title": "U.S. Feed Grain and Corn Supply and Use", "commodity": "Corn", "attribute": "Ending Stocks", "market_year": "2026/27"}},
+  {"name": "nfi", "endpoint": "farm_income", "params": {"variable": ["net farm income", "Net cash income"], "state": ["US", "ia"], "start_year": 2020}},
+  {"name": "summary", "endpoint": "farm_income_summary", "params": {}},
+  {"name": "vintages", "endpoint": "farm_income_archive", "params": {"item": "nfi", "year": 2025}},
+  {"name": "base_corn", "endpoint": "baseline", "params": {"commodity": "Corn", "attribute": "Ending stocks"}},
+  {"name": "base_income", "endpoint": "baseline", "params": {"member": "*Farm receipts*"}}]},
+ "multi_table": {"requests": [
+  {"name": "es", "endpoint": "wasde", "params": {"report": "2026-10", "commodity": "corn", "region": "United States", "attribute": "ending stocks"}},
+  {"name": "rel", "endpoint": "wasde", "params": {"report": "2026-10", "commodity": "Corn", "attribute": "Ending Stocks", "include_reliability": true, "report_title": "Reliability of United States October Projections"}},
+  {"name": "proj", "endpoint": "wasde", "params": {"report": "2026-10", "commodity": "Corn", "region": "United States", "proj_est": "proj"}}]},
+ "wide": {"requests": [
+  {"name": "all_oct", "endpoint": "wasde", "params": {"report": "2026-10", "include_reliability": true}},
+  {"name": "fi_all", "endpoint": "farm_income", "params": {"search": "net"}},
+  {"name": "fi_cap", "endpoint": "farm_income", "params": {"search": "income"}, "max_rows": 10},
+  {"name": "arch_all", "endpoint": "farm_income_archive", "params": {}},
+  {"name": "base_early", "endpoint": "baseline", "params": {"edition": "early"}},
+  {"name": "base_readme_sheet", "endpoint": "baseline", "params": {"member": "*Farm receipts*", "sheet": 1, "header_row": 3}},
+  {"name": "path_cap", "endpoint": "wasde", "params": {"start_report": "2026-07", "end_report": "2026-09"}, "max_rows": 50}]}
+}

@@ -1,0 +1,6 @@
+{
+ "GET https://www.ncei.noaa.gov/access/services/data/v1?format=json&units=standard&dataset=daily-summaries&stations=USW00094728&startDate=2024-01-01&endDate=2024-01-03&dataTypes=TMAX%2CTMIN%2CPRCP%2CSNOW": "r001.json",
+ "GET https://www.ncei.noaa.gov/access/services/data/v1?format=json&units=standard&dataset=global-summary-of-the-month&stations=USW00094728&startDate=2024-01-01&endDate=2024-12-31&dataTypes=TAVG%2CPRCP": "r002.json",
+ "GET https://www.ncei.noaa.gov/access/services/data/v1?format=json&units=standard&dataset=normals-monthly-1991-2020&stations=USW00094728&startDate=0001-01-01&endDate=9996-12-31&dataTypes=MLY-TAVG-NORMAL%2CMLY-PRCP-NORMAL": "r003.json",
+ "GET https://www.ncei.noaa.gov/access/services/search/v1/data?dataset=daily-summaries&bbox=40.9%2C-74.1%2C40.6%2C-73.8&startDate=2024-01-01T00%3A00%3A00&endDate=2024-01-31T23%3A59%3A59&limit=2&offset=0": "r004.json"
+}

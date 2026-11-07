@@ -1,0 +1,8 @@
+{
+  "name": "HSUP_WGT",
+  "label": "Weight, March supplement - Household",
+  "predicateType": "int",
+  "group": "N/A",
+  "limit": 0,
+  "is-weight": true
+}

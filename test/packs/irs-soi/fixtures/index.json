@@ -1,0 +1,11 @@
+{
+ "GET https://www.irs.gov/pub/irs-soi/stateinflow2223.csv": "r001.csv",
+ "GET https://www.irs.gov/pub/irs-soi/stateinflow2324.csv": {
+  "file": "r002.xml",
+  "status": 404
+ },
+ "GET https://www.irs.gov/pub/irs-soi/22incyallagi.csv": "22incyallagi_subset.csv",
+ "GET https://www.irs.gov/pub/irs-soi/22zpallagi.csv": "22zpallagi_subset.csv",
+ "GET https://www.irs.gov/pub/irs-soi/22in55cmcsv.csv": "22in55cmcsv_subset.csv",
+ "GET https://www.irs.gov/pub/irs-soi/countyoutflow2223.csv": "countyoutflow2223_subset.csv"
+}

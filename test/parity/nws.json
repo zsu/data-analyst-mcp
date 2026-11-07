@@ -1,0 +1,3 @@
+{
+ "all": {"description": "Washington, DC forecast; active alerts in New Mexico; observations at Reagan National", "requests": [{"name": "dc_forecast", "endpoint": "forecast", "params": {"lat": 38.8894, "lon": -77.0352}}, {"name": "nm_alerts", "endpoint": "alerts_active", "params": {"area": "NM"}}, {"name": "dca_obs", "endpoint": "observations", "params": {"station": "KDCA", "limit": 3}, "max_rows": 3}, {"name": "dc_stations", "endpoint": "stations_near", "params": {"lat": 38.8894, "lon": -77.0352}, "max_rows": 3}]}
+}

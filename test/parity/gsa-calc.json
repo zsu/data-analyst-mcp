@@ -1,0 +1,3 @@
+{
+ "fetch": {"description": "Data scientist ceiling rates, master's degree, small business", "requests": [{"name": "ds_ma_small", "endpoint": "rates", "params": {"keyword": "data scientist", "education_level": "MA", "business_size": "S"}, "max_rows": 30}, {"name": "ds_stats", "endpoint": "rate_stats", "params": {"keyword": "data scientist"}}, {"name": "ds_facets", "endpoint": "rate_facets", "params": {"keyword": "data scientist", "worksite": "customer"}}, {"name": "ds_titles", "endpoint": "suggest_labor_category", "params": {"prefix": "data sci"}}, {"name": "ds_phd_export", "endpoint": "rates_export", "params": {"keyword": "data scientist", "education_level": "PHD", "price_range": "150,200"}}]}
+}

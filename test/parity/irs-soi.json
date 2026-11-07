@@ -1,0 +1,16 @@
+{
+ "county_and_migration": {"description": "Maryland income tax statistics, tax year 2022, and migration into Maryland 2022-2023", "requests": [
+  {"name": "md_county", "endpoint": "county_agi", "params": {"tax_year": 2022, "state": "MD"}},
+  {"name": "md_in", "endpoint": "migration", "params": {"level": "state", "direction": "inflow", "y1": 2022, "state": "Maryland"}}]},
+ "zip_and_state": {"requests": [
+  {"name": "zips", "endpoint": "zip_agi", "params": {"tax_year": 2022, "state": "24", "zipcode": ["20601", "99999"], "columns": ["N1", "A00100"]}},
+  {"name": "states", "endpoint": "state_agi", "params": {"tax_year": 2022, "state": ["MD", "US"], "agi_stub": [0, 10]}}]},
+ "county_migration": {"requests": [
+  {"name": "out", "endpoint": "migration", "params": {"level": "county", "direction": "outflow", "y1": 2022, "county": ["01005", "24031"]}}]},
+ "whole_files": {"requests": [
+  {"name": "all_counties", "endpoint": "county_agi", "params": {"tax_year": 2022}},
+  {"name": "state_all", "endpoint": "state_agi", "params": {"start_year": 2022, "end_year": "2022", "columns": "A00100,NOPE"}},
+  {"name": "mont_name", "endpoint": "county_agi", "params": {"tax_year": 2022, "state": "MD", "county": "Montgomery", "agi_stub": "8"}},
+  {"name": "zip_cut", "endpoint": "zip_agi", "params": {"tax_year": 2022, "state": ["AL", "MD"]}, "max_rows": 5},
+  {"name": "all_out", "endpoint": "migration", "params": {"level": "county", "direction": "outflow", "y1": 2022}}]}
+}

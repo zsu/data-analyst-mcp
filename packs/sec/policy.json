@@ -1,0 +1,86 @@
+{
+  "id": "sec",
+  "title": "SEC EDGAR (XBRL financial data, filings, full-text search)",
+  "agency": "U.S. Securities and Exchange Commission",
+  "depth": "standard",
+  "domains": [
+    "finance",
+    "corporations",
+    "securities"
+  ],
+  "keywords": [
+    "sec",
+    "edgar",
+    "10-k",
+    "10-q",
+    "8-k",
+    "annual report",
+    "public company",
+    "company financials",
+    "revenue",
+    "net income",
+    "earnings per share",
+    "total assets",
+    "xbrl",
+    "filings",
+    "insider trading",
+    "form 4",
+    "full-text search",
+    "cik",
+    "ticker"
+  ],
+  "questions": [
+    "a public company's annual revenue and net income over ten years",
+    "total assets of every public company in 2023",
+    "which 10-K filings mention climate risk",
+    "recent insider (Form 4) filings for a company",
+    "list of a company's 8-K filings since 2024"
+  ],
+  "homepage": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+  "terms_url": "https://www.sec.gov/about/privacy-information#security",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 5,
+    "burst": 5,
+    "max_rows": 100000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.sec.gov",
+      "probe": "https://data.sec.gov/api/xbrl/frames/us-gaap/GoodwillImpairmentLoss/USD/CY2023Q4.json",
+      "hosts": [
+        "data.sec.gov",
+        "efts.sec.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the JSON links in INSTRUCTIONS.md in a browser (data.sec.gov and efts.sec.gov accept a browser) and save each under the name shown, or use EDGAR full-text search (https://efts.sec.gov/LATEST/search-index is behind https://www.sec.gov/edgar/search/) and company pages (https://www.sec.gov/edgar/searchedgar/companysearch); upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Filings arrive continuously and companyfacts change with each filing; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "EDGAR filings are public records and SEC data are U.S. government works (17 U.S.C. 105); SEC's fair-access policy limits request rates, not reuse."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Securities and Exchange Commission, EDGAR {dataset}, data.sec.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Fiscal or calendar years? XBRL facts carry the company's fiscal year (fy) and period dates; the frames API realigns to calendar periods.",
+    "As first reported or latest restated values? Each 10-K repeats and may restate prior years; frames_only keeps the latest filed value per period."
+  ],
+  "formats": [
+    "json"
+  ]
+}

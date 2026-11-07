@@ -1,0 +1,42 @@
+{
+ "data": {
+  "county_name": "Autauga County, AL",
+  "counties_msa": "",
+  "town_name": "",
+  "metro_status": "1",
+  "metro_name": "Montgomery, AL MSA",
+  "area_name": "Montgomery, AL MSA",
+  "year": "2019",
+  "median_income": 65900,
+  "very_low": {
+   "il50_p1": 23100,
+   "il50_p2": 26400,
+   "il50_p3": 29700,
+   "il50_p4": 32950,
+   "il50_p5": 35600,
+   "il50_p6": 38250,
+   "il50_p7": 40900,
+   "il50_p8": 43500
+  },
+  "extremely_low": {
+   "il30_p1": 13850,
+   "il30_p2": 16910,
+   "il30_p3": 21330,
+   "il30_p4": 25750,
+   "il30_p5": 30170,
+   "il30_p6": 34590,
+   "il30_p7": 39010,
+   "il30_p8": 43430
+  },
+  "low": {
+   "il80_p1": 36900,
+   "il80_p2": 42200,
+   "il80_p3": 47450,
+   "il80_p4": 52700,
+   "il80_p5": 56950,
+   "il80_p6": 61150,
+   "il80_p7": 65350,
+   "il80_p8": 69600
+  }
+ }
+}

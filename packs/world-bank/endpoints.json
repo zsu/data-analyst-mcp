@@ -1,0 +1,122 @@
+{
+  "base_url": "https://api.worldbank.org/v2",
+  "endpoints": {
+    "indicator": {
+      "path": "/country/{country}/indicator/{indicator}",
+      "method": "GET",
+      "description": "Values of one indicator for one or more countries (ISO2/ISO3 codes joined with ';', or 'all'), one row per country and period.",
+      "params": {
+        "country": {"in": "path", "required": true, "desc": "ISO2 or ISO3 codes, several joined with ';' (US;GB;DE), an aggregate (WLD, OED, HIC, EUU) or 'all'"},
+        "indicator": {"in": "path", "desc": "indicator code (NY.GDP.PCAP.CD), catalog alias (gdp_per_capita), or a list of them (sent ';'-joined with source=2 unless source is set); the adapter resolves aliases and requires it"},
+        "date": {"desc": "year or range: 2024, 2000:2024; monthly/quarterly series use 2020M01:2020M12 / 2020Q1:2020Q4"},
+        "mrv": {"desc": "most recent N values per country (instead of date)"},
+        "mrnev": {"desc": "most recent N non-empty values per country"},
+        "gapfill": {"desc": "Y fills mrv gaps with the previous value (use with care)"},
+        "frequency": {"desc": "with mrv: Y, Q or M"},
+        "source": {"desc": "source database id when the code exists in several (2 = WDI); required by the API for several indicators (the pack sets 2)"}
+      },
+      "defaults": {"format": "json"},
+      "records": "1",
+      "total": "0.total",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 1000, "start": 1},
+      "max_rows": 100000,
+      "missing": [""],
+      "flatten": true
+    },
+    "indicator_info": {
+      "path": "/indicator/{indicator}",
+      "method": "GET",
+      "description": "Metadata of one indicator: name, unit, source database, definition (sourceNote), source organization.",
+      "params": {"indicator": {"in": "path", "desc": "one indicator code or alias (the adapter resolves aliases and requires it)"}},
+      "defaults": {"format": "json"},
+      "records": "1",
+      "paging": {"type": "none"}
+    },
+    "countries": {
+      "path": "/country",
+      "method": "GET",
+      "description": "Countries and aggregates with ISO codes, region, income level and lending type (aggregates have region.id NA).",
+      "params": {"region": {"desc": "region code, e.g. NAC, ECS"}, "incomelevel": {"desc": "HIC, UMC, LMC, LIC"},
+                 "lendingType": {"desc": "IBD, IDB, IDX, LNX"}},
+      "defaults": {"format": "json"},
+      "records": "1",
+      "total": "0.total",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 400, "start": 1}
+    },
+    "source_indicators": {
+      "path": "/source/{source_id}/indicator",
+      "method": "GET",
+      "description": "Every indicator of one source database (2 = World Development Indicators, about 1,500 indicators).",
+      "params": {"source_id": {"in": "path", "required": true, "desc": "source id from the sources endpoint (2 = WDI)"}},
+      "defaults": {"format": "json"},
+      "records": "1",
+      "total": "0.total",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 1000, "start": 1}
+    },
+    "topic_indicators": {
+      "path": "/topic/{topic_id}/indicator",
+      "method": "GET",
+      "description": "Indicators of one topic (1 Agriculture, 3 Economy and growth, 4 Education, 8 Health, 11 Poverty, 19 Climate change, ...).",
+      "params": {"topic_id": {"in": "path", "required": true, "desc": "topic id from the topics endpoint"}},
+      "defaults": {"format": "json"},
+      "records": "1",
+      "total": "0.total",
+      "paging": {"type": "page", "page_param": "page", "size_param": "per_page", "size": 1000, "start": 1}
+    },
+    "sources": {
+      "path": "/source",
+      "method": "GET",
+      "description": "Source databases (WDI, Doing Business, International Debt Statistics, ...).",
+      "params": {},
+      "defaults": {"format": "json", "per_page": 200},
+      "records": "1",
+      "paging": {"type": "none"}
+    },
+    "topics": {
+      "path": "/topic",
+      "method": "GET",
+      "description": "The 21 thematic topics.",
+      "params": {},
+      "defaults": {"format": "json", "per_page": 100},
+      "records": "1",
+      "paging": {"type": "none"}
+    }
+  },
+  "catalog": {
+    "gdp": {"id": "NY.GDP.MKTP.CD", "name": "GDP (current US$)", "description": "gross domestic product, current US dollars at market exchange rates", "endpoint": "indicator"},
+    "gdp_lcu": {"id": "NY.GDP.MKTP.CN", "name": "GDP (current LCU)", "description": "GDP in current local currency units", "endpoint": "indicator"},
+    "gdp_constant": {"id": "NY.GDP.MKTP.KD", "name": "GDP (constant 2015 US$)", "description": "real GDP, constant 2015 US dollars", "endpoint": "indicator"},
+    "gdp_growth": {"id": "NY.GDP.MKTP.KD.ZG", "name": "GDP growth (annual %)", "description": "real GDP growth rate", "endpoint": "indicator"},
+    "gdp_per_capita": {"id": "NY.GDP.PCAP.CD", "name": "GDP per capita (current US$)", "description": "income per person, current US dollars", "endpoint": "indicator"},
+    "gdp_per_capita_ppp": {"id": "NY.GDP.PCAP.PP.CD", "name": "GDP per capita, PPP (current international $)", "description": "income per person at purchasing power parity, for level comparisons", "endpoint": "indicator"},
+    "exchange_rate": {"id": "PA.NUS.FCRF", "name": "Official exchange rate (LCU per US$, period average)", "description": "currency conversion, exchange rate", "endpoint": "indicator"},
+    "population": {"id": "SP.POP.TOTL", "name": "Population, total", "description": "midyear population", "endpoint": "indicator"},
+    "life_expectancy": {"id": "SP.DYN.LE00.IN", "name": "Life expectancy at birth, total (years)", "description": "life expectancy health mortality", "endpoint": "indicator"},
+    "under5_mortality": {"id": "SH.DYN.MORT", "name": "Mortality rate, under-5 (per 1,000 live births)", "description": "child mortality health", "endpoint": "indicator"},
+    "fertility": {"id": "SP.DYN.TFRT.IN", "name": "Fertility rate, total (births per woman)", "description": "births fertility", "endpoint": "indicator"},
+    "health_spending_pc": {"id": "SH.XPD.CHEX.PC.CD", "name": "Current health expenditure per capita (current US$)", "description": "health spending per person", "endpoint": "indicator"},
+    "health_spending_gdp": {"id": "SH.XPD.CHEX.GD.ZS", "name": "Current health expenditure (% of GDP)", "description": "health spending share of GDP", "endpoint": "indicator"},
+    "inflation": {"id": "FP.CPI.TOTL.ZG", "name": "Inflation, consumer prices (annual %)", "description": "consumer price inflation cpi", "endpoint": "indicator"},
+    "unemployment": {"id": "SL.UEM.TOTL.ZS", "name": "Unemployment, total (% of total labor force) (modeled ILO estimate)", "description": "unemployment rate, ILO modeled", "endpoint": "indicator"},
+    "labor_force_participation": {"id": "SL.TLF.CACT.ZS", "name": "Labor force participation rate, total (% of population ages 15+) (modeled ILO estimate)", "description": "labor force participation", "endpoint": "indicator"},
+    "govt_debt": {"id": "GC.DOD.TOTL.GD.ZS", "name": "Central government debt, total (% of GDP)", "description": "public debt central government, sparse coverage", "endpoint": "indicator"},
+    "govt_expense": {"id": "GC.XPN.TOTL.GD.ZS", "name": "Expense (% of GDP)", "description": "central government expense, spending", "endpoint": "indicator"},
+    "govt_revenue": {"id": "GC.REV.XGRT.GD.ZS", "name": "Revenue, excluding grants (% of GDP)", "description": "central government revenue taxes", "endpoint": "indicator"},
+    "exports_gdp": {"id": "NE.EXP.GNFS.ZS", "name": "Exports of goods and services (% of GDP)", "description": "trade exports", "endpoint": "indicator"},
+    "imports_gdp": {"id": "NE.IMP.GNFS.ZS", "name": "Imports of goods and services (% of GDP)", "description": "trade imports", "endpoint": "indicator"},
+    "gini": {"id": "SI.POV.GINI", "name": "Gini index", "description": "income inequality, survey years only", "endpoint": "indicator"},
+    "education_spending_gdp": {"id": "SE.XPD.TOTL.GD.ZS", "name": "Government expenditure on education, total (% of GDP)", "description": "education spending", "endpoint": "indicator"},
+    "tertiary_enrollment": {"id": "SE.TER.ENRR", "name": "School enrollment, tertiary (% gross)", "description": "college university enrollment", "endpoint": "indicator"},
+    "tertiary_spending_share": {"id": "SE.XPD.TERT.ZS", "name": "Expenditure on tertiary education (% of government expenditure on education)", "description": "college spending", "endpoint": "indicator"},
+    "rd_spending_gdp": {"id": "GB.XPD.RSDV.GD.ZS", "name": "Research and development expenditure (% of GDP)", "description": "R&D research innovation patents", "endpoint": "indicator"},
+    "co2_per_capita": {"id": "EN.GHG.CO2.PC.CE.AR5", "name": "Carbon dioxide (CO2) emissions excluding LULUCF per capita (t CO2e/capita)", "description": "co2 emissions climate energy (replaces the archived EN.ATM.CO2E.PC)", "endpoint": "indicator"},
+    "internet_users": {"id": "IT.NET.USER.ZS", "name": "Individuals using the Internet (% of population)", "description": "internet broadband", "endpoint": "indicator"},
+    "net_migration": {"id": "SM.POP.NETM", "name": "Net migration", "description": "immigration emigration migrants", "endpoint": "indicator"}
+  },
+  "aggregates_iso3": ["AFE", "AFR", "AFW", "ARB", "BEA", "BEC", "BHI", "BLA", "BMN", "BSS", "CAA", "CEA", "CEB", "CEU", "CLA", "CME", "CSA", "CSS", "DEA", "DEC", "DLA", "DMN", "DNS", "DSA", "DSF", "DSS", "EAP", "EAR", "EAS", "ECA", "ECS", "EMU", "EUU", "FCV", "FXS", "HIC", "HPC", "IBB", "IBD", "IBT", "IDA", "IDB", "IDX", "INX", "LAC", "LCN", "LDC", "LIC", "LMC", "LMY", "LTE", "MDE", "MEA", "MIC", "MNA", "NAC", "NAF", "NRS", "NXS", "OED", "OSS", "PRE", "PSS", "PST", "RRS", "SAS", "SSA", "SSF", "SST", "SXZ", "TEA", "TEC", "TLA", "TMN", "TSA", "TSS", "UMC", "WLD", "XZN"],
+  "groups": {
+    "g7": "CA;FR;DE;IT;JP;GB;US",
+    "g20_countries": "AR;AU;BR;CA;CN;FR;DE;IN;ID;IT;JP;KR;MX;RU;SA;ZA;TR;GB;US",
+    "brics": "BR;RU;IN;CN;ZA"
+  }
+}

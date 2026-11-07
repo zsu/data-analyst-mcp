@@ -1,0 +1,109 @@
+{
+  "id": "fhfa",
+  "title": "FHFA House Price Index, conforming loan limits and Public Use Databases (fhfa.gov files)",
+  "agency": "Federal Housing Finance Agency",
+  "depth": "standard",
+  "domains": [
+    "housing",
+    "house prices",
+    "mortgage finance"
+  ],
+  "keywords": [
+    "fhfa",
+    "house price index",
+    "hpi",
+    "home prices",
+    "house prices",
+    "home values",
+    "purchase-only index",
+    "all-transactions index",
+    "conforming loan limit",
+    "loan limit",
+    "jumbo",
+    "high-cost area",
+    "fannie mae",
+    "freddie mac",
+    "enterprises",
+    "gse",
+    "federal home loan bank",
+    "fhlbank",
+    "public use database",
+    "pudb",
+    "mortgage"
+  ],
+  "questions": [
+    "latest FHFA house price index for the U.S., seasonally adjusted",
+    "house price growth by state over the last year",
+    "home price appreciation in a metro area since 2020",
+    "annual house price index by county",
+    "2026 conforming loan limit for a one-unit home in a county",
+    "which counties have high-cost loan limits"
+  ],
+  "homepage": "https://www.fhfa.gov/data",
+  "terms_url": "https://www.fhfa.gov/about/fhfa-policies",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 400000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.fhfa.gov",
+      "probe": "https://www.fhfa.gov/hpi/download/quarterly_datasets/hpi_at_state.csv",
+      "hosts": [
+        "www.fhfa.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser; the file downloads (hpi_master.csv is 17 MB). Upload it under the name shown; the pack applies the request's filters to the uploaded file. Without the links: HPI files are listed on https://www.fhfa.gov/data/hpi/datasets, conforming loan limits on https://www.fhfa.gov/data/conforming-loan-limit, Public Use Databases on https://www.fhfa.gov/data/pudb."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are overwritten in place at each release (monthly HPI, quarterly, annual); data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FHFA data are works of a U.S. government agency, in the public domain (17 U.S.C. 105); cite FHFA as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Federal Housing Finance Agency, {dataset}, www.fhfa.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which index: purchase-only (the flagship, sales only) or all-transactions (adds refinance appraisals, longer history)? Default: purchase-only.",
+    "Seasonally adjusted or not? Default: seasonally adjusted for month-to-month or quarter-to-quarter changes, not adjusted for year-over-year changes.",
+    "Which loan limit: the baseline (most counties) or a specific county's limit (high-cost areas are higher), and for how many units? Default: one-unit."
+  ],
+  "formats": [
+    "csv",
+    "xlsx"
+  ],
+  "use_instead": [
+    {
+      "question": "One FHFA house price series for the U.S. or a state, with no index flavor choice",
+      "source": "fred",
+      "terms": [
+        "USSTHPI"
+      ],
+      "why": "FRED carries the all-transactions and purchase-only HPI series under stable IDs."
+    }
+  ]
+}

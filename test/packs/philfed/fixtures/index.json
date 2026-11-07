@@ -1,0 +1,10 @@
+{
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/historical-data/medianGrowth.xlsx": "spf_medianGrowth.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/historical-data/prob.xlsx": "spf_prob.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/livingston-survey/historical-data/medians.xlsx": "liv_medians.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/ROUTPUTQvQx.xlsx": "html_404_ROUTPUTQvQx.html",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/historical-data/medianLevel.xlsx": "spf_medianLevel_trim.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/historical-data/Dispersion_2.xlsx": "spf_Dispersion_2_trim.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/greenbook-data/documentation/GBweb_Row_Format.xlsx": "gb_row_format_trim.xlsx",
+ "GET https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/ROUTPUTQvQd.xlsx": "rtdsm_ROUTPUTQvQd_trim.xlsx"
+}

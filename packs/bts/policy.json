@@ -1,0 +1,94 @@
+{
+  "id": "bts",
+  "title": "Bureau of Transportation Statistics Open Data (data.bts.gov)",
+  "agency": "U.S. Department of Transportation, Bureau of Transportation Statistics",
+  "depth": "standard",
+  "domains": [
+    "transportation",
+    "freight",
+    "travel"
+  ],
+  "keywords": [
+    "transportation",
+    "airline",
+    "air traffic",
+    "passengers",
+    "on-time",
+    "transit ridership",
+    "freight rail",
+    "rail",
+    "truck tonnage",
+    "vehicle miles traveled",
+    "vmt",
+    "gasoline price",
+    "diesel",
+    "auto sales",
+    "fatalities",
+    "transportation services index",
+    "tsi",
+    "border crossing",
+    "port of entry",
+    "trucks",
+    "pedestrians",
+    "air fare",
+    "airfare",
+    "bikeshare",
+    "container port",
+    "teu",
+    "motor fuel"
+  ],
+  "questions": [
+    "monthly airline passenger traffic trend",
+    "Transportation Services Index freight since 2019",
+    "truck crossings at the Texas-Mexico border by port",
+    "average domestic air fare by quarter",
+    "transit ridership recovery after 2020"
+  ],
+  "homepage": "https://data.bts.gov/",
+  "terms_url": "https://www.bts.gov/policies-and-notices",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 5,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.bts.gov/resource",
+      "probe": "https://data.bts.gov/resource/crem-w557.json?$limit=1",
+      "hosts": [
+        "data.bts.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the dataset page (https://data.bts.gov/d/<id>, e.g. https://data.bts.gov/d/crem-w557), choose Export > CSV, and upload the file; or open the CSV links in INSTRUCTIONS.md."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Queries are small and the monthly series are revised each release; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "BTS statistics are U.S. government works in the public domain (17 U.S.C. 105); BTS asks for source attribution."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Bureau of Transportation Statistics, {dataset}, data.bts.gov (Socrata API), retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Seasonally adjusted or not? Monthly Transportation Statistics carries both versions of airline traffic and transit ridership in different columns.",
+    "Border crossings: which measure (Trucks, Personal Vehicles, Personal Vehicle Passengers, Pedestrians, ...) and which border? Counts are inbound only."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

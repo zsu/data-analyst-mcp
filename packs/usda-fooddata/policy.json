@@ -1,0 +1,94 @@
+{
+  "id": "usda-fooddata",
+  "title": "USDA FoodData Central",
+  "agency": "U.S. Department of Agriculture, Agricultural Research Service",
+  "depth": "standard",
+  "domains": [
+    "nutrition",
+    "food",
+    "health",
+    "agriculture"
+  ],
+  "keywords": [
+    "nutrition",
+    "nutrient",
+    "nutrients",
+    "calories",
+    "protein",
+    "fat",
+    "sugar",
+    "sodium",
+    "fiber",
+    "vitamin",
+    "mineral",
+    "food composition",
+    "fooddata central",
+    "fdc",
+    "branded food",
+    "sr legacy",
+    "fndds",
+    "foundation foods",
+    "ingredients",
+    "serving size"
+  ],
+  "questions": [
+    "calories and protein in a food",
+    "sodium content of branded products",
+    "compare nutrients of several foods",
+    "vitamin content per 100 grams",
+    "nutrients of foods as eaten in NHANES (FNDDS)"
+  ],
+  "homepage": "https://fdc.nal.usda.gov/",
+  "terms_url": "https://fdc.nal.usda.gov/api-guide",
+  "auth": {
+    "env": "DATA_GOV_API_KEY",
+    "required": "optional",
+    "placement": "query",
+    "param": "api_key",
+    "home": "data-gov",
+    "signup_url": "https://fdc.nal.usda.gov/api-key-signup",
+    "echoes_key": false,
+    "key_only": [
+      "more than a few requests an hour (DEMO_KEY limits; a free key allows 1,000 an hour)"
+    ],
+    "demo_key": "DEMO_KEY"
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.nal.usda.gov/fdc/v1",
+      "probe": "https://api.nal.usda.gov/fdc/v1/foods/search?query=apple&pageSize=1",
+      "hosts": [
+        "api.nal.usda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the links in INSTRUCTIONS.md (they carry DEMO_KEY, which works in a browser for a few requests; replace it with your own api.data.gov key if refused), save each under the shown name and upload. For whole data types download CSV or JSON from https://fdc.nal.usda.gov/download-datasets, or search https://fdc.nal.usda.gov/food-search and download a food's data."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Requests are small; FDC publishes new releases of each data type periodically (publishedDate per food). data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FoodData Central data are in the public domain under CC0 1.0 (https://fdc.nal.usda.gov/api-guide, Licensing); USDA asks that FoodData Central be listed as the source."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Agriculture, Agricultural Research Service. FoodData Central: {dataset}. fdc.nal.usda.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which data type: Foundation (generic foods, analytical values), SR Legacy (generic foods, final 2018 release), Survey (FNDDS, foods as eaten), or Branded (label values of specific products)?",
+    "Per 100 g (how FDC reports nutrients) or per serving? Per-serving values need the food's serving size or portion weight."
+  ],
+  "formats": [
+    "json",
+    "csv"
+  ]
+}

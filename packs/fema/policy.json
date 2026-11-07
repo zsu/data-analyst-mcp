@@ -1,0 +1,103 @@
+{
+  "id": "fema",
+  "title": "OpenFEMA (FEMA open data API)",
+  "agency": "Federal Emergency Management Agency (U.S. Department of Homeland Security)",
+  "depth": "standard",
+  "domains": [
+    "disasters",
+    "emergency management",
+    "housing",
+    "insurance",
+    "federal spending"
+  ],
+  "keywords": [
+    "fema",
+    "disaster",
+    "disaster declaration",
+    "major disaster",
+    "emergency declaration",
+    "hurricane",
+    "flood",
+    "wildfire",
+    "tornado",
+    "severe storm",
+    "nfip",
+    "flood insurance",
+    "flood claims",
+    "public assistance",
+    "individual assistance",
+    "housing assistance",
+    "ihp",
+    "hazard mitigation",
+    "hmgp",
+    "mission assignment",
+    "disaster aid"
+  ],
+  "questions": [
+    "how many major disasters were declared in a state each year",
+    "FEMA housing assistance after a hurricane",
+    "NFIP flood insurance claims paid for a storm",
+    "public assistance obligations by disaster",
+    "flood insurance policies in force by county"
+  ],
+  "homepage": "https://www.fema.gov/about/openfema",
+  "terms_url": "https://www.fema.gov/about/openfema/terms-conditions",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 3,
+    "burst": 6,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.fema.gov/api/open",
+      "probe": "https://www.fema.gov/api/open/v2/FemaRegions?$top=1",
+      "hosts": [
+        "www.fema.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (JSON pages of up to 10,000 rows; save each under the name shown) and upload them. Add $format=csv to a link for CSV instead. Whole datasets: each dataset page at https://www.fema.gov/about/openfema/data-sets has full CSV/Parquet downloads (large: NFIP policies are tens of GB); filter after download and upload the subset."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Datasets are refreshed daily to weekly (lastRefresh column); data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "OpenFEMA data are U.S. government works (17 U.S.C. 105); the OpenFEMA terms (https://www.fema.gov/about/openfema/terms-conditions) allow use with the attribution and no-endorsement statement in notices. NFIP and IHP files are already redacted by FEMA for privacy."
+  },
+  "notices": [
+    "This product uses the Federal Emergency Management Agency's OpenFEMA API, but is not endorsed by FEMA. The Federal Government or FEMA cannot vouch for the data or analyses derived from these data after the data have been retrieved from the Agency's website(s)."
+  ],
+  "retention": null,
+  "citation": "Federal Emergency Management Agency, OpenFEMA {dataset}, www.fema.gov/api/open, retrieved {retrieved_long}.",
+  "audit_hooks": [
+    {
+      "id": "fema_notice",
+      "kind": "require_text",
+      "any": [
+        "not endorsed by FEMA"
+      ],
+      "why": "The OpenFEMA terms require the attribution and no-endorsement statement."
+    }
+  ],
+  "clarify": [
+    "Count disasters or declared counties? DisasterDeclarationsSummaries has one row per designated area; count distinct disasterNumber for disasters.",
+    "Which declaration types: major disasters (DR) only, or also emergencies (EM) and fire management (FM)?",
+    "Calendar year or federal fiscal year (fyDeclared)? Default: say which one is used."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "parquet"
+  ]
+}
