@@ -1,8 +1,0 @@
-{
- "price": {"description": "Residential electricity price, Maryland and U.S., annual 2020-2024", "requests": [{"name": "md_res_price", "endpoint": "data", "params": {"route": "retail_sales", "state": ["MD", "US"], "facets": {"sectorid": ["RES"]}, "frequency": "annual", "start": "2020", "end": "2024"}}]},
- "more": {"description": "SEDS per capita, WTI, gasoline, sectors", "requests": [
-  {"name": "seds_per_capita", "endpoint": "data", "params": {"route": "seds", "msn": "TETPB", "state": ["Maryland", "US"], "start": "2020", "end": "2023"}},
-  {"name": "wti_monthly", "endpoint": "data", "params": {"route": "spot_prices", "facets": {"series": ["RWTC"]}, "frequency": "monthly", "start": "2025-01", "end": "2025-06"}},
-  {"name": "gasoline_weekly", "endpoint": "data", "params": {"route": "gasoline_diesel_retail", "facets": {"series": ["EMM_EPMR_PTE_NUS_DPG"]}, "frequency": "weekly", "start": "2026-09-01", "end": "2026-10-19"}},
-  {"name": "sectors", "endpoint": "facet_values", "params": {"route": "retail_sales", "facet": "sectorid"}}]}
-}

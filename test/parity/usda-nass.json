@@ -1,3 +1,0 @@
-{
- "doc_examples": {"description": "Corn in Virginia since 2012 (the documented example), its row count, and the sector names", "requests": [{"name": "corn_va", "endpoint": "query", "params": {"commodity_desc": "corn", "year__GE": 2012, "state_alpha": "va"}}, {"name": "corn_va_count", "endpoint": "count", "params": {"commodity_desc": "CORN", "year__GE": 2012, "state_alpha": "VA"}}, {"name": "sectors", "endpoint": "param_values", "params": {"param": "sector_desc"}}]}
-}

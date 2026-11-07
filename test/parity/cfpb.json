@@ -1,7 +1,0 @@
-{
- "fetch": {"description": "Wyoming student loan complaints, 2025: latest complaints, counts by product, quarterly trend", "requests": [
-  {"name": "wy_student_latest", "endpoint": "complaints", "params": {"product": "Student loan", "state": "WY", "date_received_min": "2025-01-01", "date_received_max": "2025-12-31", "page_size": 2}, "max_rows": 4},
-  {"name": "wy_by_product", "endpoint": "aggregations", "params": {"agg": "product", "state": "WY", "date_received_min": "2025-01-01", "date_received_max": "2025-12-31"}},
-  {"name": "wy_student_quarterly", "endpoint": "trends", "params": {"interval": "quarter", "product": "Student loan", "state": "WY", "date_received_min": "2025-01-01", "date_received_max": "2025-12-31"}}]},
- "sub_filters": {"requests": [{"name": "wy_medical_not_mine", "endpoint": "complaints", "max_rows": 3, "params": {"product": "Debt collection", "sub_product": "Medical debt", "issue": "Attempts to collect debt not owed", "sub_issue": ["Debt is not yours", "Debt was paid"], "state": "WY", "date_received_min": "2025-01-01", "date_received_max": "2025-12-31"}}]}
-}

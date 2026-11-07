@@ -1,9 +1,0 @@
-{
- "fetch": {"description": "Bank failures in 2023; Wells Fargo Bank quarterly financials, 2024; Wyoming summary, 2025", "requests": [
-  {"name": "failures_2023", "endpoint": "failures", "params": {"filters": "FAILYR:2023 AND RESTYPE:\"FAILURE\"", "fields": "CERT,NAME,CITY,PSTALP,FAILDATE,QBFASSET,QBFDEP,COST,RESTYPE1", "sort_order": "ASC"}},
-  {"name": "wells_2024", "endpoint": "financials", "params": {"filters": "CERT:3511 AND REPDTE:[20240101 TO 20241231]", "fields": "CERT,REPDTE,ASSET,DEP,NETINC,ROA", "sort_order": "ASC"}},
-  {"name": "wy_summary_2025", "endpoint": "summary", "params": {"filters": "STNAME:\"Wyoming\" AND YEAR:2025", "fields": "STNAME,YEAR,CB_SI,BANKS,ASSET,DEP,NETINC"}}]},
- "aggregations": {"requests": [
-  {"name": "ga_failures_by_year", "endpoint": "failures", "params": {"filters": "PSTALP:GA AND FAILYR:[2008 TO 2013]", "agg_by": "FAILYR", "agg_sum_fields": "QBFASSET,COST", "agg_term_fields": "RESTYPE1", "agg_limit": 20}},
-  {"name": "vt_history_by_code", "endpoint": "history", "params": {"filters": "PSTALP:VT", "agg_by": "CHANGECODE", "agg_term_fields": "CLASS", "agg_limit": 10}}]}
-}

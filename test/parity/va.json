@@ -1,5 +1,0 @@
-{
- "texas_pos": {"description": "Texas veterans by sex, VetPop2023, FY2023-FY2026", "requests": [{"name": "tx_all_veterans", "endpoint": "query", "params": {"dataset": "vetpop_state_pos", "$where": "state = 'Texas' AND pos = '(a) All Veterans (b+c)' AND date <= '2026-09-30'", "$order": "date, sex"}}]},
- "state_totals": {"description": "Veterans by state, VetPop2023 projection for 2025-09-30", "requests": [{"name": "veterans_by_state_2025", "endpoint": "query", "params": {"dataset": "vetpop_state", "$select": "state, sum(veterans) AS veterans", "$where": "date = '2025-09-30'", "$group": "state", "$order": "state"}}]},
- "benefits": {"description": "Pension recipients FY2025 and compensation recipients FY2025 in Vermont", "requests": [{"name": "pension_fy2025", "endpoint": "query", "params": {"dataset": "pension_recipients_state_fy2025", "$order": "state"}}, {"name": "vt_comp_counties", "endpoint": "query", "params": {"dataset": "comp_recipients_county_fy2025", "$where": "state = 'Vermont'", "$order": "fips_code"}}]}
-}

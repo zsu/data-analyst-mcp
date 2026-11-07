@@ -1,4 +1,0 @@
-{
- "documented_example": {"description": "PM2.5 sample at site 01-073-0023 (Jefferson County, AL) on 2017-04-01 (documented example)", "requests": [{"name": "al_pm25_sample", "endpoint": "data", "params": {"service": "sampleData", "geo": "bySite", "param": "pm25", "bdate": "20170401", "edate": "20170401", "state": "AL", "county": "73", "site": "23"}}]},
- "two_years": {"description": "Vermont annual ozone 2022-2023 (split into two calls)", "requests": [{"name": "vt_ozone", "endpoint": "data", "allow_empty": true, "params": {"service": "annualData", "geo": "byState", "param": "ozone", "bdate": "20220101", "edate": "20231231", "state": "Vermont"}}]}
-}

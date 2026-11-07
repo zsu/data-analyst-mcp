@@ -1,6 +1,0 @@
-{
- "lpr_table6": {"description": "Persons obtaining LPR status by type and class of admission, FY2024 yearbook", "requests": [{"name": "lpr_class", "endpoint": "yearbook_table", "params": {"topic": "lpr", "fiscal_year": 2024, "table": "Table 6"}}]},
- "default_year_table7": {"requests": [{"name": "t7", "endpoint": "yearbook_table", "params": {"topic": "lpr", "table": "7"}}]},
- "yearbook_files": {"requests": [{"name": "files", "endpoint": "yearbook_files", "params": {"fiscal_year": 2024}}]},
- "lir": {"requests": [{"name": "lir_class", "endpoint": "lir_table", "params": {"table": "Table 1B"}}, {"name": "lir_files", "endpoint": "lir_files", "params": {}}]}
-}

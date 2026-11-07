@@ -1,3 +1,0 @@
-{
- "fetch": {"description": "HTS revision, steel flat-rolled heading 7208, lithium-ion lines, dairy heading 0401", "requests": [{"name": "release", "endpoint": "current_release", "params": {}}, {"name": "steel", "endpoint": "schedule", "params": {"from": "7208", "to": "7208"}}, {"name": "li_ion", "endpoint": "search", "params": {"keyword": "lithium-ion"}}, {"name": "dairy", "endpoint": "schedule", "params": {"from": "0401", "to": "0401"}}]}
-}

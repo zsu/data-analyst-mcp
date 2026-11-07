@@ -1,4 +1,0 @@
-{
- "category_time_budget": {"description": "Federal obligations in Maryland by awarding agency, FY2024", "requests": [{"name": "md_by_agency_fy2024", "endpoint": "by_category", "params": {"category": "awarding_agency", "fiscal_year": 2024, "state": "Maryland"}, "max_rows": 10}, {"name": "nasa_monthly_fy2024", "endpoint": "over_time", "params": {"group": "month", "fiscal_year": 2024, "agency": "nasa"}}, {"name": "hhs_budget", "endpoint": "agency_budgetary_resources", "params": {"toptier_code": "hhs"}}]},
- "awards": {"description": "Broadband grants active in FY2024, largest first", "requests": [{"name": "broadband_grants", "endpoint": "awards", "params": {"award_type": "grants", "fiscal_year": 2024, "keyword": "broadband", "fields": ["Award ID", "Recipient Name", "Award Amount", "Awarding Agency", "Start Date", "generated_internal_id"]}, "max_rows": 5}]}
-}

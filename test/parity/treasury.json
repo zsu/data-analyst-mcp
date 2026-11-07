@@ -1,6 +1,0 @@
-{
- "debt_to_penny_sep2026": {"description": "Debt to the penny, September 2026", "as_of": "2026-09-30",
-  "datasets": [{"name": "debt", "endpoint": "v2/accounting/od/debt_to_penny", "filter": {"record_date": {"gte": "2026-09-01"}}}]},
- "debt_to_penny_string_filter": {"description": "Debt to the penny, September 2026 (API filter syntax)",
-  "datasets": [{"name": "debt", "endpoint": "/v2/accounting/od/debt_to_penny", "filter": "record_date:gte:2026-09-01,record_date:lte:2026-09-30"}]}
-}

@@ -1,9 +1,0 @@
-{
- "fetch": {"description": "Vermont hospitals: overall star rating; Medicare FFS standardized spending per capita by state, 2024", "requests": [
-  {"name": "vt_hospitals", "endpoint": "provider", "params": {"dataset": "hospital_info", "where": {"state": "VT"}, "columns": ["facility_id", "facility_name", "citytown", "hospital_type", "hospital_overall_rating"], "sort": "facility_id"}},
-  {"name": "ffs_spending_2024", "endpoint": "medicare", "params": {"dataset": "geo_variation", "where": {"YEAR": "2024", "BENE_GEO_LVL": "State", "BENE_AGE_LVL": "All"}, "columns": ["YEAR", "BENE_GEO_LVL", "BENE_GEO_DESC", "BENES_OM_CNT", "TOT_MDCR_STDZD_PYMT_PC", "TOT_MDCR_PYMT_PC"]}}]},
- "suppressed": {"requests": [
-  {"name": "wy_county_enroll_2022", "endpoint": "medicare", "params": {"dataset": "monthly_enrollment", "where": {"BENE_GEO_LVL": "County", "BENE_STATE_ABRVTN": "WY", "YEAR": "2022", "MONTH": "Year"}, "columns": ["BENE_COUNTY_DESC", "TOT_BENES", "NATIND_TOT_BENES", "AGE_LT_25_BENES"]}},
-  {"name": "partd_flagged", "endpoint": "medicare", "max_rows": 2, "params": {"dataset": "partd_prescribers_geo_2024", "where": {"Prscrbr_Geo_Lvl": "State", "GE65_Sprsn_Flag": "*"}, "columns": ["Prscrbr_Geo_Desc", "Brnd_Name", "Tot_Clms", "GE65_Tot_Clms"]}}]},
- "list_filter": {"requests": [{"name": "three_states", "endpoint": "medicare", "params": {"dataset": "geo_variation", "where": {"YEAR": "2022", "BENE_GEO_LVL": "State", "BENE_AGE_LVL": "All", "BENE_GEO_DESC": ["VT", "NH", "ME"]}, "columns": ["YEAR", "BENE_GEO_DESC", "BENES_TOTAL_CNT"]}}]}
-}

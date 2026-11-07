@@ -1,4 +1,0 @@
-{
- "fetch": {"description": "Vermont: GHGRP emitters 2022, NPL Superfund sites, major air facilities, CAA cases", "requests": [{"name": "vt_ghg_2022", "endpoint": "envirofacts", "params": {"table": "ghg_emitters", "filters": [["state", "equals", "VT"], ["year", "equals", 2022]]}, "max_rows": 3}, {"name": "vt_npl", "endpoint": "envirofacts", "params": {"table": "superfund_sites", "filters": {"fk_ref_state_code": "VT", "npl_status_code": "F"}}, "max_rows": 3}, {"name": "vt_major_air", "endpoint": "echo_facilities", "params": {"program": "air", "p_st": "VT", "p_maj": "Y"}}, {"name": "vt_caa_cases", "endpoint": "echo_cases", "params": {"p_state": "VT", "p_law": "CAA"}, "max_rows": 3}]},
- "qcolumns": {"requests": [{"name": "vt_air_cols", "endpoint": "echo_facilities", "params": {"program": "air", "p_st": "VT", "p_maj": "Y", "qcolumns": "1,2,4,5"}}]}
-}

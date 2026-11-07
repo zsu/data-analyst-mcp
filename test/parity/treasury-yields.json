@@ -1,3 +1,0 @@
-{
- "par_and_long_term": {"description": "Par yield curve and long-term rates, 2024-2025", "requests": [{"name": "par", "endpoint": "par_yield_curve", "params": {"start_year": 2024, "end_year": 2025}}, {"name": "lt", "endpoint": "long_term_rates", "params": {"year": 2025}}]}
-}

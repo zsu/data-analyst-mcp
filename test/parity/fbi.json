@@ -1,4 +1,0 @@
-{
- "fetch": {"description": "Violent crime, United States, 2020-2022; Delaware agencies; hate crimes; police employees", "requests": [{"name": "violent_us", "endpoint": "summarized_national", "params": {"offense": "V", "from": "2020", "to": "2022"}}, {"name": "de_agencies", "endpoint": "agencies_by_state", "params": {"state": "de"}}, {"name": "hate_us", "endpoint": "hate_crime_national", "params": {"from": "01-2022", "to": "12-2023"}}, {"name": "employees_us", "endpoint": "pe_national", "params": {"from": 2021, "to": 2023}}]},
- "hate_counts": {"description": "Anti-Asian hate crime incidents, monthly with coverage, 2022", "requests": [{"name": "anti_asian_2022", "endpoint": "hate_crime_bias_national", "params": {"bias": "14", "from": "01-2022", "to": "12-2022", "type": "counts"}}]}
-}
