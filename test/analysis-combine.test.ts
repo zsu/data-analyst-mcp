@@ -1,5 +1,5 @@
 /**
- * The combine helpers as compute verbs: a port of the Python skill's tests/test_combine.py (TestToFiscal,
+ * The combine helpers as compute verbs: a port of tests/test_combine.py (TestToFiscal,
  * TestAlignCheck). The tables are CSVs written into a session workspace, as pandas would save them.
  */
 import fs from "node:fs";

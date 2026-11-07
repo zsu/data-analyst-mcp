@@ -1,5 +1,5 @@
 /**
- * census: ported from the Python skill's tests/sources/census/test_census.py, against the same fixtures (see that
+ * census: ported from tests/sources/census/test_census.py, against the same fixtures (see that
  * file's docstring for what each fixture is) and the same expected values.
  */
 import fs from "node:fs";

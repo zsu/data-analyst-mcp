@@ -1,6 +1,6 @@
 # BEA Data API reference
 
-The pack's `bea_api.py` and `fetch.py` already implement this: key lookup and redaction, throttling,
+This server's `fetch` for bea already implements this: key lookup and redaction, throttling,
 error handling, response quirks, tidy output, and the no-key bulk route. Read this file when you need a
 dataset or parameter the friendly spec does not cover, or when debugging an API error.
 
@@ -9,7 +9,7 @@ GDPbyIndustry, ITA, IIP, InputOutput, IntlServTrade, IntlServSTA, Regional) · 3
 special values · 4. Rate limits · 5. Error codes · 6. Registration, terms, attribution · 7. Time periods,
 revisions, release timing · 8. Common table codes · 9. Implementation checklist
 
-**Bulk files (no key).** Besides the API, BEA posts complete files that `fetch.py` reads when no key works:
+**Bulk files (no key).** Besides the API, BEA posts complete files that `fetch` reads when no key works:
 - NIPA: `https://apps.bea.gov/national/Release/TXT/` → `NipaDataA.txt`, `NipaDataQ.txt`, `NipaDataM.txt`
   (`%SeriesCode,Period,Value`), `SeriesRegister.txt` (`SeriesCode,SeriesLabel,MetricName,CalculationType,
   DefaultScale,TableId:LineNo|...,SeriesCodeParents`; DefaultScale -6 = millions) and `TablesRegister.txt`.
@@ -25,7 +25,7 @@ revisions, release timing · 8. Common table codes · 9. Implementation checklis
 - GDP by industry: `https://apps.bea.gov/industry/Release/XLS/GDPxInd/` → `ValueAdded.xlsx` (sheets
   `TVA101-A`, `TVA101-Q` ... `TVA113-A`), `GrossOutput.xlsx` (`TGO1xx`), `IntermediateInputs.xlsx` (`TII1xx`). Each
   sheet: title, `[unit]`, period range, "Data published <date>", then a header row starting `Line` and one row per
-  industry; footnotes below. A `Contents` sheet lists the codes. `fetch.py` reads them with the standard library.
+  industry; footnotes below. A `Contents` sheet lists the codes. `fetch` reads them itself (no key, no other software).
 - Data are the same, latest vintage as the API. Bulk files are large (NIPA quarterly 35 MB; some county
   zips 45 MB) but need no key and count against no rate limit.
 
@@ -341,7 +341,7 @@ Errors normally arrive as **HTTP 200** with `Results.Error {APIErrorCode, APIErr
 ## 6. Registration, terms of service, attribution
 
 - **Registration:** https://apps.bea.gov/API/signup/ (`/api/` redirects there).
-  - The form asks for name or organization, email, a CAPTCHA, and a tick for "I agree to the Terms of Service". **A person must complete it**; the skill must not try.
+  - The form asks for name or organization, email, a CAPTCHA, and a tick for "I agree to the Terms of Service". **A person must complete it**; the assistant must not try.
   - BEA emails a **36-character UserID** and a link; **the key works only after the link is clicked** [guide].
   - Disposable email addresses are refused, and such registrations may be removed without notice [guide].
   - Contact: developers@bea.gov.
@@ -429,7 +429,7 @@ Errors normally arrive as **HTTP 200** with `Results.Error {APIErrorCode, APIErr
 **Table-name inconsistency:** the 2026 App. N list writes `SAGDP2`, `SAGDP9`, `TASUMMARY`, but its own example and RegionalApi.pdf use `SAGDP9N`/`SAGDP2N`, and the guide's GetParameterValues sample shows `TASUMMARY1`. **Always resolve names with `GetParameterValues(DatasetName=Regional, ParameterName=TableName)`** before calling GetData.
 
 ---------------------------------------------------------------------------------------------------
-## 9. Implementation checklist for the skill
+## 9. Implementation checklist
 1. Read the key from the environment, check it is 36 characters, and redact it in logs.
 2. Use metadata calls (cached) to check TableName, LineCode, Frequency and Year before calling GetData.
 3. Request `ResultFormat=JSON`. Parse defensively:

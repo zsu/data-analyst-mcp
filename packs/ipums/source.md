@@ -1,7 +1,7 @@
 # IPUMS microdata (USA/ACS, CPS and other collections)
 Depth: deep. Key: required (IPUMS_API_KEY) for the API; the website builds the same extract with a free
 account and no key. Person-level survey microdata (ACS, decennial census, CPS ASEC and monthly, IPUMS-I,
-ATUS, NHIS, MEPS) as filtered extracts, for weighted estimates with standard errors computed by you.
+ATUS, NHIS, MEPS) as filtered extracts, for weighted estimates.
 
 ## When to use
 - Custom tabulations the published tables do not give: employment, earnings, hourly wages, poverty,
@@ -28,8 +28,8 @@ ATUS, NHIS, MEPS) as filtered extracts, for weighted estimates with standard err
 ## Endpoints and datasets
 | Call (`https://api.ipums.org`, `?collection=<c>&version=2`) | Returns |
 |---|---|
-| `GET /metadata/samples` | sample IDs and descriptions (`--list-samples usa --match 2023`) |
-| `POST /extracts` (body built from spec.json) | `{number, status}` |
+| `GET /metadata/samples` | sample IDs and descriptions (`request_schema` with `search: "usa 2023"`) |
+| `POST /extracts` (body built from the spec) | `{number, status}` |
 | `GET /extracts/{number}` | status queued/started/produced/completed/failed/canceled, `downloadLinks` |
 | `GET downloadLinks.data.url`, `.ddiCodebook.url` | the gzipped CSV and the DDI XML codebook |
 
@@ -37,27 +37,18 @@ There is no variable-metadata endpoint for microdata: variable names and verifie
 `docs/variables.md` (sections 4-7, ready-made variable sets by topic); after a download,
 `data/ipums/codebook.csv` is the authority. API body details, timing and errors: `docs/ipums_api.md`.
 Collections with API extracts: usa, cps, ipumsi, atus, ahtus, mtus, nhis, meps, dhs (case selection and
-monetary adjustment only for usa, cps, ipumsi: `--check` refuses them elsewhere, so mark the group with a domain mask and deflate with CPI-U after download; NHIS has no data quality flags, MEPS no attached characteristics;
+monetary adjustment only for usa, cps, ipumsi: `fetch` refuses them elsewhere (`invalid_request`), so mark the group with a domain mask and deflate with CPI-U after download; NHIS has no data quality flags, MEPS no attached characteristics;
 dhs needs an account approved by The DHS Program, so a 401/403 there usually means that approval is
 missing). Codes, weights and recodes are documented for usa, cps, nhis and meps; for the others, work from
-the collection's website and `codebook.csv`, and the recode helpers refuse them.
+the collection's website and `codebook.csv`.
 
-Commands (always through the dispatcher: `python "<skill>/scripts/fetch.py" --source ipums ...`):
-```
-<out>/spec.json --out <out> --check           # route: reuse_existing | api | run_setup | cloud_secret |
-                                              #   cloud_allowlist | manual_download | fix_spec | report_error
-<out>/spec.json --out <out>                   # submit, wait, download, package (reuses / resumes itself)
-<out>/spec.json --out <out> --dry-run         # print the API request body only
---resume cps:123 --out <out>                  # collect an extract submitted earlier
---list-samples usa --match 2023               # sample IDs (needs a key)
-<out>/spec.json --out <out> --manual-bundle   # website steps + download_ipums.sh/.ps1 + curl steps
-<out>/spec.json --out <out> --ingest [FILES]  # package the .csv.gz + .xml the user downloaded
-<out>/spec.json --out <out> --reproduce-bundle <out>/reproduce   # definition + scripts for a package
-```
-`--check` contacts IPUMS at most once (a metadata call) and submits nothing. Route `api` with a
-`resume` field means the extract was already submitted: run `next_command`. Small CPS extracts take about
-a minute; multi-year ACS 5-30 minutes (run in the background; a timed-out wait keeps running at IPUMS
-and the next run resumes it). Exit 4 = blocked: follow the printed route; never invent or substitute data.
+Tools: `request_schema` (`names: ["usa"]` etc. gives the spec format, weights and sample IDs; a search such as
+`cps 2023` lists sample IDs, with a key), `fetch` (submits the extract, waits, downloads and packages it; it
+reuses a finished extract and, when a wait timed out, collects the extract still running at IPUMS: its number
+is saved in `data/ipums/extract_spec.json`, so call `fetch` again with the same spec; `force: true` submits a new
+one), and `ingest` (the .csv.gz and .xml the user downloaded). Small CPS extracts take about a minute;
+multi-year ACS 5-30 minutes; one `fetch` waits `max_wait_s` (default 600). A blocked fetch returns an error
+with its fix: follow it; never invent or substitute data.
 
 ## Spec examples
 ```json
@@ -76,13 +67,13 @@ and the next run resumes it). Exit 4 = blocked: follow the printed route; never 
 ```
 Optional keys: `case_select_who` (`individuals` | `households`), `attached_characteristics`
 (`{"EDUC": ["spouse"]}`), `data_quality_flags` (list or true), `adjust_monetary_values` (list),
-`case_selections` with `{"detailed": [...]}` for detailed codes, `data_format`, `data_structure`.
+`case_selections` with `{"detailed": [...]}` for detailed codes, `data_format`, `data_structure`, `max_wait_s`.
 Keep extracts lean: only the variables used, case selections for the universe, only the needed years.
 Name explicitly: `CPI99` (constant dollars), `REPWTP` (replicate weights), the detailed variable you
-select on (`EDUCD`). Confirm sample IDs with `--list-samples` before submitting.
+select on (`EDUCD`). Confirm sample IDs with a `request_schema` search before submitting.
 
 ## Data format and traps
-Output in `<out>/data/ipums/`: `ipums_extract.csv` (uppercase mnemonics, raw IPUMS codes, one row per
+`fetch` writes `data/ipums/`: `ipums_extract.csv` (uppercase mnemonics, raw IPUMS codes, one row per
 person), `codebook.csv` (variable, value, value_label), `variables.csv`, the DDI `.xml`,
 `extract_spec.json` (spec + exact API body + extract number), `request.json`, `README.md` (citation,
 weights, terms).
@@ -96,10 +87,10 @@ weights, terms).
   calendar year, spending is highly skewed (screen outliers, add medians), and `CHGTOT` is charges, not
   payments. Variable names differ from USA/CPS and between NHIS and MEPS (HINOTCOVE vs. HINOTCOV): use
   `docs/variables.md` sections 8-9.
-- **Missing and top codes**: run `clean_missing(df, collection, codebook=...)`; then print min/max of
-  every dollar and hours variable. USA INCWAGE 999999 = N/A, 999998 = missing; CPS INCWAGE 99999999 NIU;
+- **Missing and top codes**: treat every code whose `codebook.csv` label says N/A, NIU, missing or unknown
+  as missing (`compute` `filter` or `derive`); then look at the min and max of every dollar and hours variable. USA INCWAGE 999999 = N/A, 999998 = missing; CPS INCWAGE 99999999 NIU;
   HHINCOME 9999999 (USA); UHRSWORKLY 999 NIU. An unremoved 9999999 is the classic IPUMS mistake.
-- **Outliers**: `screen_outliers` on every dollar variable and derived hourly wages. In recent ASECs each
+- **Outliers**: screen every dollar variable and derived hourly wages for extreme values. In recent ASECs each
   income component is top-coded or swapped at about 1,099,999; INCWAGE sums two of them (INCLONGJ +
   OINCWAGE), so it reaches 2,199,998 (ASEC 2026: 220 records at $1M or more). A few such records can
   move a small cell's mean by 10+ percent: report a stated rule and the sensitivity.
@@ -114,49 +105,36 @@ weights, terms).
 - **Codes differ by collection**: CPS EDUC is one detailed 3-digit variable (73 high school, 111
   bachelor's); USA uses EDUCD for degree groups. Foreign born (not a citizen at birth): CPS CITIZEN 4-5
   (not NATIVITY 5, which adds people born in outlying areas or abroad of American parents); ACS CITIZEN 2-5
-  (USA has no NATIVITY for ACS). `foreign_born()` applies both. CPS EMPSTAT 10/12 employed, 20-22 unemployed. Check `codebook.csv`.
+  (USA has no NATIVITY for ACS): use the right one for the collection. CPS EMPSTAT 10/12 employed, 20-22 unemployed. Check `codebook.csv`.
 - **Extract gotchas**: IPUMS adds detailed versions automatically (EDUC brings EDUCD); a data-quality
-  flag or case-selection code that a sample lacks returns HTTP 400 (fix spec.json and resubmit);
+  flag or case-selection code that a sample lacks returns HTTP 400 (fix the spec and fetch again);
   ACS 2020 1-year has experimental weights.
-- **Standard errors for every compared estimate**: ACS `rep_se` with REPWTP (80) for person estimates, or
-  REPWT with `weight="HHWT", prefix="REPWT"` for household estimates (tenure, household income), Census's own
-  method; `lin_se` with STRATA and CLUSTER (added automatically) can understate a PUMS margin (half of the
-  replicate one in a 2024 tenure check): prefer `rep_se` when the replicates are in the extract; CPS ASEC `rep_se` with REPWTP (160)
-  for person estimates, or REPWT (160) with `weight="ASECWTH", prefix="REPWT"` on householders
-  (`RELATE == 101`) for household estimates such as median household income (P60 tables). NHIS and MEPS have
-  no replicate weights: `lin_se(df, z, **survey_design(df, collection))`, on the whole file with a domain mask
-  (`share_z`, `mean_z`); helpers `uninsured`, `fair_poor_health`, `sample_adults`, `default_weight`, `pool_weight`. CPS basic monthly has
-  no replicate weights and no design variables in the public files: an SE clustered by household is
-  approximate, and the answer says so: `lin_se(df, z, strata=<a constant column>, cluster="CPSID")`. BLS's
-  CPS variance parameters do not apply to union or earnings estimates. Union membership (`UNION`, with
-  `EARNWT`): IPUMS's universe starts at age 15; BLS's published rates are for 16 and over (BLS also
-  publishes the annual rate as `LUU0204899600`). Call a difference
-  "statistically different" only beyond 1.645 standard errors (90 percent); otherwise "about the same".
-  Thin cells (`low_n`, fewer than 100 records) are footnoted or suppressed.
+- **Standard errors**: this server has no replicate-weight or design-based standard errors yet. Report
+  which weight each estimate uses and that standard errors were not computed; without them, never call a
+  difference "statistically different" (when standard errors exist, the rule is beyond 1.645 standard errors,
+  90 percent; otherwise "about the same"). The methods, for reference: ACS person estimates use REPWTP (80
+  replicates), household estimates (tenure, household income) REPWT with HHWT, Census's own method; a
+  linearized SE with STRATA and CLUSTER (added automatically) can understate a PUMS margin (half of the
+  replicate one in a 2024 tenure check), so replicates are preferred. CPS ASEC: REPWTP (160) for person
+  estimates, or REPWT (160) with ASECWTH on householders (`RELATE == 101`) for household estimates such as
+  median household income (P60 tables). NHIS and MEPS have no replicate weights: their SEs come from the
+  design variables, estimated on the whole file with a domain mask, not on filtered rows. CPS basic monthly
+  has no replicate weights and no design variables in the public files: an SE clustered by household
+  (CPSID) is approximate, and the answer says so. BLS's CPS variance parameters do not apply to union or
+  earnings estimates. Union membership (`UNION`, with `EARNWT`): IPUMS's universe starts at age 15; BLS's
+  published rates are for 16 and over (BLS also publishes the annual rate as `LUU0204899600`).
+  Thin cells (fewer than 100 records) are footnoted or suppressed.
 - **Medians of dollar amounts**: reported income heaps on round numbers, so a plain weighted median sits
   on a heap ($60,000) and its replicate SE can come out 0. Census publishes medians interpolated within
-  $2,500 intervals: use `median_binned` / `wmedian_binned` to compare with Census (P60 tables) and for
-  standard errors; BLS weekly earnings use $50 intervals centred on multiples of $50 (`width=50, offset=25`);
-  state which median you report. CPS earnings after March 2023: `EARNWEEK2`/`HOURWAGE2` (docs/variables.md).
-- **Composition**: show the raw and a model-adjusted gap (`wls`, `standardize`); run `sensitivity()` on
-  every threshold or definition; benchmark a headline number against a published figure (Census, BLS).
+  $2,500 intervals: use such a binned median to compare with Census (P60 tables); BLS weekly earnings use
+  $50 intervals centred on multiples of $50 (edges at $25, $75, ...); state which median you report. CPS earnings after March 2023: `EARNWEEK2`/`HOURWAGE2` (docs/variables.md).
+- **Composition**: show the raw and a composition-adjusted gap (standardized to a common group mix); test
+  every threshold or definition for sensitivity; benchmark a headline number against a published figure (Census, BLS).
 - Public IPUMS data cannot show legal status, benefits, or full administrative controls: say so.
 
-Analysis helpers: `sources/ipums/lib/stats.py` (`load`, `clean_missing`, `grouped` with `mean`, `median`,
-`median_binned`, `share`, `total`; recodes `emp_status`, `educ_group`, `foreign_born`, `age_group`; `rep_se`, `lin_se`,
-`screen_outliers`, `wls`, `standardize`, `sensitivity`; its own `Facts` registry, formats in
-`scripts/analysis/factfmt.py`):
-```python
-import sys, os
-OUT = os.path.dirname(os.path.abspath(__file__))
-sys.path[:0] = [os.path.join(OUT, "lib"), os.path.join(OUT, "lib", "ipums"), r"<skill>/sources/ipums/lib"]  # SKILL.md section 4
-from stats import *     # alone; with bea, ipums or opm too: st = pack_lib("ipums", "stats", OUT, SKILL)
-D, C = f"{OUT}/data/ipums", "cps"                # "usa" (ACS), "cps", "nhis" or "meps"; codes differ
-df = clean_missing(load(f"{D}/ipums_extract.csv"), C, codebook=f"{D}/codebook.csv")
-df["emp"] = emp_status(df, C)
-t = grouped(df, ["YEAR", "SEX"], "ASECWT", {"employment_rate": share(lambda d: d.emp == "employed", col="emp"),
-                                          "median_earnings": median_binned("EARN", where=lambda d: d.EARN > 0)})
-```
+Analysis: build tables with `compute` on `data/ipums/ipums_extract.csv`, decoding values with `codebook.csv`. This
+server has no IPUMS recode helpers or replicate-weight standard errors yet: say which weight you used, and that
+standard errors were not computed.
 Typical questions, conventions (populations, definitions, benchmarks) and chart forms:
 `docs/report_patterns.md`.
 
@@ -164,22 +142,19 @@ Typical questions, conventions (populations, definitions, benchmarks) and chart 
 - Key: `IPUMS_API_KEY`, free at https://account.ipums.org/api_keys; the account must be registered
   separately for each collection (usa.ipums.org, cps.ipums.org, ...). Found, in order, in the environment
   variable, the file named by `IPUMS_API_KEY_FILE`, `env.IPUMS_API_KEY` in keys.json, then in Claude Code's settings.json,
-  `~/.ipums/api_key`. A 401/403 with a key set means a wrong key or an unregistered collection (route
-  `report_error`): never point at the setup script then. No key on a local/ssh machine: route
-  `run_setup` (the user runs the skill's setup script with `-Source ipums` / `ipums` in their own
-  terminal; never ask for the key in chat).
-- Manual route (sandbox, hosted chat, no key, no network): `--check` writes
-  `<out>/manual_download/ipums/` with `INSTRUCTIONS.md` (Option A without a key: the IPUMS website
-  extract builder, listing the exact samples, variables, case selections, CSV format and description;
-  Option B with a key: one command, `bash ~/Downloads/download_ipums.sh` (macOS/Linux) or `powershell
-  -NoProfile -ExecutionPolicy Bypass -File "$HOME\Downloads\download_ipums.ps1"` (Windows), runs a
-  self-contained script with the extract built in: it asks for the key with hidden input, submits (or
-  reuses an extract number), waits and saves the `.csv.gz` and `.xml` next to itself; curl steps as a
-  fallback using `extract_spec.json`). Send INSTRUCTIONS.md, both scripts and `extract_spec.json`
-  (`download_scripts`, `request_body`) and give the command for the user's system (`user_commands`).
-  After the upload: `--ingest` with the uploaded files or their folder. It warns when a
-  requested variable is missing from the file (likely on the website route: ask the user to add it).
-- Record the route (API, reused, hand-downloaded) and the extract number in the methods.
+  `~/.ipums/api_key`. A 401/403 with a key set means a wrong key or an unregistered collection
+  (`key_rejected`): never point at `setup` then. No key (`key_missing`): the user runs
+  `npx -y data-analyst-mcp setup ipums` in their own terminal (never ask for the key in chat), or uses the
+  manual route below.
+- Manual route (sandbox, hosted chat, no key, no network): `manual_bundle` cannot write an IPUMS bundle yet
+  (it returns `not_supported`). Give the user the website steps yourself: on the collection's website
+  (usa.ipums.org, cps.ipums.org, ...), with a free account and no key, build the extract with the spec's exact
+  samples, variables, case selections, CSV format and description, then download the `.csv.gz` data file and
+  the `.xml` DDI codebook. After the upload: `ingest` with the files or their folder (on a hosted server,
+  `files: ["uploads"]`). It warns when a requested variable is missing from the file (likely on the website
+  route: ask the user to add it).
+- Record the route (API, reused, hand-downloaded; `route` in `data/ipums/request.json`) and the extract
+  number in the methods.
 
 ## Citation and terms
 Cite IPUMS as `data/ipums/README.md` says (taken from the extract's DDI, with the versioned DOI; the
@@ -188,7 +163,7 @@ IPUMS." Source line: "Analyst calculations using data from IPUMS-CPS (Current Po
 Redistribution: **definition_only**. The IPUMS terms forbid redistributing extracts (except a subset to
 meet journal requirements): the extract stays in `data/ipums/` for the user's own use; never put
 microdata in an artifact, published page, sent file or package. `extract_spec.json`, `README.md`,
-`codebook.csv`, `variables.csv` and `request.json` may be shared, with the reproduce scripts
-(`--reproduce-bundle`), so readers request the same extract under their own account. Aggregated
+`codebook.csv`, `variables.csv` and `request.json` may be shared, so readers request the same extract
+under their own account. Aggregated
 estimates and exhibit tables may be published. IPUMS deletes extract files about 72 hours after they are
 built; the definition can be resubmitted any time.

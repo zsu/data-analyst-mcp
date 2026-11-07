@@ -30,7 +30,7 @@ asked for more (live 2026-10-28: 13 model rows by default, 57 with `max`), so th
 `max=10000` there and in the variant lookup; a list you open by hand without `max` is cut. Recalls cover model years 1949 to the coming year, and
 `products_model_years` also lists `9999` for records with no model year (recalls and complaints; drop it from
 year ranges, verified 2026-10);
-NCAP ratings start with model year 1990 (`ratings_model_years` lists them). `--endpoints` lists all.
+NCAP ratings start with model year 1990 (`ratings_model_years` lists them). `source_brief` lists all requests.
 
 ## Spec examples
 ```json
@@ -95,10 +95,11 @@ A range of model years is one request per year (`modelYear` takes one year).
 - Car seat station rows carry public contact names and phone numbers; report counts and places, not people.
 
 ## Access
-No key. Route `api` when api.nhtsa.gov answers (vPIC endpoints use vpic.nhtsa.dot.gov). Requests are
+No key. `fetch` works when api.nhtsa.gov answers (vPIC endpoints use vpic.nhtsa.dot.gov). Requests are
 small; the pack keeps to 3 a second. NHTSA publishes no numeric limit but says the API is not for bulk VIN
-lookups: for many VINs use vPIC's batch decoder (DecodeVINValuesBatch, 50 a call) rather than one `vin_decode` each. Manual route: `manual_download/INSTRUCTIONS.md` lists one JSON link
-per request; open each in a browser, save under the name shown, upload, then `--ingest`. Without the
+lookups: for many VINs use vPIC's batch decoder (DecodeVINValuesBatch, 50 a call) rather than one
+`vin_decode` each. Manual: `manual_bundle` writes `manual_download/INSTRUCTIONS.md` with one JSON link
+per request; open each in a browser, save under the name shown, upload, then `ingest`. Without the
 links: https://www.nhtsa.gov/recalls (search by vehicle), https://www.nhtsa.gov/ratings, and
 https://vpic.nhtsa.dot.gov/decoder/. For all recalls or complaints at once, NHTSA publishes flat files
 (tab-delimited, zipped) at https://www.nhtsa.gov/nhtsa-datasets-and-apis; this pack does not parse them.

@@ -80,7 +80,7 @@
       "browser_hosts": [
         "www.ssa.gov"
       ],
-      "how": "CMS (Medicare Trustees Report and NHE): open https://www.cms.gov/data-research/statistics-trends-and-reports/trustees-report-trust-funds (the '<year> Expanded and Supplementary Tables and Figures (ZIP)' link) or the NHE pages https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical and .../projected, download the ZIP named in INSTRUCTIONS.md and upload it as downloaded. Social Security (always this route: www.ssa.gov refuses scripts with HTTP 403): in a web browser open https://www.ssa.gov/oact/TR/<year>/lrIndex.html, click the 'Excel' link of the single-year tables (SingleYearTRTables_TR<year>.xlsx, one sheet per table such as IV.B1 or V.A3), save it and upload the .xlsx; --ingest reads the sheet named in the request."
+      "how": "CMS (Medicare Trustees Report and NHE): open https://www.cms.gov/data-research/statistics-trends-and-reports/trustees-report-trust-funds (the '<year> Expanded and Supplementary Tables and Figures (ZIP)' link) or the NHE pages https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical and .../projected, download the ZIP named in INSTRUCTIONS.md and upload it as downloaded. Social Security (always this route: www.ssa.gov refuses scripts with HTTP 403): in a web browser open https://www.ssa.gov/oact/TR/<year>/lrIndex.html, click the 'Excel' link of the single-year tables (SingleYearTRTables_TR<year>.xlsx, one sheet per table such as IV.B1 or V.A3), save it and upload the .xlsx; ingest reads the sheet named in the request."
     }
   },
   "cache": {

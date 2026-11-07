@@ -20,8 +20,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json",
     "test": "vitest run",
     "start": "node dist/bin/cli.js",
-    "import-python": "tsx scripts/copy-from-python.ts",
-    "parity": "tsx scripts/parity.ts",
     "smoke": "tsx scripts/smoke.ts",
     "smoke:http": "tsx scripts/smoke-http.ts"
   },

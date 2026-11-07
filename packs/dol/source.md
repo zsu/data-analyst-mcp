@@ -32,7 +32,7 @@ quarterly UI Data Summary (Title XII loan balances, solvency measures).
 | `ui_trust_fund` | no | ETA 2112, one row per state and month (1979-01 on), dollars, 134 readable columns | `state` (code or list), `start`, `end` (YYYY-MM), `latest` (true: each state's newest month), `fields` |
 | `ui_data_summary` | no | UI Data Summary, latest calendar-year quarter, one row per state + United States | `sheet`: Financial (default), Wage and Tax Rate, Regular Benefits, Benefits and Duration, Labor Force |
 
-Main aliases (`--search "words"` or `--endpoints` for all 45): `osha_inspection` (OSHA/inspection,
+Main aliases (45 in all; `request_schema` with `search: "words"` finds them): `osha_inspection` (OSHA/inspection,
 daily; state field site_state; default sort open_date), `osha_violation` (issuance_date),
 `osha_accident` (event_date), `osha_accident_injury`, `osha_accident_abstract`, `whd_enforcement`
 (WHD/enforcement, quarterly; st_cd; findings_end_date), `eta_ui_national_weekly_claims`
@@ -105,10 +105,11 @@ accounts), `balance_forward_*` (start of month), `deposits_*` and `disbursements
   check the first rows). Dates come as text, some with a time (`2005-12-20T00:00:00`).
 - Sorting defaults to the dataset's date field, newest first; `"sort_by": ""` keeps the API's own order.
   Paging is limit/offset, 1,000 rows per call (the API allows up to 10,000 rows or 5 MB).
-- Field names are checked by `--check` against the keyless field dictionary (`dataset_info`), so a wrong
-  name is `fix_spec` even without a key (when the dictionary cannot be read, the check is skipped; a field
+- Field names are checked by `fetch` against the keyless field dictionary (`dataset_info`) before any data
+  request, so a wrong name is `invalid_request`, not a failed data call (without a key, data requests stop at
+  `key_missing` first; when the dictionary cannot be read, the check is skipped; a field
   the API has but the dictionary lacks: `"check_fields": false` on that request). `osha_inspection` has no county field: filter on
-  `site_city` or `site_zip` (or fetch the state and select in analysis.py).
+  `site_city` or `site_zip` (or fetch the state and select with `compute`).
 - An unmatched filter returns no rows (the fetch then fails with a hint); an unknown field or operator
   is an HTTP 400 with the API's message.
 - Counts of inspections, violations or cases measure enforcement activity, which depends on staffing and
@@ -157,17 +158,18 @@ accounts), `balance_forward_*` (start of month), `deposits_*` and `disbursements
 Key: free; register at https://dataportal.dol.gov/registration (login.gov), then copy a key from
 https://dataportal.dol.gov/api-keys (up to 5 keys; sharing keys is prohibited). The key travels as the
 `X-API-KEY` query parameter (DOL API User Guide; the pack never logs it). Without a key only `datasets`
-and `dataset_info` run (route `api`); data requests route to `run_setup` (local) or `manual_download`
-(sandbox). Manual route: `manual_download/INSTRUCTIONS.md` has one link per 1,000 rows with
-`{API_KEY}` to replace (or one command runs download_data.sh / .ps1, which asks for the key hidden); upload, then `--ingest`. Other
+and `dataset_info` run; data requests stop with `key_missing`: the user stores a key with
+`npx -y data-analyst-mcp setup dol` in their own terminal (on a hosted server, the link in the error's `fix`);
+never ask for a key in chat. Or use `manual_bundle`.
+Manual route: `manual_download/INSTRUCTIONS.md` has one link per 1,000 rows with
+`{API_KEY}` to replace (or one command runs download_data.sh / .ps1, which asks for the key hidden); upload, then `ingest`. Other
 sources of the same data: the API Query Builder on each dataset page, https://www.osha.gov/data,
 https://enforcedata.dol.gov, https://oui.doleta.gov/unemploy/claims.asp (weekly claims).
 The unemployment insurance trust fund files need no key and never receive it (a separate client fetches them
-from oui.doleta.gov): `ui_trust_fund` and `ui_data_summary` route `api` without a key (or `bulk` when only
-oui.doleta.gov answers). Manual: download https://oui.doleta.gov/unemploy/csv/ar2112.csv (listed on
+from oui.doleta.gov): `fetch` gets `ui_trust_fund` and `ui_data_summary` without a key. Manual: download https://oui.doleta.gov/unemploy/csv/ar2112.csv (listed on
 https://oui.doleta.gov/unemploy/DataDownloads.asp with its data map) or
 https://oui.doleta.gov/unemploy/data_summary/SummaryTables.xlsx (https://oui.doleta.gov/unemploy/data_summary/DataSum.asp),
-upload it unchanged, then --ingest (the spec's state, month and field filters are applied then).
+upload it unchanged, then `ingest` (the spec's state, month and field filters are applied then).
 
 ## Citation and terms
 "U.S. Department of Labor, <agency> <dataset name>, DOL Open Data API, retrieved <date>." For the trust fund

@@ -18,7 +18,7 @@ drug shortages; device 510(k), PMA, classification, UDI; substances and UNII.
 | `search` | records (1,000 a page, at most 26,000) | `dataset`, `search`, `sort` |
 | `count` | `term,count` rows (top 1,000; 999 without a key) or `time,count` for a date field | `dataset`, `search`, `count`, `limit` |
 
-`dataset` aliases (`--endpoints` lists all 24; the path form `drug/event` works too): `drug_event`
+`dataset` aliases (24 in the catalog, found with a `request_schema` search; the path form `drug/event` works too): `drug_event`
 (FAERS), `drug_label`, `drug_ndc`, `drug_enforcement`, `drugsfda`, `drug_shortages`, `device_event`
 (MAUDE), `device_510k`, `device_classification`, `device_enforcement`, `device_recall`, `device_pma`,
 `device_registration`, `device_udi`, `food_enforcement`, `food_event` (CAERS), `animal_event`,
@@ -106,7 +106,7 @@ or years in analysis.
 Key optional: `DATA_GOV_API_KEY` (an api.data.gov key; sign up at https://open.fda.gov/apis/authentication/),
 sent as `api_key`. That page says a key is required to call the API, but keyless calls work (verified
 2026-10-22), within the lower limits below and the 999-term count limit. Without a key openFDA allows
-240 requests a minute and 1,000 a day per IP; with one, 120,000 a day (openFDA documentation). Route `api` either way. Manual route: INSTRUCTIONS.md lists the
+240 requests a minute and 1,000 a day per IP; with one, 120,000 a day (openFDA documentation). `fetch` works either way. Manual route (`manual_bundle`): INSTRUCTIONS.md lists the
 query URLs (JSON, no key needed; one per 1,000 records); open, save under the shown name, upload. Whole
 datasets: https://open.fda.gov/data/downloads/ (zipped JSON).
 

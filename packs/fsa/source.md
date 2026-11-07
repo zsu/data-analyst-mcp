@@ -2,8 +2,7 @@
 Depth: standard. Key: none. U.S. Department of Education, Office of Federal Student Aid: the federal student
 loan portfolio (outstanding balances and recipients by program, loan status, delinquency, repayment plan, loan
 type, borrower state, age and debt size; quarterly from NSLDS) and Direct Loan and grant (Pell, TEACH) volume by
-school and award-year quarter (from COD). Published .xls workbooks, read into tidy rows (needs the Python
-package xlrd).
+school and award-year quarter (from COD). Published .xls workbooks, read into tidy rows.
 
 ## When to use
 - How much federal student debt is outstanding, and how it splits by program (Direct Loans, FFEL, Perkins),
@@ -92,11 +91,10 @@ Portfolio columns: `report` (the sheet title), `fiscal_year`, `quarter` (Q1-Q4; 
 ## Access
 No key. Files come from studentaid.gov/sites/default/files/fsawg/datacenter/library/ (fixed names, refreshed in
 place; volume files named dl-dashboard-ay2025-2026-q4.xls and grants-ay24-25-q4.xls). Only .xls is published;
-reading it needs the Python package xlrd (`install_deps` without it). A file not yet published (the next award
-year) is a 404, reported as not found. Manual route: the links in manual_download/INSTRUCTIONS.md, or the Data
-Center pages (https://studentaid.gov/data-center/student/portfolio and
-https://studentaid.gov/data-center/student/title-iv): download the .xls, upload it, then --ingest. Without
-xlrd, save the sheet as CSV including its title rows and upload that.
+the server reads it directly. A file not yet published (the next award year) is a 404, reported as not found.
+Manual route (`manual_bundle`): the links in manual_download/INSTRUCTIONS.md, or the Data Center pages
+(https://studentaid.gov/data-center/student/portfolio and
+https://studentaid.gov/data-center/student/title-iv): download the .xls, upload it, then `ingest`.
 
 ## Citation and terms
 "U.S. Department of Education, Federal Student Aid, <report name>, FSA Data Center (studentaid.gov/data-center),

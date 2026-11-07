@@ -138,7 +138,7 @@ function itemFor(r: SpecRequest, eps: any): any {
     url = page;
     note = `no verified file link for this year: open ${page} in a web browser, click ${what}, save the ` +
       "workbook and upload it (any file name when it is the only file uploaded; else rename it to " +
-      `${fname}). Some older years publish only PDF or web tables, which --ingest cannot read.`;
+      `${fname}). Some older years publish only PDF or web tables, which ingest cannot read.`;
   }
   return { name: `${r.name}#1`, request: r.name, url, filename: fname, also_ext: [".xlsx", ".xls"], needs_key: false,
     method: "GET", body: null, note };

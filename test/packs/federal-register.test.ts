@@ -1,4 +1,4 @@
-/** federal-register: ported from the Python skill's tests/sources/federal-register/test_federal_register.py.
+/** federal-register: ported from tests/sources/federal-register/test_federal_register.py.
  * Fixtures were recorded live from www.federalregister.gov (October 2026). */
 import fs from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";

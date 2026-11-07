@@ -1,5 +1,5 @@
 /**
- * uspto: ported from the Python skill's tests/sources/uspto/test_uspto.py. doc_applications_search.json is the JSON
+ * uspto: ported from tests/sources/uspto/test_uspto.py. doc_applications_search.json is the JSON
  * response sample USPTO publishes for the Patent File Wrapper search endpoint (no key was available), mapped to the
  * query that would return it; live_probe_401.json is a real keyless probe response recorded on 2026-10-20.
  */

@@ -17,18 +17,18 @@ rule for "Don't know — decide empirically" (show the main alternative as a sen
 | **Calendar or fiscal year** | Calendar year; federal fiscal year (October to September) | Budget amounts (outlays, revenues, deficits, debt, interest): fiscal years, and a share of GDP uses fiscal-year GDP (the average of the four quarters October to September). Economic variables: calendar years, unless they feed a fiscal-year ratio |
 | **Nominal or real; deflator; base year** | Current dollars; real via PCE, CPI-U, GDP deflator; base = latest full year or a chosen year | Budget amounts: nominal, plus shares of GDP (the usual convention for comparisons over time). Incomes and wages: real, deflated by PCE or CPI-U when the user's context is CPI-based; base = latest full year; say "in <year> dollars" |
 | **Growth measure** | Quarterly annualized; year over year; fourth quarter to fourth quarter; annual average over annual average; CAGR between dates | The publishing agency's convention: BEA's annual growth of GDP is **annual average over annual average** (its headline "real GDP increased 2.8 percent in 2024"); **Q4 over Q4** when comparing with Federal Reserve or CBO projections, which use it; annual average for levels such as unemployment and interest rates; quarterly annualized for the latest quarter (BEA's headline). Name the measure every time |
-| **Frequency conversion** | Average, end of period, sum | Rates and prices: average. Stocks (debt, balances): end of period. Flows reported per period (monthly outlays): sum. Never let FRED convert silently: use `tsstats.to_frequency`, which refuses incomplete periods |
+| **Frequency conversion** | Average, end of period, sum | Rates and prices: average. Stocks (debt, balances): end of period. Flows reported per period (monthly outlays): sum. Never let FRED convert silently: convert in `compute` (a rollup by period), and drop incomplete periods |
 | **Vintage** | Latest data; as published on a date (ALFRED); first release; full revision history | Latest, unless the question is about what was known at a time (a baseline's starting point, a forecast evaluation, "as first reported"): then the vintage dated just before that time, and say so. Revision questions compare first release with latest |
 | **Seasonal adjustment** | SA vs. NSA | Short-run changes and charts: SA. 12-month changes of CPI and annual averages: NSA (BLS convention). Fiscal-year sums: NSA source data summed over complete years |
 | **Period and baseline** | A business-cycle peak (2019 Q4, Feb 2020), a policy date, the last 10 or 20 years | The business-cycle peak before the event the user cares about; otherwise the latest 10 complete years (20 for budget ratios). Show one alternative baseline as a sensitivity |
 | **Projections** | Include CBO's projected potential output or NROU beyond the last actual date, or stop at the last actual | Stop at the last actual date for every comparison with data. Use projections only when the user asks about them, labeled as CBO's projections and with the vintage of the outlook |
 
 Ask at most four, in one round. Series IDs are never a question for the user: resolve them with
-`docs/series.md`, `--search` and `--describe`.
+`docs/series.md` and `request_schema` searches (words, or `describe <IDs>`).
 
 ## 2. Conventions
 - **Shares of GDP:** numerator and denominator on the same basis and period. Fiscal-year budget amounts over
-  fiscal-year GDP; mind the units (FYOINT in millions, GDP in billions: `tsstats.share_of(..., scale=1000)`).
+  fiscal-year GDP; mind the units (FYOINT in millions, GDP in billions: divide the numerator by 1,000 first).
   Benchmark against FRED's own ratio where one exists (FYOIGDA188S, FYFSGDA188S, FYGFGDQ188S), but know how it is
   built: FRED's annual budget ratios divide the fiscal-year amount by **calendar-year** GDP (GDPA) as published
   when the ratio was last updated (FY2025 interest: 970,065 / about 30,762, GDPA as published in April 2026, = 3.15
@@ -39,15 +39,15 @@ Ask at most four, in one round. Series IDs are never a question for the user: re
   debt over fiscal-year GDP by about 0.5 to 1.5 points (FY2019: 77.5 against 79.0). Never present FRED's
   ratio as a fiscal-year-GDP ratio. `FYGDP` is OMB's fiscal-year GDP (from its latest budget; it lags BEA's
   revisions); averaging the four quarters of `GDP` gives the current-vintage equivalent.
-- **Annualized rates:** quarterly GDP growth is reported at an annual rate: `(Q_t/Q_{t-1})^4 - 1`
-  (`tsstats.annualized`). GDP levels are already at an annual rate (SAAR): do not multiply by four; a fiscal-year
+- **Annualized rates:** quarterly GDP growth is reported at an annual rate: `(Q_t/Q_{t-1})^4 - 1`.
+  GDP levels are already at an annual rate (SAAR): do not multiply by four; a fiscal-year
   GDP is the mean of four quarterly SAAR values, not their sum.
 - **Real values:** chained-dollar components do not add up to their totals; do not sum chained-dollar series.
   Compute shares in nominal terms.
 - **Indexes:** an index level is not a price. Percent changes of indexes from the published values, rounded to one
   decimal at the end.
-- **Fiscal years:** FY2025 = October 1, 2024, to September 30, 2025. `tsstats.fiscal_year_of`,
-  `tsstats.fiscal_year_label` (FRED dates fiscal-year dollar series on Sep 30 and some ratios on Jan 1).
+- **Fiscal years:** FY2025 = October 1, 2024, to September 30, 2025. `compute`'s `fiscal_year` and
+  `to_fiscal` steps assign fiscal years (FRED dates fiscal-year dollar series on Sep 30 and some ratios on Jan 1).
 - **Gaps:** October 2025 was not collected for the CPI, CPS and LAUS (lapse in appropriations); daily market
   series skip holidays. Changes and averages across a gap need both endpoints or a complete period.
 - **Levels across vintages:** a comprehensive revision changes the reference year of chained-dollar series (real
@@ -113,12 +113,12 @@ GDP, Fiscal Years 2000 to 2025". The units line names the basis: "Percent of GDP
 dollars, seasonally adjusted annual rate".
 
 ## 6. Chart forms
-- Trends: line charts with a real date axis (the exhibit CSV keeps the `date` column; `tsstats.to_exhibit`
-  writes it) and recession shading (`"recessions": true`); at most 4–5 series.
+- Trends: line charts with a real date axis (the exhibit CSV keeps the `date`
+  column) and recession shading (`"recessions": true`); at most 4–5 series.
 - Fiscal-year amounts: columns for a few years, a line for long histories; label years by number and say "fiscal
   years" in the title.
 - Comparisons at one date (states, components): horizontal bars when labels are long.
 - Composition (contributions to growth, outlays by category): stacked columns.
-- Indexes compared over time: rebase to 100 at the same date (`tsstats.rebase`).
+- Indexes compared over time: rebase to 100 at the same date (a `compute` derive step).
 - No dual axes (put the second measure in its own exhibit), no pies, no 3-D. Leave gaps empty in the exhibit CSV
   so the line breaks there.

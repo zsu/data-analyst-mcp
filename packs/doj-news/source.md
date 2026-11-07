@@ -22,7 +22,8 @@ the 94 U.S. Attorney's Offices, FBI, DEA, ATF and other components) and Justice 
 
 Fields: `uuid, title, date, created, changed, url, component, topic, teaser, body, number, attachment,
 image` (blog: `attachments`). The pack's default `fields` leaves out `body` to keep lists small; ask for
-`body` explicitly, or fetch single releases. `--search "topics"` lists the components and topics.
+`body` explicitly, or fetch single releases. `request_schema` with `search: "topics"` lists the components and
+topics.
 
 ## Spec examples
 ```json
@@ -85,9 +86,9 @@ image` (blog: `attachments`). The pack's default `fields` leaves out `body` to k
 - The page size is at most 50; more than 4 requests a second may be blocked (DOJ API documentation).
 
 ## Access
-No key. Route `api` when www.justice.gov answers; the pack sends at most 3 requests a second. Manual
-route: `manual_download/INSTRUCTIONS.md` lists one JSON link per page (50 records each, newest posted first);
-`since`/`until` are applied when the files are ingested. Without the links: use the filters at
+No key. `fetch` downloads when www.justice.gov answers; the pack sends at most 3 requests a second. Manual
+route (`manual_bundle`): `manual_download/INSTRUCTIONS.md` lists one JSON link per page (50 records each, newest
+posted first); `since`/`until` are applied when the files are passed to `ingest`. Without the links: use the filters at
 https://www.justice.gov/news (type, component, topic, date range) and copy titles, dates and URLs into a
 CSV with columns `title,date_iso,component_names,url`.
 

@@ -4,7 +4,7 @@
 #
 # Usage:  bash @STEM@.sh
 #
-#   - The requests are built into this script (written by the data-analyst skill; do not edit them).
+#   - The requests are built into this script (written by data-analyst-mcp; do not edit them).
 #   - Files that need an API key: the script uses the key's environment variable when it is set,
 #     otherwise asks for the key with hidden input (press Enter to skip those files). The key is never
 #     shown, saved, or put on a command line.

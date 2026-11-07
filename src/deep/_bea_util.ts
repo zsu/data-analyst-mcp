@@ -1,6 +1,6 @@
 /**
  * Python-compatible helpers the bea pack needs beyond core (csv.reader, float(), str(), html.unescape and the
- * utf-8-sig / latin-1 decoding of BEA's bulk files), so the CSVs match the Python skill's byte for byte.
+ * utf-8-sig / latin-1 decoding of BEA's bulk files), so the CSVs match Python's byte for byte.
  */
 import { pyFloatRepr } from "../core/py.js";
 

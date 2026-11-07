@@ -1,4 +1,4 @@
-/** regulations: ported from the Python skill's tests/sources/regulations/test_regulations.py. Fixtures were recorded
+/** regulations: ported from tests/sources/regulations/test_regulations.py. Fixtures were recorded
  * live from api.regulations.gov (October 2026); the key is never part of a fixture. */
 import { beforeAll, describe, expect, it } from "vitest";
 import adapter from "../../src/adapters/regulations.js";

@@ -24,7 +24,7 @@ default rule for "Don't know — decide empirically".
 | **Comparison groups** | Demographic groups (CPS), industries (CES), areas | As asked; flag thin CPS groups (small groups have wide confidence intervals; use 12-month averages or annual averages) |
 
 Ask at most four, in one round. A question about which series ID to use is never put to the user:
-resolve it yourself with `--describe` and the tables in `series_ids.md`.
+resolve it yourself with the `request_schema` search `describe <ID>` and the tables in `series_ids.md`.
 
 ## 2. Conventions
 - **Definitions:** unemployment rate = unemployed ÷ labor force; participation rate = labor force ÷
@@ -46,7 +46,7 @@ resolve it yourself with `--describe` and the tables in `series_ids.md`.
 - **January population controls (CPS):** levels shift in January; compare levels across Januaries only with
   a note, or use rates.
 - **Annual averages:** BLS's M13 values are preferred. A computed average needs all 12 months; a year with a
-  gap has no computed average (`tsstats.annual_average` returns NaN).
+  gap has no computed average (leave it empty).
 - **Recessions (NBER):** March–November 2001, December 2007–June 2009, February–April 2020. Use the note
   "Recessions begin just after a peak in economic activity and run through the subsequent trough."
 - **Correlation, not cause:** a policy or event "coincided with" a change unless a method that supports a
@@ -63,7 +63,7 @@ resolve it yourself with `--describe` and the tables in `series_ids.md`.
   - CPS monthly change in unemployment: about ±425,000; in the unemployment rate: about ±0.3 percentage point.
   - JOLTS: median standard errors in the "significant change" tables on the JOLTS page.
   - CPI: standard errors of 1-, 2-, 6- and 12-month changes on the CPI variance estimates page.
-  `tsstats.significant(change, "ces_total_nonfarm_monthly_change")`. Call a change "statistically significant"
+  Compare each change with its threshold before describing it. Call a change "statistically significant"
   only when it exceeds the threshold; otherwise "little changed" (BLS's own phrase) or "about the same".
 - Sampling error does not apply to QCEW (a census of UI records), but revisions do.
 
@@ -101,9 +101,8 @@ names the adjustment: "Percent, seasonally adjusted". Source line: "Analyst calc
 Bureau of Labor Statistics, Current Population Survey (series LNS14000000)."
 
 ## 6. Chart forms
-- Trends: line charts, at most 4–5 series; facet rather than crowd. Monthly x-axis labels "Sep 2026"
-  (`tsstats.to_exhibit`).
+- Trends: line charts, at most 4–5 series; facet rather than crowd. Monthly x-axis labels "Sep 2026".
 - Changes by group at one date: horizontal bars when labels are long (industries, states), columns otherwise.
 - Composition (contributions to CPI change, payroll gains by industry): stacked columns.
-- Index comparisons (wages vs. prices): rebase both to 100 at the same date (`tsstats.rebase`).
+- Index comparisons (wages vs. prices): rebase both to 100 at the same date (a `compute` derive step).
 - No dual axes, no pies, no 3-D. Do not draw a line through a gap: leave the cell empty in the exhibit CSV.

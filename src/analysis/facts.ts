@@ -1,5 +1,5 @@
 /**
- * The registry of every number cited in an answer or report: a port of the Python skill's scripts/analysis/facts.py.
+ * The registry of every number cited in an answer or report: a port of scripts/analysis/facts.py.
  * Written to <workspace>/facts.json (same schema); the report builder fills {{name}} / {{name|fmt}} placeholders
  * from it and the audit traces each value to its cell.
  *

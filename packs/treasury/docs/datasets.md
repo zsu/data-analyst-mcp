@@ -2,14 +2,14 @@
 
 Start here to pick endpoints. Each row says whether the measure is a **stock** (a level at a date:
 take the end-of-period value or an average) or a **flow** (an amount over a period: sum months, or
-read a fiscal-year-to-date row). Confirm paths and field names live with `fetch.py --source treasury --search` and
-`fetch.py --source treasury --fields`; details and pitfalls are in `api_guide.md` (section numbers in brackets).
+read a fiscal-year-to-date row). Confirm paths and field names live with `request_schema` (`search: "<words>"`, then
+`search: "<endpoint>"` for its fields); details and pitfalls are in `api_guide.md` (section numbers in brackets).
 
 Units: **$** = dollars and cents; **$M** = millions of dollars; **%** = already in percent.
 
 "Rows to use" always names the column with the value (`data_type_cd` = T, not "the T row"): the same
-letter can be a value in two columns. Check live with `fetch.py --source treasury --fields <endpoint> --filter … --values`;
-each download's `data/README.md` also lists the values found in every code and description column.
+letter can be a value in two columns. Check live with `request_schema` and `search: "<endpoint> <filter JSON> values"`;
+each download's `data/treasury/README.md` also lists the values found in every code and description column.
 
 ## Question → endpoint
 
@@ -40,11 +40,11 @@ each download's `data/README.md` also lists the values found in every code and d
 | Buybacks | `v1/accounting/od/buybacks_operations` | | event | $ | date column is `operation_date` |
 | Federal government balance sheet, net cost (Financial Report) | `v2/accounting/od/balance_sheets`, `v2/accounting/od/statement_net_cost` | | annual | $ | lags months |
 
-Anything else: `python <skill>/scripts/fetch.py --source treasury --search "<words>"` lists every matching endpoint with
+Anything else: `request_schema` for treasury with a search (`"<words>"`) lists every matching endpoint with
 frequency, earliest and latest date, row count and the dataset page.
 
 ## Not in Fiscal Data: say so and offer the right source
-- **GDP, CPI, inflation**: BEA and BLS, through `fetch.py --source treasury --context` (CPI-U from FRED or BLS; GDP from
+- **GDP, CPI, inflation**: BEA and BLS, through the treasury spec's `context` field (CPI-U from FRED or BLS; GDP from
   FRED, with an annual World Bank fallback).
 - **Budget projections, baselines, scoring**: CBO (https://www.cbo.gov/data/budget-economic-data).
 - **Historical budget tables, % of GDP back to 1930, the President's budget**: OMB Historical Tables

@@ -4,7 +4,7 @@ Download the files for this analysis into the folder that holds this script. (Wi
 counterpart of @STEM@.sh.)
 
 .DESCRIPTION
-- The requests are built into this script (written by the data-analyst skill; do not edit them).
+- The requests are built into this script (written by data-analyst-mcp; do not edit them).
 - Files that need an API key: the script uses the key's environment variable when it is set, otherwise
   asks for the key with hidden input (press Enter to skip those files). The key is never shown or saved.
 - Needs nothing beyond Windows PowerShell 5.1 (built into Windows 10 and 11) or PowerShell 7.

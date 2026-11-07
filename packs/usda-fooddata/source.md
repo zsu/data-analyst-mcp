@@ -17,7 +17,7 @@ NHANES), and the Branded Foods database (label data of commercial products).
 | `foods` | up to 20 foods by id per request (the pack's limit; see traps) | `fdcIds` (list), `format` (default abridged), `nutrients` |
 | `list` | every food of a data type, paged | `dataType`, `sortBy`, `sortOrder` |
 
-`dataType` values (catalog aliases in `--endpoints`): `Foundation`, `SR Legacy`, `Survey (FNDDS)`,
+`dataType` values (catalog aliases, found with a `request_schema` search): `Foundation`, `SR Legacy`, `Survey (FNDDS)`,
 `Branded` (a list means any of them). `nutrients` takes nutrient NUMBERS (not ids): 208 energy kcal,
 203 protein, 204 total fat, 205 carbohydrate, 269 total sugars, 291 fiber, 307 sodium, 301 calcium,
 303 iron, 306 potassium, 601 cholesterol, 606 saturated fat, 605 trans fat, 401 vitamin C, 320 vitamin A
@@ -95,7 +95,7 @@ Search, then pick foods by `fdcId` and `dataType`; keep the id in the report so 
 Key optional: `DATA_GOV_API_KEY` (free api.data.gov key; sign up at https://fdc.nal.usda.gov/api-key-signup),
 sent as `api_key`. FDC allows 1,000 requests an hour per key; exceeding it blocks the key for an hour
 (FDC API guide). Without a key the pack uses `DEMO_KEY`, whose hourly and daily limits are much lower
-(api.data.gov; enough for a few searches). Route `api` either way. Manual route: INSTRUCTIONS.md links
+(api.data.gov; enough for a few searches). `fetch` works either way. Manual route (`manual_bundle`): INSTRUCTIONS.md links
 carry DEMO_KEY and open in a browser (save as the shown names, upload); whole data types (CSV or JSON)
 are at https://fdc.nal.usda.gov/download-datasets.
 

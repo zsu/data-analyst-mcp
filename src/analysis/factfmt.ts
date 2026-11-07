@@ -1,5 +1,5 @@
 /**
- * Formatting of registered facts for prose: a port of the Python skill's scripts/analysis/factfmt.py (shared by
+ * Formatting of registered facts for prose: a port of scripts/analysis/factfmt.py (shared by
  * facts, build_report and the audits). One version for every source pack: every format code the packs use.
  *
  * A format string is  [prefix:]... kind[:digits][:abs]    e.g. "pct:1", "signed:pct100:1", "pct:1:abs",

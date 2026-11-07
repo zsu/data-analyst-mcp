@@ -21,9 +21,9 @@ alternative fuel stations (AFDC Station Locator), utility electricity rates, sol
 | `utility_rates` | one row: residential, commercial, industrial $/kWh and utility name | `lat`, `lon` |
 | `solar_resource` | 13 rows (jan-dec, annual): `avg_dni`, `avg_ghi`, `avg_lat_tilt` in kWh/m2/day | `lat`, `lon` |
 | `pvwatts` | 12 monthly rows: `ac_kwh`, `dc_kwh`, `poa_kwh_m2`, `solrad_kwh_m2_day`, plus `ac_annual`, `capacity_factor`; with `timeframe=hourly`, 8,760 hourly rows instead (see traps) | `lat`, `lon`, `system_capacity` (kW), `module_type`, `losses` (%), `array_type`, `tilt`, `azimuth`, `timeframe` |
-| `alt_fuel_csv` | the station list as CSV with label headers (manual route) | as `alt_fuel_stations` |
+| `alt_fuel_csv` | the station list as CSV with label headers (for the manual bundle) | as `alt_fuel_stations` |
 
-Catalog aliases (`--search`): `ev_chargers`, `hydrogen_stations`, `electricity_rates`, `solar`, `pv_output`
+Catalog aliases (`request_schema` with `search`): `ev_chargers`, `hydrogen_stations`, `electricity_rates`, `solar`, `pv_output`
 (they name the endpoint; set `fuel_type` yourself).
 
 ## Spec examples
@@ -77,11 +77,12 @@ Catalog aliases (`--search`): `ev_chargers`, `hydrogen_stations`, `electricity_r
 ## Access
 Key optional. With `DATA_GOV_API_KEY` (free at https://developer.nlr.gov/signup/ or
 https://api.data.gov/signup/; the same api.data.gov key works) the limit is 1,000 requests an hour per
-key; without one the fetcher sends `DEMO_KEY`, documented as 30 requests an hour and 50 a day per IP address
-(the `X-RateLimit-Limit` header showed 10 an hour on 2026-10-22), so a keyless run fits only a few requests. Manual route: links in `manual_download/INSTRUCTIONS.md` (replace `{API_KEY}` with a key
-or `DEMO_KEY`); without any key, the AFDC Station Locator (https://afdc.energy.gov/stations) and
-https://afdc.energy.gov/data_download export station CSVs, and https://pvwatts.nlr.gov downloads PVWatts
-monthly results as CSV. Upload the files, then `--ingest`.
+key; without one `fetch` sends `DEMO_KEY`, documented as 30 requests an hour and 50 a day per IP address
+(the `X-RateLimit-Limit` header showed 10 an hour on 2026-10-22), so a keyless run fits only a few requests.
+Manual: the links `manual_bundle` writes to `manual_download/INSTRUCTIONS.md` carry `api_key=DEMO_KEY`
+(put a key in its place for more requests); without any key, the AFDC Station Locator
+(https://afdc.energy.gov/stations) and https://afdc.energy.gov/data_download export station CSVs, and
+https://pvwatts.nlr.gov downloads PVWatts monthly results as CSV. Upload the files, then `ingest`.
 
 ## Citation and terms
 "National Laboratory of the Rockies (formerly NREL), U.S. Department of Energy, <dataset>, developer.nlr.gov

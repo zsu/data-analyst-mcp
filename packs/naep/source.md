@@ -27,11 +27,11 @@ All endpoints call `GetAdhocData.aspx` with a different `type`; standard errors 
 | `gap_groups_across_jurisdictions` | is a group gap larger in one place? | `variable`, 2+ jurisdictions |
 | `variables` | independent variables for a subject, cohort (1, 2, 3 = grades 4, 8, 12), year | `subject`, `cohort`, `Year` |
 
-Codes (`--search` finds them; `--endpoints` lists the catalog):
+Codes (`request_schema` with `search` finds them in the catalog):
 - Subjects: `reading`, `math` (= mathematics), `science`, `writing`, `civics`, `history`, `geography`,
   `economics` (grade 12), `tel` (grade 8), `music` (grade 8). Aliases: `ela`, `us history`. The pack
   fills `subscale` with the composite scale: RRPCM, MRPCM (math grade 12: MWPCM), SRPUV, WRIRP, CIVRP,
-  HRPCM, GRPCM, ERPCM, TRPUN, MUSRP. Subscales: `--search geometry`.
+  HRPCM, GRPCM, ERPCM, TRPUN, MUSRP. Subscales: search `geometry`.
 - `variable`: TOTAL, SDRACE (race/ethnicity), GENDER, ECONDIS (economically disadvantaged), PARED,
   SCHTYPE, CHRTRPT, UTOL4 (city/suburb/town/rural), CENSREG, IEP, LEP; crosstab `SDRACE+GENDER`.
   SLUNCH3 (lunch eligibility) ends in 2022: in 2024 every SLUNCH3 cell is 999 "Non-qualified independent
@@ -106,9 +106,9 @@ Codes (`--search` finds them; `--endpoints` lists the catalog):
   fails with HTTP 400 or returns suppressed rows. Check one request first.
 
 ## Access
-No key. Route `api` when www.nationsreportcard.gov answers. Each request is one GET returning one JSON
-page. Manual route: `manual_download/INSTRUCTIONS.md` lists the same links (with QCData=true); open each,
-save the JSON under the name shown, upload, then `--ingest`. Without the links, build the table in the
+No key. `fetch` works when www.nationsreportcard.gov answers. Each request is one GET returning one JSON
+page. Manual: `manual_bundle` writes `manual_download/INSTRUCTIONS.md` with the same links (with QCData=true);
+open each, save the JSON under the name shown, upload, then `ingest`. Without the links, build the table in the
 NAEP Data Explorer (https://www.nationsreportcard.gov/ndecore/landing): choose subject, grade,
 jurisdictions, variables and statistics (include standard errors), run the significance test there, and
 download the Excel output; upload it and say which table it is.

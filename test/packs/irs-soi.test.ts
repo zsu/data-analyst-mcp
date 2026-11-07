@@ -1,4 +1,4 @@
-/** irs-soi: ported from the Python skill's tests/sources/irs-soi/test_irs_soi.py (same fixtures, specs and values). */
+/** irs-soi: ported from tests/sources/irs-soi/test_irs_soi.py (same fixtures, specs and values). */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";

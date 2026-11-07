@@ -57,9 +57,9 @@ state agencies, research institutes), so there is usually a precedent to follow 
 - Report the unweighted cell size internally. Suppress or footnote cells with fewer than about 100 respondents; unstable estimates are not published.
 - **Dollars:** convert to a single year's dollars and name the year and index ("in 2023 dollars, using the CPI-U-RS"; the PCE price index is a common choice for earnings and income), with CPI99 or `adjustMonetaryValues`. CPS ASEC income is for the **previous calendar year** (ASEC 2023 means 2022 income). ACS income is for the past 12 months, and IPUMS expresses it in survey-year dollars.
 - **Top-coding:** INCWAGE is top-coded, which mostly matters for means at high education levels. Mention it.
-- **Sampling error:** for differences that drive conclusions, note whether they are large relative to sampling error. ACS replicate weights (REPWTP, 80) and CPS ASEC replicate weights (REPWTP, 160) give proper standard errors. CPS basic monthly files have none (REPWTP is ASEC-only) and no design variables: give an approximate SE (clustered by household, `SERIAL` within month) and say it is approximate.
+- **Sampling error:** for differences that drive conclusions, note whether they are large relative to sampling error. ACS replicate weights (REPWTP, 80) and CPS ASEC replicate weights (REPWTP, 160) give proper standard errors. CPS basic monthly files have none (REPWTP is ASEC-only) and no design variables: an SE there can only be approximate (clustered by household, `SERIAL` within month). This server does not compute standard errors yet: report which weight was used and that standard errors were not computed.
 
-**Publication structure (mirrored in `build_report.py`, `"mode": "report"`; only when a report is asked for)**
+**Publication structure (mirrored in `build_report`, `"mode": "report"`; only when a report is asked for)**
 
 The report layout, the **exhibit chartbook**, runs in this order:
 1. **Cover:** "Month Year", the title (with the period for trend reports), and a hero chart that has its own title and unit label.
@@ -92,7 +92,7 @@ The report layout, the **exhibit chartbook**, runs in this order:
    - the date.
 10. **Footnotes** are numbered in each part (restarting in each section), and cite publications as: Organization, *Title* (Month Year), URL.
 
-Other variants, not built by `build_report.py`:
+Other variants, not built by `build_report`:
 - **Long-form**:
   - a Summary with Figure S-1 / Table S-1;
   - "Chapter N:" sections in two-column prose with embedded "Figure 1-1." / "Table 2-3.";
@@ -103,13 +103,12 @@ Other variants, not built by `build_report.py`:
 
 **Reading PDFs from sites that block scripts:** some publishers refuse scripts and the in-app browser (HTTP 403, bot-check slider). Fetch `https://web.archive.org/web/<year>/<full pdf url>` and extract the text with pypdf. If the plain year URL returns HTML, use a CDX timestamp with `id_` (for example `https://web.archive.org/web/20240430034127id_/<url>`). Cite the original URL.
 
-**Data files:** the codebook, the extract definition (`spec.json`, `data/ipums/extract_spec.json`), the download
-files in `reproduce/ipums/` (`download_ipums.sh` / `.ps1` with the extract built in, run with one command;
-`extract_spec.json`; `DOWNLOAD.md`; `REPRODUCE.md`), all attached to the page with Download buttons,
-and each exhibit's CSV ship with the product, so every number can be traced and the data requested again.
-The extract CSV (microdata) stays local: the IPUMS terms forbid redistributing it, so the report never links
-or embeds it, and it goes into a shared package only when the user confirms permission
-(`"replication": {"include_microdata": true}`).
+**Data files:** the codebook, the extract definition (`data/ipums/extract_spec.json`), `reproduce/ipums/`
+(written by `build_report`: the request as `spec.json` and `REPRODUCE.md`, which says how to request the same
+extract again), all attached to the page with Download buttons, and each exhibit's CSV ship with the product,
+so every number can be traced and the data requested again. The extract CSV (microdata) stays local: the
+IPUMS terms forbid redistributing it, so the report never links or embeds it, and `build_report` never puts
+it in a package (`"replication": {"include_microdata": true}` is ignored).
 
 **Chart forms**
 - Trends over time: line charts with at most 4–5 series. Facet (one exhibit per sex) rather than drawing 8 lines.

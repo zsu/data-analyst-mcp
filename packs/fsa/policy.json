@@ -72,7 +72,7 @@
       ]
     },
     "manual": {
-      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each is an .xls workbook on studentaid.gov), save it under the name shown and upload it. Without the links: open the FSA Data Center (https://studentaid.gov/data-center), Student Aid Data > Federal Student Loan Portfolio (https://studentaid.gov/data-center/student/portfolio) or Title IV Program Volume (https://studentaid.gov/data-center/student/title-iv), download the report's .xls and upload it, saying which report it is. Reading an .xls needs the Python package xlrd; without it, open the workbook in a spreadsheet program and save the sheet as CSV (keep the title rows) before uploading."
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser (each is an .xls workbook on studentaid.gov), save it under the name shown and upload it. Without the links: open the FSA Data Center (https://studentaid.gov/data-center), Student Aid Data > Federal Student Loan Portfolio (https://studentaid.gov/data-center/student/portfolio) or Title IV Program Volume (https://studentaid.gov/data-center/student/title-iv), download the report's .xls and upload it, saying which report it is."
     }
   },
   "cache": {

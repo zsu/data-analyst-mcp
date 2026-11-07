@@ -77,10 +77,10 @@ the first row); another date answers an empty or error reply.
   hundred KB; ask only for the period needed.
 
 ## Access
-No key; the host answers scripts (verified 2026-10-30). Limit used: one request per second. Route `api`;
-`manual` is the browser: the links in `manual_download/INSTRUCTIONS.md` open each JSON in the browser (save the
-page, upload it with --ingest), or use the downloads on newyorkfed.org (reference rates, SOMA holdings, Treasury
-operations, primary dealer statistics).
+No key; the host answers scripts (verified 2026-10-30). Limit used: one request per second. `fetch`
+works directly. Manual is the browser: the links `manual_bundle` writes to `manual_download/INSTRUCTIONS.md` open
+each JSON in the browser (save the page, upload it, then `ingest`), or use the downloads on newyorkfed.org
+(reference rates, SOMA holdings, Treasury operations, primary dealer statistics).
 
 ## Citation and terms
 Federal Reserve Bank of New York, Markets Data APIs (<dataset>), markets.newyorkfed.org, retrieved <date>.

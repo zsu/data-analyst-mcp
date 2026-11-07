@@ -23,7 +23,7 @@ full data item, most precise), `domain_desc` (TOTAL for no breakdown), `agg_leve
 STATE, COUNTY, ...), `state_alpha`, `state_name`, `county_name`, `county_code`, `year`, `freq_desc`,
 `reference_period_desc`. Operators go on the parameter name: `year__GE=2012` (>=), `year__LE` (<=),
 `__LT` (<), `__GT` (>), `__LIKE`, `__NOT_LIKE`, `__NE` (not equal) (API page, quickstats.nass.usda.gov/api).
-Catalog aliases for `short_desc` (`--endpoints`): corn_production, corn_yield, corn_planted,
+Catalog aliases for `short_desc` (a `request_schema` search finds more): corn_production, corn_yield, corn_planted,
 corn_price, soybean_production, soybean_yield, wheat_production, cattle_inventory, hogs_inventory,
 milk_production (names from Quick Stats usage, NOT verified live: no key; check with `param_values`).
 

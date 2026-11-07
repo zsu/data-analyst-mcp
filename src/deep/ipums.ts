@@ -1,5 +1,5 @@
 /**
- * IPUMS microdata extracts (USA/ACS, CPS, NHIS, MEPS, ...): the deep pack (port of the Python skill's
+ * IPUMS microdata extracts (USA/ACS, CPS, NHIS, MEPS, ...): the deep pack (port of
  * sources/ipums/fetch.py and ipums_api.py). Define, submit, wait for, download and package one extract.
  *
  * spec (converted to the IPUMS API v2 body):

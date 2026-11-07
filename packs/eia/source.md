@@ -23,7 +23,7 @@ Short-Term and Annual Energy Outlooks, international energy, by period, state, s
 | `facet_values` | values of one facet | `route`, `facet` |
 | `metadata` | one row: frequencies, facets, data columns with units, start/end | `route` |
 
-Route aliases (`--search "words"`, `--endpoints`): `retail_sales` electricity/retail-sales (price,
+Route aliases (`request_schema` with `search: "words"` finds them): `retail_sales` electricity/retail-sales (price,
 sales, revenue, customers; facets stateid, sectorid RES COM IND TRA OTH ALL), `power_operations`
 (generation by location, sectorid, fueltypeid), `power_emissions_by_state`, `generator_capacity`,
 `seds` (seriesId = MSN code, stateId), `total_energy` (msn), `steo`, `aeo_2026`, `spot_prices`
@@ -87,22 +87,22 @@ Unknown facet values: `{"name": "f", "endpoint": "facet_values", "params": {"rou
 ## Access
 Key optional: free at https://www.eia.gov/opendata/register.php (the API runs on api.data.gov, so any
 api.data.gov key works as EIA_API_KEY). Without a key the pack sends DEMO_KEY, which allowed 10
-requests an hour from one address when checked (HTTP 429 beyond); store a key with the setup script
-for real work. Route `api` when api.eia.gov answers (responses can take 10-30 seconds).
-Keyless file (`keyless_file` and `keyless_files` in `--check`; after a fetch stops at HTTP 429 on DEMO_KEY,
-the blocked route offers them too): every petroleum series is also a keyless Excel file,
+requests an hour from one address when checked (HTTP 429 beyond); for real work the user stores a key with
+`npx -y data-analyst-mcp setup eia` in their own terminal. `fetch` downloads when api.eia.gov answers (responses
+can take 10-30 seconds).
+Keyless file (when a fetch stops at HTTP 429 on DEMO_KEY, the error carries `keyless_file` and `keyless_files`):
+every petroleum series is also a keyless Excel file,
 `https://www.eia.gov/dnav/pet/hist_xls/<series><d|w|m|a>.xls` (daily, weekly, monthly, annual; e.g.
 `EMM_EPMR_PTE_NUS_DPGm.xls`, `MGFUPUS2m.xls`, `RWTCd.xls`; 30-500 KB; checked 2026-10-30). It covers a
 request of a `petroleum/*` route with `facets: {"series": [one id]}` and no other facet (a series lacks a file
 at a frequency EIA does not publish for it: `MGFUPUS2w.xls` is HTTP 404). Download each `keyless_files` url
-under its filename into a new folder and run `ingest_command` on it (needs the xlrd package; without it
-`--check` lists no file and `--ingest` stops with `install_deps`): it keeps the request's dates and records
-the route as `keyless_file`. Ingested rows have `period`, `series`, `series-description`, `value`, `units`
+under its filename and call `ingest` with the same spec and those files: it keeps the request's dates and
+records the route as `keyless_file`. Ingested rows have `period`, `series`, `series-description`, `value`, `units`
 only: `units` is the file's wording ("Dollars per Gallon" where the API says "$/GAL"), and the duoarea,
 product and process columns are absent. Periods follow the API's formats (the file dates monthly rows the
-15th and annual rows July 1; the pack keeps YYYY-MM and YYYY). Manual route:
+15th and annual rows July 1; the pack keeps YYYY-MM and YYYY). Manual route (`manual_bundle`):
 `manual_download/INSTRUCTIONS.md` has one JSON link per 5,000 rows carrying DEMO_KEY (replace it with
-your key if the hourly limit is hit); upload, then `--ingest`. Alternatives: the API browser
+your key if the hourly limit is hit); upload, then `ingest`. Alternatives: the API browser
 https://www.eia.gov/opendata/browser/ (CSV/Excel download) or the data pages on eia.gov.
 
 ## Citation and terms

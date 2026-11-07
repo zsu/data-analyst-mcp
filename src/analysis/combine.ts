@@ -1,5 +1,5 @@
 /**
- * Helpers for combining sources (a port of the Python skill's scripts/analysis/combine.py), on compute's tables.
+ * Helpers for combining sources (a port of scripts/analysis/combine.py), on compute's tables.
  * Sources disagree on periods, geography codes, units and vintages; these make the conversions explicit and
  * refuse silent ones:
  *   fiscalYear(date)        federal fiscal year (October-September, named for the year it ends)

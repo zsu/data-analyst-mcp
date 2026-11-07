@@ -31,8 +31,8 @@ rows after filtering. Filters match without case or surrounding spaces; a list m
 `DV_WNC`, `DV_WSC`) from 1991-01; quarterly purchase-only, all-transactions (from 1975) and expanded-data for the
 U.S., divisions and states; `MSA` rows: all-transactions and expanded-data for 410 metros and metro divisions
 (`place_id` = CBSA code), purchase-only for the 100 largest; distress-free (14 metros), non-metro (state),
-manufactured-home (U.S. and divisions) and developmental Puerto Rico indexes. Catalog aliases (`--search`) point
-to these endpoints. Not wrapped: the ZIP5 (40 MB .xlsx) and census tract (90 MB .csv) annual files, the
+manufactured-home (U.S. and divisions) and developmental Puerto Rico indexes. Catalog aliases (`request_schema`
+`search`) point to these endpoints. Not wrapped: the ZIP5 (40 MB .xlsx) and census tract (90 MB .csv) annual files, the
 quarterly expanded-data and purchase-only .xlsx variants (the same series are in `hpi_master`), and the release
 summary workbooks (`hpi_po_monthly_sa.xlsx`, a formatted table of percent changes, not a data table).
 
@@ -95,8 +95,9 @@ Put several geographies in one request (`"place_id": ["USA", "DV_PAC"]`) rather 
 
 ## Access
 No key, no API: files on www.fhfa.gov, which answers scripts (verified 2026-10-30). Limit used: one request per
-second. Route `api` downloads the file; `manual`: open the link in `manual_download/INSTRUCTIONS.md`, save the
-file under the name shown and upload it (the pack applies the same filters to the upload). Index pages:
+second. `fetch` downloads the file; manual route (`manual_bundle`): open the link in
+`manual_download/INSTRUCTIONS.md`, save the file under the name shown, upload it and call `ingest` (the pack
+applies the same filters to the upload). Index pages:
 https://www.fhfa.gov/data/hpi/datasets (every HPI file), https://www.fhfa.gov/data/conforming-loan-limit (loan
 limits by year, with FAQs and the announcement), https://www.fhfa.gov/data/pudb (Public Use Databases and their
 definitions).

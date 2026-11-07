@@ -80,7 +80,7 @@
       ]
     },
     "manual": {
-      "how": "Open the product's index page on irs.gov (ZIP code data: https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics-zip-code-data-soi; county data: https://www.irs.gov/statistics/soi-tax-stats-county-data; state data: https://www.irs.gov/statistics/soi-tax-stats-historic-table-2; migration data: https://www.irs.gov/statistics/soi-tax-stats-migration-data), open the tax year (or filing-year pair) and download the all-states CSV named in INSTRUCTIONS.md (for example 22incyallagi.csv), then upload it unchanged; --ingest filters it by the spec. The per-state Excel files are not read by --ingest."
+      "how": "Open the product's index page on irs.gov (ZIP code data: https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics-zip-code-data-soi; county data: https://www.irs.gov/statistics/soi-tax-stats-county-data; state data: https://www.irs.gov/statistics/soi-tax-stats-historic-table-2; migration data: https://www.irs.gov/statistics/soi-tax-stats-migration-data), open the tax year (or filing-year pair) and download the all-states CSV named in INSTRUCTIONS.md (for example 22incyallagi.csv), then upload it unchanged; ingest filters it by the spec. The per-state Excel files are not read by ingest."
     }
   },
   "cache": {

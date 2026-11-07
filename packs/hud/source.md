@@ -51,7 +51,8 @@ like METRO47900M47900. Get them from `list_counties` / `list_metro_areas`.
   income-limit year. `year` defaults to the latest year of each; always set it for a reproducible number
   and report it as "FY".
 - Numbers sometimes arrive as text with a decimal ("758.0") and sometimes as integers (1772),
-  depending on resource and year; convert in `analysis.py`.
+  depending on resource and year; `compute` reads an all-numeric column as numbers (`number(x)` in a derive
+  step converts one that is not).
 - Small Area FMR metros (`smallarea_status` "1") return one row per ZIP plus a `zip_code` "MSA level"
   row; use the MSA level row for the metro value and never average ZIP rows.
 - County and metro values differ: a metropolitan county's FMR is its HUD metro FMR area's value
@@ -72,16 +73,17 @@ like METRO47900M47900. Get them from `list_counties` / `list_metro_areas`.
 
 ## Access
 Key required: a free HUD User access token (https://www.huduser.gov/hudapi/public/register; select the
-"Fair Market Rents and Income Limits" dataset, then Create New Token). Store it as `HUD_USER_TOKEN`
-with the setup script; it is sent as `Authorization: Bearer <token>`. Rate limits are not published;
+"Fair Market Rents and Income Limits" dataset, then Create New Token). The user stores it as
+`HUD_USER_TOKEN` with `npx -y data-analyst-mcp setup hud` in their own terminal (never ask for it in chat); without
+it `fetch` stops with `key_missing`. It is sent as `Authorization: Bearer <token>`. Rate limits are not published;
 the pack sends at most one request a second.
-Manual route: the bundle's download scripts send the token header from the user's own computer
+Manual route (`manual_bundle`): the bundle's download scripts send the token header from the user's own computer
 (browser links alone answer 401). Without a token, use the published files: FMRs at
 https://www.huduser.gov/portal/datasets/fmr.html and income limits at
 https://www.huduser.gov/portal/datasets/il.html (pick the fiscal year; take the "revised" workbook when
 there is one, e.g. FY26_FMRs_revised.xlsx) and upload it named after the request (`<name>.xlsx` or `.csv`,
-e.g. `fmr_fy2027.xlsx` for request `fmr_fy2027`). Ingest reads JSON, CSV and Excel (pandas with
-openpyxl; a workbook with malformed metadata is read anyway) and keeps only the rows of the request's
+e.g. `fmr_fy2027.xlsx` for request `fmr_fy2027`), then call `ingest`. It reads JSON, CSV and Excel (.xlsx,
+.xls; a workbook with malformed metadata is read anyway) and keeps only the rows of the request's
 `entityid` (columns `hud_area_code`, `metro_code`, `fips`, `fips2010`) or `statecode`; it refuses a file with
 no row for the id. A metro area comes back as one row per county or town, all with the metro's values. The
 workbooks' columns differ by year (`metro_code`/`areaname`/`fips2010` in FY2022, `hud_area_code`/

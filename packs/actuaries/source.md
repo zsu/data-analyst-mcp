@@ -74,7 +74,8 @@ trust fund operations in current dollars and in CPI-indexed 2026 dollars.
   {"name": "oasdi_ops", "endpoint": "ssa_tr_table", "params": {"report_year": 2026, "table": "VI.G2"}},
   {"name": "population", "endpoint": "ssa_tr_table", "params": {"report_year": 2026, "table": "V.A3"}}]}
 ```
-Keep SSA requests in their own spec: a spec with any SSA request goes to the manual route as a whole.
+Keep SSA requests in their own spec: `fetch` refuses a spec with any SSA request as a whole (the CMS requests in it
+can be fetched in their own spec).
 
 ## Data format and traps
 - How tables are read: title lines and footnotes go to the fetch notes; the column names join the header rows
@@ -119,15 +120,15 @@ Keep SSA requests in their own spec: a spec with any SSA request goes to the man
   some header rows as `section`: check the columns.
 
 ## Access
-CMS: no key, the host answers scripts (verified 2026-10-30); route `api`, one request per second. If a CMS page
-changes so the link is not found, the fetch says so; download the ZIP by hand (manual route) and upload it.
+CMS: no key, the host answers scripts (verified 2026-10-30); `fetch` downloads it, one request per second. If a CMS
+page changes so the link is not found, the fetch says so; download the ZIP by hand (`manual_bundle`) and upload it.
 SSA: www.ssa.gov answers every script (urllib, curl) with HTTP 403 "Access Denied" (Akamai bot filter, verified
-2026-10-30), so `ssa_tr_table` never fetches: `--check` returns `manual_download` with a bundle and a fetch stops as
-`blocked` with the same route. The user opens https://www.ssa.gov/oact/TR/2026/lrIndex.html in a web browser, clicks
+2026-10-30), so `ssa_tr_table` never fetches: `fetch` stops with `agency_unavailable` before sending anything and
+points to `manual_bundle`. The user opens https://www.ssa.gov/oact/TR/2026/lrIndex.html in a web browser, clicks
 the "Excel" link of the single-year tables (SingleYearTRTables_TR2026.xlsx, about 400 KB, every sheet in one
-file), saves it and uploads it; `--ingest` reads the sheet named by `table`. Other report tables (e.g. the
+file), saves it and uploads it; `ingest` reads the sheet named by `table`. Other report tables (e.g. the
 long-range actuarial balance in section IV.B) are on the report pages https://www.ssa.gov/oact/TR/2026/ (HTML, not
-read by the pack). Manual route for CMS: the bundle links the ZIP named on the page; upload it as downloaded.
+read by the pack). Manual route for CMS: the `manual_bundle` links the ZIP named on the page; upload it as downloaded.
 
 ## Citation and terms
 Social Security Administration and Centers for Medicare & Medicaid Services, Offices of the Chief Actuary, <spec

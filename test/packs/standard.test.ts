@@ -1,6 +1,6 @@
 /**
- * The packs that need only endpoints.json (no adapter): cdc, fema, medicaid, nyfed, va. Ported from the Python
- * skill's tests/sources/<id>/test_<id>.py, against the same fixtures and the same expected values.
+ * The packs that need only endpoints.json (no adapter): cdc, fema, medicaid, nyfed, va. Ported from
+ * tests/sources/<id>/test_<id>.py, against the same fixtures and the same expected values.
  */
 import fs from "node:fs";
 import path from "node:path";

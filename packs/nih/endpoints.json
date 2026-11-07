@@ -35,7 +35,7 @@
      "desc": "e.g. [\"R01\", \"R21\"]"
     },
     "spending_categories": {
-     "desc": "RCDC category names or ids, e.g. [\"Cancer\", \"Opioids\"] (see --search)"
+     "desc": "RCDC category names or ids, e.g. [\"Cancer\", \"Opioids\"] (a request_schema search finds them)"
     },
     "pi_names": {
      "desc": "[{\"last_name\": \"...\", \"first_name\": \"...\"}] or [{\"any_name\": \"...\"}]"

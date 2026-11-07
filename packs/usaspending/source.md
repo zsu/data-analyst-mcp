@@ -33,7 +33,7 @@ object is merged over them): `fiscal_year` (2024 or [2020, 2024]), or `start_dat
 `agency` / `funding_agency` (toptier code, alias, or name); `recipient`.
 Award type groups: contracts A B C D; idvs IDV_*; grants 02-05, F001-F002; loans 07 08 F003 F004;
 direct_payments 06 10 F006 F007; other_financial_assistance 09 11 -1 F005 F008-F010 (insurance 09 F005).
-Agency aliases come from the live reference list (`--search "energy"`): treas 020, hhs 075, dod 097,
+Agency aliases come from the agency reference list (`request_schema` with `search: "energy"`): treas 020, hhs 075, dod 097,
 ssa 028, va 036, usda 012, opm 024, hud 086, dot 069, ed 091, doe 089, doi 014, dos 019, dol 1601,
 doj 015, doc 013, nasa 080, epa 068, sba 073, nsf 049, dhs 070, gsa 047.
 
@@ -90,10 +90,10 @@ doj 015, doc 013, nasa 080, epa 068, sba 073, nsf 049, dhs 070, gsa 047.
   the API's message (unknown agency codes give HTTP 404).
 
 ## Access
-No key. Route `api` when api.usaspending.gov answers (search calls can take 10-60 seconds). Manual
-route: the search endpoints are POST requests, so a browser cannot open them: run `download_data.sh`
-or `download_data.ps1` from the bundle with one command (no Python needed), upload the JSON files, then
-`--ingest`. GET items open in a browser. Website alternative: https://www.usaspending.gov/search, set
+No key. `fetch` works when api.usaspending.gov answers (search calls can take 10-60 seconds). Manual
+(`manual_bundle`): the search endpoints are POST requests, so a browser cannot open them: run `download_data.sh`
+or `download_data.ps1` from the bundle with one command, upload the JSON files, then
+`ingest`. GET items open in a browser. Website alternative: https://www.usaspending.gov/search, set
 the time period as fiscal years and the other filters, then Download (award or transaction CSV) or the
 results table of a breakdown; upload the CSV and say which view it is.
 

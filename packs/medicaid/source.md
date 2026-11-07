@@ -21,7 +21,7 @@ Base `https://data.medicaid.gov`, DKAN, keyless, JSON (verified live 2026-10-30)
 | `datasets` | the whole catalog, one row per dataset (about 560): `identifier`, `title`, `modified`, `theme`, `distribution` | none |
 | `dataset_info` | one dataset's metadata: `modified`, `description`, download URL, data dictionary link | `dataset` |
 
-Catalog aliases (`--search <words>` lists them with descriptions; `datasets` lists every id):
+Catalog aliases (`request_schema` with `search: "<words>"` lists them with descriptions; `datasets` lists every id):
 
 | Alias | Dataset | Grain, coverage |
 |---|---|---|
@@ -120,10 +120,10 @@ The bracketed names are plain query keys, sent as written (URL-encoded). Number 
   year is over a million rows: filter, or the fetch stops at `max_rows` (and says so).
 
 ## Access
-No key; data.medicaid.gov answers scripts (verified 2026-10-30). Limit used: two requests per second. Route `api`.
-Manual: the links in `manual_download/INSTRUCTIONS.md` are the same queries as JSON pages of up to 8,000 rows
-(save each, upload with --ingest); or the dataset page `https://data.medicaid.gov/dataset/<id>` (Download = full
-CSV with display-style column names; upload it as CSV), or `https://data.medicaid.gov/api/1/datastore/query/<id>/0/download?format=csv`
+No key; data.medicaid.gov answers scripts (verified 2026-10-30). Limit used: two requests per second. `fetch`
+downloads directly. Manual (`manual_bundle`): the links in `manual_download/INSTRUCTIONS.md` are the same queries
+as JSON pages of up to 8,000 rows (save each, upload, then `ingest`); or the dataset page
+`https://data.medicaid.gov/dataset/<id>` (Download = full CSV with display-style column names; upload it as CSV), or `https://data.medicaid.gov/api/1/datastore/query/<id>/0/download?format=csv`
 (full CSV; takes the same `conditions[...]` filters).
 Current CMS-64 Financial Management Reports (FY 1997-2024, zip files of Excel workbooks) are only on
 https://www.medicaid.gov/medicaid/financial-management/state-expenditure-reporting-for-medicaid-chip/expenditure-reports-mbescbes,

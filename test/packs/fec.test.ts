@@ -1,5 +1,5 @@
 /**
- * fec: ported from the Python skill's tests/sources/fec/test_fec.py. Fixtures were recorded live from
+ * fec: ported from tests/sources/fec/test_fec.py. Fixtures were recorded live from
  * api.open.fec.gov (October 2026); the client drops api_key from recorded URLs. The Schedule A sample uses committee
  * (PAC) receipts only, so no individual contributor's details are stored in the repository.
  */

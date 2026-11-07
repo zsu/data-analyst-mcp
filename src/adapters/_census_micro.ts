@@ -84,7 +84,7 @@ export function microGeos(ds: string, kind: string, p: Record<string, any>): [Re
   const year = datasetYear(pyStr(ds).replace(/^\/+|\/+$/g, ""));
   if (kind === "cps_asec" && year && year < 2001 && (fips || p.for || p.ucgid)) {
     throw new ValueErr("the API's ASEC files before 2001 take no state geography (HTTP 500; checked 2026-11-04): " +
-      `fetch the nation (no state) and filter on the file's state variable (--search ` +
+      `fetch the nation (no state) and filter on the file's state variable (request_schema search ` +
       `"${year}/cps/asec/mar: state"), or use the ipums pack (STATEFIP)`);
   }
   if (p.ucgid) return [[{ ucgid: p.ucgid }], notes];
@@ -437,7 +437,7 @@ export async function microMeta(client: Client, pack: Pack, ds: string, vars: st
     if (cache) cache.put(url, r.body, { dataset: ds });
   }
   if (bad.length && strict) {
-    throw new DataError(`not variables of ${ds}: ${bad.join(", ")}; find names with --search "${ds}: <words>"`, "bad_request");
+    throw new DataError(`not variables of ${ds}: ${bad.join(", ")}; find names with the request_schema search "${ds}: <words>"`, "bad_request");
   }
   return out;
 }

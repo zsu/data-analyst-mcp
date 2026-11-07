@@ -1,5 +1,5 @@
 /**
- * State codes for the usaspending adapter: the Python skill's analysis/combine.py state() (USPS code, FIPS code or
+ * State codes for the usaspending adapter: analysis/combine.py state() (USPS code, FIPS code or
  * name to any of the three). Kept here because this server has no port of combine.py yet.
  */
 const STATES: [string, string, string][] = [

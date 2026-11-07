@@ -417,8 +417,8 @@ export function resolveVars(specVars: string[] | "all" | null, header: string[],
     else bad.push(v);
   }
   if (bad.length) {
-    throw new DataError(`snapqc: not in the FY ${fy} file: ${bad.join(", ")} (variables change by year: --search ` +
-      "the catalog, and read that year's technical documentation)", "bad_request");
+    throw new DataError(`snapqc: not in the FY ${fy} file: ${bad.join(", ")} (variables change by year: search ` +
+      "the catalog with request_schema, and read that year's technical documentation)", "bad_request");
   }
   return [unique(out), []];
 }
@@ -457,7 +457,7 @@ function personStems(header: string[], stems: string[], fy: number): Map<string,
   }
   if (bad.length) {
     throw new DataError(`snapqc: no person-level columns ${bad.map((s) => s + "1..").join(", ")} in the FY ${fy} file ` +
-      "(--search the catalog; DIS64_ is a stem with its underscore)", "bad_request");
+      "(search the catalog with request_schema; DIS64_ is a stem with its underscore)", "bad_request");
   }
   return out;
 }

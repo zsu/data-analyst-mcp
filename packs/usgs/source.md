@@ -84,10 +84,10 @@ depth to water (ft below land surface). Daily statistic ids: 00003 mean, 00001 m
 Earthquakes need no key. Water data work without a key at low volume (USGS states only a few anonymous
 requests an hour); an api.data.gov key in `DATA_GOV_API_KEY` (free at https://api.waterdata.usgs.gov/signup/)
 raises it to about 1,000 an hour and is sent as the `X-Api-Key` header to api.waterdata.usgs.gov only.
-Manual route: links in `manual_download/INSTRUCTIONS.md` (earthquake links: add `&format=csv` for CSV;
+Manual: the links `manual_bundle` writes to `manual_download/INSTRUCTIONS.md` (earthquake links: add `&format=csv` for CSV;
 water links: `f=csv`, and follow the `next` link for more pages); or the earthquake search page
 https://earthquake.usgs.gov/earthquakes/search/ (Output Options > CSV) and https://waterdata.usgs.gov
-(site page > download). Upload the files, then `--ingest`.
+(site page > download). Upload the files, then `ingest`.
 
 ## Citation and terms
 Earthquakes: "U.S. Geological Survey, Earthquake Hazards Program, ANSS Comprehensive Earthquake Catalog

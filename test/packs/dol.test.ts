@@ -1,4 +1,4 @@
-/** dol: ported from the Python skill's tests/sources/dol/test_dol.py (same fixtures, specs and expected values). */
+/** dol: ported from tests/sources/dol/test_dol.py (same fixtures, specs and expected values). */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";

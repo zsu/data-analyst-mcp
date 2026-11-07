@@ -39,7 +39,7 @@ Coverage: data workbooks for FY2015 on (.xlsx from FY2022, a .zip of one .xlsx p
 years are PDF only. Without `fiscal_year` the pack takes the newest year page that posts the topic's file and says
 which. `table` is the sheet name (`"Table 6"`, `"LPRSuppTable 1"`, `"NISuppTable1"`, FY2015-2021 `"Table 7D"`), or a
 number (`"6"`); a missing or wrong name fails with every sheet and its title, so a first request can be used to see
-them. `yearbook_files` shows what a year has. `--search` finds topics by words (green card, deportation, H-1B).
+them. `yearbook_files` shows what a year has. `request_schema` with `search` finds topics by words (green card, deportation, H-1B).
 
 ## Spec examples
 ```json
@@ -101,15 +101,17 @@ them. `yearbook_files` shows what a year has. `--search` finds topics by words (
 No key, no API: the pack reads public pages and workbooks on ohss.dhs.gov (1 request a second). File names carry
 upload dates and are re-posted with new names after revisions, so the pack scrapes the year page each run and the
 manual item names the file found. The site sits behind Akamai, which refused this pack's scripted requests with
-HTTP 403 from one machine on 2026-10-30 while a browser read the same pages: a 403 ends the script route with
-`blocked`, and the route check then offers the manual route.
+HTTP 403 from one machine on 2026-10-30 while a browser read the same pages: a 403 ends the fetch with
+`agency_unavailable`, and `manual_bundle` then gives the manual route. The bundle links the workbook a fetch in the
+same server process found on the page within the last hour; otherwise it links the year page and the link text to
+look for.
 
 Manual download: open https://ohss.dhs.gov/topics/immigration/yearbook, choose the fiscal year ("About the 2024
 Yearbook"), and download the topic's data tables file (e.g. "Lawful Permanent Residents 2024 Data Tables (xlsx)";
 FY2015-2021 offer a .zip; "Expanded ... Tables 8-11" is in the Download Data list at the bottom). For the quarterly
 report open https://ohss.dhs.gov/topics/immigration/legal-immigration-and-adjustment-status-report and download the
-fiscal year's .xlsx. Upload the file unchanged under the name in INSTRUCTIONS.md; `--ingest` reads the requested
-sheet the same way as the script route.
+fiscal year's .xlsx. Upload the file unchanged under the name in INSTRUCTIONS.md; `ingest` reads the requested
+sheet the same way as `fetch`.
 
 ## Citation and terms
 U.S. Department of Homeland Security, Office of Homeland Security Statistics, <Yearbook of Immigration Statistics

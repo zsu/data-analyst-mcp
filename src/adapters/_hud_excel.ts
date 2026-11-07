@@ -1,5 +1,5 @@
 /**
- * A published HUD workbook read the way the Python skill read it: pandas.read_excel(path, dtype=str) (openpyxl for
+ * A published HUD workbook read the way pandas reads it: pandas.read_excel(path, dtype=str) (openpyxl for
  * .xlsx, xlrd for .xls), then .fillna("") and .to_dict("records"). That means:
  *   - the first row is the header: text as is, a number as its Python str ("2020", "1.5"), an empty cell
  *     "Unnamed: <i>" (0-based), a repeated name "<name>.1", "<name>.2", ...;

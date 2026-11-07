@@ -638,7 +638,7 @@ function manualItemsWith(spec: Spec, pack: Pack, how: Resolve): any[] {
         const q = { get: chunk.join(","), ...plan.preds, ...g };
         items.push({ name: `${r.name}#${i}`, request: r.name, url: `${baseUrl}/${ds}?` + urlencodeSafe(q) + "&key={API_KEY}",
           filename: `${r.name}_${String(i).padStart(3, "0")}.json`, also_ext: [], needs_key: true, method: "GET", body: null,
-          note: [...note, ...(calls.length > 1 ? [`call ${i} of ${calls.length}; --ingest joins the files on ${plan.join.join(", ")}`] : [])].join("; ") });
+          note: [...note, ...(calls.length > 1 ? [`call ${i} of ${calls.length}; ingest joins the files on ${plan.join.join(", ")}`] : [])].join("; ") });
       });
       const y = datasetYear(ds);
       if (plan.asec_reps && y) { // Census's replicate weight file and its layout, no key
@@ -646,7 +646,7 @@ function manualItemsWith(spec: Spec, pack: Pack, how: Resolve): any[] {
         for (const [ext, fname] of [[y >= 2020 ? ".DAT.GZ" : ".dat.gz", `${r.name}_repwgt.dat.gz`], [".SAS", `${r.name}_repwgt.sas`]]) {
           items.push({ name: `${r.name}#${fname}`, request: r.name, url: stem + ext, filename: fname, also_ext: [],
             needs_key: false, method: "GET", body: null, note: "ASEC replicate weights (about 70 MB) and the layout with " +
-            "their totals; --ingest joins them on PH_SEQ and PPPOS" });
+            "their totals; ingest joins them on PH_SEQ and PPPOS" });
         }
       }
       continue;

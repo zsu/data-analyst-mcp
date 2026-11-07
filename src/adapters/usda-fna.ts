@@ -72,7 +72,7 @@ function policyOf(params: Record<string, any>): any {
   for (const [alias, c] of Object.entries<any>(EPS.catalog || {})) {
     if (c.endpoint === "option_states" && (p === alias || p === c.id || p.toLowerCase() === c.id.toLowerCase())) return c;
   }
-  throw new SpecError(`policy ${pyRepr(p)} is not in the catalog: use an alias or name from --endpoints / --search ` +
+  throw new SpecError(`policy ${pyRepr(p)} is not in the catalog: use an alias or name from source_brief / a request_schema search ` +
     "(e.g. bbce, abawd_waiver, telephonic_signature_waiver)");
 }
 

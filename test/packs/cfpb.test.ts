@@ -1,5 +1,5 @@
 /**
- * cfpb: ported from the Python skill's tests/sources/cfpb/test_cfpb.py. Fixtures r001-r007 were recorded from the
+ * cfpb: ported from tests/sources/cfpb/test_cfpb.py. Fixtures r001-r007 were recorded from the
  * CFPB search API on 2026-10-20, r008 on 2026-10-22.
  */
 import fs from "node:fs";

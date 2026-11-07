@@ -24,7 +24,8 @@ The adapter requests every year from `start_year` to `end_year` and stacks them.
 | `real_long_term` (`real_long_term`) | `daily_treasury_real_long_term` | LT Real Average (10> Yrs) | 2000 |
 
 Frequency: business days (no rows on weekends and federal holidays). Older history of the same daily
-series: fred (DGS10 ...). `--endpoints` and `--search "real yield"` list these.
+series: fred (DGS10 ...). `source_brief` lists these requests;
+`request_schema` with `search: "real yield"` finds them.
 
 ## Spec examples
 ```json
@@ -37,10 +38,10 @@ series: fred (DGS10 ...). `--endpoints` and `--search "real yield"` list these.
               {"name": "lt", "endpoint": "long_term_rates", "params": {"year": 2025}}]}
 ```
 `year` takes one year; `start_year` and `end_year` a range (one request per year, at most 40); with neither,
-the current year. A year before a feed starts is refused (`fix_spec`).
+the current year. A year before a feed starts is refused (`invalid_request`).
 
 ## Data format and traps
-- Output `<out>/data/treasury-yields/<name>.csv`: `date` (YYYY-MM-DD, converted from the published
+- Output `data/treasury-yields/<name>.csv`: `date` (YYYY-MM-DD, converted from the published
   MM/DD/YYYY) then one column per maturity with Treasury's own header ("10 Yr", "1.5 Month", "4 WEEKS BANK
   DISCOUNT"); values are percent as published (two decimals). Rows are oldest first (the files are newest
   first).
@@ -69,10 +70,10 @@ the current year. A year before a feed starts is refused (`fix_spec`).
   plain one. A year in the future, or before a feed starts, returns HTTP 200 with an empty body.
 
 ## Access
-No key. Route `api` when home.treasury.gov answers (one request per feed and year, 5-20 KB each). Manual
-route: INSTRUCTIONS.md lists one CSV link per year, saved as `<name>_<year>.csv`; or open
+No key. `fetch` works when home.treasury.gov answers (one request per feed and year, 5-20 KB each). Manual:
+`manual_bundle`'s INSTRUCTIONS.md lists one CSV link per year, saved as `<name>_<year>.csv`; or open
 https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics, choose the rate
-type and the year, Download CSV, and upload each file; then `--ingest`.
+type and the year, Download CSV, and upload each file; then `ingest`.
 
 ## Citation and terms
 "U.S. Department of the Treasury, Daily Treasury Par Yield Curve Rates (or the feed used), home.treasury.gov,

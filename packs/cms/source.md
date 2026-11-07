@@ -19,8 +19,8 @@ spending, Part B/D drug spending, inpatient and physician utilization).
 | `provider` | rows of one Provider Data dataset (500 a page) | `dataset` (alias or id like `xubh-q36u`), `where`, `conditions`, `sort`, `columns` |
 | `medicare` | rows of one data-api dataset (5,000 a page) | `dataset` (alias or UUID), `where`, `keyword`, `columns`, `sort` |
 
-Provider aliases (`--endpoints` lists all; `--search "dialysis"` also searches the live catalog of 237
-Provider Data datasets and returns their ids): `hospital_info`, `hospital_mortality`,
+Provider aliases (`request_schema` with `search: "dialysis"` finds them and also searches the live catalog of 237
+Provider Data datasets, returning their ids): `hospital_info`, `hospital_mortality`,
 `hospital_readmissions`, `hospital_infections`, `hospital_timely_care`, `hospital_spending`,
 `hospital_patient_survey`, `nursing_home_info`, `nursing_home_deficiencies`, `nursing_home_quality`,
 `home_health_info`, `hospice_info`, `dialysis_info`.
@@ -67,12 +67,12 @@ To see a dataset's columns, fetch with `"max_rows": 5` and no `columns`, then re
 
 ## Data format and traps
 - Every value is text, as published: numbers, `"Not Available"` (provider ratings), footnote codes in
-  `*_footnote` columns. Convert in `analysis.py`; treat "Not Available" and footnoted cells as missing,
-  never as zero.
+  `*_footnote` columns. Convert with `compute` (`number(x)` in a derive step); treat "Not Available" and
+  footnoted cells as missing, never as zero.
 - Provider Data columns are stored as text, so `sort` and `<`/`>`/`BETWEEN` compare characters, not
   numbers or dates (`"-hospital_overall_rating"` puts "Not Available" first; `"91.06" > "900"`). The pack
   refuses comparisons against numbers or MM/DD/YYYY dates (set `"text_compare_ok": true` on a condition to
-  override); fetch with equality filters and rank in `analysis.py`.
+  override); fetch with equality filters and rank with `compute` (orderby).
 - data-api silently ignores a filter on a column that does not exist and drops unknown `columns` names
   (verified). The pack therefore always returns the filter columns and fails the request if a filter or
   requested column is absent, rather than hand back an unfiltered table. Names are case-sensitive.
@@ -84,14 +84,14 @@ To see a dataset's columns, fetch with `"max_rows": 5` and no `columns`, then re
 - Rates in data-api tables are fractions (`MA_PRTCPTN_RATE = 0.3213` is 32.13%).
 - Geography codes differ: `geo_variation` uses postal codes in `BENE_GEO_DESC` for states ("AK");
   `monthly_enrollment` has `BENE_STATE_ABRVTN` and `BENE_STATE_DESC`; provider data use `state` = "VT".
-  County FIPS fields may be padded with spaces. Use `combine.state()` to align.
+  County FIPS fields may be padded with spaces. Align states with the `compute` step `state_codes`.
 - Small cells are suppressed under CMS's cell-size rule (counts under 11). data-api datasets publish a
   suppressed cell as the text "*" (verified in `monthly_enrollment` and `geo_variation`, 2026-10-22); the pack
   writes an empty cell plus a `<column>_flag` column reading "suppressed (*)". Treat them as missing, never as
   zero. Other datasets leave the value blank and say why in a flag column (`partd_prescribers_geo_2024`:
   `GE65_Sprsn_Flag` "*" or "#"): flag columns keep their text. A descending data-api `sort` on a numeric column
-  puts the "*" rows first (numbers themselves sort numerically): take the top N in `analysis.py` after
-  dropping suppressed rows, not with `sort` plus `max_rows`.
+  puts the "*" rows first (numbers themselves sort numerically): take the top N with `compute` (filter,
+  orderby, slice) after dropping suppressed rows, not with `sort` plus `max_rows`.
 - Part B/D spending by drug is wide (columns per year) and has `Mftr_Name = "Overall"` summary rows plus
   one row per manufacturer: filter to "Overall" before summing, or totals double.
 - Provider Data API: `limit` is capped at 1,500 by the API; the pack pages 500 rows at a time. The service
@@ -99,10 +99,11 @@ To see a dataset's columns, fetch with `"max_rows": 5` and no `columns`, then re
 - `/datastore/query/{distribution_id}/0` returns 404; the pack uses `/datastore/query/{dataset_id}/0` (index 0 = the dataset's only CSV distribution).
 
 ## Access
-No key. Route `api` when data.cms.gov answers. Manual route: INSTRUCTIONS.md lists one JSON link per page
-with the filters already applied (open in a browser, save under the shown name, upload). Alternatively,
-open the dataset page (`https://data.cms.gov/provider-data/dataset/<id>`, or the Medicare dataset's page
-from `--endpoints`), click Download for the full CSV and upload it; the CSV uses display-style column
+No key. `fetch` downloads from data.cms.gov when it answers. Manual route (`manual_bundle`): INSTRUCTIONS.md
+lists one JSON link per page with the filters already applied (open in a browser, save under the shown name,
+upload, then `ingest`). Alternatively, open the dataset page (`https://data.cms.gov/provider-data/dataset/<id>`,
+or the Medicare dataset's `page` from a `request_schema` search), click Download for the full CSV and upload
+it; the CSV uses display-style column
 names ("Facility ID"), so say which columns to use.
 
 ## Citation and terms

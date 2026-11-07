@@ -87,7 +87,7 @@ const adapter: Adapter = {
         } else if (ORDERED.has(op) && !truthy(c.text_compare_ok) && vals.some((v: unknown) => TEXT_TRAP.test(v === null ? "None" : pyStr(v)))) {
           probs.push(`request ${name}: ${pyStr(c.property)} ${op} ${pyRepr(c.value ?? null)} would compare TEXT, not ` +
             "numbers or dates (every Open Payments column is stored as text: '91.06' > '900'). " +
-            "Filter with equality (program_year, recipient_state, NPI) and compare in analysis.py, " +
+            "Filter with equality (program_year, recipient_state, NPI) and compare with compute, " +
             'or set "text_compare_ok": true on the condition.');
         }
       }
@@ -99,7 +99,7 @@ const adapter: Adapter = {
       }
       if (typeof alias === "string" && !(alias in cat) && !/^[0-9a-f]{8}-[0-9a-f-]{27}$/.test(alias)) {
         probs.push(`request ${name}: dataset ${pyRepr(alias)} is neither a catalog alias nor a dataset UUID ` +
-          "(see --endpoints or --search)");
+          "(see source_brief or a request_schema search)");
       }
     }
     return probs;

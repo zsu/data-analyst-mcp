@@ -101,7 +101,7 @@
       ]
     },
     "manual": {
-      "how": "Run --manual-bundle (or follow --check): OUT/manual_download/treasury/INSTRUCTIONS.md lists one CSV link per dataset (no key; 10,000 rows per page, pages name_2.csv ...), curl and PowerShell commands, and the dataset page whose Download button gives the whole table as CSV/ZIP. Upload the files unchanged (not re-saved in Excel), then run --ingest."
+      "how": "Call manual_bundle: manual_download/INSTRUCTIONS.md lists one CSV link per dataset (no key; 10,000 rows per page, pages name_2.csv ...), the download scripts (download_data.sh / .ps1), and the dataset page whose Download button gives the whole table as CSV/ZIP. Upload the files unchanged (not re-saved in Excel), then call ingest."
     }
   },
   "cache": {

@@ -1,6 +1,6 @@
 /**
  * Offline test helpers. Each test runs against the pack's recorded fixtures (test/packs/<id>/fixtures, the
- * Python skill's recordings, unchanged), in a fresh temporary workspace, with no key in reach: key variables are
+ * recordings, unchanged), in a fresh temporary workspace, with no key in reach: key variables are
  * removed and the config folders point at an empty temp home.
  */
 import fs from "node:fs";

@@ -1,11 +1,11 @@
 # U.S. Treasury Fiscal Data API guide
 
-The pack's `fetch.py` and `treasury_api.py` already implement paging, filters, retries, the
+This server's `fetch` already implements paging, filters, retries, the
 row-count check and the `fields=` aggregation guard. Read this file to choose endpoints and rows, to
 interpret fields, and when debugging. Contents: 1 API basics · 2 Catalog · 3 Key endpoints · 4 Gotchas ·
 5 Manual download · 6 Recipes.
 
-Researched 2026-10-19. Facts marked **[live]** were checked with real HTTP calls (Python urllib) on that date. Facts marked **[docs]** come from https://fiscaldata.treasury.gov/api-documentation/. Facts marked **[unverified]** could not be confirmed. The data values below are as served on 2026-10-19.
+Researched 2026-10-19. Facts marked **[live]** were checked with real HTTP calls on that date. Facts marked **[docs]** come from https://fiscaldata.treasury.gov/api-documentation/. Facts marked **[unverified]** could not be confirmed. The data values below are as served on 2026-10-19.
 
 ---
 
@@ -53,10 +53,10 @@ Researched 2026-10-19. Facts marked **[live]** were checked with real HTTP calls
 - No `Link` HTTP header was observed, although the docs mention one. **[live]**
 
 ### Getting all rows
-`fetch.py` pages with `page[size]=10000`, sorts by the date column plus `src_line_nbr` (a tiebreaker keeps
+`fetch` pages with `page[size]=10000`, sorts by the date column plus `src_line_nbr` (a tiebreaker keeps
 pages stable), and checks the row count against `meta.total-count`. Some tables are huge:
 `treasury_offset_program` has 3.5M rows, `utf_*` 2.4M and `fip_statement_of_account_table3` 2.2M. Always
-filter by date, and check the catalog `row_count` (`fetch.py --search`) first.
+filter by date, and check the catalog `row_count` (`request_schema` with `search`) first.
 
 ### Data types (`meta.dataTypes`) and formats [live]
 Every value is a **JSON string**, including numbers, and nulls are the string `"null"`. **[docs+live]**
@@ -176,7 +176,7 @@ Endpoints without `record_date` (sorting or filtering on it gives 400): `buyback
 ## 4. Gotchas (all verified live unless marked)
 
 **Values and units**
-1. **Every value is a string**, and nulls are the literal string `"null"` in JSON, CSV and XML. Convert with a helper (`None if v == "null" else Decimal(v)`). D rows (data_type_cd "D") can also have "null" amounts, e.g. MTS Table 4 "Individual Income Taxes" header-like detail rows.
+1. **Every value is a string**, and nulls are the literal string `"null"` in JSON, CSV and XML. `fetch` writes them as empty cells; in hand-made reads, treat "null" as missing before converting to numbers. D rows (data_type_cd "D") can also have "null" amounts, e.g. MTS Table 4 "Individual Income Taxes" header-like detail rows.
 2. **Units differ by dataset.** Debt to the Penny, Historical Debt, MTS tables 1–9, interest expense, gift contributions and RCM are in **dollars and cents** (e.g. `"404371348973.70"` = $404.4B). **DTS (all tables) is in millions** (CURRENCY0, "rounded to the nearest million"). MSPD `*_mil_amt` and `mts_receipts_outlays_deficit_surplus.mil_amt` are **millions**. Check `meta.dataTypes` and the field name (`mil_`). Percentages are already in percent.
 3. **Deficit sign conventions conflict.** MTS Table 1 `current_month_dfct_sur_amt` is **positive for a deficit and negative for a surplus** (per the field definition and data: April shows a negative value). `mts_receipts_outlays_deficit_surplus` "Deficit/Surplus (-)" is also positive for a deficit. MTS Table 5's "Total Surplus (+) or Deficit (-)" row is **negative for a deficit** (-1,992,473,224,352.42 for FY2026).
 
@@ -191,9 +191,9 @@ Endpoints without `record_date` (sorting or filtering on it gives 400): `buyback
    - `data_type_cd`: **D** = detail, **S** = sub-header (amounts "null"), **T** = total.
    - `record_type_cd`: Table 1 MTH = month, SL = special line. Table 4 RSG = receipt source group, SRS = source sub-row. Table 5 A = Agency, B = Bureau, BG = Bureau Group, C = Chapter, P = Program, SL = Special Line, UOR/UORG = undistributed offsetting receipts. Table 9 F = Function, RSG, SL.
    - In DTS and Debt to the Penny, `src_line_nbr` is likewise the row on the published report.
-   - The same letter can be a value of two code columns (`T` is a `data_type_cd`; Table 1's totals have `record_type_cd` SL). Filter on the column the value is in; `fetch.py --fields <ep> --filter … --values` shows the combinations.
+   - The same letter can be a value of two code columns (`T` is a `data_type_cd`; Table 1's totals have `record_type_cd` SL). Filter on the column the value is in; `request_schema` with `search: "<endpoint> <filter JSON> values"` shows the combinations.
    - **Table 1 holds two fiscal years per release** [live, 2026-09-30 release]: block 1 = prior FY (S header "FY 2025", 12 MTH rows, a "Year-to-Date" row with `record_type_cd` SL and `data_type_cd` T, `sequence_number_cd` 1.13), block 2 = current FY (the same, 2.x). The September release's 2.13 row is the current fiscal year as first published; the next September's 1.13 row is the same year as revised. Check: receipts − outlays = −deficit on every Year-to-Date row.
-   - Generally, one release can carry several periods, as columns (`current_month_*`, `current_fytd_*`, `prior_fytd_*`; DTS today / mtd / fytd) or as row blocks (Table 1). A failing `check_unique` on (record_date, classification_desc) is the usual symptom.
+   - Generally, one release can carry several periods, as columns (`current_month_*`, `current_fytd_*`, `prior_fytd_*`; DTS today / mtd / fytd) or as row blocks (Table 1). Repeated (record_date, classification_desc) keys are the usual symptom.
 9. **Summing all rows double counts.** Table 9 for Sep 2026 has 33 rows: a "Receipts" S header, 9 RSG D rows (6 top-level sources plus the 3 children of the Social Insurance S header), a "Total" T row, a "Net Outlays" S header, 19 function D rows, and a "Total" T row. Use `data_type_cd == "D"` for components and the `T` row named "Total" for totals. Table 5: the sum of all D rows exactly equals the "Total Outlays" T row (7,395,799,983,313.23), but adding the T rows ("Total--Department of ...", "Total On-Budget"/"Off-Budget", "Total Surplus...") inflates it about 4×. **Table 4 is different**: its D rows do not sum to total receipts, because some components only carry amounts on T rows (e.g. "Total -- Individual Income Taxes"). Read the T/SL rows "Total -- Receipts", "Total -- On-Budget" and "Total -- Off-Budget" instead. For receipts by source, prefer Table 9.
 10. **The `fields=` subset aggregates.** If the fields you request leave out columns that make rows unique, the API **groups and sums**. Examples: `mts_table_9?fields=record_date,current_month_rcpt_outly_amt&filter=record_date:eq:2026-09-30` returned one row of 2,285,298,771,157.00, which is receipts + outlays + totals all double-summed. DTS `fields=record_date,transaction_type,transaction_today_amt` returned Deposits 898,351, which is the details plus the "Total Deposits" row (449,175 × 2). The docs mention this. Debt to the Penny with `fields=record_fiscal_year,tot_pub_debt_out_amt` did *not* aggregate, so the behavior varies by table. **Rule: always include record_date and the row-identity columns (`src_line_nbr` or the description columns) in `fields`, or omit `fields`.**
 
@@ -204,10 +204,10 @@ Endpoints without `record_date` (sorting or filtering on it gives 400): `buyback
 14. Debt totals differ by dataset because of FFB debt and rounding. Debt to the Penny is to the cent, while MSPD, DTS and Schedules of Federal Debt are in millions, and Schedules excludes FFB debt (per the catalog's TPDO disclaimer).
 
 **Filter values with special characters** [live, 2026-10-20]
-10a. A filter value containing `&` or `,` matches nothing, even URL-encoded (`interest_expense` "Foreign Series Notes & Bonds": 0 rows, 2 exist). Inside `in:(...)` a value with `,` or parentheses is **silently dropped** ("Treasury Floating Rate Notes (FRN)" in a list: 1 row instead of 4). `eq` with parentheses works. `fetch.py` applies such conditions locally instead (it downloads under the rest of the filter, then applies them; README and `fetch_spec.json` record it as `local_filter`). In hand-written API URLs, leave such values out and filter afterwards.
+10a. A filter value containing `&` or `,` matches nothing, even URL-encoded (`interest_expense` "Foreign Series Notes & Bonds": 0 rows, 2 exist). Inside `in:(...)` a value with `,` or parentheses is **silently dropped** ("Treasury Floating Rate Notes (FRN)" in a list: 1 row instead of 4). `eq` with parentheses works. `fetch` applies such conditions locally instead (it downloads under the rest of the filter, then applies them; README and `fetch_spec.json` record it as `local_filter`). In hand-written API URLs, leave such values out and filter afterwards.
 
 **CSV output**
-15a. **API CSV prefixes negative numbers with an apostrophe** (`'-334128106.88`), a spreadsheet formula-injection guard. JSON does not. `fetch.py --ingest` and `tstats.load()` strip it; any other CSV reader would turn every negative value into text or NaN. [live]
+15a. **API CSV prefixes negative numbers with an apostrophe** (`'-334128106.88`), a spreadsheet formula-injection guard. JSON does not. `fetch` reads JSON, and `ingest` strips the apostrophe; any other CSV reader would turn every negative value into text or NaN. [live]
 
 **Other**
 15. FX: a quarter can have **several rows per currency**. Amendments keep the quarter's `record_date` but have a later `effective_date` (102 such rows since 2023, e.g. Argentina-Peso effective 2023-05-15 under record_date 2023-03-31). Deduplicate on (country_currency_desc, record_date) by taking the max effective_date, or filter on effective_date.
@@ -226,7 +226,7 @@ Endpoints without `record_date` (sorting or filtering on it gives 400): `buyback
 - The "API Quick Guide" CSV link on dataset pages is just `https://api.fiscaldata.treasury.gov/services/api/fiscal_service/<endpoint>?format=csv` (from the site JS), so it returns only the first 100 rows unless the user adds `&page[size]=10000&page[number]=N`.
 - CSV from the website versus the API: website downloads are whole-table or date-range files with no pagination limit, and their headers use the **same snake_case column names** with "null" strings. The site may also offer pretty-name headers **[unverified]**. API CSV is paginated, has no meta, and its filename is a timestamp.
 - **Published PDFs** (the official statements) can be listed with `/services/dtg/publishedfiles?dataset_id=<id>` and live at `https://fiscaldata.treasury.gov/static-data/published-reports/...`. The MTS PDF for 2026-09 returned a binary PDF **[live]**.
-- **Fallback instruction for users without API access:** "Open https://fiscaldata.treasury.gov/datasets/<slug>/, click *Download*, choose the table, date range and *CSV*, unzip, and give the CSV path to the skill." The skill should accept those CSVs: same column names, values as strings, "null" for missing.
+- **Fallback instruction for users without API access:** "Open https://fiscaldata.treasury.gov/datasets/<slug>/, click *Download*, choose the table, date range and *CSV*, unzip, and give the CSV to the assistant." `ingest` accepts those CSVs: same column names, values as strings, "null" for missing.
 
 ---
 

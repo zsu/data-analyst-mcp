@@ -1,5 +1,5 @@
 /**
- * fdic: ported from the Python skill's tests/sources/fdic/test_fdic.py. Fixtures r001-r003 were recorded from
+ * fdic: ported from tests/sources/fdic/test_fdic.py. Fixtures r001-r003 were recorded from
  * api.fdic.gov on 2026-10-20, r004-r005 on 2026-10-22.
  */
 import { beforeAll, describe, expect, it } from "vitest";

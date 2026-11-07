@@ -1,5 +1,5 @@
 /**
- * The data hand-off: a port of the Python skill's tests/test_handoff.py (TestHandoff). TestCheckRecords is not
+ * The data hand-off: a port of tests/test_handoff.py (TestHandoff). TestCheckRecords is not
  * ported: it tests fetch.py's --check records, which this server replaces with the fetch gate (test/gate.test.ts).
  */
 import fs from "node:fs";

@@ -1,5 +1,5 @@
 /**
- * cms: ported from the Python skill's tests/sources/cms/test_cms.py. Fixtures r001-r003 were recorded live on
+ * cms: ported from tests/sources/cms/test_cms.py. Fixtures r001-r003 were recorded live on
  * 2026-10-20 (provider-data datastore query; data-api Geographic Variation); r004-r005 on 2026-10-22 (monthly
  * enrollment and Part D prescribers, suppressed "*" cells); r006-r008 on 2026-10-28.
  */

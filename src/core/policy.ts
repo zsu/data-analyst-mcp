@@ -1,6 +1,5 @@
 /**
- * Load, check and enforce a source pack's policy.json. The schema is the Python skill's (docs: the field list
- * at the top of the Python core/policy.py); this project owns its copy of every policy.json.
+ * Load, check and enforce a source pack's policy.json. This project owns its copy of every policy.json.
  */
 import fs from "node:fs";
 import path from "node:path";

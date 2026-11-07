@@ -32,7 +32,7 @@ constant dollars), 2.1-2.5 receipts by source, 3.1-3.2 outlays by function/subfu
 (BEA categories; 8.5 mandatory programs, 8.7 discretionary), 9.1-9.9 investment and R&D, 10.1 GDP and deflators,
 11.1-11.3 payments for individuals, 12.1-12.3 grants to state and local governments, 13.1 Social Security and
 Medicare trust funds, 14.1-14.6 total (federal, state, local) government, 15.1 health, 16.1-16.2 FTE employees.
-`--search "<words>"` finds a table in the catalog (aliases `table_s_t`, `pbd_outlays`, `fcs_table1` ...).
+A `request_schema` search ("<words>") finds a table in the catalog (aliases `table_s_t`, `pbd_outlays`, `fcs_table1` ...).
 
 How a table is found: Table s.t is GovInfo granule `TAB-<s+1>-<t>` (Table 1.1 = BUDGET-2027-TAB-2-1.xlsx); the pack
 checks the sheet's title row names the table. Editions that do not follow it (FY2026 publishes one workbook,
@@ -115,7 +115,7 @@ GovInfo. Credit supplement: one workbook (FY2024 on) or one file per table (FY20
 No key. GovInfo answers scripts (verified 2026-10-30); limit used two requests per second. A file that does not
 exist answers HTTP 302 to GovInfo's error page (HTML, status 200): the pack treats it as missing, tries the
 package zip for Historical Tables, and otherwise fails with a message naming the URLs (never an empty table).
-Route `api` reads the files directly. Manual route: the bundle lists the GovInfo URL of each file (open it in a
+`fetch` reads the files directly. Manual route (`manual_bundle`): the bundle lists the GovInfo URL of each file (open it in a
 browser, save under the name shown, upload); for a Historical Table whose link shows the error page, download
 `https://www.govinfo.gov/content/pkg/BUDGET-<FY>-TAB.zip` and upload the zip. The same files are on whitehouse.gov
 with dated paths: https://www.whitehouse.gov/omb/information-resources/budget/historical-tables/ (hist01z1_fy2027.xlsx,

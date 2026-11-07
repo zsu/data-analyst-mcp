@@ -1,7 +1,7 @@
 /**
  * The --rerun gate: replay every exhibit's recorded lineage (exhibits/lineage.json) from its inputs and recompute
- * every table fact, so the numbers an answer cites are reproduced by code, not typed. Written by the analysis
- * port (docs/porting-report.md); report/ audits import it. Nothing is written: the replays stay in memory.
+ * every table fact, so the numbers an answer cites are reproduced by code, not typed.
+ * report/ audits import it. Nothing is written: the replays stay in memory.
  *
  *   exhibits  every exhibits/*.csv and every lineage entry: same = the replayed steps give the file byte for byte
  *             (an exhibit without compute steps cannot be replayed: same false, with why in detail)

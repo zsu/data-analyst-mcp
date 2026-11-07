@@ -14,7 +14,7 @@ expectancy, mortality and birth indicators, overdose deaths, PLACES county and c
 | `query` | JSON rows of one dataset | `dataset` (alias or id), `$select`, `$where`, `$group`, `$order`, `$q` |
 | `csv` | the same as CSV (manual route) | same |
 
-Catalog aliases (`fetch.py --source cdc --endpoints` lists all 17; `--search "overdose"` finds one):
+Catalog aliases (17; `request_schema` with `search: "overdose"` finds one):
 `leading_death` (bi63-dtpu, 1999-2017), `life_expectancy` (w9j2-ggv5, 1900-2018), `mortality_rates`
 (489q-934x, quarterly, rolling: only about the last three years, 2023 Q1-2025 Q3 when verified 2026-10;
 wide, one `rate_<state>` column per state, so filter by `cause_of_death`, not by state),
@@ -42,10 +42,12 @@ Look at a dataset's columns before filtering: fetch one row (`"$limit"` is set b
 narrow `$where`), or open the dataset page.
 
 ## Data format and traps
-- Every value arrives as text. Numbers keep their published form; convert in `analysis.py`.
+- Every value arrives as text. Numbers keep their published form; `compute` reads an all-numeric column as
+  numbers (`number(x)` in a derive step converts one that is not).
 - Column names differ per dataset (`deaths`, `data_value`, `predicted_value`). Read `data_dictionary.csv`.
 - State is written differently by dataset: full names ("New York") in leading causes of death,
-  postal codes ("NY") in PLACES and COVID tables, "US" for the nation in VSRR. Use `combine.state()`.
+  postal codes ("NY") in PLACES and COVID tables, "US" for the nation in VSRR. Align them with the `compute`
+  step `state_codes` (adds state_usps, state_fips and state_name; filter out the "US" rows first).
 - SoQL text values need single quotes, and matching is case-sensitive. A filter that matches nothing makes
   the fetch fail with "returned no rows": check the values first.
 - Provisional data (weekly deaths, VSRR overdose, quarterly mortality) are revised for months and may be
@@ -63,8 +65,9 @@ narrow `$where`), or open the dataset page.
   dataset, check for a column like this that mixes levels or totals.
 
 ## Access
-No key. Route `api` when data.cdc.gov answers. Manual route: each request gets CSV links (one per 50,000
-rows) in `manual_download/INSTRUCTIONS.md`; or open `https://data.cdc.gov/d/<id>`, Export > CSV, upload.
+No key. `fetch` downloads from data.cdc.gov when it answers. Manual route (`manual_bundle`): each request
+gets CSV links (one per 50,000 rows) in `manual_download/INSTRUCTIONS.md`; or open
+`https://data.cdc.gov/d/<id>`, Export > CSV, upload, then `ingest`.
 
 ## Citation and terms
 "Centers for Disease Control and Prevention, <dataset name>, data.cdc.gov, retrieved <date>." Public

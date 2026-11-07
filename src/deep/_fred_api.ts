@@ -1,5 +1,5 @@
 /**
- * FRED / ALFRED / GeoFRED client for the fred deep pack (ported from the Python skill's fred_api.py).
+ * FRED / ALFRED / GeoFRED client for the fred deep pack (ported from fred_api.py).
  *
  *   FredClient   the FRED API (api.stlouisfed.org) with the user's own key: data, vintages (ALFRED), series
  *                metadata, the release and source behind a series (for the citation), search, GeoFRED regional

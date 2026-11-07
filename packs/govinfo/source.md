@@ -9,7 +9,7 @@ agency publications catalogued by GPO.
   Code sections it amends; public laws enacted in a date range; committee reports, hearings and Congressional Record issues on a topic; agency reports in GOVPUB.
 - Not here: bill status, sponsors, cosponsors, actions and votes (congress); rule metadata and counts
   (federal-register); public comments (regulations). Cost estimates as numbers are not available from
-  any API in this skill (see traps).
+  any API here (see traps).
 
 ## Endpoints and datasets
 | Endpoint | Returns (one row per) | Key parameters |
@@ -23,7 +23,7 @@ agency publications catalogued by GPO.
 | `text` | one row: package_id, title, date_issued, pages, characters, text_status, pdf_url, text (+ granule_id, granule_class with `granuleId`) | `packageId`, or `congress` + `billtype` + `number` (+ `version`, default `enr`); `granuleId` for one granule (a Record article: packages of over 25 granules have no whole text); `max_chars` |
 | `sections` | section of a public law (USLM XML): identifier, num, heading, within (enclosing titles), usc_amended, usc_cited, usc_classified, amending_actions, characters, text | `packageId` (PLAW, 113th Congress on), `max_chars` (per section) |
 
-Collections (catalog aliases, `--search "reports"`): BILLS, BILLSTATUS, BILLSUM, PLAW, STATUTE, USCODE,
+Collections (catalog aliases, `request_schema` with `search: "reports"`): BILLS, BILLSTATUS, BILLSUM, PLAW, STATUTE, USCODE,
 CRPT, CREC, CRECB, CHRG, CPRT, CDOC, SERIALSET, FR, CFR, ECFR, CPD, PPP, BUDGET, ERP, ECONI, GAOREPORTS
 (an archive: 16,569 GAO reports and decisions dated 1989-06-22 to 2008-09-18 only, verified 2026-10-22;
 later ones are on gao.gov, which no pack serves),
@@ -64,7 +64,7 @@ chamber), enr enrolled (passed both).
   cannot change the query (a stray backslash once drew HTTP 500; it did not on 2026-10-22, but the
   escaping stays). Use `query` only for deliberate
   GovInfo syntax (`title:"tax"`, `OR`), and quote phrases there yourself. Never put `dateIssued:` in
-  `query` (HTTP 500 every time, verified 2026-10-28; check_spec refuses it): use `date_from`/`date_to`.
+  `query` (HTTP 500 every time, verified 2026-10-28; `fetch` refuses it as `invalid_request`): use `date_from`/`date_to`.
   An HTTP 500 that repeats for one query while simpler searches answer is caused by the query, not an outage.
 - **Completeness of "documents that mention X"**: GovInfo's quoted (exact-phrase) search can miss documents
   that hold the phrase, even in their titles (BILLS of one Congress: a two-word phrase quoted 58, as
@@ -144,7 +144,7 @@ chamber), enr enrolled (passed both).
 - Per-package figures (pages; volume and issue, which CREC's `published` titles also carry: "Volume 171,
   Issue 45") are in `package` summaries: fetch the `published` list,
   then one `package` request per row with `"for_each": {"csv": "data/govinfo/<list>.csv", "column":
-  "packageId"}` (SKILL.md §3).
+  "packageId"}`.
 - CREC (daily Congressional Record): one package per issue date, but a two-book day can appear twice
   (`CREC-2025-03-11` and `CREC-2025-03-11-i45`, same pages; `-i46` the second book): deduplicate by
   `volume` + `issue` before counting issues or summing pages. Other suffixes are distinct issues, not
@@ -196,7 +196,7 @@ chamber), enr enrolled (passed both).
   Appendix). Summaries report collectionCode GPO (FY2017 and FY2027 alike) although `published` with
   collection BUDGET lists them. Recent summaries' `pages` equals the PDF's page count; older ones (FY2017)
   carry none: download `https://www.govinfo.gov/content/pkg/<packageId>/pdf/<packageId>.pdf`, count its pages
-  (pypdf) and record them in `published/` (SKILL.md §2). A missing volume (FY2026 had no Analytical
+  (pypdf) and record them in `published/`. A missing volume (FY2026 had no Analytical
   Perspectives) is a 404: allow_empty. OMB posts supplemental chapters outside the volumes.
 - USCOURTS (federal court opinions): one package per case, one granule per opinion; `search` returns one row
   per opinion (`collection:USCOURTS AND courttype:appellate`, `courtname:fifth`; `ingestdate:range(...)`
@@ -228,8 +228,9 @@ chamber), enr enrolled (passed both).
 ## Access
 Key optional: DATA_GOV_API_KEY (https://api.data.gov/signup/, also linked from GovInfo's own
 https://www.govinfo.gov/api-signup), sent as `api_key` to api.govinfo.gov only.
-Without it the pack uses DEMO_KEY (observed limit 10 requests an hour per IP); larger specs make `--check`
-ask for the key. Text pages on www.govinfo.gov never get the key. Manual route: GET links in
+Without it the pack uses DEMO_KEY (observed limit 10 requests an hour per IP); a spec needing more than about 8
+calls makes `fetch` stop with `key_missing` (the message gives the call count). Text pages on www.govinfo.gov
+never get the key. Manual route (`manual_bundle`): GET links in
 INSTRUCTIONS.md carry `api_key=DEMO_KEY`; text items link the keyless public page
 `https://www.govinfo.gov/content/pkg/<id>/html/<id>.htm`; searches are POST requests (one command
 runs download_data.sh / .ps1), or search on https://www.govinfo.gov/app/search and save the result list.

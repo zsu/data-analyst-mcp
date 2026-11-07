@@ -86,7 +86,7 @@ function agencyName(x: unknown): string {
   if (exact.length) return exact[0];
   const part = names.filter((n) => n.toLowerCase().includes(s.toLowerCase()));
   if (part.length === 1) return part[0];
-  const hint = part.length ? ` Did you mean: ${part.slice(0, 6).join("; ")}?` : " See fetch.py --source usaspending --search.";
+  const hint = part.length ? ` Did you mean: ${part.slice(0, 6).join("; ")}?` : " Search the catalog with request_schema.";
   throw new ValueError(`agency ${pyRepr(x)} is not a toptier agency code, alias or unique name.${hint}`);
 }
 

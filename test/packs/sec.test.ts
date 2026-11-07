@@ -1,4 +1,4 @@
-/** sec: ported from the Python skill's tests/sources/sec/test_sec.py (same fixtures, specs and expected values). */
+/** sec: ported from tests/sources/sec/test_sec.py (same fixtures, specs and expected values). */
 import fs from "node:fs";
 import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";

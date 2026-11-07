@@ -7,7 +7,7 @@
  *   3. record_decisions covers each of the source's critical questions (`<id>:<n>`, from source_brief) with an
  *      answer, a "Don't know", a skip, or a reason it was not asked (settled_by_request with the user's words,
  *      or no_user when nobody can answer).
- * decisions.json in the workspace is the method record (the Python skill's schema), merged by question id.
+ * decisions.json in the workspace is the method record, merged by question id.
  */
 import crypto from "node:crypto";
 import fs from "node:fs";

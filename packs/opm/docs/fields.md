@@ -1,7 +1,7 @@
 # OPM workforce data: fields, codes and traps
 
 Read §1 and §2 before choosing data for any analysis; they decide whether a question can be answered
-at all. `data_dictionary.csv` (in `sources/opm/lib/`, and copied into every `data/opm/` folder) has the
+at all. `data_dictionary.csv` (shipped with the pack, and copied into every `data/opm/` folder) has the
 official definition of all 72 fields and which datasets carry each one.
 
 ## Contents
@@ -50,16 +50,17 @@ official definition of all 72 fields and which datasets carry each one.
    Result: about 45 to 48 percent of employment records lack pay and location (DHS about 76 percent,
    Justice about 66 percent, Treasury and Energy about 17 percent, most others under 5 percent).
    **Consequences:** a "governmentwide average salary" from these files is the average of non-DoD,
-   non-security employees, and state counts undercount every state with a big DoD presence. Always run
-   `stats.redaction_coverage()`, save `coverage.csv`, report the coverage next to every pay or location
+   non-security employees, and state counts undercount every state with a big DoD presence. Always count
+   redacted records by the groups reported (`aggregate` gives `pay_redacted`), save that coverage table as an
+   exhibit, report the coverage next to every pay or location
    figure, and restrict the stated universe ("employees whose pay is published, which excludes DoD …").
    OPM's own "Average salary" (Table Builder, dashboards) is the mean over every record of the group whose
-   pay is published, on any work schedule; the pack's default universe (full-time, per annum) differs by up
+   pay is published, on any work schedule; the default universe here (full-time, per annum) differs by up
    to $10,000 a department: match OPM's definition when benchmarking against it, and show the other as a
    sensitivity.
    For full state counts (DoD included), OPM's Federal Workforce Data location dashboard
    (data.opm.gov/explore-data/analytics/location) publishes them; FedScope's old state tables also included
-   DoD. Read them into `published/` (SKILL.md §2) and keep the file-based count as the covered-part check.
+   DoD. Read them into `published/` and keep the file-based count as the covered-part check.
    OPM's Table Builder and dashboards count separations and accessions by effective date: count the same
    way to match them. Processing month differs a lot for FY2026, because about 11,000 Deferred Resignation
    separations effective before October 2025 were processed in FY2026 files (it flips the sign of a
@@ -74,14 +75,14 @@ official definition of all 72 fields and which datasets carry each one.
    location are withheld.
 2. **Counting accessions and separations.** A file holds actions *processed* that month; 5 to 10
    percent are effective in earlier months (some a year or more back). Two defensible bases:
-   - **effective month** (`period` after `clean()`): what happened when; needs the files for later
+   - **effective month** (`personnel_action_effective_date_yyyymm`): what happened when; needs the files for later
      months too, and the most recent two or three months are incomplete;
-   - **processing month** (`file_period`): what was recorded each month; complete as soon as the file
+   - **processing month** (`file_yyyymm`): what was recorded each month; complete as soon as the file
      is out.
-   Pick one, state it, and show the other in a sensitivity check when they differ. `stats.late_reporting()`
-   shows how much arrives late.
+   Pick one, state it, and show the other in a sensitivity check when they differ; comparing the two shows
+   how much arrives late.
 3. **Versions and revisions.** Use `current` versions; numbers in an earlier report can differ because
-   OPM has since reissued the file. Pin versions to reproduce exactly.
+   OPM has since reissued the file. Pin versions (the spec's `pin`) to reproduce exactly.
 4. **Pay plans change too.** Wildland firefighters moved from GS to their own pay plan GW in 2025 (about
    16,000 to 17,000 employees at Agriculture and Interior): a GS-only series breaks there; count GS+GW for
    a like-for-like trend. OPM's "pay plan and grade" dashboard table counts permanent full-time employees only
@@ -89,25 +90,26 @@ official definition of all 72 fields and which datasets carry each one.
 5. **Agency names change; codes are stable.** For example, "DEPARTMENT OF DEFENSE" also appears as
    "DEPARTMENT OF WAR" on OPM pages from 2025. Group by `department_code`, `agency_code`,
    `agency_subelement_code`, `occupational_series_code`, and display the latest label
-   (`stats.latest_labels()`). Reorganizations (new subelements, transfers between agencies) show up
+   of each code. Reorganizations (new subelements, transfers between agencies) show up
    as jumps: check before calling them hiring or losses. Occupational series move too: wildland firefighters
    were reclassified from 0462 (Forestry Technician) into 0456 (Wildland Fire Management, created 2022), and
    the 0x99 student-trainee series swing with internship cycles; check the receiving series before calling
    a drop a loss.
 6. **Snapshot frequency.** Employment files are quarterly before 2011. A fiscal-year average headcount
-   uses 12 monthly snapshots from FY2012 on and four before. `action_rate()` flags `partial_period`.
+   uses 12 monthly snapshots from FY2012 on and four before: flag fiscal years with fewer snapshots.
 7. **Missing agency submissions.** An agency that misses a month shows a dip and a rebound. Check the
    FWD Data Quality page ("Missing EHRI files") before reporting a one-month change.
 8. **Sentinel values.** `NO DATA REPORTED`, `INVALID`, `UNSPECIFIED`, `*` appear in coded fields;
-   `clean()` turns them into missing. Report how many records are missing for the fields you use. A department
-   code reported as missing on records with a valid agency code is filled from that agency's department (each
-   agency code belongs to one department), so department totals add up to the governmentwide total.
+   the data keep them as text: treat them as missing. Report how many records are missing for the fields you use.
+   A department code reported as missing on records with a valid agency code belongs to that agency's department
+   (each agency code belongs to one department): fill it from the agency, so department totals add up to the
+   governmentwide total, and say so.
 9. **Pay oddities.** Pay is annualized basic pay plus locality or special-rate supplement, after the
    pay cap — not total compensation (no overtime, awards, benefits). Records with pay 0 (without
    compensation), hourly or per-diem pay bases, intermittent and seasonal schedules distort means.
-   Default pay universe: full-time (`work_schedule_code` F), per annum (`pay_basis_code` PA), pay > 0
-   (`stats.pay_universe`). Physicians (VM/VN pay plans), some financial regulators and SES earn above
-   the GS cap legitimately; screen with `screen_pay()` but do not drop them without a reason.
+   Default pay universe: full-time (`work_schedule_code` F), per annum (`pay_basis_code` PA), pay > 0.
+   Physicians (VM/VN pay plans), some financial regulators and SES earn above
+   the GS cap legitimately; screen pay for implausible values but do not drop them without a reason.
 10. **Strings everywhere.** Codes keep leading zeros (`occupational_series_code` "0346", `grade` "08").
    Do not convert codes to integers.
 11. **Separations on the last day of a month show up in the next snapshot.** An employee whose
@@ -116,7 +118,7 @@ official definition of all 72 fields and which datasets carry each one.
    Resignation Program, effective September 30) therefore shows up in the following month's
    headcount. In 2025: counted across the files available in October 2026, 132,949 separations were
    effective in September (106,883 of them deferred resignations; earlier files showed fewer because
-   actions keep arriving late, see `late_reporting`), but headcount fell 28,342 from August to September
+   actions keep arriving late, see §2.2), but headcount fell 28,342 from August to September
    and 92,685 from September to October. A September-to-September change misses such a wave. When separations bunch at the end of
    the period's last month, also show the change to the next month's snapshot, or use December
    snapshots, and say which you used.
@@ -169,11 +171,11 @@ official definition of all 72 fields and which datasets carry each one.
   Prefer the median for comparisons across groups; quote coverage.
 - **Retirement-eligible proxy:** no birth date or retirement plan is public. Age 60 or older with 20 or
   more years of service, or age 62+ with 5+ years, approximates FERS eligibility; label it a proxy.
-- **Fiscal year:** October through September (`fiscal_year` from `clean()`; FY2025 = October 2024 to
+- **Fiscal year:** October through September (in `compute`, make `yyyymm` a `YYYY-MM` date with `substr`, then `fiscal_year`; FY2025 = October 2024 to
   September 2025). Say "fiscal year 2025" in prose.
 
 ## 5. Columns to request for common questions
-Keep `spec.json` lean: ten September snapshots with all 64 columns are ~20 million rows.
+Keep the spec lean: ten September snapshots with all 64 columns are ~20 million rows.
 - Headcount trends by agency: `department_code, department, agency_code, agency, nsftp_indicator, work_schedule_code`
 - Composition (age, tenure, education): add `age_bracket, length_of_service_years, education_level_bracket, supervisory_status_code, veteran_indicator`
 - Occupations: `occupational_series_code, occupational_series, occupational_category_code, stem_occupation_type, grade, pay_plan_code`

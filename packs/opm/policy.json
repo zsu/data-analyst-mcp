@@ -81,7 +81,7 @@
       ]
     },
     "manual": {
-      "how": "Follow manual_download/opm/INSTRUCTIONS.md: run the bundled fetch.py on your own computer and upload the small data/ folder as a ZIP (best), or download the raw Parquet files listed in urls.txt, or on https://data.opm.gov/get-data/data-downloads click Download > .TXT (or .JSON) for each month needed; upload them and --ingest. No account or key is needed."
+      "how": "Download the raw Parquet files (manual_bundle lists them for the months in the spec's pin), or on https://data.opm.gov/get-data/data-downloads click Download > .TXT (or .JSON) for each month needed; upload them, then call ingest. No account or key is needed."
     }
   },
   "cache": {
@@ -101,8 +101,8 @@
       "id": "opm_coverage",
       "kind": "require_file",
       "when_columns": ["basic_pay", "duty_station", "location", "state"],
-      "glob": "coverage*.csv",
-      "why": "Pay and location are REDACTED for about 45 to 48 percent of employment records: run stats.redaction_coverage() by the groups reported and save <out>/coverage.csv."
+      "glob": "exhibits/coverage*.csv",
+      "why": "Pay and location are REDACTED for about 45 to 48 percent of employment records: count redacted records by the groups reported (the spec's aggregate gives pay_redacted per group) and save the table as exhibits/coverage.csv."
     },
     {
       "id": "opm_redaction_text",

@@ -1,6 +1,6 @@
 /**
  * Snapshots of the pages a method record cites, so "opened": true is a fact a tool wrote, not a claim (a port of
- * the Python skill's scripts/core/cite.py).
+ * scripts/core/cite.py).
  *
  * Each call saves <workspace>/references/<id>.<ext> and records it in references/opened.json:
  * {"<id>": {"url", "file", "sha256", "bytes", "opened" (UTC time), "via": "download" | "file", "content_type"}}.

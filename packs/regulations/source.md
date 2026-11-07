@@ -23,7 +23,7 @@ material) and the public comments agencies have posted.
 
 Columns drop the API's `attributes.` prefix (values unchanged). IDs: docket `EPA-HQ-OAR-2023-0072`;
 document `EPA-HQ-OAR-2023-0072-0001` (docket + sequence); `objectId` (`0900006485a3507a`) is a separate
-internal id, the one `filter[commentOnId]` needs. `--search` lists catalog aliases (agency acronyms).
+internal id, the one `filter[commentOnId]` needs. `request_schema` with `search` finds catalog aliases (agency acronyms).
 
 ## Spec examples
 ```json
@@ -72,8 +72,9 @@ internal id, the one `filter[commentOnId]` needs. `--search` lists catalog alias
 Key optional: DATA_GOV_API_KEY (free, https://api.data.gov/signup/), sent as the `api_key` query
 parameter. Without it the pack uses `DEMO_KEY`: about 10 requests an hour per IP address on this API
 (observed X-RateLimit-Limit 10), enough for a few small requests; a key allows 1,000 an hour (observed).
-Larger specs make `--check` ask for the key. Manual route: INSTRUCTIONS.md lists JSON links with
-`api_key=DEMO_KEY` (one per 250 rows); open each in a browser, save it, upload. On www.regulations.gov a
+Without a key, a spec needing more than about 8 calls stops with `key_missing`. Manual: `manual_bundle`'s
+INSTRUCTIONS.md lists JSON links with `api_key=DEMO_KEY` (one per 250 rows); open each in a browser, save it,
+upload, then `ingest`. On www.regulations.gov a
 docket's Browse Documents / Browse Comments lists have a Download button (CSV).
 
 ## Citation and terms

@@ -1,17 +1,16 @@
 # IPUMS API v2 cheat sheet (microdata)
 
-`sources/ipums/ipums_api.py` and `sources/ipums/fetch.py` (run as `scripts/fetch.py --source ipums`) already implement all of this. Read this file
+This server's `fetch` for ipums already implements all of this. Read this file
 when you need a feature the friendly spec doesn't expose, or when debugging an API error.
 
 ## Auth
 - Header `Authorization: <key>`. The key comes from env `IPUMS_API_KEY`; never print or log it.
 - The **401** error usually means one of two things. Either the key is wrong, or the account isn't registered for that collection. Registration is separate per collection (usa.ipums.org, cps.ipums.org, ...). Tell the user which collection to register for, then stop.
 
-- When the key is missing, rejected or the API is unreachable, `fetch.py --source ipums` exits with code 4. A sandbox
-  user then downloads on their own computer with one command that runs
-  `<out>/manual_download/ipums/download_ipums.sh` or `download_ipums.ps1` (self-contained scripts with the
-  extract built in that ask for the key with hidden input, submit, poll and download; curl steps and website
-  steps are in `INSTRUCTIONS.md`), and the files are packaged with `fetch.py --source ipums ... --ingest`. The three calls are POST `/extracts`, GET `/extracts/{number}`
+- When the key is missing, rejected or the API is unreachable, `fetch` returns an error (`key_missing`,
+  `key_rejected` or `agency_unavailable`) with its fix. `manual_bundle` cannot write an IPUMS bundle yet, so a
+  sandbox user builds the same extract on the collection's website (free account, no key) and uploads the
+  `.csv.gz` and `.xml`; `ingest` packages them. The three calls are POST `/extracts`, GET `/extracts/{number}`
   until `status` is `completed`, then GET `downloadLinks.data.url` and `downloadLinks.ddiCodebook.url`
   (all with the Authorization header).
 
@@ -56,13 +55,13 @@ After the download, `codebook.csv` holds the authoritative codes.
 
 ## Timing and limits
 - A small CPS, NHIS or MEPS extract finishes in about 10–60 s (one NHIS or MEPS year: 11 s in October 2026). ACS 1-year extracts take minutes. Multi-year ACS 5-year or full-count extracts can take 30+ minutes.
-- If the fetch times out, the extract keeps running at IPUMS. Resume it with `python <skill>/scripts/fetch.py --source ipums --resume usa:<number> --out <dir>`.
-- Extract files expire after about 72 hours. The definition saved in `data/extract_spec.json` can be resubmitted at any time.
+- If the fetch times out (after the spec's `max_wait_s`, default 600), the extract keeps running at IPUMS. The next `fetch` with the same spec collects it.
+- Extract files expire after about 72 hours. The definition saved in `data/ipums/extract_spec.json` can be resubmitted at any time (`fetch` with `force: true`).
 - On 429 or 5xx errors the client backs off and retries automatically.
 
 ## Collections that support microdata extracts through the API
 `usa`, `cps`, `ipumsi`, `atus`, `ahtus`, `mtus`, `nhis`, `meps`, `dhs`. Case selection and monetary adjustment are
-available for usa, cps and ipumsi only (`--check` refuses them for the others: route `fix_spec`). The API also refuses data quality flags for NHIS and attached characteristics for MEPS; it rectangularizes NHIS on person or injury records (`P`, `I`) and MEPS on person or round records (`P`, `R`), and both allow hierarchical extracts (developer.ipums.org, checked 2026-10). NHIS and MEPS
+available for usa, cps and ipumsi only (`fetch` refuses them for the others with `invalid_request`). The API also refuses data quality flags for NHIS and attached characteristics for MEPS; it rectangularizes NHIS on person or injury records (`P`, `I`) and MEPS on person or round records (`P`, `R`), and both allow hierarchical extracts (developer.ipums.org, checked 2026-10). NHIS and MEPS
 variable names, weights and design variables are in `variables.md` sections 8-9. An unknown variable name returns
 HTTP 400 listing every invalid name ("Invalid variable name: EMPSTAT"), and a variable outside the chosen samples
 says so ("PARTWEIGHT: This variable is not available in any of the samples currently selected"): fix and resubmit.

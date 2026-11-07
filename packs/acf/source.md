@@ -17,9 +17,10 @@ expenditures, as published by ACF in Excel workbooks. Manual download only: acf.
   served by CCDF (ACF-800/801 "CCDF Data Tables", not covered by this pack).
 
 ## Endpoints and datasets
-Nothing is fetched: `--check` always gives `manual_download` with the acf.gov page and workbook links (verified
-2026-10-30 from Internet Archive captures, since acf.gov refuses scripts), and `--ingest` reads the saved .xlsx
-(.xls with xlrd). One CSV per request; every row has `row` (sheet row) and `sheet`.
+Nothing is fetched: `fetch` always stops with `agency_unavailable` and points to `manual_bundle`, which lists the
+acf.gov page and workbook links (verified 2026-10-30 from Internet Archive captures, since acf.gov refuses
+scripts), and `ingest` reads the saved .xlsx (or .xls). One CSV per request; every row has `row` (sheet row) and
+`sheet`.
 
 | Endpoint | Returns | Key parameters | Coverage (files verified) |
 |---|---|---|---|
@@ -28,7 +29,7 @@ Nothing is fetched: `--check` always gives `manual_download` with the acf.gov pa
 | `ccdf_expenditures` | one table of a CCDF expenditure workbook | `fiscal_year`, `file` (all_years, grant_year), `as_of`, `table` | all_years FY 2019-2022; grant_year GY 2020-2022 as of 9/30/2022 |
 
 For other years the manual item is the year's page (the file name changes every year); some older years publish
-only PDF or web tables, which `--ingest` cannot read.
+only PDF or web tables, which `ingest` cannot read.
 
 `tanf_financial` `table` (FY 2015-2024 workbooks, same layout): `A.1` national spending by category (columns
 Federal Funds, State MOE in TANF and Separate State Programs, All Funds, Percent of Total Funds Used); `A.2`/`A.3`
@@ -70,7 +71,7 @@ State tables get a `state_code` column (USPS; `US` for "U.S. TOTAL", "U.S. Total
  "requests": [{"name": "ccdf_funds", "endpoint": "ccdf_expenditures",
                "params": {"fiscal_year": 2022, "file": "all_years", "table": "4a"}}]}
 ```
-Run `--check` (it writes the manual bundle), have the user save the workbook(s) from a browser, then `--ingest`.
+Call `manual_bundle` with the spec, have the user save the workbook(s) from a browser, then `ingest`.
 
 ## Data format and traps
 - Dollars are nominal, as reported by states, in dollars (not thousands); floats are written in their shortest
@@ -119,15 +120,15 @@ Run `--check` (it writes the manual bundle), have the user save the workbook(s) 
 ## Access
 No key. acf.gov (and acf.hhs.gov, which redirects there) answers every non-browser request, direct .xlsx links
 included, with an AWS WAF JavaScript challenge (HTTP 202, empty body, header x-amzn-waf-action: challenge; verified
-2026-10-30). The pack never tries to get around it: `--check` returns `manual_download` and a fetch stops as
-`blocked`. Steps for the user:
+2026-10-30). The pack never tries to get around it: `fetch` stops with `agency_unavailable` before sending
+anything and points to `manual_bundle`. Steps for the user:
 1. Open the link in INSTRUCTIONS.md in a web browser (the workbook link, or the year's page when the pack has no
    verified file name: TANF financial `https://acf.gov/ofa/data/tanf-financial-data-fy-<year>`, caseload
    `https://acf.gov/ofa/data/tanf-caseload-data-<year>`, CCDF via
    `https://acf.gov/occ/data/child-care-and-development-fund-expenditure-data-list-all-years`).
 2. Click the XLSX link (caseload: the TANF, SSP-MOE or TANF & SSP-MOE file; the "15 Months" one when the page has
    two; CCDF: the "all appropriation years" page or the grant-year "Tables 1b-..." page, then its XLSX).
-3. Save the .xlsx and upload it unchanged; `--ingest` picks the table named in the request. One workbook serves
+3. Save the .xlsx and upload it unchanged; `ingest` picks the table named in the request. One workbook serves
    every table of that year: requests on the same workbook need it uploaded once.
 The download scripts in the bundle will get the empty challenge page; saving from a browser works.
 

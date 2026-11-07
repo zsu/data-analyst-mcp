@@ -23,7 +23,7 @@ insider ownership filings (Forms 3, 4, 5).
 | `insider_filings` | Form 4 (or 3, 5) filing | `cik`/`ticker`, `forms` (4), `startdt`, `enddt` |
 | `company_search` | matching company or person (none: an empty table with a note, the other requests still run) | `text` |
 Fact rows: cik, entity_name, taxonomy, tag, label, unit, start, end, period_days, val, fy, fp, form,
-filed, accn, frame. Common tags (`--search "revenue"`): Revenues,
+filed, accn, frame. Common tags (`request_schema` with `search: "revenue"`): Revenues,
 RevenueFromContractWithCustomerExcludingAssessedTax, NetIncomeLoss, OperatingIncomeLoss, Assets,
 Liabilities, StockholdersEquity, EarningsPerShareDiluted, NetCashProvidedByUsedInOperatingActivities.
 
@@ -91,8 +91,8 @@ the User-Agent and to stay under 10 requests a second (this pack sends at most 5
 data.sec.gov and efts.sec.gov accepted in 2026-10 but SEC may block. The pack never sends a GitHub
 URL (SEC answers 403 to those). Tickers are resolved with EDGAR's company search (efts), because
 www.sec.gov/files/company_tickers.json refuses User-Agents without an email.
-Manual route: INSTRUCTIONS.md lists the data.sec.gov / efts JSON links (a browser sends its own
-User-Agent); save each under the name shown and upload. Requests that use a ticker need the CIK for
+Manual: `manual_bundle`'s INSTRUCTIONS.md lists the data.sec.gov / efts JSON links (a browser sends its own
+User-Agent); save each under the name shown, upload, then `ingest`. Requests that use a ticker need the CIK for
 the manual links: find it at https://www.sec.gov/edgar/searchedgar/companysearch.
 
 ## Citation and terms

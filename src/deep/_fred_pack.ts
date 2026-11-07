@@ -1,5 +1,5 @@
 /**
- * The fred deep pack's spec, download and packaging (ported from the Python skill's sources/fred/fetch.py).
+ * The fred deep pack's spec, download and packaging (ported from sources/fred/fetch.py).
  *
  * spec:
  *   {"description": "Output gap since 2019",
@@ -826,10 +826,10 @@ export function writeReadme(pack: Pack, d: string, s: { description?: unknown },
     "years ahead): cut those series at the last actual date of the series you compare them with.",
     "- **Fiscal years.** `fiscal_year` = 1 marks federal fiscal-year series (October to September). FRED dates dollar " +
     "amounts at the end of the fiscal year (2025-09-30 = FY2025) and some percent-of-GDP series at January 1 of the fiscal " +
-    "year's number (2025-01-01 = FY2025). Use `tsstats.fiscal_year_label`.",
+    "year's number (2025-01-01 = FY2025): label each value by the fiscal year it belongs to.",
     "- `variant` names any FRED-side conversion (`_pc1`, `_qavg` ...). FRED's own frequency conversion averages whatever " +
     "observations exist, so a quarter with a missing month still gets a value; prefer native-frequency data and " +
-    "`tsstats.to_frequency`, which refuses incomplete periods.",
+    "convert it yourself, dropping incomplete periods.",
     "- `vintage` is `latest`, an as-of date (ALFRED: the data as published on that date), `first_release`, or for full " +
     "histories the date a value was first published (`realtime_start`).",
   ];

@@ -1,5 +1,5 @@
 /**
- * One state in any form to another: the Python skill's scripts/analysis/combine.state, which the dol, eia and
+ * One state in any form to another (scripts/analysis/combine.state), which the dol, eia and
  * irs-soi adapters import (core has no such helper). Kept beside the dol adapter; eia and irs-soi import it too.
  */
 const STATES: [string, string, string][] = [

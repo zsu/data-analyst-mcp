@@ -57,7 +57,7 @@ rounding, the exact endpoint when two give identical published totals.
 - `record_date` is the reporting date (month end for the MTS, business day for the DTS and Debt to the
   Penny). The MTS for September is the final, full-year statement; it is published in mid-October.
 - Say how current the data are: "data through September 30, 2025, retrieved October 19, 2026".
-- Fix the cut-off in `spec.json` (`as_of`) so reruns return the same rows.
+- Fix the cut-off in the spec (`as_of`) so reruns return the same rows.
 
 **Stocks and flows**
 - Stocks (debt, cash, rates): take the end-of-period value (`period_end`) or the average (`period_mean`).
@@ -82,20 +82,20 @@ rounding, the exact endpoint when two give identical published totals.
   Pick one convention for the product ("the deficit was $1.8 trillion") and state it.
 
 **Real dollars and GDP**
-- Deflate with the CPI-U averaged over the same fiscal year (`cpi_index(out, "FY")`), into the dollars of
-  the latest complete fiscal year; name the index and base year in notes.
+- Deflate with the CPI-U averaged over the same fiscal year (`compute` `to_fiscal` with `how` "mean", then
+  `deflate`), into the dollars of the latest complete fiscal year; name the index and base year in notes.
 - Fiscal-year GDP is the average of the four quarterly seasonally adjusted annual rates from October to
-  September (`fy_gdp`). Calendar-year GDP (World Bank fallback) does not match fiscal-year budget totals;
+  September (`to_fiscal` with `freq` "Q", `how` "mean"). Calendar-year GDP (World Bank fallback) does not match fiscal-year budget totals;
   if only that is available, say so or use calendar-year flows.
-- An incomplete period (the `complete` flag is False; `tstats` prints a warning) is provisional: say so
+- An incomplete period (the `complete` flag is False; `to_fiscal` notes it) is provisional: say so
   in the text and the exhibit notes, with its coverage ("GDP for three of four quarters"). In October the
   latest fiscal year usually lacks GDP's July–September quarter, so its share of GDP is provisional.
 
 **Revisions and provenance**
-- Treasury revises some values in later releases. Record the retrieval date (it is in `data/README.md`)
+- Treasury revises some values in later releases. Record the retrieval date (it is in `data/treasury/README.md`)
   and note revisions when a comparison spans releases.
 
-## Publication structure (mirrored in `build_report.py`, `"mode": "report"`)
+## Publication structure (mirrored in `build_report`, `"mode": "report"`)
 
 The default layout, the **exhibit chartbook**, runs in this order:
 1. **Cover:** "Month Year", the title (with the period for trend reports), and a hero chart.

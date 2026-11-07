@@ -30,7 +30,7 @@ AND-ed); `rangeFilters` is `'field from:to'` (dates and numbers only). Field nam
 `applicationMetaData.firstApplicantName`, `applicationMetaData.cpcClassificationBag`,
 `applicationMetaData.grantDate`, `applicationMetaData.applicationTypeCode` (UTL, DES, PLT, PPA, REI).
 Field dictionary: https://data.uspto.gov/documents/documents/patent-data-schema.json (sign-in needed).
-`--search "trial"` lists the catalog notes (type codes, trial types, bulk product ids).
+`request_schema` with `search: "trial"` lists the catalog notes (type codes, trial types, bulk product ids).
 
 ## Spec examples
 ```json
@@ -59,8 +59,9 @@ Do not set `limit`/`offset`: paging is automatic (100 per page); cap with `max_r
 - Records are deeply nested. The CSV flattens objects into dotted columns
   (`applicationMetaData.patentNumber`); lists of objects (`inventorBag`, `assignmentBag`,
   `eventDataBag`, `parentContinuityBag`) become JSON text in one cell, and lists of strings
-  (`cpcClassificationBag`) become "; "-joined text. Parse them in `analysis.py`; use `fields` to keep
-  rows small.
+  (`cpcClassificationBag`) become "; "-joined text. `compute` does not unpack them: work from the flat
+  columns, or (local mode) parse them with your own code and save the result as a CSV before citing it. Use
+  `fields` to keep rows small.
 - One row per application, not per patent: an application without `patentNumber` was not granted (yet).
   Status is a code plus `applicationStatusDescriptionText` ("Patented Case" = 150).
 - Dates are ISO (YYYY-MM-DD). Filing, effective filing, earliest publication and grant dates differ by
@@ -81,16 +82,16 @@ Do not set `limit`/`offset`: paging is automatic (100 per page); cap with `max_r
 Key required for every call: a free ODP API key, sent in the `X-API-KEY` header. Getting one needs a
 USPTO.gov account with multi-factor authentication and an ID.me identity check
 (https://data.uspto.gov/apis/getting-started). Since 2026-10-08 keys of accounts missing the extra profile
-fields are deactivated; reactivate under Manage API Key. Without a key, `--check` answers `run_setup`
-(local terminal), `cloud_secret` or `manual_download`.
+fields are deactivated; reactivate under Manage API Key. Without a key, `fetch` stops with `key_missing`:
+the user stores the key with `npx -y data-analyst-mcp setup uspto` in their own terminal (never in chat), or
+uses `manual_bundle`.
 Limits (USPTO rate-limits page): one request at a time per key (parallel calls with the same key are
 blocked), 4 to 15 requests a second, 5 million metadata calls and 1.2 million document calls a week,
 reset Sunday 00:00 UTC; on HTTP 429 wait at least 5 seconds. The pack sends 4 a second, never in parallel.
-Manual route: browser links cannot send the header, so `manual_download/` holds scripts
-(`download_data.sh`, `.ps1`; one command, no Python) that ask for USPTO_API_KEY with hidden input on the
-user's computer and save the JSON
-files; upload them and run `--ingest`. Without a key: sign in at https://data.uspto.gov (required since
-2026-06-18), use the Patent File Wrapper search page, save the results, and upload them. Bulk XML files
+Manual: browser links cannot send the header, so the `manual_download/` folder that `manual_bundle` writes holds
+scripts (`download_data.sh`, `.ps1`; one command) that ask for USPTO_API_KEY with hidden input on the
+user's computer and save the JSON files; upload them, then `ingest`. Without a key: sign in at
+https://data.uspto.gov (required since 2026-06-18), use the Patent File Wrapper search page, save the results, and upload them. Bulk XML files
 (PTGRXML, APPXML) are listed by `datasets_search`; this pack does not parse them.
 
 ## Citation and terms

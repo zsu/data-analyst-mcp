@@ -114,7 +114,7 @@
     "max_series_keyless": 25,
     "max_years": 20,
     "max_years_keyless": 10,
-    "note": "v2 with a key: 500 queries a day, 50 series and 20 years per query; v1 without: 25, 25 and 10; 50 requests per 10 seconds either way. fetch.py splits requests and counts queries in ~/.bls/usage.json."
+    "note": "v2 with a key: 500 queries a day, 50 series and 20 years per query; v1 without: 25, 25 and 10; 50 requests per 10 seconds either way. fetch splits requests to fit them."
   },
   "routes": {
     "api": {
@@ -133,13 +133,13 @@
       ]
     },
     "manual": {
-      "how": "Run --manual-bundle (or follow --check): it writes INSTRUCTIONS.md, spec.json and the self-contained download_bls.sh / .ps1 (the requests built in) into <out>/manual_download/bls/. On a computer with internet access run one script with one command (it asks for a key with hidden input only when the request needs one), then upload the response_NN.json files and run --ingest. Without the scripts: https://data.bls.gov/dataQuery/find or a series page https://data.bls.gov/timeseries/<ID> lets you download one series at a time as XLSX, but --ingest reads only API JSON responses."
+      "how": "Call manual_bundle: it writes INSTRUCTIONS.md, spec.json and the self-contained download_data.sh / .ps1 (the requests built in) into manual_download/. On a computer with internet access run one script with one command (it asks for a key with hidden input only when the request needs one), then upload the response_NN.json files and call ingest. Without the scripts: https://data.bls.gov/dataQuery/find or a series page https://data.bls.gov/timeseries/<ID> lets you download one series at a time as XLSX, but ingest reads only API JSON responses."
     }
   },
   "cache": {
     "mode": "run_only",
     "ttl_hours": null,
-    "why": "Small queries under a daily quota; <out>/data/bls/ is reused within a run (route reuse_existing). Data are revised monthly, so no cross-run cache."
+    "why": "Small queries under a daily quota; data/bls/ is reused within a session (fetch reuses the folder). Data are revised monthly, so no cross-run cache."
   },
   "redistribution": {
     "mode": "allowed",

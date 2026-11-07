@@ -24,7 +24,7 @@ Filters (all endpoints): `product`, `sub_product`, `issue`, `sub_issue`, `compan
 `company_response`, `submitted_via`, `timely` (Yes/No), `tags`, `search_term` with `field` (all or
 company; any other value is HTTP 400). A list value means OR (`"state": ["TX", "OK"]`). `sub_product`
 needs exactly one `product` and `sub_issue` exactly one `issue` (see traps). Any other parameter is
-refused (`fix_spec`). `--endpoints` lists the product names seen in the database.
+refused (`invalid_request`). A `request_schema` search lists the product names seen in the database.
 
 ## Spec examples
 ```json
@@ -84,7 +84,7 @@ refused (`fix_spec`). `--endpoints` lists the product names seen in the database
   `/geo/states` and `/_suggest_company` return the web page instead of JSON (checked 2026-10-20).
 
 ## Access
-No key. Route `api` when www.consumerfinance.gov answers. Manual route: INSTRUCTIONS.md gives one
+No key. `fetch` works when www.consumerfinance.gov answers. Manual route (`manual_bundle`): INSTRUCTIONS.md gives one
 link per request: complaint lists as CSV (`format=csv`, up to 10,000 rows), counts as JSON (one file per
 period for trends). Or open https://www.consumerfinance.gov/data-research/consumer-complaints/search/,
 set the same filters, choose Export data > CSV, and upload the file. The full database is a bulk CSV

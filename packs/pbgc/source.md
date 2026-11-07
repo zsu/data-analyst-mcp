@@ -33,8 +33,8 @@ funding (S-41 by state); S-42 by region and state; S-43 maximum guaranteed benef
 transfers. M-1 net position, M-2 premiums and assistance, M-3 financial assistance payments (traditional and SFA),
 M-4/M-5 insured participants and plans, M-6 to M-13 participants by status, industry, funding; M-14 maximum
 guarantee; M-15 premium rates; M-16 to M-19 zone status and administrative expenses; M-20/M-21 SFA by plan size and
-industry. `--search "<words>"` searches the catalog (aliases `s_1`, `m_20`, `glance`; numbering of the 2023
-edition).
+industry. `request_schema` with `search: "<words>"` searches the catalog (aliases `s_1`, `m_20`, `glance`;
+numbering of the 2023 edition).
 
 ## Spec examples
 ```json
@@ -83,10 +83,10 @@ edition).
 - Before 1999, Form 5500 based tables cover only plans with 100 or more participants (2023 S-22 note).
 
 ## Access
-No key; www.pbgc.gov answers scripts (verified 2026-10-30); limit used one request per second. Route `api`: the
-index page plus one workbook per edition (1-3 MB), read once per run. Manual route: open the index page in a
+No key; www.pbgc.gov answers scripts (verified 2026-10-30); limit used one request per second. `fetch` reads the
+index page plus one workbook per edition (1-3 MB), once per run. Manual (`manual_bundle`): open the index page in a
 browser, click the Excel link in the row of the edition (e.g. "2024 Pension Insurance Data Tables (1st
-Installment)"), save it under the name in INSTRUCTIONS.md and upload it; the same workbook serves every table of
+Installment)"), save it under the name in INSTRUCTIONS.md, upload it, then `ingest`; the same workbook serves every table of
 that edition. The PDF beside it has the same tables with titles. 2025 is not posted yet (its expected URL
 answers 404).
 

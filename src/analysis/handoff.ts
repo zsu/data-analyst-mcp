@@ -1,6 +1,6 @@
 /**
- * The data hand-off: what each source delivered, read back from its provenance files (a port of the Python
- * skill's scripts/core/handoff.py).
+ * The data hand-off: what each source delivered, read back from its provenance files (a port of
+ * scripts/core/handoff.py).
  *
  * For every <workspace>/data/<id>/ (request.json; Treasury's fetch_spec.json) and <workspace>/published/*.csv it
  * lists the files with row counts, the route and retrieval date, the fetch notes and problems, and a short

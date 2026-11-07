@@ -108,10 +108,11 @@ upload one sheet saved as CSV), the Greenbook column-format zips, Livingston ind
 - A wrong file name returns HTTP 200 with an HTML "Error - 404" page; the pack reports it as a wrong file name.
 
 ## Access
-No key; the host answers scripts (verified 2026-10-30, Python user agent). Limit used: one request a second. The
-workbooks are 0.1-0.7 MB (SPFmicrodata.xlsx 25 MB is not wrapped). Route `api`. Manual route: the links in
-`manual_download/INSTRUCTIONS.md` download the same workbooks; upload them unchanged and the pack reads the sheet in
-the spec. Pages listing the files: https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/ then
+No key; the host answers scripts (verified 2026-10-30, a script's user agent). Limit used: one request a second.
+The workbooks are 0.1-0.7 MB (SPFmicrodata.xlsx 25 MB is not wrapped). `fetch` works directly. Manual: the links
+`manual_bundle` writes to `manual_download/INSTRUCTIONS.md` download the same workbooks; upload them unchanged and
+`ingest` reads the sheet in the spec. Pages listing the files:
+https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/ then
 `median-forecasts`, `mean-forecasts`, `dispersion-forecasts`, `probability-variables`, `individual-forecasts`,
 `greenbook`, `livingston-historical-data`, `real-time-data-set-full-time-series-history`. Release dates:
 .../survey-of-professional-forecasters/spf-release-dates.txt. Documentation: spf-documentation.pdf and

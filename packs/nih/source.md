@@ -30,10 +30,10 @@ several words (a disease, a technique), use `phrase`; use `text` for words that 
 fetch note says which was used (verified 2026-10: a two-word disease name, one fiscal year: 312 projects
 with every word, 301 with the phrase).
 
-RCDC categories: `--search "alzheimer"` lists names and ids (308 categories observed in live records,
-e.g. Cancer 132, Breast Cancer 120, Alzheimer's Disease 40, Diabetes 224, HIV/AIDS 284, Opioids 3951,
+RCDC categories: `request_schema` with `search: "alzheimer"` lists names and ids (308 categories observed
+in live records, e.g. Cancer 132, Breast Cancer 120, Alzheimer's Disease 40, Diabetes 224, HIV/AIDS 284, Opioids 3951,
 Mental Health 443, Cardiovascular 140). Institute codes: NCI, NHLBI, NIDDK, NINDS, NIA, NIAID, NIGMS, NIMH,
-NIDA, NICHD, NEI, NIEHS, NIAAA, NHGRI, NIBIB, NIMHD, NCATS, NLM, FIC, OD (`--search` lists them).
+NIDA, NICHD, NEI, NIEHS, NIAAA, NHGRI, NIBIB, NIMHD, NCATS, NLM, FIC, OD (the same search finds them by name).
 
 Default `include_fields` (PascalCase, as the API wants): ApplId, ProjectNum, CoreProjectNum,
 SubprojectId, FiscalYear, ProjectTitle, Organization, ContactPiName, AgencyIcAdmin, AgencyIcFundings,
@@ -96,10 +96,10 @@ One request per fiscal year keeps each under the 15,000-record cap and makes the
 
 ## Access
 No key. NIH asks for no more than one request per second and large jobs at night or on weekends
-(api.reporter.nih.gov); the pack sends one per second. Route `api` when the host answers. Manual route:
-the API takes POST requests, so the bundle's download_data.sh / .ps1 scripts (one command, no Python) are the way to run the
-same queries elsewhere; or run the search at https://reporter.nih.gov/advanced-search, Export to CSV and
-upload it (the export uses display column names, not the API names). Bulk files by fiscal year:
+(api.reporter.nih.gov); the pack sends one per second. `fetch` works when the host answers. Manual
+(`manual_bundle`): the API takes POST requests, so the bundle's download_data.sh / .ps1 scripts (one command)
+are the way to run the same queries elsewhere; upload the JSON files, then `ingest`. Or run the search at
+https://reporter.nih.gov/advanced-search, Export to CSV and upload it (the export uses display column names, not the API names). Bulk files by fiscal year:
 https://reporter.nih.gov/exporter.
 
 ## Citation and terms

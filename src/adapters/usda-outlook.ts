@@ -242,11 +242,11 @@ async function fetchWasde(site: Site, r: SpecRequest, p: Record<string, any>, ma
     if (missing.length && missing.length === months.length) {
       throw new DataError(`request ${repr(r.name)}: no WASDE CSV for ${months.join(", ")} (${missing.join("; ")}). ` +
         `Older or reissued months are in the consolidated CSV on ${WASDE_HIST} (a browser page; ` +
-        "download it and upload it with --ingest)", "not_found");
+        "download it and upload it for ingest)", "not_found");
     }
     if (missing.length) {
       notes.push(`${r.name}: report month(s) skipped: ${missing.join("; ")}. The consolidated CSV on ` +
-        `${WASDE_HIST} (browser download, then --ingest) may hold them (unverified)`);
+        `${WASDE_HIST} (browser download, then ingest) may hold them (unverified)`);
     }
   }
   if (rows.length > maxRows) {
@@ -481,7 +481,7 @@ function checkSpec(spec: Spec): string[] {
         if (!YM.test(sv)) probs.push(`request ${n}: ${k} must be YYYY-MM such as 2026-10` + (k !== "start_report" ? ' or "latest"' : ""));
         else if (sv < WASDE_FIRST) {
           probs.push(`request ${n}: ${k} ${sv}: the monthly WASDE CSVs start with ${WASDE_FIRST}; earlier ` +
-            `reports are in the consolidated CSV on ${WASDE_HIST} (browser download, then --ingest)`);
+            `reports are in the consolidated CSV on ${WASDE_HIST} (browser download, then ingest)`);
         } else if (sv > now) probs.push(`request ${n}: ${k} ${sv} is in the future`);
       }
       if (!blank(p.report) && !blank(p.start_report)) probs.push(`request ${n}: give report or start_report/end_report, not both`);

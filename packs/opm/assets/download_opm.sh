@@ -4,7 +4,7 @@
 #
 # Usage:  bash download_opm.sh
 #
-#   - The request is built into this script (written by the data-analyst skill; do not edit it).
+#   - The request is built into this script (written by data-analyst-mcp; do not edit it).
 #   - It lists the files OPM publishes now (data.opm.gov, no account or key), picks the months the
 #     request asks for, and saves each one as <dataset>_<YYYYMM>_<version>.parquet.
 #   - Employment files are 26-75 MB each; accession and separation files are under 4 MB.

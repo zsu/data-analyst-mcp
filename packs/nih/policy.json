@@ -59,7 +59,7 @@
       ]
     },
     "manual": {
-      "how": "The API takes POST requests, so a browser link cannot fetch them: run download_data.sh / download_data.ps1 from the bundle (one command, no Python), or search at https://reporter.nih.gov/advanced-search (same criteria), click Export, choose CSV and the fields, and upload the file. Whole fiscal years: https://reporter.nih.gov/exporter (bulk CSV files)."
+      "how": "The API takes POST requests, so a browser link cannot fetch them: run download_data.sh / download_data.ps1 from the bundle (one command), or search at https://reporter.nih.gov/advanced-search (same criteria), click Export, choose CSV and the fields, and upload the file. Whole fiscal years: https://reporter.nih.gov/exporter (bulk CSV files)."
     }
   },
   "cache": {

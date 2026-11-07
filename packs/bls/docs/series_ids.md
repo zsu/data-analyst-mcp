@@ -1,7 +1,7 @@
 # Series IDs
 
 A wrong series ID is the most common silent error: the number exists, it is just not the number the
-user asked about. Before downloading, run `python <skill>/scripts/fetch.py --source bls --describe <ID> ...` and read
+user asked about. Before downloading, call `request_schema` for bls with the search `describe <ID> ...` and read
 the title, the seasonal adjustment and the dimensions back against the request.
 
 Contents: 1. How IDs are built · 2. Verified common series · 3. Finding an ID you do not know · 4. ID builders
@@ -21,7 +21,7 @@ The first two letters name the survey; for most surveys the third is **S** (seas
 | LA | Local Area Unemployment Statistics | 2-char area type (`ST` state, `MT` metro, `CN` county) + 13-digit area code + 2-digit measure (`03` rate, `04` unemployed, `05` employed, `06` labor force) |
 | EN | QCEW | `U` + area (5) + data type (1) + size (1) + ownership (1) + industry code as written, not padded (`10` = all industries, or the NAICS code): `ENU2403110110` = Montgomery County MD, federal government employment [checked 2026-10-22] |
 | OE | OEWS (annual, period A01) | area type + area + industry + occupation (SOC) + data type |
-| CI | Employment Cost Index (quarterly) | `CI` + S/U + owner (`1` civilian, `2` private industry, `3` state and local government) + `0` + component (`1` total compensation, `2` wages and salaries, `3` benefits) + `0000000000` + `I` index or `A` 12-month percent change (NSA; BLS's headline 12-month changes): `CIU2020000000000A` private wages and salaries, `CIU3020000000000A` state and local (read back with `--describe` on 2026-10-21) |
+| CI | Employment Cost Index (quarterly) | `CI` + S/U + owner (`1` civilian, `2` private industry, `3` state and local government) + `0` + component (`1` total compensation, `2` wages and salaries, `3` benefits) + `0000000000` + `I` index or `A` 12-month percent change (NSA; BLS's headline 12-month changes): `CIU2020000000000A` private wages and salaries, `CIU3020000000000A` state and local (titles read back from data.bls.gov on 2026-10-21) |
 | PR | Productivity and costs (quarterly) | `PRS85006092` nonfarm business labor productivity, percent change at annual rate; `PRS85006112` unit labor costs; indexes 2017=100 (for growth since a date): `PRS85006093` productivity, `PRS85006103` hourly compensation, `PRS85006153` real hourly compensation, `PRS85006173` labor share, `PRS85006143` output price deflator |
 | LE | CPS usual weekly earnings (quarterly) | `LEU0252881500` median weekly earnings, full-time wage and salary workers |
 
@@ -61,20 +61,21 @@ The first two letters name the survey; for most surveys the third is **S** (seas
 | OEWS, all occupations, U.S., annual mean wage | | `OEUN000000000000000000004` (annual, latest year only) |
 
 State codes in LA and SM IDs are FIPS codes (`06` California, `36` New York, `48` Texas ...). For other
-states, change the two digits and confirm with `--describe`.
+states, change the two digits and confirm with the `request_schema` search `describe <ID>`.
 
 ## 3. Finding an ID you do not know
-1. Build it from the structure in §1 and confirm it with `fetch.py --source bls --describe <ID>`, or build it with `--build` (§4): a missing title means
-   the ID does not exist (not for OEWS: data.bls.gov has no catalog page for OE IDs, so `--describe` decodes
+1. Build it from the structure in §1 and confirm it with the `request_schema` search `describe <ID>`, or build it
+   with a spec `build` entry (§4): a missing title means
+   the ID does not exist (not for OEWS: data.bls.gov has no catalog page for OE IDs, so the search decodes
    them from their layout and says so; a wrong OEWS ID shows up as a series with no data at fetch time).
 2. Search tools for the user or the browser: https://data.bls.gov/dataQuery/find (keyword search),
    https://beta.bls.gov/dataQuery/search, the survey's "Databases, Tables & Calculators" page, or the
    series list behind each table in a BLS news release.
-3. Never guess an ID from memory and download it without `--describe`; never report a number from a series
+3. Never guess an ID from memory and download it without reading its title; never report a number from a series
    whose title you have not read.
 
-## 4. ID builders (`fetch.py --source bls --build ...`, or `"build"` in spec.json)
-Code: `sources/bls/lib/series_ids.py`. Every
+## 4. ID builders (`"build"` in the spec; the `request_schema` search `build {json}` previews the IDs)
+Every
 pattern below returned data from the API on 2026-10-20 for Maryland / Baltimore County / SOC 15-1252.
 
 | Builder | Arguments | ID pattern | Example |
@@ -98,12 +99,12 @@ retail, 480099 transportation, warehousing and utilities), 510000 information, 5
 private education and health (610000 educational services, 620000 health care and social assistance),
 700000 leisure and hospitality (710000 arts, 720000 accommodation and food), 810000 other services, 900000
 government (910000 federal, 920000 state and local, 923000 state and local education, 929000 state and local
-excluding education). All 28 quits-rate IDs were read back with `--describe` on 2026-10-21. OEWS is
+excluding education). All 28 quits-rate IDs were read back from data.bls.gov on 2026-10-21. OEWS is
 annual (period `A01`) and the API returns only the latest survey year (2025 on 2026-10-20: SOC 15-1252
 annual median wage $135,980 U.S., $138,680 Maryland); a request for the current year adds a "No Data
 Available" message, not an error. County LAUS lags the state data by a month.
 
-Common ID mix-ups (checked with `--describe` on 2026-10-20): U-6 is `LNS13327709`;
+Common ID mix-ups (titles checked on data.bls.gov on 2026-10-20): U-6 is `LNS13327709`;
 `LNS13023621` is "(Seas) Unemployment Level - Job Losers" (thousands). `WPUFD4` is PPI final demand (not
 "finished goods"); `WPUFD49104` is final demand less foods and energy (not "finished consumer foods");
 `CES6562000003` covers health care and social assistance. Prefix `EI` is not the Employment Cost
@@ -119,7 +120,7 @@ Annual only (period A01); BLS publishes no state standard errors, and 2025 value
 Only New York, Chicago and Los Angeles are priced monthly; the others every other month (odd months: Jan,
 Mar ...; even months: Feb, Apr ...), so "the latest" month differs by area and the off months come back
 empty (`n_missing`/`absent_periods` count them). Compare 12-month changes at each area's own latest month
-(`tsstats.yoy` matches by date) and say which month each is. BLS's news release Table 4 lists them all.
+(match each month to the same month a year earlier by date, not by row) and say which month each is. BLS's news release Table 4 lists them all.
 
 | Series | Area | Priced |
 |---|---|---|

@@ -21,7 +21,7 @@ lobbyists' semiannual contribution reports (LD-203), 1999 to date, from the Sena
 | `issue_codes`, `filing_types`, `government_entities` | code lists | none |
 
 Name filters match substrings without case ("pfizer" matches "PFIZER INC." and its outside firms'
-reports for Pfizer). Issue codes (catalog, `--search health`): HCR health, MMM Medicare/Medicaid, PHA
+reports for Pfizer). Issue codes (catalog; `request_schema` with `search: "health"`): HCR health, MMM Medicare/Medicaid, PHA
 pharmacy, TAX, BUD budget/appropriations, DEF defense, ENV environment, ENG energy, FUE fuel/gas/oil,
 TRD trade, FIN financial institutions, BAN banking, SCI science/technology, TEC telecommunications, CPI
 computer industry, IMM immigration, LBR labor, TRA transportation, AGR agriculture, HOU housing, CSP
@@ -88,8 +88,8 @@ consumer issues, HOM homeland security, INS insurance, CPT copyright/patent/trad
 Key optional: LDA_API_KEY (free, https://lda.gov/api/register/), sent as the header
 `Authorization: Token <key>`; 120 requests a minute instead of 15. The pack paces itself under the
 anonymous limit; a 429 answer asks to wait (Retry-After can be 25 minutes), so do not retry in a loop.
-Manual route: INSTRUCTIONS.md lists the first JSON page of each request (no key; follow `next` links for
-more), or use https://lda.gov/filings/public/filing/search/ and
+Manual: `manual_bundle`'s INSTRUCTIONS.md lists the first JSON page of each request (no key; follow `next`
+links for more; upload the pages, then `ingest`), or use https://lda.gov/filings/public/filing/search/ and
 https://lda.gov/filings/public/contribution/search/ and download the result lists.
 
 ## Citation and terms

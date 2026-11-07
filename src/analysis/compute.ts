@@ -6,7 +6,7 @@
  * every number read from it is reproduced by the server, not typed.
  *
  * exhibits/lineage.json: {"exhibits/<x>.csv": {"packs": [...], "tool": "compute", "from": alias,
- *   "inputs": {alias: {"path", "sha256"}}, "steps": [...], "sha256": <the CSV's hash>}}. The Python skill wrote
+ *   "inputs": {alias: {"path", "sha256"}}, "steps": [...], "sha256": <the CSV's hash>}}. The older format is
  * {"exhibits/<x>.csv": [packs]}; lineagePacks() reads both.
  */
 import fs from "node:fs";

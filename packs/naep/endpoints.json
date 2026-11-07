@@ -7,7 +7,7 @@
       "params": {
         "subject": {"required": true, "catalog": true, "desc": "reading, math (mathematics), science, writing, civics, history, geography, economics, tel, music"},
         "grade": {"required": true, "enum": [4, 8, 12], "desc": "4, 8 or 12"},
-        "subscale": {"desc": "scale code; default is the subject's composite (math grade 12: MWPCM). --search sub: lists them"},
+        "subscale": {"desc": "scale code; default is the subject's composite (math grade 12: MWPCM). a request_schema search \"sub:\" lists them"},
         "variable": {"desc": "student group: TOTAL, SDRACE, GENDER, ECONDIS (SLUNCH3 before 2024), PARED, SCHTYPE, UTOL4, IEP, LEP; crosstab A+B (SDRACE+GENDER)"},
         "jurisdiction": {"desc": "NP (national public), NT (national), state codes (CA), districts (XN = New York City); comma-separated for several"},
         "stattype": {"desc": "MN:MN mean (default); ALC:AB / ALC:AP / ALC:AD at or above Basic/Proficient/Advanced; RP:RP row percent; PC:P1/P2/P5/P7/P9 = 10th/25th/50th/75th/90th percentile (no other PC codes); comma-separated for several"},

@@ -22,8 +22,8 @@ sub-state areas (removed from the public file); standard errors (replicate weigh
 Default `variables` (units): FSUSIZE CERTHHSZ CTPRHH FSBEN RAWBEN FSGRINC FSNETINC FSEARN FSUNEARN TPOV FSKID
 FSNKID FSELDER FSNELDER FSDIS FSNONCIT COMPOSITION WRK_POOR TANF_IND CAT_ELIG HOMEDED REP_SYS STATUS AMTERR
 REGIONCD; ones missing in an older year are skipped with a note (FY 2014 has no FSKID, FSELDER, FSDIS, STATENAME).
-A variable asked for by name that the year lacks is an error. `--search <words>` searches the 204-entry catalog
-(the FY 2024 quick-reference codebook: every unit variable and person stem, with its group). Labels and codes
+A variable asked for by name that the year lacks is an error. `request_schema` with `search: "<words>"`
+searches the 204-entry catalog (the FY 2024 quick-reference codebook: every unit variable and person stem, with its group). Labels and codes
 are FY 2024's; check the year's technical documentation before reading codes of another year.
 
 ## Spec examples
@@ -82,7 +82,7 @@ are FY 2024's; check the year's technical documentation before reading codes of 
 No key, no account, no form. snapqcdata.net (Mathematica for USDA FNA) lists the files at
 https://snapqcdata.net/datafiles (`?page=0`... `6`, one "Year YYYY" group each, newest first); each fetch reads the
 listing and downloads that year's "QC Data | CSV" zip, so a reissued file is picked up. Manual: download the zip
-from the listing (INSTRUCTIONS.md has direct links) and upload it; `--ingest` reads the zip or the bare
+from the listing (`manual_bundle`'s INSTRUCTIONS.md has direct links) and upload it; `ingest` reads the zip or the bare
 `qc_pub_fy<YYYY>.csv`. Technical documentation (codebook, weighting, changes) is the PDF in the same year group;
 read it before using a variable's codes. The replicate weights (SAS, 22-146 MB) and a SAS program for standard
 errors are on the same page.

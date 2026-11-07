@@ -27,8 +27,8 @@ Most endpoints come in three levels: `_national`, `_state` (`state` = CA), `_age
 | `hate_crime_*`, `hate_crime_bias_*` | `type=totals` (default): incidents by bias, category, offense, location, offender over the span; `type=counts`: monthly incidents, offenses and coverage | `bias` (12, 21 ...), `from`, `to`, `type` |
 | `pe_national` / `pe_state` / `pe_agency` | officers and civilians by sex, employees per 1,000 people, yearly | `from`, `to` (YYYY) |
 | `lesdc` | Law Enforcement Suicide Data Collection, one chart and year | `chartType`, `year` |
-Code lists are in the catalog: `--search "drug"` finds arrest codes 150-160, `--search "anti-jewish"` the bias
-code. `from`/`to` take MM-YYYY or a year (2019 becomes 01-2019 as `from`, 12-2019 as `to`).
+Code lists are in the catalog: `request_schema` with `search: "drug"` finds arrest codes 150-160,
+`search: "anti-jewish"` the bias code. `from`/`to` take MM-YYYY or a year (2019 becomes 01-2019 as `from`, 12-2019 as `to`).
 
 ## Spec examples
 ```json
@@ -96,9 +96,9 @@ code. `from`/`to` take MM-YYYY or a year (2019 becomes 01-2019 as `from`, 12-201
 Key optional: DATA_GOV_API_KEY (free at https://api.data.gov/signup/) sent as `API_KEY`; without one the
 pack sends DEMO_KEY, limited per IP address to 30 requests an hour and 50 a day (api.data.gov developer
 manual, https://api.data.gov/docs/developer-manual/); a personal key allows 1,000 requests an hour.
-Responses carry `X-RateLimit-Limit: 10` (window not documented); the pack keeps to one request a second. Route `api` when
-api.usa.gov answers. Manual route: `manual_download/INSTRUCTIONS.md` lists one JSON link per request with
-`API_KEY=DEMO_KEY`; open each, save under the name shown, upload, then `--ingest`. Without the links: the
+Responses carry `X-RateLimit-Limit: 10` (window not documented); the pack keeps to one request a second. `fetch` downloads
+when api.usa.gov answers. Manual route (`manual_bundle`): `manual_download/INSTRUCTIONS.md` lists one JSON link per
+request with `API_KEY=DEMO_KEY`; open each, save under the name shown, upload, then `ingest`. Without the links: the
 Crime Data Explorer (https://cde.ucr.cjis.gov/) charts have a download button (CSV), and its Documents &
 Downloads page has full NIBRS and SRS files by state and year (not parsed by this pack).
 

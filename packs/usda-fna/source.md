@@ -32,14 +32,14 @@ Verified live 2026-10-30. One CSV per request.
 |---|---|---|---|
 | `options_by_state` | agency × policy option: `edition, state, state_abbr, policy_option, option_selection, agencies_with_selection, share_of_agencies` | `state` (names or USPS codes, default all 53), `edition` (`16`, `17`, default 17) | policy options only (13-16 per agency); no waivers or projects |
 | `option_states` | agency with a selection: `edition, policy_option, option_selection, state, state_abbr` | `policy` (catalog alias or name, required), `selection` (default: every selection, so each agency once), `edition` | every policy, waiver and project of editions 16-17 |
-| `options_report` | PDF page: `edition, edition_label, page, state, text` | `edition` (1-17), `state` (keeps that agency's profile pages; editions 16-17), `pages` | all 17 editions; needs pypdf |
-| `activity_tables` | value: `report_fy, table, table_number, table_title, page, state, state_abbr, row_type, measure, data_fy, value, value_num, value_flag` | `fiscal_year` (2019-2023, one or a list), `tables` (keys below, default all), `state` | FY 2019-2023; needs pypdf |
-| `activity_report` | PDF page: `report_fy, page, table_title, text` | `fiscal_year` (2004-2023), `pages` | every year; national summary and rankings; needs pypdf |
+| `options_report` | PDF page: `edition, edition_label, page, state, text` | `edition` (1-17), `state` (keeps that agency's profile pages; editions 16-17), `pages` | all 17 editions; PDF: not read on this server (see Access) |
+| `activity_tables` | value: `report_fy, table, table_number, table_title, page, state, state_abbr, row_type, measure, data_fy, value, value_num, value_flag` | `fiscal_year` (2019-2023, one or a list), `tables` (keys below, default all), `state` | FY 2019-2023; PDF: not read on this server (see Access) |
+| `activity_report` | PDF page: `report_fy, page, table_title, text` | `fiscal_year` (2004-2023), `pages` | every year; national summary and rankings; PDF: not read on this server (see Access) |
 | `program_table` | value: `table, table_title, data_as_of, state, state_abbr, agency, row_type, period, period_type, fiscal_year, measure, unit, value, value_num, value_flag, status, footnote` | `table` (catalog key, required), `state` (state tables only), `fiscal_year` | 34 FNA Program Data tables (below); updated monthly |
 | `snap_state_monthly` | value, same columns | `fiscal_year` (2020 onward, one or a list), `state` | SNAP households, persons, benefits, benefit per household / person by state, FNA region and U.S., each month and the fiscal year |
 | `wic_agency_monthly` | value, same columns | `fiscal_year` (2022 onward, one a request), `measures` (default `participants_total`; `all`), `state` | WIC by state agency, tribal organization and region, each month and the fiscal year |
 
-- `program_table` keys (`--endpoints` lists them with descriptions):
+- `program_table` keys (`request_schema` with `search` finds them with descriptions):
   - SNAP: `snap_annual` (FY 1969-), `snap_monthly`, and by state for the latest three months
     `snap_persons_latest`, `snap_households_latest`, `snap_benefits_latest`;
   - WIC: `wic_annual` (FY 1974-), `wic_monthly`; by state for five fiscal years `wic_participation_state`,
@@ -56,8 +56,8 @@ Verified live 2026-10-30. One CSV per request.
   `infants_partially_breastfed`, `infants_fully_formula_fed`, `infants_total`, `children`, `participants_total`,
   `avg_food_cost_per_person`, `food_costs`, `rebates`, `nsa_costs` (fiscal-year total only).
 
-- `--endpoints` lists the policy catalog. Each entry has an alias, the exact dashboard name and its selections.
-  Examples:
+- The catalog also holds the policies (`request_schema` with `search: "waiver"`). Each entry has an alias, the
+  exact dashboard name and its selections. Examples:
   - options: `bbce`, `reporting_requirements`, `certification_period_lengths`, `utility_expenses`,
     `employment_training`, `drug_felony`, `tba`, `abawd_exemptions`;
   - waivers: `abawd_waiver`, `telephonic_signature_waiver`, `on_demand_interview_waiver`, `early_denial_waiver`;
@@ -94,6 +94,8 @@ Verified live 2026-10-30. One CSV per request.
  "requests": [{"name": "sar", "endpoint": "activity_tables",
                "params": {"fiscal_year": [2022, 2023], "tables": ["admin_costs", "admin_costs_per_case"]}}]}
 ```
+The `options_report` and `activity_tables` requests above read PDFs, which this server cannot read yet: `fetch`
+refuses them with `not_supported` (see Access).
 
 ```json
 {"description": "SNAP persons by state and month FY 2025-2026 (TX, CA); school lunch participation by state; WIC children by agency FY 2025",
@@ -156,7 +158,8 @@ SNAP State Options Report and State Activity Reports:
   ("4,6,12" in `options_by_state`), so states can add up to more than 53.
 - **The dashboard is not an API.** The pack checks every exported row against the policy, selection and edition
   asked for: an unknown value makes the dashboard fall back to its default view. If FNA republishes the
-  dashboard, the view path changes. The error says so; use `options_report` (the PDF) instead.
+  dashboard, the view path changes. The error says so; read that edition's PDF instead
+  (link from `manual_bundle`; this server does not read it, see Access).
 - **activity_tables values** are as printed. `value_num` drops `$ , %`. `value_flag` keeps codes: `N/A` (not
   applicable, e.g. no cash issuance), `-`/`--` (none or not reported), `blank` (not printed; a footnote may say
   the data are missing, e.g. DC claims FY 2021). A flag is never a zero.
@@ -191,10 +194,13 @@ SNAP State Options Report and State Activity Reports:
   `options_by_state` makes one call per two agencies (27 calls for all 53); `option_states` makes one per selection.
   A Program Data request makes two calls (the listing page, then the 15-230 KB workbook);
   `snap_state_monthly` downloads the 1.6 MB SNAP zip once per request.
-- The PDF endpoints need the Python package pypdf. Without it the fetch reports `install_deps`; the dashboard
-  endpoints do not need it.
-- Manual route: `manual_download/INSTRUCTIONS.md` lists every file. Each PDF is a direct download; each dashboard
-  `.csv` link downloads a small CSV. Save under the name shown and upload; `--ingest` parses them the same way.
+- The PDF endpoints (`options_report`, `activity_tables`, `activity_report`) need a PDF text reader, which this
+  server does not have: `fetch` and `ingest` refuse them with `not_supported`. The State Options rows come from
+  `options_by_state` / `option_states` (no PDF); for a report page, give the user the PDF link from `manual_bundle`.
+  The dashboard and Program Data endpoints are not affected.
+- Manual: `manual_bundle` writes `manual_download/INSTRUCTIONS.md`, which lists every file. Each PDF is a direct
+  download; each dashboard `.csv` link downloads a small CSV. Save under the name shown and upload; `ingest` parses
+  the CSVs and workbooks the same way as `fetch`.
   The Program Data links name the release seen on 2026-10-30 (`-10`). If one is gone, download that table's
   Excel file from its listing page. Uploads are checked by content (title row, fiscal year), not by name.
   Without the bundle:

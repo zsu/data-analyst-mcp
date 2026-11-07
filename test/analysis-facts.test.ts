@@ -1,5 +1,5 @@
 /**
- * facts (facts.py + factfmt.py) and cite (core/cite.py). The facts cases follow the Python skill's
+ * facts (facts.py + factfmt.py) and cite (core/cite.py). The facts cases follow
  * tests/test_report_chain.py TestFacts, with the tables saved as CSVs in a session workspace; the format cases pin
  * factfmt's conventions.
  */

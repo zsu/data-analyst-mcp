@@ -23,7 +23,7 @@
       "path": "/t/FNCS_PUB/views/SNAPPDDStateOptionsReportDashboard_17722135393810/OptionsProjectsWaivers.csv",
       "description": "State Options Report dashboard: the state agencies that made a selection on one option, waiver or demonstration project (one row per state x selection). Without selection: every selection of that policy, so each state appears once. Editions 16 and 17.",
       "params": {
-        "policy": {"in": "spec", "required": true, "catalog": true, "desc": "policy option, waiver or project: a catalog alias (bbce, abawd_waiver ...) or its exact name (--endpoints, --search)"},
+        "policy": {"in": "spec", "required": true, "catalog": true, "desc": "policy option, waiver or project: a catalog alias (bbce, abawd_waiver ...) or its exact name (a request_schema search finds them)"},
         "selection": {"in": "spec", "desc": "one selection value of that policy, exactly as in the catalog entry (default: all of them)"},
         "edition": {"in": "spec", "desc": "16 or 17 (default 17, the latest)", "enum": ["16", "17"]}
       },
@@ -61,7 +61,7 @@
     },
     "program_table": {
       "path": "/pd/supplemental-nutrition-assistance-program-snap",
-      "description": "FNA Program Data tables (XLSX, updated monthly): SNAP, WIC and child nutrition (school lunch, breakfast, milk, CACFP, summer meals) as tidy rows: table, table_title, data_as_of, state, state_abbr, agency, row_type, period, period_type, fiscal_year, measure, unit, value, value_num, value_flag, status, footnote. National annual summaries (FY 1969-), national monthly data (last four fiscal years), state tables by fiscal year (last five) and the latest three months by state. Table keys: the catalog (--endpoints, --search).",
+      "description": "FNA Program Data tables (XLSX, updated monthly): SNAP, WIC and child nutrition (school lunch, breakfast, milk, CACFP, summer meals) as tidy rows: table, table_title, data_as_of, state, state_abbr, agency, row_type, period, period_type, fiscal_year, measure, unit, value, value_num, value_flag, status, footnote. National annual summaries (FY 1969-), national monthly data (last four fiscal years), state tables by fiscal year (last five) and the latest three months by state. Table keys: the catalog (a request_schema search finds them).",
       "params": {
         "table": {"in": "spec", "required": true, "catalog": true, "desc": "a program table key from the catalog, e.g. snap_persons_latest, wic_participation_state, nslp_participation_state, nslp_annual"},
         "state": {"in": "spec", "desc": "optional (state tables only): states or territories to keep, USPS codes or names (AS, GU, MP, PR, VI for territories); national, total and DOD rows are dropped"},

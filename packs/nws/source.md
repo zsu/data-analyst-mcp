@@ -70,10 +70,10 @@ hourly), active and recent watches/warnings/advisories, and the latest week of s
 No key. NWS asks clients to send an identifying User-Agent; the pack sends its own, and
 `NWS_USER_AGENT` (e.g. "my-analysis (me@example.com)") replaces it. NWS says the User-Agent will be
 replaced by an API key in the future (not yet as of 2026-10); if requests start failing with HTTP
-401/403, check https://www.weather.gov/documentation/services-web-api for a key. Route `api` when api.weather.gov
-answers. Manual route: open the links in `manual_download/INSTRUCTIONS.md` in a browser and save the JSON
+401/403, check https://www.weather.gov/documentation/services-web-api for a key. `fetch` works when api.weather.gov
+answers. Manual: open the links `manual_bundle` writes to `manual_download/INSTRUCTIONS.md` in a browser and save the JSON
 (for forecasts, open the point link, then the URL in its `properties.forecast` field, and save that page);
-or read https://forecast.weather.gov and https://alerts.weather.gov. Upload the files, then `--ingest`.
+or read https://forecast.weather.gov and https://alerts.weather.gov. Upload the files, then `ingest`.
 
 ## Citation and terms
 "National Weather Service, <product, e.g. 7-day forecast for 38.8894,-77.0352 issued <generated_at>>,

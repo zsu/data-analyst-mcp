@@ -163,7 +163,7 @@ export function sheetRecords(ep: any, src: Uint8Array): Row[] {
 }
 
 /**
- * Sheets of a legacy .xls (BIFF) workbook as lists of row values, the way the Python skill's xlrd reader gave
+ * Sheets of a legacy .xls (BIFF) workbook as lists of row values, the way Python's xlrd reader gives
  * them: every row from the first to the last used one, padded to the sheet's width with null; whole-number
  * floats as integers ("2024"), other floats as Python writes them, text as is, booleans "1"/"0".
  */

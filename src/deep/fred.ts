@@ -1,6 +1,6 @@
 /**
- * The fred deep pack: FRED, ALFRED (vintages) and GeoFRED (Federal Reserve Bank of St. Louis), ported from the
- * Python skill's sources/fred/fetch.py and fred_api.py.
+ * The fred deep pack: FRED, ALFRED (vintages) and GeoFRED (Federal Reserve Bank of St. Louis), ported from
+ * sources/fred/fetch.py and fred_api.py.
  *
  * Routes: with a FRED_API_KEY the API (full metadata, source, copyright tag, every vintage kind, GeoFRED, the release
  * calendar and whole releases); without one FRED's own keyless graph downloads (fredgraph.csv / alfredgraph.csv /

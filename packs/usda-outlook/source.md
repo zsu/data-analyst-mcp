@@ -90,7 +90,7 @@ is published as "Net cash income").
   usual name (HTTP 404, verified 2026-10-30): a range skips them with a note. `latest` takes the newest report
   date on the ESMIS publication page; USDA posts the CSV the day after the release, so on release day the pack
   falls back to the previous month and says so. Older months: the consolidated CSV (2010-2026) on the Historical
-  WASDE Report Data page (browser only; scripts get HTTP 403), uploaded with --ingest; whether it holds the
+  WASDE Report Data page (browser only; scripts get HTTP 403), uploaded and read with `ingest`; whether it holds the
   reissued May/June 2026 values is unverified.
 - **Farm income forecasts.** ERS releases three times a year (February, late August/early September, late
   November/early December; next: December 2, 2026). A year is forecast in February of that year, updated in
@@ -124,17 +124,17 @@ is published as "Net cash income").
 No key. Hosts: www.usda.gov (WASDE CSVs), esmis.nal.usda.gov (WASDE release dates), www.ers.usda.gov (farm
 income, baseline). Limit used: one request per second. The usda.gov WASDE web pages answer scripts with HTTP 403
 (Akamai bot filter) while the data files answer; the pack reads only the files, ESMIS and the ERS pages, and never
-works around a 403. Route `api` fetches the files; the ERS file links change media ids and are read from the pages
+works around a 403. `fetch` downloads the files; the ERS file links change media ids and are read from the pages
 each run.
 
-Manual route (a browser): WASDE, open
+Manual (a browser; `manual_bundle` writes the links to INSTRUCTIONS.md): WASDE, open
 `https://www.usda.gov/sites/default/files/documents/oce-wasde-report-data-YYYY-MM.csv` for the month (or the
 Historical WASDE Report Data page for the consolidated CSV); farm income, open the data-files page
 (https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics)
 and download the release ZIP ("September 3, 2026 release"), the "U.S. farm sector financial indicators" .xlsx or
 the data archive ZIP; baseline, open https://www.ers.usda.gov/data-products/agricultural-baseline-database and
 download the ZIP under "Most Recent Full-Release". Upload the files unchanged (agency file names are accepted);
---ingest applies the same filters as the fetch.
+`ingest` applies the same filters as `fetch`.
 
 ## Citation and terms
 U.S. Department of Agriculture, <dataset> (World Agricultural Outlook Board, World Agricultural Supply and Demand

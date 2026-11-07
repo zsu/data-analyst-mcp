@@ -58,7 +58,7 @@ migration `{y1y2}inpublicmigdoc.pdf`).
 ```
 
 ## Data format and traps
-- Output `<out>/data/irs-soi/<name>.csv`. Column names are upper-cased (the files mix `agi_stub`/`AGI_STUB`,
+- Output `data/irs-soi/<name>.csv` in the workspace. Column names are upper-cased (the files mix `agi_stub`/`AGI_STUB`,
   `zipcode`/`ZIPCODE`, `mars1`/`MARS1`, `n1`/`N1`); `TAX_YEAR` (migration: `Y1_YEAR`, `Y2_YEAR`) comes
   first. Numbers are written without thousands separators or trailing zero decimals (the state files print
   `3,095,140`, the county and ZIP files `40530.0000`); nothing else is changed.
@@ -111,12 +111,12 @@ migration `{y1y2}inpublicmigdoc.pdf`).
   an SSN, is not counted; dependents in year 2 are excluded.
 
 ## Access
-No key. Route `api` when www.irs.gov answers: one GET per file; `zip_agi` streams the file (about 216 MB) to a
-temporary folder outside the skill, filters it and deletes it, so it needs disk space and about a minute.
-Manual route: INSTRUCTIONS.md lists the direct link of each file (the all-states CSV under its published name,
+No key. `fetch` downloads when www.irs.gov answers: one GET per file; `zip_agi` streams the file (about 216 MB) to a
+temporary folder outside the workspace, filters it and deletes it, so it needs disk space and about a minute.
+Manual route (`manual_bundle`): INSTRUCTIONS.md lists the direct link of each file (the all-states CSV under its published name,
 e.g. `22incyallagi.csv`); download it from the index page (ZIP: soi-tax-stats-individual-income-tax-statistics-zip-code-data-soi,
 county: soi-tax-stats-county-data, state: soi-tax-stats-historic-table-2, migration: soi-tax-stats-migration-data,
-all under https://www.irs.gov/statistics/), upload it unchanged, and `--ingest` filters it like the API route.
+all under https://www.irs.gov/statistics/), upload it unchanged, and `ingest` filters it like `fetch` does.
 Per-state Excel files, years before the CSV files, and the national .xls tables are manual and not read here.
 
 ## Citation and terms

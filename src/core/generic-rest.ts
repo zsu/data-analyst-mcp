@@ -1,6 +1,6 @@
 /**
  * Declarative fetching for JSON/CSV REST APIs (Socrata, DKAN, CKAN, plain REST) from a pack's endpoints.json.
- * The endpoints.json format is unchanged from the Python skill:
+ * The endpoints.json format:
  *
  * {
  *   "base_url": "https://data.cdc.gov/resource", "timeout": 30, "retry_html_400": 3, "headers": {...},

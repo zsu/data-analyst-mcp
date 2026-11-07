@@ -1,5 +1,5 @@
 {
- "about": "BLS series-id data for the bls deep pack, converted from the Python skill's sources/bls/lib/series_ids.py (and the state table of scripts/analysis/combine.py). Lists of pairs keep their order.",
+ "about": "BLS series-id data for the bls deep pack. Lists of pairs keep their order.",
  "verified": "2026-10-20",
  "surveys": [
   [

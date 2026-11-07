@@ -1,5 +1,5 @@
 /**
- * OPM Federal Workforce Data (FWD / EHRI) files: the deep pack (port of the Python skill's sources/opm/fetch.py).
+ * OPM Federal Workforce Data (FWD / EHRI) files: the deep pack (port of sources/opm/fetch.py).
  *
  * spec:
  *   {"description": "Separations by agency, FY2025",
@@ -571,7 +571,7 @@ function writeReadme(d: string, M: any): void {
     "Rule: **allowed**. OPM publishes these files as public data under its Public Data Release Policy; " +
     "the filtered files may ship with a report and its replication package. Fields OPM withholds for " +
     "privacy or security are published as `REDACTED`: disclose the coverage of every pay or location " +
-    "figure (`coverage.csv`).");
+    "figure (`exhibits/coverage.csv`).");
   fs.writeFileSync(path.join(d, "README.md"), lines.join("\n") + "\n");
 }
 

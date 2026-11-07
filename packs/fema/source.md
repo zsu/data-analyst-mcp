@@ -30,11 +30,11 @@ One endpoint per dataset (JSON, `$top`/`$skip` paging of 10,000 rows) plus `quer
 
 Parameters on every endpoint: `$filter` (OData), `$select`, `$orderby`, `$count` (`true` adds the total to
 `metadata.count`). Paging parameters are set by the fetcher; use `max_rows` on the request.
-`--search "flood insurance"` finds a dataset alias.
+`request_schema` with `search: "flood insurance"` finds a dataset alias.
 `query` asks for CSV, so it works only for entities whose `distribution` in `datasets` lists `csv`:
 IpawsArchivedAlerts v1 is JSON-only and answers HTTP 400 "does not support csv format"; an entity can be
 listed in `datasets` and still answer 404 (PublicAssistanceProjectsStatus v1, verified 2026-10-22). For a
-JSON-only entity use the manual route (JSON page links) and `--ingest`.
+JSON-only entity use `manual_bundle` (JSON page links) and `ingest`.
 
 ## Spec examples
 ```json
@@ -90,10 +90,10 @@ JSON-only entity use the manual route (JSON page links) and `--ingest`.
 - Data are refreshed daily to weekly (`lastRefresh`), and recent disasters change as aid is processed.
 
 ## Access
-No key, no published rate limit (the fetcher sends 3 requests a second). Route `api` when www.fema.gov
-answers. Manual route: `manual_download/INSTRUCTIONS.md` lists one JSON link per 10,000-row page (append
+No key, no published rate limit (the fetcher sends 3 requests a second). `fetch` downloads when www.fema.gov
+answers. Manual route (`manual_bundle`): `manual_download/INSTRUCTIONS.md` lists one JSON link per 10,000-row page (append
 `&$format=csv` for CSV); or download a whole dataset as CSV or Parquet from its page at
-https://www.fema.gov/about/openfema/data-sets, filter it locally, and upload the subset; then `--ingest`.
+https://www.fema.gov/about/openfema/data-sets, filter it locally, and upload the subset; then `ingest`.
 
 ## Citation and terms
 "Federal Emergency Management Agency, OpenFEMA <dataset>, www.fema.gov/api/open, retrieved <date>."

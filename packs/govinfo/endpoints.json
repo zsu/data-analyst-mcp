@@ -78,7 +78,7 @@
   "published": {
    "path": "/published/{start_date}/{end_date}",
    "method": "GET",
-   "description": "Packages of one or more collections issued between two dates, both included (a complete list, unlike search; fetch.py turns the inclusive end_date into GovInfo's exclusive one).",
+   "description": "Packages of one or more collections issued between two dates, both included (a complete list, unlike search; fetch turns the inclusive end_date into GovInfo's exclusive one).",
    "params": {
     "start_date": {
      "in": "path",

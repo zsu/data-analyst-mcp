@@ -66,7 +66,7 @@ full meaning includes the descriptions of the lines above it with lower indent),
   defined in General Note 3(c) of the HTS. `other` (column 2) applies only to the countries in general note 3(b).
 - The API serves only the current revision: the `release` parameter of the export is ignored (verified
   2026-11-04: the same bytes for any value). Always fetch `current_release` and name the revision with every
-  rate. Rates of an earlier date come from the archived revision files (manual route).
+  rate. Rates of an earlier date come from the archived revision files (downloaded by hand; see Access).
 - Statutory rates are not effective rates: duty collected over import value is lower where imports enter
   under trade agreements, preference programs or exclusions. For collected duty use census trade data
   (calculated duty) or treasury customs receipts.
@@ -76,9 +76,10 @@ full meaning includes the descriptions of the lines above it with lower indent),
   so): fetch one chapter or heading range per request.
 
 ## Access
-No key; the host answers scripts (verified 2026-11-04). Limit used: one request per second. Route `api`;
-`manual` is the browser: the links in `manual_download/INSTRUCTIONS.md` open each JSON reply (save the page,
-upload it with --ingest), or use Export on https://hts.usitc.gov/ (choose the HTS range and JSON or CSV).
+No key; the host answers scripts (verified 2026-11-04). Limit used: one request per second. `fetch`
+works directly. Manual is the browser: the links `manual_bundle` writes to `manual_download/INSTRUCTIONS.md` open
+each JSON reply (save the page, upload it, then `ingest`), or use Export on https://hts.usitc.gov/ (choose the
+HTS range and JSON or CSV).
 Past revisions: the archive on https://hts.usitc.gov/ lists every edition and revision (`releases` gives the
 names) with downloadable files.
 

@@ -125,7 +125,7 @@ function checkSpec(spec: Spec, pack: Pack): string[] {
           } else if (ORDERED.has(op) && !c.text_compare_ok && vals.some((v: unknown) => TEXT_TRAP.test(v === null ? "None" : pyStr(v)))) {
             probs.push(`request ${name}: ${pyStr(c.property)} ${op} ${repr(c.value ?? null)} would compare TEXT, not ` +
               "numbers or dates (the datastore stores these columns as text: '91.06' > '900'). " +
-              "Fetch with equality filters and compare in analysis.py, or set " +
+              "Fetch with equality filters and compare with compute, or set " +
               '"text_compare_ok": true on the condition if a text comparison is really meant.');
           }
         }

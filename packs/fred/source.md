@@ -7,7 +7,7 @@ cross-sections (GeoFRED), and FRED's release calendar.
 - GDP, potential output and the output gap, PCE and CPI inflation (CPI-W for COLAs, chained CPI), interest
   rates and Treasury yields, the federal deficit, debt and net interest by fiscal year, recessions (USREC),
   state comparisons, and anything about revisions ("as first reported", "as published on a date").
-- When a release comes out (`--release-dates`), or every series of one release at once (`release_observations`).
+- When a release comes out (`release_dates`), or every series of one release at once (`release_observations`).
 - Not here: BLS detail with preliminary flags, footnotes and significance thresholds (bls); BEA tables with
   line numbers and vintages (bea); Treasury daily statements and auctions (treasury); budget projections
   (use the agency's own files). FRED mirrors BLS and BEA series: prefer the original pack when its flags matter.
@@ -18,12 +18,12 @@ cross-sections (GeoFRED), and FRED's release calendar.
 | Series data, latest | spec `series` → API `series/observations`, or keyless `fredgraph.csv` | optional |
 | As-of vintages | `"vintage": {"as_of": [dates]}` → API `vintage_dates`, or keyless `alfredgraph.csv` | optional |
 | First release / full revision history | `"vintage": "first_release"` / `"all"` (real-time window 1776-07-04..9999-12-31) | required |
-| FRED-side transforms / frequency conversion | `units` (pc1, pca ...), `frequency` + `aggregation_method` (prefer tsstats) | optional |
-| Series metadata | `--describe IDs` (API: title, units, frequency, SA, source, release, notes; keyless: XLSX README sheet) | optional |
-| Search | `--search "words" [--limit N]` (`series/search`, by popularity) | required |
-| Vintage dates | `--vintagedates ID` | required |
+| FRED-side transforms / frequency conversion | `units` (pc1, pca ...), `frequency` + `aggregation_method` (prefer your own computation from native data) | optional |
+| Series metadata | `request_schema` search `describe IDs` (API: title, units, frequency, SA, source, release, notes; keyless: XLSX README sheet) | optional |
+| Search | `request_schema` search `"words" [limit N]` (`series/search`, by popularity) | required |
+| Vintage dates | `request_schema` search `vintagedates ID` | required |
 | GeoFRED cross-section | spec `regional`: `[{"series_id": "CAUR", "region_type": "state", "date": "2025-01-01"}]` (group found from any member) | required |
-| Release calendar | `--release-dates [ID] [--start D --end D]` (20 rows shown) or spec `release_dates` → `release_dates.csv` | required |
+| Release calendar | `request_schema` search `release_dates [ID] [START] [END]` (20 rows shown) or spec `release_dates` → `release_dates.csv` | required |
 | Whole release | spec `release_observations`: `[{"release_id": 53, "limit": 10000, "max_pages": 5, "series": [IDs]}]` (FRED API v2, cursor-paged) | required |
 Common releases: 10 CPI, 50 Employment Situation, 53 GDP, 18 H.15 interest rates. Verified IDs by topic
 (output, prices, labor, rates, budget, income, recessions, states): docs/series.md.
@@ -47,32 +47,32 @@ Common releases: 10 CPI, 50 Employment Situation, 53 GDP, 18 H.15 interest rates
 Per series (or globally): `start`, `end`, `vintage`, `units`, `frequency`, `aggregation_method`; packaging
 only: `label`, `source`, `copyright` (`public_domain` / `citation_required` / `preapproval_required`) with
 `copyright_basis`. Request only what the question needs (FRED's terms forbid wholesale downloading).
-```
-python <skill>/scripts/fetch.py --source fred <out>/spec.json --out <out> --check
-python <skill>/scripts/fetch.py --source fred <out>/spec.json --out <out>          (add --no-key if the route says so)
-python <skill>/scripts/fetch.py --source fred <out>/spec.json --out <out> --ingest [FILES]
-```
+Tools: `request_schema` (the spec format; a search finds series, with a key), `fetch` with the spec (without a key
+it takes the keyless route when the request needs no key-only feature), and `manual_bundle` then `ingest` for files
+the user downloads.
 
 ## Data format and traps
-Output in `<out>/data/fred/`: `fred_observations.csv` (series_id, label, variant, vintage, date, value,
+Output in `data/fred/`: `fred_observations.csv` (series_id, label, variant, vintage, date, value,
 realtime_start, realtime_end), `series.csv` (title, units, frequency, seasonal_adjustment, last_updated,
 fiscal_year, first/last date, n_obs, n_missing, n_future, source, release, copyright, citation, notes),
 `regional.csv`, `release_dates.csv`, `release_series.csv` + `release_observations.csv`, `raw/`,
-`request.json`, `README.md`. `tsstats.py` is copied to `<out>/lib/fred/` (shared `factfmt.py` to `<out>/lib/`):
-`sys.path.insert(0, os.path.join(OUT, "lib", "fred"))`, `from tsstats import *`, `df = load(OUT)`,
-`q = wide(df, ["GDPC1", "GDPPOT"])`. Read `series.csv` and the README's "Read this before analyzing" first.
+`request.json`, `README.md`. Build tables with `compute` (filter by variant, `pivot_wider` on date for one column
+per series) and register cited numbers with `facts`. Read `series.csv` and the README's "Read this before
+analyzing" first.
 - **Keys of a row**: `variant` = ID plus a suffix per option that changes the data (`GDPC1_asof`,
   `CPIAUCSL_pc1`, `GDP_aavg`, `GDPC1_first_release`); `vintage` = `latest`, the as-of date, `first_release`,
-  or (full history) the publication date. `vintages(df, "GDPC1_asof")` puts each vintage in a column.
-- **Units**: millions vs billions (FYOINT millions, GDP billions: `share_of(..., scale=1000)`); SAAR levels
-  are already annual rates (average quarters, never sum); index levels are not prices.
+  or (full history) the publication date. Filter one variant and `pivot_wider` on `vintage` to put each vintage
+  in a column.
+- **Units**: millions vs billions (FYOINT millions, GDP billions: divide FYOINT by 1,000 before the share); SAAR
+  levels are already annual rates (average quarters, never sum); index levels are not prices.
 - **Missing values** are empty (`.` in the API). October 2025 was not collected for CPI, CPS, LAUS. FRED's own
   frequency conversion averages whatever exists (a quarter with a missing month still gets a value): prefer
-  native data plus `to_frequency`, which refuses incomplete periods.
+  native data and convert only complete periods (count the months in each; `compute`'s `to_fiscal` flags
+  incomplete fiscal years).
 - **Projections are not data**: GDPPOT, NGDPPOT and NROU run about ten years ahead (`n_future` > 0);
-  `wide()` drops periods that have not ended (2026 Q4 on 2026-10-20) unless `include_future=True`.
+  drop periods that have not ended (2026 Q4 on 2026-10-20) before computing anything from them.
 - **Fiscal years** (October to September): dollar series are dated at the fiscal year's end (2025-09-30 =
-  FY2025), ratio series at January 1 of the fiscal year's number; `fiscal_year_label` maps both. FRED's
+  FY2025), ratio series at January 1 of the fiscal year's number; `compute`'s `fiscal_year` maps both. FRED's
   FY*GDA188S ratios divide by calendar-year GDP, and are updated about once a year (OMB data), so their GDP
   can predate BEA's latest annual update (FYOIGDA188S FY2025, updated April 2026: 3.15 against 3.18 on
   fiscal-year GDP of the September 2026 vintage): a fiscal-year-GDP ratio differs by a few hundredths;
@@ -85,13 +85,13 @@ fiscal_year, first/last date, n_obs, n_missing, n_future, source, release, copyr
   `"vintage": "all"`. Not every vintage is a revision: some only
   change the number of decimals or leave periods empty, and a comprehensive update can arrive in several
   vintages. Find updates by changes larger than rounding over the periods both vintages hold.
-- **Keyless limits**: a graph download holds at most 12 series (with as-of vintages fetch.py asks 12 at a
+- **Keyless limits**: a graph download holds at most 12 series (with as-of vintages fetch asks 12 at a
   time); mixed
   frequencies come as a zip; an unknown ID answers HTTP 404 with an HTML page. The keyless route gives no
   source, notes or copyright (`copyright` = `unknown`): for a report, read the tag on each series page
   (https://fred.stlouisfed.org/series/ID: "Public Domain: Citation Requested", "Copyrighted: Citation
   Required", "Copyrighted: Pre-Approval Required"; ignore the generic banner) and add `source`, `copyright`,
-  `copyright_basis` to the spec; rerunning rebuilds data/fred/ from raw/ without downloading.
+  `copyright_basis` to the spec; fetching again rebuilds data/fred/ from raw/ without downloading.
 - With a key, `copyright` comes from the series' FRED tag (`public_domain`, `citation_required`,
   `preapproval_required`; `copyright_basis` names the tag; verified 2026-10). Only when the tag cannot be read
   does it fall back to the notes (`copyrighted` / `no_copyright_notice`), and `no_copyright_notice` is not
@@ -107,23 +107,26 @@ fiscal_year, first/last date, n_obs, n_missing, n_future, source, release, copyr
 
 ## Access
 - Key: optional, free at https://fredaccount.stlouisfed.org/apikeys (one per user; never share or embed
-  one). Stored by the skill's setup script (`setup.ps1 -Source fred` / `setup.sh fred`; fred_api.py verify(): HTTP 400
-  naming api_key = rejected); read through core.keys from FRED_API_KEY, FRED_API_KEY_FILE, keys.json,
+  one). The user stores it with `npx -y data-analyst-mcp setup fred` in their own terminal (FRED answers HTTP 400
+  naming api_key when it rejects a key); the server reads FRED_API_KEY, FRED_API_KEY_FILE, keys.json,
   Claude Code settings.json or ~/.fred/api_key. v1 takes it as `api_key` (dropped from every recorded URL); v2
   (release observations) as `Authorization: Bearer` (a query key answers HTTP 401).
 - Limits: 120 requests a minute (the client paces at 1.8 a second), 100,000 observations per call (paged).
-- Routes from `--check`: `reuse_existing` (also when only labels, sources or copyright changed: the run
-  rebuilds from raw/); `api` (key accepted); `api_keyless` (no working key, graph host answers, no key-only
-  need: run `next_command` with `--no-key` now, mention once what a key adds); `run_setup` (a key-only
-  feature, local or ssh: give `run_command`, never ask for the key in chat; offer as-of vintages or explicit
-  state IDs instead); `cloud_secret`; `cloud_allowlist`; `manual_download`; `fix_spec`; `report_error`.
-- Manual download: `<out>/manual_download/fred/INSTRUCTIONS.md` lists one browser link per keyless file (no key,
-  no software) plus one command per OS (`bash ~/Downloads/download_fred.sh`, or `powershell -NoProfile
-  -ExecutionPolicy Bypass -File "$HOME\Downloads\download_fred.ps1"`). Each script has the request built in,
-  asks for the key with hidden input (`FRED_API_KEY` wins), follows v2 release pages (`release_<id>.json`,
-  `release_<id>__p02.json`, ...) and the GeoFRED two-step lookup, and saves next to itself. Send
-  INSTRUCTIONS.md, both scripts and spec.json. The user uploads every file unchanged; then `--ingest` with the
-  uploaded files or their folder reads the CSV, XLSX and JSON files (release pages are merged).
+- How fetch proceeds: a folder that already holds the same request is reused (also when only labels, sources
+  or copyright changed: it is rebuilt from raw/; `force: true` downloads again). With a stored key it uses the
+  API. Without one it takes FRED's keyless graph downloads when the request needs no key-only feature: mention
+  once what a key adds. A key-only feature with no key fails with `key_missing`: the user stores a key with
+  `npx -y data-analyst-mcp setup fred` in their own terminal; never ask for the key in chat; offer as-of
+  vintages or explicit state IDs instead. A spec problem fails with `invalid_request`.
+- Manual download: `manual_bundle` writes `manual_download/INSTRUCTIONS.md`, which lists one browser link per
+  keyless file (no key, no software) plus one command per OS (`bash ~/Downloads/download_data.sh`, or
+  `powershell -NoProfile -ExecutionPolicy Bypass -File "$HOME\Downloads\download_data.ps1"`). Each script has
+  the requests built in, asks for the key with hidden input only when a request needs one (`FRED_API_KEY`
+  wins), and saves next to itself. The scripts make one request per file: they cannot send v2's Bearer header
+  (whole releases need a fetch with a key) or chain GeoFRED's two-step lookup (put `series_group` in the spec's
+  `regional` block to make it one step). Send INSTRUCTIONS.md and both scripts. The user uploads every file
+  unchanged; then `ingest` with the uploaded files or their folder reads the CSV, XLSX and JSON files (release
+  pages are merged).
 
 ## Citation and terms
 - Cite each series as FRED suggests (in `series.csv` and the README): "U.S. Bureau of Economic Analysis, Real

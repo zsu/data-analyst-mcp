@@ -488,7 +488,7 @@ const adapter: Adapter = {
             "forms instead (title:tariff OR title:tariffs)");
         }
         const bad = list(truthy(p.collection) ? p.collection : []).filter((c) => !known.has(c.toUpperCase()));
-        if (bad.length) probs.push(`request ${n}: unknown collection ${pyRepr(bad)} (see --endpoints catalog)`);
+        if (bad.length) probs.push(`request ${n}: unknown collection ${pyRepr(bad)} (search the catalog with request_schema)`);
         if (truthy(p.billtype) && !BILL_TYPES.includes(pyStr(p.billtype).toLowerCase())) {
           probs.push(`request ${n}: billtype must be one of ${pyTupleRepr(BILL_TYPES)}`);
         }

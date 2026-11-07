@@ -16,7 +16,7 @@ group purchasing organizations to physicians, non-physician practitioners and te
 |---|---|---|
 | `query` | rows of one dataset (500 a page) | `dataset` (alias or UUID), `where`, `conditions`, `sort`, `columns` |
 
-Catalog aliases (`--endpoints` lists all 35 with ids; `--search "teaching hospital"` also searches the live
+Catalog aliases (35, with ids; `request_schema` with `search: "teaching hospital"` searches them and the live
 metastore of 74 datasets):
 - Payment-level files, one per program year 2019-2025: `general_<year>`, `research_<year>`,
   `ownership_<year>` (e.g. `general_2024`; about 91 columns; millions of rows a year, so a filter is
@@ -67,7 +67,7 @@ so match with `%name%` and check the distinct names returned.
 - Every column is stored and returned as text, amounts included (`"16.38"`), and dates are MM/DD/YYYY
   text. So `sort` and `<`, `>`, `BETWEEN` compare characters: sorting amounts descending returns
   "995.27", "99.99", ... and `> 900` matches "91.06" (both verified). The pack refuses such comparisons
-  (override with `"text_compare_ok": true`); filter by equality and rank or sum in `analysis.py`.
+  (override with `"text_compare_ok": true`); filter by equality and rank or sum with `compute`.
 - A program year is the year of payment; files for a year are published the following June 30 and
   republished when CMS refreshes the data (all datasets were last modified 2026-06-30). Totals for recent
   years can change after a refresh: report the retrieval date.
@@ -87,9 +87,9 @@ so match with `%name%` and check the distinct names returned.
 - Old dataset ids stop working when CMS republishes; summaries are addressed by alias here.
 
 ## Access
-No key. Route `api` when openpaymentsdata.cms.gov answers (the host sits behind a bot filter that has
-refused some user agents with HTTP 403; the pack's client is accepted). Manual route: INSTRUCTIONS.md lists
-JSON links with the filters applied (500 rows each; save under the shown names and upload), or use the
+No key. `fetch` works when openpaymentsdata.cms.gov answers (the host sits behind a bot filter that has
+refused some user agents with HTTP 403; the pack's client is accepted). Manual: `manual_bundle`'s INSTRUCTIONS.md
+lists JSON links with the filters applied (500 rows each; save under the shown names, upload, then `ingest`), or use the
 site's search (by physician, hospital or company) and its export, then upload the file.
 
 ## Citation and terms

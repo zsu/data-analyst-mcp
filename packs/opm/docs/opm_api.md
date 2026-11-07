@@ -1,7 +1,7 @@
 # OPM Federal Workforce Data API cheat sheet
 
-`sources/opm/opm_api.py` and `sources/opm/fetch.py` (run as `scripts/fetch.py --source opm`) implement all of this. Read this file when debugging or
-when you need something `spec.json` does not expose. Source: https://data.opm.gov/get-data/api-access
+This server's `fetch` for opm implements all of this. Read this file when debugging or
+when you need something the spec does not expose. Source: https://data.opm.gov/get-data/api-access
 (checked October 2026; the page is a JavaScript app, so read it in a browser, not with curl).
 
 ## Basics
@@ -35,12 +35,13 @@ The client retries 429 and 5xx with backoff.
 
 - **Versions:** OPM reissues files when late or corrected agency submissions arrive (versions 1 to 5
   seen). Exactly one version per month has `current: true`; use it unless reproducing earlier work, in
-  which case pin the versions from `data/opm/manifest.json` (`fetch.py --source opm ... --pin`).
+  which case pin the versions from `data/opm/manifest.json` (the spec's `pin`, e.g. `{"employment_202509": 4}`).
 - **Schema changes:** current versions have 64 (employment), 68 (accessions) and 69 (separations)
   columns. Some older, superseded versions had only 31 columns, so always use current versions, and
   check `missing_columns` in the manifest.
 - Every column is a string in Parquet, including numbers (`count`, `annualized_adjusted_basic_pay`,
-  `length_of_service_years`). `stats.clean()` converts them.
+  `length_of_service_years`). The CSV keeps them as published; in `compute`, a column that mixes numbers and
+  text (pay with `REDACTED`) is read as text: convert it with `number()`.
 - Download speed seen: a 57 MB employment file in about 4 seconds. Ten years of September snapshots
   (11 files, ~750 MB raw) take one to three minutes plus processing. Raw files are cached in
   `<cache root>/opm-fwd` (`~/.cache/data-analyst/opm-fwd`; `$OPM_CACHE_DIR` overrides).
@@ -53,12 +54,12 @@ The client retries 429 and 5xx with backoff.
   menu offers **.TXT** and **.JSON** only. The download runs through the page's live server connection
   (no plain URL to script), so these suit users clicking in a browser. Expect them to be several
   times larger than Parquet. OPM warns that employment files exceed Excel's row limit. The exact TXT
-  delimiter was not confirmed; `opm_io.py` sniffs it (comma, pipe, tab, semicolon, caret) and expects
+  delimiter was not confirmed; `ingest` sniffs it (comma, pipe, tab, semicolon, caret) and expects
   field names in the first row.
-- **Data dictionary:** an Excel file (`FWD Data Dictionary.xlsx`); the skill ships it as
-  `sources/opm/lib/data_dictionary.csv`, so it never needs downloading.
-- **Reading Parquet** needs one engine: pyarrow (preferred), fastparquet, duckdb or polars.
-  Environments without any can still work from a CSV `data/` folder or the website's TXT/JSON.
+- **Data dictionary:** an Excel file (`FWD Data Dictionary.xlsx`); this pack ships it as
+  `data_dictionary.csv` (copied into every `data/opm/` folder; `request_schema` lists its columns), so it
+  never needs downloading.
+- **Reading Parquet:** `fetch` and `ingest` read the Parquet files themselves; no other software is needed.
 
 ## Other OPM tools (no API)
 - **Table Builder** (https://data.opm.gov/explore-data/data/table-builder): aggregate tables in a browser;

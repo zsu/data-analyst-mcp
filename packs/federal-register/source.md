@@ -28,7 +28,7 @@ document_number, citation, publication_date, signing_date, effective_on, type, s
 action, agency_names, executive_order_number, proclamation_number, president, docket_ids,
 regulation_id_numbers, significant, comments_close_on, page_length, start_page, end_page, html_url,
 pdf_url. Other fields: `body_html_url`, `raw_text_url`, `full_text_xml_url`, `cfr_references`,
-`topics`, `disposition_notes`, `dates`, `correction_of`. `--search` finds the catalog aliases.
+`topics`, `disposition_notes`, `dates`, `correction_of`. A `request_schema` search finds the catalog aliases.
 
 ## Spec examples
 ```json
@@ -86,8 +86,8 @@ pdf_url. Other fields: `body_html_url`, `raw_text_url`, `full_text_xml_url`, `cf
   withdrawn before publication.
 
 ## Access
-No key. Route `api` when www.federalregister.gov answers (no documented rate limit; the pack sends at most
-2 requests a second). Manual route: INSTRUCTIONS.md lists one JSON link per 1,000 documents; open each,
+No key. `fetch` works when www.federalregister.gov answers (no documented rate limit; the pack sends at most
+2 requests a second). Manual route (`manual_bundle`): INSTRUCTIONS.md lists one JSON link per 1,000 documents; open each,
 save it under the given name, and upload. A link with `/documents.csv` instead of `/documents.json`
 returns CSV for the same query (fewer columns). The search page https://www.federalregister.gov/documents/search
 offers the same filters and CSV or JSON export under the results.

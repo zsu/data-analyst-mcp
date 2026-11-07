@@ -1,4 +1,4 @@
-/** eia: ported from the Python skill's tests/sources/eia/test_eia.py (same fixtures, specs and expected values). */
+/** eia: ported from tests/sources/eia/test_eia.py (same fixtures, specs and expected values). */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";

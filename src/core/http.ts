@@ -13,8 +13,8 @@
  * - redirects are followed by hand so credentials never go to another host or from https to http.
  * - checkError(status, body) catches APIs that answer HTTP 200 with an error.
  * - every request is recorded (credential-free URL, status, bytes, sha256) in the call's trail (context.ts).
- * - DATA_ANALYST_FIXTURES=<dir> serves responses from <dir>/index.json (offline tests; the format the Python
- *   skill recorded, unchanged); DATA_ANALYST_RECORD=<dir> records live responses; DATA_ACCESS_FORCE=restricted
+ * - DATA_ANALYST_FIXTURES=<dir> serves responses from <dir>/index.json (offline tests;
+ *   the recorded fixture format); DATA_ANALYST_RECORD=<dir> records live responses; DATA_ACCESS_FORCE=restricted
  *   makes every request a network error.
  */
 import { createHash } from "node:crypto";

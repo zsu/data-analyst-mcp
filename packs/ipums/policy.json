@@ -115,13 +115,13 @@
       ]
     },
     "manual": {
-      "how": "Build the extract on the collection's website (usa.ipums.org, cps.ipums.org, ...) with a free account and no API key, following manual_download/ipums/INSTRUCTIONS.md (exact samples, variables, case selections, CSV format), or run download_ipums.sh / download_ipums.ps1 there with one command (the extract is built in; it asks for your key with hidden input); upload the .csv.gz data file and the .xml DDI codebook, then --ingest."
+      "how": "Build the extract on the collection's website (usa.ipums.org, cps.ipums.org, ...) with a free account and no API key, choosing the samples, variables, case selections and CSV format the spec names (manual_bundle is not available for ipums); upload the .csv.gz data file and the .xml DDI codebook, then call ingest."
     }
   },
   "cache": {
     "mode": "run_only",
     "ttl_hours": null,
-    "why": "Extracts are personal to the requesting account and governed by the IPUMS terms; data/ipums/ is reused within a run (reuse_existing) and never cached across analyses."
+    "why": "Extracts are personal to the requesting account and governed by the IPUMS terms; data/ipums/ is reused within a session (fetch reuses the folder) and never cached across analyses."
   },
   "redistribution": {
     "mode": "definition_only",

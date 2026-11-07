@@ -22,11 +22,11 @@ compensation and pension recipients and dollars, plus the NCVAS Geographic Distr
 | Endpoint | Returns | Parameters |
 |---|---|---|
 | `query` | JSON rows of one data.va.gov dataset | `dataset` (alias or 4x4 id), `$select`, `$where`, `$group`, `$order`, `$q` |
-| `csv` | the same as CSV (manual route) | same |
+| `csv` | the same as CSV (for downloading by hand) | same |
 | `gdx_state_direct`, `gdx_state_indirect` | GDX workbook, state sheets (direct: compensation & pension, DIC and survivors pension, insurance, adapted housing; indirect: medical VA care and community care, education, readiness & employment, loan guaranty, construction, memorial, autos) | `fy` (two digits, default `25`) |
 | `gdx_county_direct`, `gdx_county_indirect`, `gdx_cd_direct`, `gdx_cd_indirect` | the county and congressional-district sheets (119th Congress in FY25) | `fy` |
 
-Catalog aliases (`fetch.py --source va --endpoints` lists all 29; `--search "pension"` finds one). VetPop2023
+Catalog aliases (29; `request_schema` with `search: "pension"` finds them). VetPop2023
 projections, one row per September 30 from 2023 to 2053: `vetpop_national` (wubk-nag4, sex x 15 age
 groups), `vetpop_national_pos` (weu6-zpb9), `vetpop_national_race` (8zhc-knsi), `vetpop_state` (f43c-vb9n,
 state x sex x 15 age groups), `vetpop_state_pos` (6kr5-skza, column `pos`), `vetpop_state_race` (ig48-b5dn),
@@ -83,15 +83,17 @@ fy2024-fy2075). VetPop2023 estimates 2000-2023, wide (one `fy2000` ... `fy2023` 
 - Geography: `state` is a full name, plus "Puerto Rico" and "Island Areas & Foreign" in VetPop (53 values;
   `vetpop_state_fy2026` has 50 states and Puerto Rico, no DC). County tables carry a 5-digit FIPS text (`fips`,
   `fips_code`, `county_fips`, keep leading zeros); districts are "CD 1" (118th) or "CD 01" (119th). Use
-  `combine.state()` for codes.
+  `compute`'s `state_codes` step for codes.
 - Every value arrives as text. SoQL text values need single quotes and match case-sensitively; a filter that
   matches nothing makes the fetch fail with "returned no rows".
 - Suppression: blank cells in recipient tables are small counts withheld for privacy, so parts may not add up
   to the total (Alabama FY2025 pension: total 3,229, male 3,007 + female 221). Keep blanks empty; never fill
   with 0.
 - Expenditure tables (`comp_expenditures_*`, `pension_expenditures_*`) hold dollars as text with a prefix
-  and commas (`[$$]3,729,011,236`): strip `[$$]` and commas in analysis.py. Their age columns have cryptic
-  names (see `--endpoints`), and the age bands differ between compensation and pension. `comp_rolls_pos_state`
+  and commas (`[$$]3,729,011,236`): strip `[$$]` and commas in a `compute` derive step
+  (`number(replace(replace(x, "[$$]", ""), ",", ""))`). Their age columns have cryptic names (the catalog
+  entry, found with `request_schema` search, lists them), and the age bands differ between compensation and
+  pension. `comp_rolls_pos_state`
   holds counts as text with commas and "Not included". The expenditure tables end with a "Grand Total" row and
   include "Philippines", "Other Foreign" and "Unknown"; pension recipient tables include "US Territories
   (excluding Puerto Rico)" and "Other Foreign Countries". Drop those rows before summing or ranking states.
@@ -111,9 +113,10 @@ fy2024-fy2075). VetPop2023 estimates 2000-2023, wide (one `fy2000` ... `fy2023` 
   `$select`/`$group` instead of downloading the county table.
 
 ## Access
-No key. Route `api` when www.data.va.gov answers (GDX also needs www.va.gov). Manual route: each request gets
-CSV links (one per 50,000 rows) or the GDX workbook link in `manual_download/INSTRUCTIONS.md`; or open
-`https://www.data.va.gov/d/<id>`, choose Export > CSV, and upload the file. NCVAS's own workbooks are the
+No key. `fetch` works when www.data.va.gov answers (GDX also needs www.va.gov). Manual: in the
+`manual_download/INSTRUCTIONS.md` that `manual_bundle` writes, each request gets JSON links (one per 50,000 rows)
+or the GDX workbook link; or open `https://www.data.va.gov/d/<id>`, choose Export > CSV, and upload the file;
+then `ingest`. NCVAS's own workbooks are the
 source of truth and the manual alternative: VetPop2023 tables 1L-11L at
 https://www.va.gov/vetdata/veteran_population.asp (e.g.
 https://www.va.gov/VETDATA/docs/Demographics/New_Vetpop_Model/1L_VetPop2023_National_NCVAS.xlsx; they are

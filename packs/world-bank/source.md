@@ -21,7 +21,7 @@ regional and income aggregates: GDP, population, prices, labor, health, educatio
 | `topic_indicators` | indicators of a topic | `topic_id` (8 = Health, 3 = Economy and growth) |
 | `sources`, `topics` | lists | none |
 
-Catalog aliases (`--endpoints` lists all; `--search "words"` also searches the ~1,500 WDI indicators live):
+Catalog aliases (`request_schema` with `search: "words"` searches them and the ~1,500 WDI indicators live):
 `gdp` NY.GDP.MKTP.CD, `gdp_lcu` NY.GDP.MKTP.CN, `gdp_constant` NY.GDP.MKTP.KD, `gdp_growth`
 NY.GDP.MKTP.KD.ZG, `gdp_per_capita` NY.GDP.PCAP.CD, `gdp_per_capita_ppp` NY.GDP.PCAP.PP.CD,
 `exchange_rate` PA.NUS.FCRF, `population` SP.POP.TOTL, `life_expectancy` SP.DYN.LE00.IN,
@@ -79,9 +79,9 @@ Country group aliases: `g7`, `g20_countries` (the 19 member countries, without t
   `indicator.id`: never mix units of different indicators in one sum or ranking.
 
 ## Access
-No key, no published rate limit (the pack sends at most 3 requests a second). Route `api` when
-api.worldbank.org answers. Manual route: `manual_download/INSTRUCTIONS.md` has one JSON link per page
-(open in a browser, save under the name shown, upload, then `--ingest`). Without the bundle:
+No key, no published rate limit (the pack sends at most 3 requests a second). `fetch` works when
+api.worldbank.org answers. Manual: the `manual_download/INSTRUCTIONS.md` that `manual_bundle` writes has one JSON
+link per page (open in a browser, save under the name shown, upload, then `ingest`). Without the bundle:
 https://data.worldbank.org/indicator/<CODE>?locations=US-GB-DE, Download > CSV, unzip and upload the
 `API_<CODE>_DS2_*.csv` file (wide: one column per year; say so when ingesting).
 

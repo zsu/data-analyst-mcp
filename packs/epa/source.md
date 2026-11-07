@@ -20,7 +20,7 @@ Gas Reporting Program, Safe Drinking Water, Superfund sites, any other Envirofac
 | `echo_facility_detail` | Detailed Facility Report for one FRS id (one row; sections as JSON text) | `p_id` |
 | `uv_daily`, `uv_daily_city`, `uv_hourly` | today's UV index forecast | `zip`, or `city` + `state` |
 
-`table` aliases (`--search "drinking water"`): `tri_facility` (tri.tri_facility), `tri_reporting_form`
+`table` aliases (`request_schema` with `search: "drinking water"`): `tri_facility` (tri.tri_facility), `tri_reporting_form`
 (tri.tri_reporting_form: chemical and year per form), `tri_release_qty` (tri.tri_release_qty: release
 amount per medium, joined by `doc_ctrl_num`), `ghg_emitters` (ghg.ghg_emitter_sector), `sdwis_systems`
 (sdwis.water_system), `sdwis_violations` (sdwis.violation), `superfund_sites` (sems.envirofacts_site).
@@ -85,12 +85,12 @@ endsWith, contains. Value matching is case-insensitive (verified).
 - UV index is a forecast for today only (0-2 low, 3-5 moderate, 6-7 high, 8-10 very high, 11+ extreme).
 
 ## Access
-No key. Route `api` when data.epa.gov and echodata.epa.gov answer (the fetcher sends 2 requests a
-second). Manual route: `manual_download/INSTRUCTIONS.md` lists Envirofacts CSV links (5,000 rows each)
+No key. `fetch` downloads when data.epa.gov and echodata.epa.gov answer (the fetcher sends 2 requests a
+second). Manual route (`manual_bundle`): `manual_download/INSTRUCTIONS.md` lists Envirofacts CSV links (5,000 rows each)
 and, for ECHO, the first-step link plus the `get_qid` link to open with the QueryID it returns. Or use
 https://enviro.epa.gov, https://echo.epa.gov/facilities/facility-search and
 https://echo.epa.gov/facilities/enforcement-case-search (Download Data); full-year TRI and GHGRP files
-are on epa.gov (TRI Basic Data Files; GHGRP data sets). Upload the files, then `--ingest`.
+are on epa.gov (TRI Basic Data Files; GHGRP data sets). Upload the files, then `ingest`.
 
 ## Citation and terms
 "U.S. Environmental Protection Agency, <dataset, e.g. Greenhouse Gas Reporting Program (GHGRP) via

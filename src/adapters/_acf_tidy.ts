@@ -120,7 +120,7 @@ const STATES: [string, string, string][] = [
 const BY = new Map<string, string>();
 for (const [u, f, n] of STATES) for (const k of [u.toLowerCase(), f, n.toLowerCase(), String(parseInt(f, 10))]) BY.set(k, u);
 
-/** The Python skill's analysis.combine.state(x, "usps"); null when unknown. */
+/** A state's USPS code from any form (code, FIPS or name); null when unknown. */
 function stateUsps(x: string): string | null {
   let key = x.trim().toLowerCase();
   if (/^\d+$/.test(key)) key = key.length <= 2 ? key.padStart(2, "0") : key;

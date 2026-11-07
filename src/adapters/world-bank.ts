@@ -45,7 +45,7 @@ function checkError(_status: number, body: Buffer): string | null {
   } catch {
     return null;
   }
-  return `World Bank API error: ${text}. Check the indicator code (fetch.py --source world-bank --search ...) and the country codes.`;
+  return `World Bank API error: ${text}. Check the indicator code (a request_schema search) and the country codes.`;
 }
 
 const WDI_SOURCE = "2";

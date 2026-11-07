@@ -1,9 +1,9 @@
 # Choosing BEA data: datasets, tables, lines and concepts
 
 Read §1 to pick the dataset, §2 for verified tables and lines, §3 for the concepts that decide whether a
-number is right. Confirm names before you download: `fetch.py --source bea --find "<words>"` (NIPA titles, no key),
-`fetch.py --source bea --lines <NIPA table>` (line numbers and series codes, no key), and with a key
-`fetch.py --source bea --values Regional TableName` or `--find "<words>" --dataset Regional`. Line numbers can change at
+number is right. Confirm names before you download with `request_schema`: `search: "<words>"` (NIPA titles, no key),
+`search: "lines <NIPA table>"` (line numbers and series codes, no key), and with a key
+`search: "values Regional TableName"` or `search: "Regional <words>"`. Line numbers can change at
 comprehensive updates, so select NIPA series by table + line *and* check the description or series code.
 
 ## Contents
@@ -15,7 +15,7 @@ comprehensive updates, so select NIPA series by table + line *and* check the des
 
 ## 1. Which dataset answers which question
 
-| Question | Dataset (fetch.py `dataset`) | Typical tables | Bulk (no key)? |
+| Question | Dataset (spec `dataset`) | Typical tables | Bulk (no key)? |
 |---|---|---|---|
 | GDP growth, components, contributions, prices (national) | `NIPA` | T10101, T10102, T10104-T10106, T10111, T11706 | yes |
 | Personal income, saving rate, PCE, PCE inflation | `NIPA` | T20100 (A/Q), T20600 (M), T20804/T20805/T20806/T20807 (M) | yes |
@@ -30,13 +30,13 @@ comprehensive updates, so select NIPA series by table + line *and* check the des
 | County income and GDP | `Regional` | CAINC1, CAINC4, CAINC5N, CAINC30, CAGDP2, CAGDP9 | yes |
 | Metro-area price parities | `Regional` | MARPP | yes |
 | Value added, gross output by industry (national) | `GDPbyIndustry` with workbook codes (`"table": "TVA105"`) | TVA105 value added, TVA106 real value added, TVA101 real growth, TVA102 contributions to real GDP growth, TVA110 shares of GDP; TGO1xx gross output; A and Q | yes (public workbooks) |
-| Same, detail the workbooks lack (Industry filters, UnderlyingGDPbyIndustry) | `GDPbyIndustry` / `UnderlyingGDPbyIndustry` (`params`: TableID, Frequency, Year, Industry) | list with `--values GDPbyIndustry TableID` | no: API |
-| Trade balance, current account, by country | `ITA` (`params`: Indicator, AreaOrCountry, Frequency, Year) | Indicator BalGds (goods balance); list others with `--values ITA Indicator` | no: API (keyless: the current account balance is NIPA T4030B line 50 "Balance on current account, ITAs" in the bulk files, or FRED `IEABC` (quarterly); T4030B can keep an older ITA vintage for some years (2010-2012 differ by a few hundred million): check against IEABC; trade balances: the FRED pack's monthly series BOPGSTB, BOPGTB, BOPSTB, EXPCH/IMPCH; see fred `docs/series.md`) |
+| Same, detail the workbooks lack (Industry filters, UnderlyingGDPbyIndustry) | `GDPbyIndustry` / `UnderlyingGDPbyIndustry` (`params`: TableID, Frequency, Year, Industry) | list with the search `values GDPbyIndustry TableID` | no: API |
+| Trade balance, current account, by country | `ITA` (`params`: Indicator, AreaOrCountry, Frequency, Year) | Indicator BalGds (goods balance); list others with the search `values ITA Indicator` | no: API (keyless: the current account balance is NIPA T4030B line 50 "Balance on current account, ITAs" in the bulk files, or FRED `IEABC` (quarterly); T4030B can keep an older ITA vintage for some years (2010-2012 differ by a few hundred million): check against IEABC; trade balances: the FRED pack's monthly series BOPGSTB, BOPGTB, BOPSTB, EXPCH/IMPCH; see fred `docs/series.md`) |
 | Services trade by type and country | `IntlServTrade` | TypeOfService, TradeDirection, AreaOrCountry | no: API |
 | Net international investment position | `IIP` | TypeOfInvestment, Component | no: API (keyless: the FRED pack's `IIPUSNETIQ` quarterly / `IIPUSNETIA` annual net position) |
 | Foreign direct investment, multinationals | `MNE` | DirectionOfInvestment, Classification | no: API |
-| Capital stock, depreciation | `FixedAssets` | FAAt201 (see `--values FixedAssets TableName`) | no: API |
-| Input-output use and make tables | `InputOutput` | TableID 56 (see `--values InputOutput TableID`) | no: API |
+| Capital stock, depreciation | `FixedAssets` | FAAt201 (see the search `values FixedAssets TableName`) | no: API |
+| Input-output use and make tables | `InputOutput` | TableID 56 (see the search `values InputOutput TableID`) | no: API |
 
 Things BEA does not publish, so say so rather than improvise: GDP forecasts (BEA publishes history only; CBO, the
 Federal Reserve and private forecasters project), monthly GDP, unemployment and jobs (BLS), CPI (BLS; BEA's measure is
@@ -81,7 +81,7 @@ Regional lines (checked in the bulk files' `definition.xml` or the API guide):
 | SAINC4 / CAINC4 | 10 = personal income, 20 = population, 30 = per capita personal income; other lines are components | as above |
 | SARPP / MARPP | 1 = all items RPP | index, U.S. = 100; published about a year after state income (in October 2026 the latest RPPs and SARPI are for 2024): for the latest income year, say which RPP year you used |
 
-API table names sometimes carry an `N` suffix (`SAGDP9N`, `SAGDP2N`); the bulk files drop it. `fetch.py` accepts either.
+API table names sometimes carry an `N` suffix (`SAGDP9N`, `SAGDP2N`); the bulk files drop it. `fetch` accepts either.
 
 ## 3. Concepts that change the answer
 
@@ -97,8 +97,8 @@ API table names sometimes carry an `N` suffix (`SAGDP9N`, `SAGDP2N`); the bulk f
   annual rate (T10101). Alternatives: year-over-year (T10111), fourth quarter over fourth quarter, and annual average
   over annual average (the annual line of T10101). They can differ by more than a percentage point in turning years,
   so name the measure in every exhibit and sentence. For multi-year spans ("since 2019"), report the cumulative
-  change (`change_between`) and the average annual rate (`cagr`); the two order areas identically, so the choice to
-  test with `sensitivity()` is the start and end period, above all a base year inside a recession or other shock.
+  change and the average annual rate; the two order areas identically, so the choice to test as a sensitivity is
+  the start and end period, above all a base year inside a recession or other shock.
 - **Price measures.** The PCE price index (T20804) is the Federal Reserve's inflation target measure; the GDP price
   index (T10104) covers all domestic production. Core PCE excludes food and energy.
 - **Per capita.** Use BEA's per capita lines when they exist (T70100, SAINC1 line 3); otherwise divide by population
@@ -144,11 +144,11 @@ API table names sometimes carry an `N` suffix (`SAGDP9N`, `SAGDP2N`); the bulk f
 
 ## 5. Benchmarks
 
-Compute what you can from levels and check it against BEA's own published numbers with
-`stats.check_against_published()`; any mismatch beyond rounding means a selection or method error:
+Compute what you can from levels and check it against BEA's own published numbers (fetch the
+published table too and compare); any mismatch beyond rounding means a selection or method error:
 - real GDP growth from T10106 levels vs. T10101 line 1 (quarterly, annualized) or the annual line;
 - year-over-year growth vs. T10111;
-- monthly PCE inflation from T20804 (`growth`, plain monthly change) vs. T20807, and 12-month inflation (`yoy`)
+- monthly PCE inflation from T20804 (plain monthly change) vs. T20807, and 12-month inflation
   vs. T20811 lines 32 / 37;
 - the U.S. row of SAGDP9 / SAGDP2 vs. NIPA T10106 / T10105 line 1 levels (they match within a few million dollars; a free
   check that the state table, line and units were read right);

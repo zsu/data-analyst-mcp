@@ -20,8 +20,8 @@ air traffic, motor fuel, bikeshare and freight indicators.
 | `query` | JSON rows of one dataset | `dataset` (alias or id), `$select`, `$where`, `$group`, `$order`, `$q` |
 | `csv` | the same as CSV (manual route) | same |
 
-Catalog aliases (`fetch.py --source bts --endpoints` lists all 19; `--search "air fare"` finds datasets
-AND Monthly Transportation Statistics columns):
+Catalog aliases (19; `request_schema` with `search: "air fare"` finds datasets AND Monthly Transportation
+Statistics columns):
 | Alias | Id | Content | Frequency, coverage |
 |---|---|---|---|
 | `monthly_stats` | crem-w557 | 134 national indicators, one row per month | monthly, 1947- (most series 2000-) |
@@ -63,7 +63,8 @@ Select only the columns you need from `monthly_stats`: a full row has 136 column
 and 134 indicators; verified 2026-10, BTS adds series over time).
 
 ## Data format and traps
-- Every value arrives as text ("135.2", "70060000.0"); convert in `analysis.py`. Dates are floating
+- Every value arrives as text ("135.2", "70060000.0"); `compute` reads an all-numeric column as numbers
+  (`number(x)` in a derive step converts one that is not). Dates are floating
   timestamps (`2024-01-01T00:00:00.000`, first of the month); compare with quoted ISO dates.
 - `monthly_stats` has one row per month for every month since 1947, mostly empty before 2000, and the
   latest months are partly empty because each series is published with its own lag (the TSI about two
@@ -71,7 +72,7 @@ and 134 indicators; verified 2026-10, BTS adds series over time).
   on `general_economic_indicators IS NOT NULL` (quarterly GDP) silently drops two months of every three.
 - Column names are opaque: `system_use_transit_ridership` is urban rail only; `_1` is bus, `_2` other
   modes. `general_economic_indicators` is real GDP (quarterly, SAAR, in dollars); `_3` is the unemployment
-  rate. Check the title with `--search` before using a column.
+  rate. Check the title with `request_schema` `search` before using a column.
 - Seasonal adjustment: the airline traffic `..._non_seasonally_adjusted` columns are NSA; the
   `system_use_u_s_airline*` columns are SA. Do not mix them in one trend.
 - Series are revised: the TSI and SA series change with each release; report the retrieval date.
@@ -84,10 +85,10 @@ and 134 indicators; verified 2026-10, BTS adds series over time).
   makes the fetch fail with "returned no rows". Paging is `$limit`/`$offset` with a stable `$order`.
 
 ## Access
-No key. Route `api` when data.bts.gov answers (Socrata throttles heavy keyless use; it
-publishes no number). Manual route: each request gets CSV links (one per 50,000 rows) in
+No key. `fetch` downloads from data.bts.gov when it answers (Socrata throttles heavy keyless use; it
+publishes no number). Manual route (`manual_bundle`): each request gets CSV links (one per 50,000 rows) in
 `manual_download/INSTRUCTIONS.md`; or open `https://data.bts.gov/d/<id>`, choose Export > CSV, and
-upload the file. For `monthly_stats` the full CSV export (all 136 columns) is simplest.
+upload the file, then `ingest`. For `monthly_stats` the full CSV export (all 136 columns) is simplest.
 
 ## Citation and terms
 "Bureau of Transportation Statistics, <dataset name>, data.bts.gov, retrieved <date>." BTS data are

@@ -1,5 +1,5 @@
 {
- "about": "Searchable catalog of Fiscal Data API endpoints for fetch.py --search when the live metadata catalog (https://api.fiscaldata.treasury.gov/services/dtg/metadata/) is unreachable: a snapshot of the live catalog (frequency, earliest and latest dates), a few registry entries the live catalog omits, and the curated guidance of docs/datasets.md (rows to use, stock/flow, units, pitfalls). latest_date is a snapshot: check live with --fields.",
+ "about": "Searchable catalog of Fiscal Data API endpoints for request_schema searches when the live metadata catalog (https://api.fiscaldata.treasury.gov/services/dtg/metadata/) is unreachable: a snapshot of the live catalog (frequency, earliest and latest dates), a few registry entries the live catalog omits, and the curated guidance of docs/datasets.md (rows to use, stock/flow, units, pitfalls). latest_date is a snapshot: check live with --fields.",
  "snapshot": "2026-10-20",
  "count": 189,
  "endpoints": [

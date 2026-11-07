@@ -78,8 +78,8 @@ expenditure filers. A company's PAC is found with `committees` `q=<company>` and
 Key optional: DATA_GOV_API_KEY (https://api.data.gov/signup/), sent as `api_key`. DEMO_KEY allows only
 a few requests an hour per IP; with a key the limit is per key. FEC documents 1,000 calls an hour for a
 key and 7,200 an hour (120 a minute) on request to APIinfo@fec.gov (API description, 2026-10-22), but the
-response header showed X-RateLimit-Limit 60 on a standard key (Oct 2026): plan for 60 and pace large specs. Larger specs make `--check` ask for the key.
-Manual route: INSTRUCTIONS.md lists JSON links with `api_key=DEMO_KEY` (itemized schedules: the first
+response header showed X-RateLimit-Limit 60 on a standard key (Oct 2026): plan for 60 and pace large specs. Without a key, larger specs stop with `key_missing`.
+Manual route (`manual_bundle`): INSTRUCTIONS.md lists JSON links with `api_key=DEMO_KEY` (itemized schedules: the first
 100 rows only); or set the same filters on https://www.fec.gov/data/ and use Export (CSV); whole
 cycles are in the bulk files at https://www.fec.gov/data/browse-data/?tab=bulk-data.
 

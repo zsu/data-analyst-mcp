@@ -71,7 +71,7 @@
       ]
     },
     "manual": {
-      "how": "Run download_data.sh (macOS, Linux) or download_data.ps1 (Windows) from manual_download/ with one command (no Python needed): the search endpoints are POST requests, which a browser cannot open; GET links (agency, budgetary resources, recipient state, award) also open in a browser (save each under the name shown). Upload the files, then --ingest. Without the bundle: on https://www.usaspending.gov/search set the filters (time period as fiscal years, award type, agency, location, keyword) and use Download > Award or Transaction CSV, or Advanced Search > the tab for the breakdown (e.g. Spending by Category) and its table download; upload the CSV and say which view it is."
+      "how": "Run download_data.sh (macOS, Linux) or download_data.ps1 (Windows) from manual_download/ with one command: the search endpoints are POST requests, which a browser cannot open; GET links (agency, budgetary resources, recipient state, award) also open in a browser (save each under the name shown). Upload the files, then call ingest. Without the bundle: on https://www.usaspending.gov/search set the filters (time period as fiscal years, award type, agency, location, keyword) and use Download > Award or Transaction CSV, or Advanced Search > the tab for the breakdown (e.g. Spending by Category) and its table download; upload the CSV and say which view it is."
     }
   },
   "cache": {

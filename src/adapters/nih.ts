@@ -145,7 +145,7 @@ const adapter: Adapter = {
         for (const b of rcdcIds(prm.spending_categories)[1]) {
           const near = getCloseMatches(b, table, 4, 0.5);
           probs.push(`request ${name}: RCDC category ${pyRepr(b)} is not known` +
-            (near.length ? `; close: ${pyRepr(near)}` : "; use --search to find names or pass the numeric id"));
+            (near.length ? `; close: ${pyRepr(near)}` : "; use a request_schema search to find names or pass the numeric id"));
         }
       }
       if (truthy(prm.text) && truthy(prm.phrase)) {

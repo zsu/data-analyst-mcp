@@ -126,7 +126,7 @@ export function pyFloatRepr(x: number): string {
  * JSON.parse that keeps what Python's json module would show: a float written as a whole number ("4.0") or
  * with an exponent Python writes differently comes back as Python's text of it ("4.0", "1e-05"), and an integer
  * too large for a double comes back as its exact digits. Every other number stays a number. So values written
- * to CSV are exactly as published (and as the Python skill wrote them). Use Number() before arithmetic on a
+ * to CSV are exactly as published. Use Number() before arithmetic on a
  * value that may be such a string.
  */
 export function parsePyJson<T = any>(text: string): T {

@@ -22,7 +22,7 @@ Filters: `school.state` (DE or DE,MD), `school.ownership` (1 public, 2 private n
 `admission_rate`, `size`, `tuition_in_state`, `tuition_out_of_state`, `net_price`, `attendance_cost`,
 `median_debt`, `pell_rate`, `loan_rate`, `completion_rate`, `retention_rate`, `earnings_6yr`,
 `earnings_7yr` (live from October 2026), `earnings_10yr`, `default_rate_3yr`, `share_first_generation`,
-demographics, `locale`, `hbcu`, `operating` (`--search "earnings"` lists them with the dotted names). Without `fields` the pack sends a
+demographics, `locale`, `hbcu`, `operating` (`request_schema` with `search: "earnings"` lists them with the dotted names). Without `fields` the pack sends a
 popular set of 16 fields. Year-specific values: replace `latest.` with a year (`2019.student.size`).
 
 ## Spec examples
@@ -80,9 +80,9 @@ popular set of 16 fields. Year-specific values: replace `latest.` with a year (`
 ## Access
 Key optional: DATA_GOV_API_KEY (free at https://api.data.gov/signup/), sent as `api_key`; without one the
 pack sends DEMO_KEY (api.data.gov: 30 requests an hour and 50 a day per IP address). A personal key allows 1,000
-requests an hour. Route `api` when api.data.gov answers. Manual route: `manual_download/INSTRUCTIONS.md`
-lists JSON page links with `api_key=DEMO_KEY` (one per 100 schools); open each, save under the name
-shown, upload, then `--ingest`. Without the links: https://collegescorecard.ed.gov/data/ has the full
+requests an hour. `fetch` downloads when api.data.gov answers. Manual route (`manual_bundle`):
+`manual_download/INSTRUCTIONS.md` lists JSON page links with `api_key=DEMO_KEY` (one per 100 schools); open
+each, save under the name shown, upload, then `ingest`. Without the links: https://collegescorecard.ed.gov/data/ has the full
 institution-level CSV (zip) and the data dictionary (xlsx); its variable names differ (UNITID, INSTNM,
 MD_EARN_WNE_P10), so map them with the dictionary.
 

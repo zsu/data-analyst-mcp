@@ -34,7 +34,7 @@ G20 finance companies, CHGDEL charge-offs and delinquencies, DSR / FOR debt serv
 exchange rates, E2 business lending terms, PRATES policy rates. Catalog aliases for `package` (they carry the
 release): `g19_all`, `g19_sa`, `g19_terms`, `g19_holders_nsa`, `g19_flows`, `sloos`, `scoos`, `z1_b101`, `z1_l101`,
 `z1_f101`, `z1_l106`, `h15_treasury_cmt`, `h6_monthly`, `h8_all_banks_sa`, `g17_summary`, `chgdel_rates_all`,
-`debt_service`, `prates_daily` (`--search` finds them). Z.1 DDP packages are titled by the new table codes:
+`debt_service`, `prates_daily` (a `request_schema` search finds them). Z.1 DDP packages are titled by the new table codes:
 "S1M.b (Q)" = B.101 quarterly, "(A)" annual.
 
 ## Spec examples
@@ -104,7 +104,7 @@ an ambiguous or unknown title lists the candidates. `ddp_packages` lists every t
 ## Access
 No key; the host answers scripts (verified 2026-10-30, Python user agent). Limit used: one request a second. The Z.1
 zip is 8.3 MB (downloaded once per run for all `z1` requests); a full DDP package is up to about 1 MB; the SCF
-tables workbook 2.5 MB. Manual route: the bundle links the files (a DDP package given by title links its release's
+tables workbook 2.5 MB. Manual route (`manual_bundle`): the bundle links the files (a DDP package given by title links its release's
 Choose page: pick the package, Format package, CSV, Download file; upload the CSV as downloaded). SCF microdata
 (summary extract scfp2025excel.zip, 2.1 MB, and the full public data) are on https://www.federalreserve.gov/econres/scfindex.htm
 and are not wrapped: each family appears five times (five implicates), weights must be divided by five when the

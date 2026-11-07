@@ -12,15 +12,15 @@ universes, replicate standard errors; opm: redaction of pay and location).
 ## 1. Critical questions bank
 
 Ask only the ones the request leaves open **and** that would change a headline number: at most four, in one
-round, with "Don't know — decide for me" on each and the recommended option first. A source's `clarify`
-list (`fetch.py --source <id> --clarify`) names the questions specific to it; merge them with these and keep
+round, with "Don't know — decide for me" on each and the recommended option first. A source's
+`questions_to_ask` (from `source_brief`) names the questions specific to it; merge them with these and keep
 the four that matter most.
 
 Each question has exactly one "Don't know" option, never a separate "Skip". A skipped or unanswered
 question is a "Don't know" and is decided by the rule in the last column. The exception is a blocking
 question about what the user means (which program, place or population): ask it once more, then take the
-literal reading and say so first. Record every question, its answer and its resolution in
-`decisions.json` → `questions` (schema: `scripts/report/method_audit.py`).
+literal reading and say so first. Record every question, its answer and its resolution with
+`record_decisions` (`questions`; it writes them to `decisions.json`).
 
 | Choice | Ask when | Options (recommended first) | How to decide when the user does not know |
 |---|---|---|---|
@@ -29,7 +29,7 @@ literal reading and say so first. Record every question, its answer and its reso
 | **Time span** | the request names no years | last 10 complete years · since a business-cycle peak · longest available | 10 complete years; for a change over "the past N years", compare endpoints N years apart and name the years. A partial latest year only as "year to date" against the same months a year earlier |
 | **Dollar basis** | comparisons across more than about 3 years | Nominal · Real (named index, latest full year's dollars) · Share of GDP | Nominal for levels people quote, plus real or share of GDP when growth over a decade is the point; run both and say whether the conclusion changes |
 | **Growth measure** | annual growth of output or prices | Q4 over Q4 · annual average over annual average · quarterly annualized · year over year | Q4 over Q4 for annual growth of GDP and inflation; annual averages for rates; quarterly annualized for the latest quarter; name the measure every time |
-| **Frequency conversion** | the sources differ in frequency | average · end of period · sum | Rates and prices: average. Stocks (debt, balances, headcount): end of period. Flows: sums of complete periods only (`combine.to_fiscal` flags incomplete years) |
+| **Frequency conversion** | the sources differ in frequency | average · end of period · sum | Rates and prices: average. Stocks (debt, balances, headcount): end of period. Flows: sums of complete periods only (`compute`'s `to_fiscal` flags incomplete years) |
 | **Vintage** | the question is about what was known at a time, or about revisions | latest · as published on a date · first release | Latest, unless the timing matters; then the vintage just before that date, and say so |
 | **Seasonal adjustment** | monthly or quarterly series | SA · NSA | SA for short-run changes and charts; NSA for 12-month changes and annual averages where the agency does so |
 | **Population or universe** | survey and administrative microdata | the published universe · a narrower group | The universe of the benchmark publication (for example civilian noninstitutionalized people age 16 or older); prime-age work uses ages 25 to 54 |
@@ -38,13 +38,14 @@ literal reading and say so first. Record every question, its answer and its reso
 | **Audience and organization** | a report is wanted | Neutral analyst product · Named organization | Neutral unless the user names one |
 
 Not critical (decide and record them in the methods): CSV vs JSON, field selection, chart type, rounding,
-the exact endpoint when two give identical published totals, series IDs (resolve them with `--search`).
+the exact endpoint when two give identical published totals, series IDs (resolve them with the
+`request_schema` search).
 
 ## 2. Conventions
 
 **Periods and timing**
 - The federal fiscal year runs October 1 to September 30 and is named for the year it ends. Write "fiscal
-  year 2025" in prose and "FY2025" only in tables and charts (`combine.fiscal_year`, `combine.to_fiscal`).
+  year 2025" in prose and "FY2025" only in tables and charts (`compute`'s `fiscal_year` and `to_fiscal`).
 - Say how current the data are: "data through September 2026, retrieved October 20, 2026". The report
   builder adds each source's retrieval date and vintage (the Data Vintage block); the methods say which
   release the estimates come from.
@@ -61,36 +62,37 @@ the exact endpoint when two give identical published totals, series IDs (resolve
 
 **Units and signs**
 - Read every source's units from its data dictionary or series table (thousands, millions, an index, a
-  percent). Convert once, in `analysis.py`, and name the unit in every exhibit subtitle.
+  percent). Convert once, in a `compute` step, and name the unit in every exhibit subtitle.
 - Pick one sign convention for deficits and changes and state it in the notes.
-- Use the fact formats for scale (`usd_b`, `from_millions:dollars_b`, `kmillions`; see
-  `scripts/analysis/factfmt.py`) rather than dividing by hand.
+- Use the fact formats for scale (`usd_b`, `from_millions:dollars_b`, `kmillions`; the `facts` tool lists
+  them) rather than dividing by hand.
 
 **Real dollars**
 - Deflate with a named price index over the same period basis as the values, into the dollars of the latest
-  complete period (`combine.deflate`); name the index and base year in the notes.
+  complete period (`compute`'s `deflate`); name the index and base year in the notes.
 - Chained-dollar components do not add to their totals: compute shares in nominal terms.
 
-**Combining sources** (`scripts/analysis/combine.py`)
-- Before any join, `align_check(frames, on, units)`: the same keys, the same period basis, units named.
-  State codes through `state()` / `add_state_codes()`, never by hand.
+**Combining sources** (`compute` verbs)
+- Before any join, an `align_check` step (keys, units): the same keys, the same period basis, units named.
+  State codes through the `state_codes` step, never by hand.
 - One source per measure: when two sources publish the same measure, say which one is used and why; do not
   splice them into one series without a break note.
-- Record each exhibit's lineage with `save_exhibit(df, OUT, "exhibits/exhibit_n.csv", packs=[...])` and give
-  facts a `pack=` when several sources are in the folder. The audit checks that every lineage and fact pack
-  is a source of the report.
+- `compute` records each exhibit's lineage when it saves `exhibits/<name>.csv` (pass `packs` when the inputs
+  do not show the sources); give facts a `pack` when several sources are in the folder. The audit checks that
+  every lineage and fact pack is a source of the report.
 
 **Revisions and provenance**
 - Agencies revise: payroll benchmarks, seasonal factors, GDP vintages, survey reweighting, file versions.
   Record the retrieval date (each `data/<id>/request.json` has it) and note revisions when a comparison
-  spans releases. Register preliminary, projected or past-vintage values with `preliminary=True`,
-  `projection=True` or `vintage=` and say so where they are cited (the audit enforces it).
+  spans releases. Register preliminary, projected or past-vintage values in `facts` with `preliminary: true`,
+  `projection: true` or `vintage` and say so where they are cited (the audit enforces it).
 - Never present a projection as data; cite it as the projecting agency's.
 
 **Precision and suppression**
 - Survey estimates: weight them (the pack names the weight), keep unweighted cell sizes, and suppress or
   footnote cells below the pack's threshold. Say whether differences that drive conclusions are large
-  relative to sampling error; use the pack's standard-error helpers when it has them.
+  relative to sampling error. This server has no survey-weight or replicate standard-error helpers yet:
+  report which weight was used and that standard errors were not computed, unless the pack publishes them.
 - Administrative files with redaction (withheld pay or location): report coverage and say how the
   estimates treat redacted records; the pack's audit hooks require it.
 
@@ -109,29 +111,29 @@ the exact endpoint when two give identical published totals, series IDs (resolve
   itself the total.
 - Before writing: units (millions vs. billions), dates (fiscal-year end vs. start), the last date of every
   series (a lagging series silently shortens a ratio), projections cut off, no silent conversion across a gap.
-- **Evidence before judgment.** Each key definition and parameter goes in `decisions.json` → `assumptions`
-  with a basis, strongest first: `empirical` (estimated from the data in `analysis.py`; the evidence names the
+- **Evidence before judgment.** Each key definition and parameter goes in `record_decisions` → `assumptions`
+  with a basis, strongest first: `empirical` (estimated from the data with `compute`; the evidence names the
   exhibit CSV or `{{fact}}`), `literature` (a published estimate), `precedent` (the agency's own practice),
   both cited as an opened `[@ref]`, `user` (the user's answer), and only then `judgment`. A judgment call
   states `why_not_empirical` and has a row in `exhibits/sensitivity.csv` (parameter, base, alternative,
   headline_base, headline_alt, conclusion_changes). The audit fails anything weaker.
 - **Literature.** Record each search (query, date, what it found) in `literature_search` and each opened
-  source in `references` (citation, url, accessed, `opened: true`).
+  source in `references` (citation, url, accessed, `opened: true` once `cite` has saved the page), both with
+  `record_decisions`.
 - **Data that would improve the estimates.** `data_needs` names the data that would replace each judgment
   call or unchecked benchmark: `data`, `improves`, `effect`, `how_to_get`, `from_user`. The builder lists them
   in Appendix A, and the quick answer gives the top three. `[]` with a `data_needs_note` when none would help.
-- Quick answers pass the same gate: `scripts/report/audit_answer.py <out> --online --rerun`.
+- Quick answers pass the same gate: `audit_answer` with `online: true` and `rerun: true`.
 
 ## 4. Numbers, facts and the audit
 
-- Every number in the prose is a `{{fact}}` from `facts.json` (`scripts/analysis/facts.py`), a year, or
-  listed in `audit_allow` with a reason. Facts read their value back from the saved CSV cell; derived facts
-  state their derivation; each fact records its source pack.
-- `scripts/report/build_report.py` fills the placeholders; `scripts/report/audit_report.py --rerun` is the
-  release gate. Fix every FAIL before handing anything over; the style score is printed, never written into
-  the report.
+- Every number in the prose is a `{{fact}}` registered with `facts` (saved in `facts.json`), a year, or
+  listed in `audit_allow` (`record_decisions`) with a reason. Facts read their value back from the saved CSV
+  cell; derived facts state their derivation; each fact records its source pack.
+- `build_report` fills the placeholders; `audit_report` with `rerun: true` is the release gate. Fix every
+  FAIL before handing anything over; the style score is returned, never written into the report.
 
-## 5. Publication structure (`build_report.py`, `"mode": "report"`)
+## 5. Publication structure (`build_report`, `"mode": "report"`)
 
 The default layout, the **exhibit chartbook**, runs in this order:
 1. **Cover:** "Month Year", the title (with the period for trend reports), and a hero chart with its own
@@ -169,7 +171,7 @@ Each source's policy decides what leaves the analysis folder (the builder applie
 - `definition_only` (IPUMS-style terms): no data file leaves; the package carries the request definition and
   `reproduce/<id>/`: `download_<id>.sh` / `.ps1` (one command downloads the data under the reader's own
   account: the request is built in and the key is asked for with hidden input), the request (`spec.json`, IPUMS
-  `extract_spec.json`) and `REPRODUCE.md` (the commands, then `--ingest` and `lib/run_analysis.py`). The page
+  `extract_spec.json`) and `REPRODUCE.md` (the commands, then `ingest` and `rerun` with this server). The page
   attaches all of them with Download buttons. The page never links the extract.
 - `withhold` (for example FRED series whose copyright is not cleared): their rows are dropped from shared
   files, and each one needs a `clearance` entry in report.json with its basis (`"redistribute": true` only
@@ -191,6 +193,7 @@ Exhibit CSVs are aggregates and ship with the product unless a source's audit ho
 ## 8. Reading publications that block scripts
 
 Some publishers refuse scripts and the in-app browser (HTTP 403, a bot check). Fetch
-`https://web.archive.org/web/<year>/<full url>` and extract the text (pypdf for PDFs). If the plain year
+`https://web.archive.org/web/<year>/<full url>` and extract the text (a PDF needs a PDF text reader;
+`cite` saves the snapshot for the references). If the plain year
 URL returns HTML, use a CDX timestamp with `id_` (for example
 `https://web.archive.org/web/20240430034127id_/<url>`). Cite the original URL.

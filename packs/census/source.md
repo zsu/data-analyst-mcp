@@ -71,8 +71,8 @@ Common variables: B01003_001E population, B01002_001E median age, B19013_001E me
 B19301_001E per capita income, B17001_002E below poverty (universe B17001_001E), S1701_C03_001E poverty
 rate, B25077_001E median home value, B25064_001E median gross rent, B15003_022E bachelor's degree
 (universe B15003_001E), B23025_005E unemployed (labor force B23025_003E), P1_001N 2020 count.
-Find others: `fetch.py --source census --search "median household income"` (latest ACS 5-year) or
-`--search "2020/dec/pl: total population"`; then `group_variables` for the whole table.
+Find others: `request_schema` search `"median household income"` (latest ACS 5-year) or
+`"2020/dec/pl: total population"`; then `group_variables` for the whole table.
 
 ## Spec examples
 ```json
@@ -180,7 +180,7 @@ Find others: `fetch.py --source census --search "median household income"` (late
   weights, which are not on the API (bulk file `rw<YYYY>_csv.zip`, REPWGT1-REPWGT240, at
   https://www2.census.gov/programs-surveys/sipp/data/datasets/<YYYY>/; method in the year's user guide); without them
   give the point estimate and say no standard error was computed. Variable names and codes:
-  `--search "<YYYY>/sipp: health insurance"` or the dataset's variables.json. The bulk primary file
+  `request_schema` search `"<YYYY>/sipp: health insurance"` or the dataset's variables.json. The bulk primary file
   (`pu<YYYY>_csv.zip`, about 100 MB) has every variable, for a manual download.
 - ACS PUMS and CPS microdata (`acs1_pums`, `acs5_pums`, `cps_asec`, `<YYYY>/cps/basic/<mon>`): one row per
   person, values and codes exactly as published, with `<request>_codebook.csv` (every code's label, the
@@ -195,21 +195,21 @@ Find others: `fetch.py --source census --search "median household income"` (late
   further calls joined on the keys. For the ASEC (2005 on) it adds PH_SEQ and PPPOS and joins PWWGT1-160 from
   Census's replicate weight file (CPS_ASEC_ASCII_REPWGT_<year> on www2.census.gov, about 70 MB, no key), after
   two gates: the file's weight sums equal the totals its SAS layout states, and every person's PWWGT0 equals
-  MARSUPWT (2020: the 2020-based file is tried when the main one does not match). Standard error: `pums.rep_se` (lib/pums.py), sqrt(4/80 * sum of squared
-  replicate differences), MOE = 1.645 * SE. Checked 2026-11-04: Maryland's 2024 uninsured rate in the civilian
+  MARSUPWT (2020: the 2020-based file is tried when the main one does not match). Census's replicate standard error
+  is sqrt(4/80 * sum of squared replicate differences), MOE = 1.645 * SE (this server does not compute it; see
+  Analysis below). Checked 2026-11-04 with that method: Maryland's 2024 uninsured rate in the civilian
   noninstitutionalized population from PUMS was 6.26 +/- 0.32 percent, published S2701 6.3 +/- 0.3; the nation
   8.19 vs 8.2.
   - Universe: published insurance and labor tables use the civilian noninstitutionalized population
-    (`pums.civilian_noninst`: RELSHIPP 37 is the institutionalized group quarters population, ESR 4-5 armed
-    forces). Codes below zero or 0 often mean N/A (PINCP -19999 under 15, ESR 0 under 16): read the codebook.
+    (drop RELSHIPP 37, the institutionalized group quarters population, and ESR 4-5, armed forces). Codes below zero or 0 often mean N/A (PINCP -19999 under 15, ESR 0 under 16): read the codebook.
   - Dollars: ACS amounts need ADJINC (ADJHSG for housing costs), which the pack adds when a dollar variable asks
     for it: value * ADJINC / 1,000,000 is in the survey year's dollars, as the published tables are. PUMS is a
     subsample of the full ACS: a PUMS figure differs slightly from the published table (inside its MOE);
     publish your figure as your own calculation and benchmark it against the table.
   - CPS: ASEC income, poverty (PERLIS) and full-year insurance (COV) refer to the previous calendar year; NOW_COV
-    is coverage at the interview. Standard errors: `pums.rep_se(df, f, weight="MARSUPWT")` (PWWGT1-160,
-    SE = sqrt(4/160 * sum of squared differences)); household estimates on `pums.householders(df, "asec")` with
-    `weight="HSUP_WGT"` and the same replicates. Checked 2026-11-04: 2025 official poverty from the 2026 ASEC was
+    is coverage at the interview. Census's method for standard errors: weight MARSUPWT with replicates
+    PWWGT1-160, SE = sqrt(4/160 * sum of squared differences); household estimates on householders only, with
+    HSUP_WGT and the same replicates. Checked 2026-11-04 with that method: 2025 official poverty from the 2026 ASEC was
     34,505 thousand +/- 909 and 10.2 +/- 0.3 percent (PERLIS 1 among PERLIS != -1), P60-290 Table 1 34,510 +/- 909
     and 10.2 +/- 0.3. Before 2005 there is no replicate file: use the ipums pack.
     The API's 2020 and 2021 ASEC weights are the 2010-Census-based ones (their PWWGT0 matched the main replicate
@@ -219,10 +219,9 @@ Find others: `fetch.py --source census --search "median household income"` (late
     file's state variable, or use ipums. Older files lack some keys and weights (HRHHID2 before 2004, PERIDNUM
     in early ASECs): the pack leaves them out and says so. CPS basic monthly has no replicate weights at all; month-to-month person links need HRHHID, HRHHID2 and
     PULINENO with care (ipums CPSIDP links them). CPS codes differ from ACS codes (PEMLR, PRCITSHP, A_HGA /
-    PEEDUCA): `lib/pums.py` recodes take the survey (`"acs"`, `"asec"`, `"basic"`).
-  - Analysis helpers: `pums = pack_lib("census", "pums", OUT, SKILL)` (`load`, `rep_se`, `wshare`, `wmean`,
-    `wtotal`, `adjusted`, `civilian_noninst`, `uninsured`, `emp_status`, `foreign_born`, `educ_group`,
-    `householders`); grouped tables, binned medians and regressions from `pack_lib("ipums", "stats", ...)`.
+    PEEDUCA): recode each survey from its own codebook.
+  - Analysis: build tables with `compute`. This server has no PUMS recode helpers or replicate-weight standard
+    errors yet: say which weight you used, and that standard errors were not computed.
 - Time series (`timeseries/...`): give `time` (`2026`, `2026-08`, `2026-Q2`, or `from 2024-01 to 2026-08`).
   Economic indicators (eits) return one row per code combination: `category_code` (industry or tax type),
   `data_type_code` (level, percent change, ...), `seasonally_adj` (yes/no), `time_slot_id`, `error_data` (yes =
@@ -271,12 +270,14 @@ Find others: `fetch.py --source census --search "median household income"` (late
 
 ## Access
 Key required: free at https://api.census.gov/data/key_signup.html (an e-mail with an activation link).
-Store it with the setup script (route `run_setup`); in a sandbox the route is `manual_download`. Limits
-are not published; the pack sends at most 3 requests a second. Manual route: `manual_download/
-INSTRUCTIONS.md` lists one JSON link per request with `{API_KEY}` to replace in the browser (or one
-command runs download_data.sh / .ps1, which asks for the key with hidden input); upload the files, then `--ingest`. Without the bundle:
+With no key stored, fetch fails with `key_missing`: the user stores one with `npx -y data-analyst-mcp setup
+census` in their own terminal (never in chat); where the server cannot reach the API, the error suggests
+`manual_bundle`. Limits are not published; the pack sends at most 3 requests a second. Manual route:
+`manual_bundle` writes `manual_download/INSTRUCTIONS.md`, which lists one JSON link per request with
+`{API_KEY}` to replace in the browser (or one command runs download_data.sh / .ps1, which asks for the key with
+hidden input); upload the files, then `ingest`. Without the bundle:
 https://data.census.gov, search the table (B19013), set geography and year, Download Table > CSV, and
-upload it saying it is a data.census.gov export (one estimate and one MOE column per geography; `--ingest`
+upload it saying it is a data.census.gov export (one estimate and one MOE column per geography; `ingest`
 reads it long: label, geography, measure, value). Its table JSON (data.census.gov/api/access/data/table, no
 key) is read too, keeping the spec's `get` variables and their MOEs: one table per file, so give each table its
 own request and save its JSON as `<request name>.json` (e.g. `...table?id=ACSDT1Y2024.B25031&g=310XX00US<CBSA code>`
@@ -285,14 +286,14 @@ Keyless, for a published ACS detailed table (a benchmark): the table-based summa
 file per table, e.g. https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/1YRData/acsdt1y2024-b08013.dat
 (5-year: 5YRData/acsdt5y...); geography ids are in the same folder's documentation. Subject and profile
 tables (S2801, DP02) without a key: https://data.census.gov/api/access/data/table?id=ACSST1Y2024.S2801&g=010XX00US$0400000
-returns the table JSON (all states); `--ingest` reads it (it is a benchmark: file it under `published/`
+returns the table JSON (all states); `ingest` reads it (it is a benchmark: file it under `published/`
 when no census fetch was made).
 Keyless, for state population totals (PEP): the fred pack's `<ST>POP` series (thousands, July 1) come with
 no key at all, through its keyless graph route, with the usual data/fred/ dictionary and provenance. They
 are annual and can lag a new Census vintage by weeks: compare the latest year with the Census release
 before using them, and name the vintage. (A cross-section of every county through fred `regional` needs a
 FRED key.) A Census estimates file (popest tables) that is still needed is a published table: save it under
-`<out>/published/` with `source_url` and `accessed` on every row, never straight into `data/census/`.
+`published/` with `source_url` and `accessed` on every row, never straight into `data/census/`.
 
 ## Citation and terms
 "U.S. Census Bureau, <dataset, e.g. 2020-2024 American Community Survey 5-year estimates, table

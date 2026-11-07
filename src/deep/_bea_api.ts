@@ -1,5 +1,5 @@
 /**
- * BEA Data API client for the bea deep pack (port of the Python skill's bea_api.py).
+ * BEA Data API client for the bea deep pack (port of bea_api.py).
  *
  * The key ("UserID" in the URL) comes from core keys (BEA_API_KEY, keys.json, ...); every call goes through the core
  * Client (fixtures, restricted mode, the request trail). BEA echoes the key in every reply, so scrubResponse()

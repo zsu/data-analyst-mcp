@@ -282,7 +282,7 @@ export function withheldNote(req: SpecRequest, rows: Row[]): string | null {
     const succ = Object.values(catalog()).filter((c: any) => c.kind === "variable" && variable.split("+").includes(c.id) &&
       c.successor).map((c: any) => c.successor);
     note += ` The variable ${variable} is not reported for that assessment` +
-      (succ.length ? `; use ${succ.join(", ")} instead (see source.md).` : "; find its replacement with --search.");
+      (succ.length ? `; use ${succ.join(", ")} instead (see source.md).` : "; find its replacement with a request_schema search.");
   }
   return note;
 }

@@ -51,14 +51,14 @@ Search with WebSearch, read the page, and cite it (`references` in report.json).
 
 **Precision and suppression**
 - Counts: round to the nearest hundred or thousand in prose ("about 447,200"), exact in tables. A
-  rounded number is its own fact: register it with a rounding format (`num:-2` hundreds, `num:-3`
-  thousands) so the answer gate finds it.
-- Flag rates and pay statistics for groups with fewer than 30 records (`low_n`) and avoid publishing
+  rounded number is its own fact: register it with `facts` and a rounding format (`num:-2` hundreds,
+  `num:-3` thousands) so the answer gate finds it.
+- Flag rates and pay statistics for groups with fewer than 30 records and avoid publishing
   pay for very small groups (individuals could be identified).
 - No sampling error: do not write "statistically significant". Describe differences as differences in
   the records, and discuss data-quality limits (redaction, late reports, missing submissions) instead.
 
-**Publication structure (mirrored in `build_report.py`, `"mode": "report"`)**
+**Publication structure (mirrored in `build_report`, `"mode": "report"`)**
 The default layout, the **exhibit chartbook**, runs in this order:
 1. **Cover:** "Month Year", the title (with the period for trend reports), and a hero chart.
 2. **At a Glance** (one page, about 300-420 words): a framing paragraph (what was examined, the

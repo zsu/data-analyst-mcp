@@ -6,8 +6,8 @@
  *   1. the <ENV> environment variable
  *   local mode only:
  *   2. the file named by the <ENV>_FILE environment variable
- *   3. "env": {"<ENV>": "..."} in ~/.config/data-analyst/keys.json ($DATA_ANALYST_CONFIG_DIR), shared with the
- *      Python skill and written by `data-analyst-mcp setup`
+ *   3. "env": {"<ENV>": "..."} in ~/.config/data-analyst/keys.json ($DATA_ANALYST_CONFIG_DIR), written by
+ *      `data-analyst-mcp setup`
  *   4. "env": {"<ENV>": "..."} in Claude Code's settings.json (~/.claude or $CLAUDE_CONFIG_DIR)
  *   5. ~/.<home>/api_key (a file holding only the key); <home> is auth.home in policy.json
  * Files are read on every lookup, so a key stored a moment ago works without a restart.

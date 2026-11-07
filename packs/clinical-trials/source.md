@@ -71,7 +71,7 @@ unknown name is refused by the API (HTTP 400 naming it).
   the pack sends at most one request a second.
 
 ## Access
-No key. Route `api` when clinicaltrials.gov answers. Manual route: INSTRUCTIONS.md gives the API link for
+No key. `fetch` works when clinicaltrials.gov answers. Manual route (`manual_bundle`): INSTRUCTIONS.md gives the API link for
 the first 1,000 studies (JSON, open in a browser); for more, run the same search on
 https://clinicaltrials.gov/ (Advanced Search), choose Download, CSV, all studies and the columns needed,
 and upload the file (its columns use display names such as "NCT Number").

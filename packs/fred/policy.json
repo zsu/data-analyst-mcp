@@ -129,7 +129,7 @@
     "requests_per_minute": 120,
     "graph_max_series": 12,
     "max_rows": 100000,
-    "note": "API: 120 requests a minute, 100,000 observations per call (paged). Graph downloads: at most 12 series per graph (more are silently dropped); fetch.py sends one series per CSV."
+    "note": "API: 120 requests a minute, 100,000 observations per call (paged). Graph downloads: at most 12 series per graph (more are silently dropped); fetch sends one series per CSV."
   },
   "routes": {
     "api": {
@@ -148,7 +148,7 @@
       ]
     },
     "manual": {
-      "how": "Run --manual-bundle (or follow --check): <out>/manual_download/fred/INSTRUCTIONS.md lists one browser link per series (fredgraph.csv / alfredgraph.csv, no key; or the series page's Download button, CSV) and download_fred.sh / .ps1 with the request built in (one command each, e.g. bash ~/Downloads/download_fred.sh), which fetch everything, asking for a key with hidden input only for key-only files. Send INSTRUCTIONS.md, both scripts and spec.json; the user uploads the files unchanged, then run --ingest."
+      "how": "Call manual_bundle: manual_download/INSTRUCTIONS.md lists one browser link per series (fredgraph.csv / alfredgraph.csv, no key; or the series page's Download button, CSV) and download_data.sh / .ps1 with the request built in (one command each, e.g. bash ~/Downloads/download_data.sh), asking for a key with hidden input only for key-only files. Send INSTRUCTIONS.md, both scripts and spec.json; the user uploads the files unchanged, then call ingest."
     }
   },
   "cache": {

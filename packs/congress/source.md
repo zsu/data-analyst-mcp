@@ -48,7 +48,7 @@ the word is missed (often more bills than the display titles hold), and the fetc
 searches the whole text and misses many bills): source govinfo, endpoint `search`, params
 `{"collection": "BILLS", "congress": 118, "title": "<phrase>"}` (one per word form, or
 `query: "title:tariff OR title:tariffs"`), strip the version suffix from `packageId` and deduplicate, then
-confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumber); say which title the count uses. `--search votes` lists catalog aliases (committee codes, bill types).
+confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumber); say which title the count uses. `request_schema` with `search: "votes"` lists catalog aliases (committee codes, bill types).
 
 ## Spec examples
 ```json
@@ -80,8 +80,8 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
   `latestAction`, no bill): drop them (11 in the 119th) to match the Résumé of Congressional Activity.
   "Passed the House": a House passage action in `bill_actions` (actionCode 8000, "Passed/agreed to in
   House"), or any later Senate or presidential action; never infer it from `latestAction` text ("Motion to
-  reconsider laid on the table" follows failed votes too). Paged lists print no call count in `--check`:
-  count about one call per 250 rows.
+  reconsider laid on the table" follows failed votes too). No call count is shown before a fetch: for paged
+  lists count about one call per 250 rows.
 - Congressional Review Act disapprovals: joint resolutions whose titles read "Disapproving the rule
   submitted by ..." (older) or "Providing for congressional disapproval under chapter 8 of title 5" (newer):
   match "disapprov", then drop D.C. Council disapprovals (Home Rule Act, e.g. H.J.Res. 142 of the 119th).
@@ -92,7 +92,7 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
   `introducedDate` (and sort by it) but no `policyArea`; the `laws` lists carry neither and ignore `sort`
   (verified 2026-10-22): those need one `bill` call per law, a second spec with
   `"for_each": {"csv": "data/congress/<laws>.csv", "map": {"billType": "type", "billNumber": "number"},
-  "lower": true}` (bill numbers repeat across types; `--check` gives the call count). Counting "bills passed" needs a chamber action, not `latestAction` alone.
+  "lower": true}` (bill numbers repeat across types; one call per row of the laws CSV). Counting "bills passed" needs a chamber action, not `latestAction` alone.
 - Votes: a bill usually has several recorded votes (cloture, motions to proceed, amendments, passage,
   conference). `bill_votes` lists every one with the action text. Final passage is each chamber's LAST
   recorded vote that cleared the bill ("On Passage", "On Passage of the Bill", "On Motion to Concur ...",
@@ -122,7 +122,7 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
   is the current version's date, so a product first issued in the month and revised later drops out (a
   floor, say so). The list's `version` is not the product version: `crs_report` gives `currentVersion`.
   `bill_summaries` are CRS summaries of each bill version (HTML in `text`, plain in `text_plain`); some fields
-  exceed Python's csv limit: read with pandas or call `csv.field_size_limit(10**8)` first.
+  are over 131,072 characters: when reading the CSV with your own code, raise the reader's field size limit first.
 - Nominations (traps seen in Oct 2026 data; the Senate Résumé's "Civilian nominees" table is the benchmark):
   military and "Other Civilian" lists (Foreign Service, PHS, NOAA officers) are list nominations without a
   description; `nominationType` (`isCivilian`, `isMilitary`) is missing on some rows of older Congresses
@@ -158,13 +158,14 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
 ## Access
 Key optional: DATA_GOV_API_KEY (https://api.data.gov/signup/), sent as `api_key` to api.congress.gov
 only (Congress.gov documents 5,000 requests an hour for a key; DEMO_KEY about 10 an hour per IP, observed
-limit 10). Specs needing more than a few Congress.gov calls make `--check` ask for the key. House Clerk
-and Senate XML need no key. Manual route: INSTRUCTIONS.md lists Congress.gov JSON links with
+limit 10). Without a key, a spec needing more than a few Congress.gov calls makes `fetch` stop with
+`key_missing` (the message gives the call count). House Clerk and Senate XML need no key. Manual route
+(`manual_bundle`): INSTRUCTIONS.md lists Congress.gov JSON links with
 `api_key=DEMO_KEY` and the vote XML links (clerk.house.gov/evs/<year>/roll<NNN>.xml;
 www.senate.gov/legislative/LIS/roll_call_votes/vote<congress><session>/vote_<c>_<s>_<NNNNN>.xml);
-for `bill_votes` the bill's actions JSON lists each vote's XML link. Upload the files for `--ingest`.
-senate.gov sometimes refuses scripts (HTTP 403, seen from some networks in Oct 2026; `--check` tries it when
-the spec needs Senate votes): the route is then `manual_download`. Without a user to save the XML, the
+for `bill_votes` the bill's actions JSON lists each vote's XML link. Upload the files, then `ingest`.
+senate.gov sometimes refuses scripts (HTTP 403, seen from some networks in Oct 2026): a fetch of Senate votes
+then stops with `agency_unavailable`, and `manual_bundle` gives the XML links. Without a user to save the XML, the
 Congressional Record prints each Senate roll call's names. The reliable path is the page: the vote's
 `bill_actions` text cites it ("Record Vote Number: 7 ... (CR S250-251)"); list that day's issue with govinfo
 `granules` (`packageId` CREC-<date>), take the Senate granule whose id holds the page (`...-PgS250`, or the

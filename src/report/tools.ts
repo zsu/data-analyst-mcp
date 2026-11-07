@@ -1,4 +1,4 @@
-/** The report tools (see docs/porting-report.md). server.ts registers every entry of TOOLS. */
+/** The report tools. server.ts registers every entry of TOOLS. */
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";

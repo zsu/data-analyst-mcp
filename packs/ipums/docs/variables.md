@@ -23,7 +23,7 @@ The ACS starts in 2000 (large samples from 2005, group quarters from 2006). CPS 
 **ACS 2020 1-year** is IPUMS's experimental-weights release, so note this when using it.
 
 ## 2. Sample IDs ✔
-- `python <skill>/scripts/fetch.py --source ipums --list-samples usa --match 2023` lists sample IDs and descriptions.
+- `request_schema` for ipums with the search `usa 2023` lists sample IDs and descriptions (needs a key).
 - **USA:**
   - `us2023a` = 2023 ACS 1-year
   - `us2023b` = 2023 PRCS (Puerto Rico)
@@ -32,11 +32,11 @@ The ACS starts in 2000 (large samples from 2005, group quarters from 2006). CPS 
 - **CPS:**
   - `cps2023_03s` = ASEC 2023
   - basic monthly: `cpsYYYY_MMb`, or `cpsYYYY_MMs` when that month carries a supplement (2025: `_01b`,
-    `_02s`, `_03b`, `_04b` ...); take the IDs from `--list-samples cps --match YYYY`, never by pattern
+    `_02s`, `_03b`, `_04b` ...); take the IDs from a `request_schema` search (`cps YYYY`), never by pattern
   - **October 2025 was not collected** (lapse in appropriations): 2025 has 11 monthly samples, so a 2025
     annual average divides pooled weights by 11, not 12
-- **NHIS:** `ih2024` = 2024 NHIS (`--list-samples nhis`). **MEPS:** `mp2022` = 2022 MEPS full year
-  (`--list-samples meps`; the newest full-year file lags about two years).
+- **NHIS:** `ih2024` = 2024 NHIS (search `nhis`). **MEPS:** `mp2022` = 2022 MEPS full year
+  (search `meps`; the newest full-year file lags about two years).
 
 ## 3. Weights (auto-included) ✔
 | Collection / file | Person weight | Household weight | Notes |
@@ -51,14 +51,16 @@ The ACS starts in 2000 (large samples from 2005, group quarters from 2006). CPS 
 
 Pooling several years for one estimate: either average the yearly estimates, or divide the weights by the number of years so that totals stay annual.
 
-**Standard errors.** Census recommends replicate weights.
-- **USA (ACS):** request `REPWTP` to get 80 columns. They add a lot of size to multi-year extracts; `stats.lin_se` with the automatic `STRATA` and `CLUSTER` is a fallback only: it can be far off for quantities the ACS weights are raked to (age, sex: median-age margins came out 3 to 13 times the replicate ones) and understate others. Prefer replicates; to save size, case-select a second extract with REPWTP to the areas compared.
-- **CPS ASEC:** request `REPWTP` to get 160 columns, then use `stats.rep_se` or `wls(se="replicate")`.
-- **NHIS, MEPS:** no replicate weights; Taylor linearization with the design variables (added automatically):
-  `lin_se(df, z, **survey_design(df, "nhis"))`. For NHIS it uses STRATA and PSU, kept apart across design
+**Standard errors.** Census recommends replicate weights. This server cannot compute replicate or
+design-based standard errors yet: report which weight was used and that standard errors were not computed.
+The methods below are for reference.
+- **USA (ACS):** request `REPWTP` to get 80 columns. They add a lot of size to multi-year extracts; a linearized SE with the automatic `STRATA` and `CLUSTER` is a fallback only: it can be far off for quantities the ACS weights are raked to (age, sex: median-age margins came out 3 to 13 times the replicate ones) and understate others. Prefer replicates; to save size, case-select a second extract with REPWTP to the areas compared.
+- **CPS ASEC:** request `REPWTP` to get 160 columns for replicate standard errors.
+- **NHIS, MEPS:** no replicate weights; Taylor linearization with the design variables (added automatically).
+  For NHIS it uses STRATA and PSU, kept apart across design
   periods (IPUMS's STRATA and PSU are consistent only within a period, such as 2006-2015 or 2016 on). For one
   MEPS year it uses STRATANN and PSUANN; for pooled MEPS years, STRATAPLD and PSUPLD. Compute on the whole file with a domain mask
-  (`share_z`, `mean_z`) rather than on filtered rows. Check ✔: NHIS 2024 uninsured ages 18-64, 11.6% with
+  rather than on filtered rows. Check ✔: NHIS 2024 uninsured ages 18-64, 11.6% with
   SE 0.34 points (NCHS: 11.6%); MEPS 2022 mean spending $6,765 per person, SE $178 (AHRQ: $6,765).
 
 **Extract gotchas (found in test runs):**
@@ -92,7 +94,7 @@ dorms are coded in their parents' household. Reproduced AD-1 exactly for 2019 an
 **Education** ✔
 - `EDUC` (general, 00–11) and `EDUCD` (detailed). Use **EDUCD** for degree groups.
 - EDUCD codes: 2–61 less than a high school diploma; 62–64 high school diploma or GED; 65–83 some college or an associate's degree (65, 71 some college; 81–83 associate's); 101 bachelor's degree; 114 master's degree; 115 professional degree; 116 doctorate; 0/1 N/A; 999 missing.
-- `stats.educ_group(df, "usa", "educ4" | "educ5")` implements these groups (pre-1990 census codes: 60 "Grade 12" counts as high school, 100 as bachelor's, 110–113 as master's).
+- For pre-1990 census codes in these groups: 60 "Grade 12" counts as high school, 100 as bachelor's, 110–113 as master's.
 
 **Work** ✔
 - `EMPSTAT`: 0 N/A (under 16), 1 employed, 2 unemployed, 3 not in labor force. `EMPSTATD` has detail (armed forces = 13/14).
@@ -109,8 +111,8 @@ dorms are coded in their parents' household. Reproduced AD-1 exactly for 2019 an
 - `TRANWORK` ✔: usual means of transportation to work last week. 0 N/A (not a worker or not at work that week),
   10-15 car, truck or van, 31-39 public transit and taxi, 50 bicycle, 60 walked, 70 other, **80 worked at home**.
   Census's commuting tables (B08301, B08101) count workers 16+ at work last week, i.e. TRANWORK > 0: keep that
-  universe explicitly (`clean_missing` turns 0 into NaN, and `share(...)` would then count those people as
-  "no" in the denominator). `TRANTIME` one-way travel minutes (0 N/A: not a commuter, or worked at home;
+  universe explicitly (if 0 is blanked as N/A, a share that treats blanks as "no" would count those people
+  in the denominator). `TRANTIME` one-way travel minutes (0 N/A: not a commuter, or worked at home;
   values above a state's top code are replaced by the state mean of those values; check `codebook.csv` for
   suppression codes such as 888 in some years), `DEPARTS` departure time.
 
@@ -137,7 +139,7 @@ table (B19013, S1901), multiply by `ADJUST` as Census does with ADJINC.
 fiber, DSL; 2024 has only codes 10 yes and 20 no, though the codebook lists 11-17), `CISAT` satellite,
 `CIDATAPLN` cellular data plan, `CIDIAL` dial-up, `CIOTHSVC` other. Census's "broadband of any type" (S2801,
 B28002) is any subscription except dial-up alone. 2023-2024 files carry suppression codes 8/88
-("Suppressed", a few hundred Pennsylvania households): `clean_missing` drops them; say so. Household
+("Suppressed", a few hundred Pennsylvania households): treat them as missing; say so. Household
 estimates: request `"data_structure": {"householdOnly": {}}` (one row per household, HHWT, REPWT), but it
 drops person variables: for estimates by the householder's age, sex or race keep the rectangular extract,
 case-select `RELATE` 1 (householder) and weight by HHWT with REPWT1-80.
@@ -172,9 +174,9 @@ case-select `RELATE` 1 (householder) and weight by HHWT with REPWT1-80.
 - To match BLS's usual weekly earnings: full time = usual hours 35 or more, plus workers whose hours vary
   (`UHRSWORK1` 997) who usually work full time (`WKSTAT` 10-13 or 21; usually part time: 14, 15, 20, 22, 40-42;
   BLS classes people absent from work by their usual status, and the 2014/2024 shares for women 25-54 match
-  BLS's LNU02600062 / LNU02000062); `clean_missing` blanks 997, so take
+  BLS's LNU02600062 / LNU02000062); blanking 997 as a missing code loses them, so take
   the full-time flag from the raw column (or from `WKSTAT` alone) first. Medians interpolated in $50 intervals centred on
-  multiples of $50 (`wmedian_binned(x, w, width=50, offset=25)`); 2025 averages 11 months (no October).
+  multiples of $50 (edges at $25, $75, ...); 2025 averages 11 months (no October).
 - Use the `EARNWT` weight.
 - Use these for minimum-wage and hourly-wage distributions.
 
@@ -184,7 +186,7 @@ case-select `RELATE` 1 (householder) and weight by HHWT with REPWT1-80.
 - `CLASSWLY`: class of worker on the longest job last year. 0 NIU, 13/14 self-employed, 22 private (for-profit and nonprofit; there is no separate code 23 in ASEC 2024), **25 federal government**, 27 state, 28 local, 29 unpaid family.
   - ⚠ Code 25 **includes active-duty armed forces** (about 300 records in ASEC 2024). Remove them with the occupation or industry last year: request `OCCLY` / `INDLY` and drop the military codes (OCCLY 9840, INDLY 9890 in ASEC 2016-2025). The extract's codebook carries no labels for these two variables: check the IPUMS variable pages, and check that both codes flag the same federal records.
   - Postal Service workers (INDLY 6370) are about 14% of the federal records. Run a sensitivity test with and without them.
-- `INCWAGE` in recent ASECs is the sum of two separately top-coded (or swapped) components, `INCLONGJ` (longest job) and `OINCWAGE` (other jobs), each capped at about **1,099,999**, so INCWAGE reaches **2,199,998** ✔ (ASEC 2026: 220 records at $1M or more). INCBUS and INCFARM are capped near 1,100,000. Screen the components to find top-coded records. A few such records in a small cell (for example federal workers with a high school diploma) can move that group's mean by 10 or more percent. Run `screen_outliers`, and show the results with and without them.
+- `INCWAGE` in recent ASECs is the sum of two separately top-coded (or swapped) components, `INCLONGJ` (longest job) and `OINCWAGE` (other jobs), each capped at about **1,099,999**, so INCWAGE reaches **2,199,998** ✔ (ASEC 2026: 220 records at $1M or more). INCBUS and INCFARM are capped near 1,100,000. Screen the components to find top-coded records. A few such records in a small cell (for example federal workers with a high school diploma) can move that group's mean by 10 or more percent. Screen for outliers, and show the results with and without them.
 - `WKSWORK1`: weeks worked last year.
 - `UHRSWORKLY`: usual hours per week last year (999 NIU).
 - `FULLPART`: 1 full-time, 2 part-time last year.
@@ -205,7 +207,7 @@ counts (2026: 7.0 against 7.9 million) while total employment matches. Benchmark
 release and say so; a share computed with `WTFINL` is low by about that much.
 
 ## 6. Missing and top codes
-`stats.clean_missing(df, collection, codebook=...)` blanks codes whose `codebook.csv` label says N/A, NIU, missing or unknown, plus the hard-coded income and hours codes in `stats.MISSING`. Categorical status variables (EMPSTAT, SEX, ...) are kept as they are and handled by the recode helpers. Always look at the min and max of every dollar or hours variable before taking a mean. An unremoved 9999999 code is the classic IPUMS mistake.
+Treat as missing every code whose `codebook.csv` label says N/A, NIU, missing or unknown, plus the income and hours codes listed in sections 4-5 and 8-9 (`compute` `filter` or `derive`). Keep categorical status variables (EMPSTAT, SEX, ...) as they are and recode them to groups explicitly. Always look at the min and max of every dollar or hours variable before taking a mean. An unremoved 9999999 code is the classic IPUMS mistake.
 
 ## 7. Ready-made variable sets by topic
 - **Employment by nativity (ACS):** AGE SEX CITIZEN BPL YRSUSA1 EDUCD EMPSTAT LABFORCE INCWAGE UHRSWORK WKSWORK1 (+ PERWT auto). Case selection AGE 25–54.
@@ -227,18 +229,18 @@ CSTATFLG. From 2019 the extract holds only sample adults (`ASTATFLG` 1) and samp
 - **Design break:** the 2019 questionnaire and weighting redesign: don't compare trends across it. 2020 was
   collected partly by telephone during the pandemic, with a partial panel (`PARTWEIGHT`, see section 3); some
   2020-2021 items cover only some quarters (IPUMS: zero the missing quarters' weights and scale by 4 ÷ quarters).
-- **Demographics ✔:** AGE (85 = 85+; 997-999 unknown, blanked by `clean_missing`), SEX (1 male, 2 female, 7-9
+- **Demographics ✔:** AGE (85 = 85+; 997-999 unknown: treat as missing), SEX (1 male, 2 female, 7-9
   unknown), RACENEW (100 White only, 200 Black only, 300 AIAN only, 400 Asian only, 510/520/540 other or
   multiple, 997-999 unknown), HISPYN (1 no, 2 yes), REGION (1 Northeast, 2 Midwest, 3 South, 4 West).
 - **Nativity ✔:** `USBORN` 20 born in the U.S., 10 no (2024 has only 10 and 20; 11 territory and 12 abroad in
   other years), 96-99 NIU/unknown; `CITIZEN` 1 not a citizen, 2 citizen, 7-9 unknown.
-  `stats.foreign_born(df, "nhis")` uses USBORN.
+  Define foreign born with USBORN.
 - **Education ✔ (sample adults):** `EDUC` 100-116 less than high school, 200-202 diploma or GED, 300-303 some
   college or associate, 400 bachelor's, 500 graduate (no detail), 510 master's, 520-522 professional or
-  doctorate, 530 other, 996-999 unknown. `stats.educ_group(df, "nhis")`.
+  doctorate, 530 other, 996-999 unknown.
 - **Employment ✔ (sample adults):** `EMPSTAT` from 2019 only 100 employed, 200 not employed, 999 unknown (no
   unemployed vs. out of the labor force split); earlier years 110-122 employed, 210-217 unemployed, 220 not in
-  labor force. `stats.emp_status(df, "nhis")` returns "not employed" for 200.
+  labor force. From 2019, 200 can only be "not employed".
 - **Income ✔:** `POVERTY` family income to poverty ratio in categories (11-14 below 1.00, 21-25 1.00-1.99,
   31-38 2.00 and over, 98 undefinable, 99 unknown).
 - **Insurance ✔ (at the interview, all persons):** `HINOTCOVE` 1 covered, **2 uninsured**, 7-9 unknown (NCHS's
@@ -247,8 +249,8 @@ CSTATFLG. From 2019 the extract holds only sample adults (`ASTATFLG` 1) and samp
 - **Access ✔:** `USUALPL` usual place of care (1 none, 2 yes, 3 more than one place: count 2 and 3), `DELAYCOST`
   delayed care because of cost and `YBARCARE` needed care but couldn't afford it (1 no, 2 yes).
 - **Conditions and risk ✔ (sample adults):** `HYPERTENEV`, `ASTHMAEV` (1 no, 2 yes), `DIABETICEV` (2 yes, 3
-  borderline), `SMOKESTATUS2` (10-13 current, 20 former, 30 never), `BMICALC` (0 NIU, 996 not calculable: both
-  blanked by `clean_missing`; 2020/2022/2024 include sample children ages 10-17), `HEALTH` (1 excellent ... 5 poor).
+  borderline), `SMOKESTATUS2` (10-13 current, 20 former, 30 never), `BMICALC` (0 NIU, 996 not calculable: treat
+  both as missing; 2020/2022/2024 include sample children ages 10-17), `HEALTH` (1 excellent ... 5 poor).
 - Benchmarks: NCHS Health Insurance Coverage (annual and early release) and the NHIS Interactive Summary
   Health Statistics for Adults/Children.
 
@@ -259,7 +261,7 @@ panels 24, 26 and 27). Spending, use and coverage are for the **whole calendar y
 that year (convert with a named price index; health spending usually with the PCE health index or CPI medical care).
 - **Not in IPUMS MEPS:** `EMPSTAT` and `CITIZEN` (the API rejects them); `INSCOV` and the NHIS `...E` insurance
   names do not exist either: use the names below.
-- **Demographics ✔:** AGE (age on 31 December; 85 = 85+; 996 missing, blanked by `clean_missing`), SEX,
+- **Demographics ✔:** AGE (age on 31 December; 85 = 85+; 996 missing: treat as missing), SEX,
   RACEA (100 White, 200 Black, 3xx AIAN, 4xx Asian/Pacific Islander), HISPYN (1 no, 2 yes), REGIONMEPS
   (1 Northeast, 2 Midwest, 3 South, 4 West), USBORN (as NHIS).
 - **Education ✔:** `EDUC` uses the NHIS coding (section 8), but children carry their grade in school (101-116),
@@ -273,9 +275,10 @@ that year (convert with a named price index; health spending usually with the PC
   (out-of-pocket), `EXPMCPAY` Medicare, `EXPMAPAY` Medicaid, `EXPPRPAY` private insurance (2022 shares of the
   total: 13.6, 26.3, 12.4, 41.9 percent) and others (`EXPVAPAY`, `EXPTRIPAY`, `EXPOFPAY`, `EXPOLPAY`, `EXPWCPAY`,
   `EXPOTHPAY`); prescription drugs `RXEXPTOT`. Other service groups (office-based, hospital, emergency room)
-  have their own variables: look them up on meps.ipums.org and test the names with `--dry-run` plus a submit.
+  have their own variables: look them up on meps.ipums.org and test the names with a `fetch` (an unknown name returns HTTP 400).
   `CHGTOT` is charges, not payments: never mix them.
 - **Skew:** spending is extremely concentrated (the top 1 percent hold about a fifth of the total; 2022 maximum
-  $1.3M). Report means with SEs, add medians or the share with any spending, and run `screen_outliers`.
+  $1.3M). Report means (with SEs when they can be computed), add medians or the share with any spending, and screen
+  for outliers.
 - **Access ✔:** `USUALPL` as in NHIS.
 - Benchmarks: AHRQ MEPS-HC summary tables and Statistical Briefs (for example #560: 2022 mean $6,765 per person).

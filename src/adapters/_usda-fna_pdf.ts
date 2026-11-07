@@ -1,7 +1,7 @@
 /**
  * usda-fna: the SNAP State Options Report and State Activity Report PDFs (the Python adapter's PDF section).
  *
- * The Python skill reads the PDFs' text with pypdf (an optional package). This server has no PDF text reader
+ * The Python version reads the PDFs' text with pypdf (an optional package). This server has no PDF text reader
  * (core has none, and no package may be added here), so pdfPages() refuses with install_deps (not_supported),
  * as Python does without pypdf. Everything after the text is ported unchanged, so a reader that gives pypdf's
  * page text plugs in at pdfPages: pages come back as text (Unicode NFKC); the State Activity Report state tables

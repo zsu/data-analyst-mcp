@@ -46,7 +46,7 @@ state budget offices, research institutes), so there is usually a precedent to f
 
 **Accuracy**
 - Every computed growth rate or share that BEA also publishes is checked against BEA's number
-  (`check_against_published`), and the check is reported in Data and Methods.
+  (fetched alongside), and the check is reported in Data and Methods.
 - The vintage: the release date and estimate (for example "the third estimate for the second quarter of 2026,
   released September 25, 2026", or "state GDP as released on September 30, 2026") is in the notes page and
   in Data and Methods; the products say estimates are subject to revision.
@@ -57,7 +57,7 @@ state budget offices, research institutes), so there is usually a precedent to f
 - Do not attribute causes beyond what the accounts show. "Growth was led by consumer spending" is a
   contribution fact; "because of tariffs" is not something BEA data establish.
 
-**Publication structure (mirrored in `build_report.py`, `"mode": "report"`)**
+**Publication structure (mirrored in `build_report`, `"mode": "report"`)**
 
 The default layout, the **exhibit chartbook**, runs in this order:
 1. **Cover:** "Month Year", the title (with the period for trend reports), and a hero chart that has its own title and unit label.
@@ -90,7 +90,7 @@ The default layout, the **exhibit chartbook**, runs in this order:
    - the date.
 10. **Footnotes** are numbered in each part (restarting in each section), and cite publications as: Organization, *Title* (Month Year), URL.
 
-Other variants, not built by `build_report.py`:
+Other variants, not built by `build_report`:
 - **Long-form**:
   - a Summary with Figure S-1 / Table S-1;
   - "Chapter N:" sections in two-column prose with embedded "Figure 1-1." / "Table 2-3.";

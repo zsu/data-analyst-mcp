@@ -154,13 +154,13 @@
       ]
     },
     "manual": {
-      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser after replacing {API_KEY} with your own free Census key (https://api.census.gov/data/key_signup.html), or run download_data.sh / download_data.ps1 (one command; asks for the key with hidden input); save each JSON file under the name shown and upload it, then --ingest. Without the bundle: on https://data.census.gov search the table (e.g. B19013), choose the geography and year, and use Download Table (CSV); upload it and say it is a data.census.gov export (its layout differs: one estimate and one margin-of-error column per geography)."
+      "how": "Open each link in manual_download/INSTRUCTIONS.md in a browser after replacing {API_KEY} with your own free Census key (https://api.census.gov/data/key_signup.html), or run download_data.sh / download_data.ps1 (one command; asks for the key with hidden input); save each JSON file under the name shown and upload it, then call ingest. Without the bundle: on https://data.census.gov search the table (e.g. B19013), choose the geography and year, and use Download Table (CSV); upload it and say it is a data.census.gov export (its layout differs: one estimate and one margin-of-error column per geography)."
     }
   },
   "cache": {
     "mode": "persistent",
     "ttl_hours": 720,
-    "why": "Only API metadata is cached on disk (variables.json lists for --search and the dataset discovery checks behind 'latest'); it changes once a release. Data queries are never cached: data/ is reused within a run."
+    "why": "Only API metadata is cached on disk (variables.json lists for request_schema searches and the dataset discovery checks behind 'latest'); it changes once a release. Data queries are never cached: data/ is reused within a run."
   },
   "redistribution": {
     "mode": "allowed",

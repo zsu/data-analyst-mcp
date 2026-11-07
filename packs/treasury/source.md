@@ -10,18 +10,18 @@ interest expense and average rates on the debt, the debt limit, auctions, exchan
   on outstanding debt; the TGA cash balance and daily deposits and withdrawals; auction results; exchange
   rates for federal reporting; gifts to reduce the debt; savings bonds; buybacks.
 - Not here: market yields and the daily par yield curve (treasury-yields); GDP and CPI (bea, bls, fred; or
-  `--context gdp|cpi` here, for real dollars and "% of GDP"); budget projections (CBO); historical tables in
+  the spec's `context` field here, for real dollars and "% of GDP"); budget projections (CBO); historical tables in
   % of GDP and the President's budget (OMB); who holds the debt by country (Treasury TIC, not Fiscal Data);
   state and local finances (Census).
-- Deliver data plus a short answer by default; a report only when asked (SKILL.md).
+- Deliver data plus a short answer by default; a report only when asked (see `guide`).
 
 ## Endpoints and datasets
 Base `https://api.fiscaldata.treasury.gov/services/api/fiscal_service/` + a path with a fixed version (v1 or
-v2: the other returns 404). `--search "interest expense"` searches the live catalog (falls back to the
-bundled `catalog.json`: a snapshot of the live catalog plus this
-guidance); `--fields <endpoint>` gives fields, types, units, row count, first and last row; add `--filter
-'{"record_date": "2026-09-30"}' --values` to see which values each code and description column holds;
-`--endpoints` lists the curated rows below. Full question-to-endpoint table: `docs/datasets.md`; API rules,
+v2: the other returns 404). `request_schema` with `search: "interest expense"` searches the live catalog
+(falls back to the bundled `catalog.json`: a snapshot of the live catalog plus this guidance); `search:
+"<endpoint>"` gives fields, types, units, row count, first and last row; `search: "<endpoint> {"record_date":
+"2026-09-30"} values"` shows which values each code and description column holds; `request_schema` with
+`names: ["dataset"]` lists the curated rows below. Full question-to-endpoint table: `docs/datasets.md`; API rules,
 field meanings and the numbered gotchas: `docs/api_guide.md`; framing and conventions: `docs/report_patterns.md`.
 
 | Question | Endpoint | Rows to use | Stock/flow | Units |
@@ -65,19 +65,21 @@ Per dataset: `name` (file `<name>.csv`), `endpoint`, `filter` (bare value = eq, 
 every dataset so reruns are reproducible; leave it out only for "latest" lookups.
 
 ## Data format and traps
-Output in `<out>/data/treasury/`: `<name>.csv` (API field names, values exactly as published, "null" ->
+`fetch` writes `data/treasury/`: `<name>.csv` (API field names, values exactly as published, "null" ->
 empty), `fetch_spec.json` (query URLs, row counts, first and last date, labels, types, unit hints, SHA-256,
-route) and `README.md` (data dictionary with every code column's values). Read data with `lib/tstats.load()`:
-plain `pd.read_csv` turns codes into numbers ("1.10" -> 1.1, "09" -> 9) and keeps the CSV apostrophe on
-negative amounts.
+route) and `README.md` (data dictionary with every code column's values). Codes stay text in the CSV, but a
+reader may turn them into numbers: `compute` keeps codes with a leading zero ("09") as text, but reads a
+column whose codes all look like numbers ("1.10", "2.13") as numbers (1.1, 2.13): check such a column before
+filtering. The API's own CSV downloads put an apostrophe before negative amounts; `fetch` and `ingest` write
+them without it.
 - **Units differ:** MTS tables 1-9, Debt to the Penny, interest expense are dollars; DTS, MSPD (`*_mil_amt`)
   and the long MTS series (`mts_receipts_outlays_deficit_surplus.mil_amt`) millions: read the field name;
   percentage fields are already percent. **Signs:** MTS Table 1 shows a deficit as positive, Table 5 negative.
-- **Stocks vs flows:** debt, cash, rates take the end-of-period value or the average (`period_end`,
-  `period_mean`); receipts, outlays, deficits, interest sum months (`period_sum`, check `complete`) or read the
-  September fiscal-year-to-date value. Never sum year-to-date values or stock levels.
+- **Stocks vs flows:** debt, cash, rates take the end-of-period value or the average (`compute` `to_fiscal`
+  with `how` "last" or "mean"); receipts, outlays, deficits, interest sum months (`how` "sum", check
+  `complete`) or read the September fiscal-year-to-date value. Never sum year-to-date values or stock levels.
 - **Hierarchies double count:** MTS mixes headers (S), details (D) and totals (T); choose one level and prove
-  it with `check_unique` and `check_total` against the published total. Table 4's D rows do not sum to the
+  it: one row per key, and the rows add to the published total. Table 4's D rows do not sum to the
   total (use Table 9). The same letter can be a value of two code columns: filter on the column it is in.
 - **One release, several periods:** MTS Table 1 holds the prior and current fiscal year blocks
   (`sequence_number_cd` 1.x and 2.x), each with its months and a "Year-to-Date" row; its only amount columns
@@ -93,29 +95,29 @@ negative amounts.
 - **Latest release wins:** MTS releases repeat and revise earlier months: build monthly series from the latest
   `record_date`, full years from September releases; the next September restates the year (FY2024's deficit
   moved by $16 billion).
-- **`fields=` that drops row-identity columns makes the API group and sum rows**; fetch.py compares row
+- **`fields=` that drops row-identity columns makes the API group and sum rows**; `fetch` compares row
   counts with and without it and stops.
 - **Filter values:** exact text, case-sensitive; a malformed date returns no rows, not an error; values with
   `&` or `,` (and parentheses inside an `in` list; `eq` with parentheses works, verified 2026-10) are
-  mishandled by the API, so fetch.py applies those conditions locally (recorded as
-  `local_filter`). A filter matching nothing is `fix_spec` unless `allow_empty`.
+  mishandled by the API, so `fetch` applies those conditions locally (recorded as
+  `local_filter`). A filter matching nothing is an `invalid_request` error unless `allow_empty`.
 - **Format changes:** DTS operating cash changed on 2022-04-18 (before: the TGA/FRA row's `close_today_bal`;
   after: the "Closing Balance" row's `open_today_bal`); DTS categories are renamed over time. Debt to the
   Penny's held-by-public and intragovernmental fields are null before 2005-03-31.
-- **Fiscal years** run October 1 to September 30, named for the year they end (`fiscal_year()`); the September
-  MTS comes out mid-October. Find the latest complete period from the data (`--fields`), not from memory;
+- **Fiscal years** run October 1 to September 30, named for the year they end (`compute` `fiscal_year`); the
+  September MTS comes out mid-October. Find the latest complete period from the data (`request_schema` search
+  on the endpoint gives its last row), not from memory;
   label partial years and compare them with the same months a year earlier.
-- **Real dollars and GDP:** `--context cpi|gdp --start <first FY>` writes `context_cpi.csv` / `context_gdp.csv`
-  (FRED, then BLS or World Bank); `cpi_index(out, "FY")`, `deflate`, `fy_gdp` (average of four quarterly SAARs,
-  Oct-Sep; refuses the calendar-year fallback). Incomplete periods are flagged: say provisional.
-- **Volume vs rate questions** ("more debt or higher rates?"): `decompose()` splits the change exactly.
-- Analysis helpers: `lib/tstats.py` (`load, fiscal_year, add_periods, period_end, period_sum, period_mean,
-  trailing_sum, cagr, decompose, cpi_index, deflate, fy_gdp, cy_gdp, check_unique, check_total, sensitivity,
-  Facts`); the shared `scripts/analysis/factfmt.py` formats (`usd_b:1` from dollars, `usd_b_scaled:1` from billions, `pct100:1` for a field already in percent, `pct:1` for a 0-1 share, `bp:0`).
-  ```python
-  sys.path.insert(0, r"<skill>/sources/treasury/lib"); from tstats import *
-  m9 = load(OUT, "mts9")              # reads OUT/data/treasury/mts9.csv with the API's types
-  ```
+- **Real dollars and GDP:** the spec field `"context": [{"kind": "cpi", "start": 2016}]` (or `"gdp"`; `start`
+  is the first fiscal year) writes `context_cpi.csv` / `context_gdp.csv` and `context_sources.json` (FRED, then
+  BLS or World Bank). Make a fiscal-year CPI with `compute` `to_fiscal` (`how` "mean") and apply it with
+  `deflate`; fiscal-year GDP is the average of four quarterly SAARs, Oct-Sep (`to_fiscal`, `freq` "Q", `how`
+  "mean"); the World Bank fallback is calendar years only and cannot give fiscal-year GDP. Incomplete periods
+  are flagged: say provisional.
+- **Volume vs rate questions** ("more debt or higher rates?"): split the change exactly with the midpoint
+  method: debt effect = (debt1 - debt0) x (rate0 + rate1) / 2, rate effect = (rate1 - rate0) x (debt0 + debt1)
+  / 2; the two add up to the change (`compute` `derive`).
+- Analysis: build fiscal-year sums, growth and decompositions with `compute` on the CSVs in `data/treasury/`.
 - **Benchmark** each headline against the official statement for the same date (MTS, MSPD, DTS, Treasury's
   press release, CBO's Monthly Budget Review; for auctions, TreasuryDirect's results files
   `https://www.treasurydirect.gov/xml/R_YYYYMMDD_n.xml`, keyless, a separate system from Fiscal Data); when the table is the statement itself, check its identities
@@ -142,20 +144,18 @@ negative amounts.
 
 ## Access
 - No key, no registration, GET only, no documented rate limit (the client keeps 4 requests a second and
-  backs off on 429/5xx). Pages of up to 10,000 rows; fetch.py pages and checks the row count against
+  backs off on 429/5xx). Pages of up to 10,000 rows; `fetch` pages and checks the row count against
   `total-count`.
-- Routes (`--check`, shared names): `reuse_existing`; `api` (the API answers; also a row count per dataset);
-  `fix_spec` (a filter matches no rows or names an unknown field: see `dataset_counts`, check values with
-  `--fields ... --values`); `report_error` (the user's own machine cannot reach the API: internet, VPN, proxy
-  `HTTPS_PROXY`; a bundle with curl and PowerShell commands is written as the other option); `cloud_allowlist`
-  (allow `api.fiscaldata.treasury.gov` and restart, or download by hand); `manual_download` (sandbox).
-- Manual download: `<out>/manual_download/treasury/INSTRUCTIONS.md` has one CSV link per dataset (10,000 rows
-  each; more pages with `page%5Bnumber%5D=2` saved as `<name>_2.csv` ...), curl and PowerShell lines, and the
-  dataset page whose Download button gives the whole table. Upload the CSV or ZIP files unchanged (not
-  re-saved in Excel); `--ingest <files>` with the uploaded files or their folder applies the spec's
+- `fetch` reuses `data/treasury/` when it already holds the same spec (`force: true` refetches). A filter that
+  matches no rows or names an unknown field comes back as `invalid_request` (check values with `request_schema`
+  search `"<endpoint> <filter> values"`); a bad endpoint or aggregation the API refuses, as `agency_rejected`.
+  When the API cannot be reached (`agency_unavailable`: internet, VPN, proxy `HTTPS_PROXY`, a host that blocks
+  `api.fiscaldata.treasury.gov`), tell the user, offer `manual_bundle`, and never invent or recall numbers.
+- Manual download: `manual_bundle` writes `manual_download/INSTRUCTIONS.md` with one CSV link per dataset
+  (10,000 rows each; more pages with `page%5Bnumber%5D=2` saved as `<name>_2.csv` ...), curl and PowerShell
+  scripts, and the dataset page whose Download button gives the whole table. Upload the CSV or ZIP files
+  unchanged (not re-saved in Excel); `ingest` with the uploaded files or their folder applies the spec's
   filter locally, strips the apostrophe guard, drops duplicate rows and warns about a missing page.
-- Exit codes: 0 ok; 2 spec or API error (bad field, filter, endpoint, aggregation); 3 unexpected; 4 the API
-  cannot be reached (follow the printed route; never invent or recall numbers).
 
 ## Citation and terms
 "U.S. Department of the Treasury, Bureau of the Fiscal Service, Fiscal Data (https://fiscaldata.treasury.gov),

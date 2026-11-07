@@ -1,4 +1,4 @@
-/** The analysis tools (see docs/porting-report.md). server.ts registers every entry of TOOLS. */
+/** The analysis tools. server.ts registers every entry of TOOLS. */
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -138,7 +138,7 @@ export const TOOLS: ToolDef[] = [
   {
     name: "facts",
     title: "Register facts",
-    description: "Register every number the answer or report cites in facts.json (the Python skill's schema). A table fact " +
+    description: "Register every number the answer or report cites in facts.json. A table fact " +
       "(add) is one cell of a saved CSV: table (exhibits/<x>.csv, data/<id>/<t>.csv or published/<x>.csv), where (the row's " +
       "key values, matched to the CSV's own text) and column; its value is read from the cell. A derived fact (derived) has " +
       "a derivation: written as an expression over fact names (\"deaths_2024 / deaths_2020 - 1\") it is computed here, so " +

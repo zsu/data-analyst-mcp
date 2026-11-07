@@ -72,15 +72,15 @@ MLY-PRCP-NORMAL, DLY-TMAX-NORMAL, ANN-TAVG-NORMAL.
   a date range of at most 1 year (10 years for GSOM/GSOY) per request; the pack refuses longer ranges.
 
 ## Access
-`data` and `station_search` need no key (route `api`). The `cdo_*` endpoints need a free token
+`data` and `station_search` need no key. The `cdo_*` endpoints need a free token
 (`NOAA_API_KEY`, sent as the `token` header; request it at https://www.ncei.noaa.gov/cdo-web/token);
-without it `--check` returns the setup route for those requests only, and a fetch stops with
-`key_missing` before calling CDO (which answers a bare HTTP 400 "Token parameter is required"). Manual route: the links in
+without it only a spec with those requests stops, with `key_missing`, before calling CDO (which answers a
+bare HTTP 400 "Token parameter is required"). Manual: the links `manual_bundle` writes to
 `manual_download/INSTRUCTIONS.md` are keyless ADS URLs (change `format=json` to `format=csv` for a
 spreadsheet); a station's whole daily record is one CSV at
 https://www.ncei.noaa.gov/data/daily-summaries/access/<STATION>.csv (also
 `global-summary-of-the-month/access/` and `global-summary-of-the-year/access/`); the CDO web search at
-https://www.ncei.noaa.gov/cdo-web/ finds stations. Upload the files, then `--ingest`.
+https://www.ncei.noaa.gov/cdo-web/ finds stations. Upload the files, then `ingest`.
 
 ## Citation and terms
 "NOAA National Centers for Environmental Information, <dataset> (e.g. Global Historical Climatology

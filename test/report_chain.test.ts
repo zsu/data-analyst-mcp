@@ -103,7 +103,7 @@ const REPORT: any = {
     evidence: "The test documentation reports calendar years [@alpha_doc]." }],
   references: [{ id: "alpha_doc", label: "Alpha 2026", citation: "Alpha Test Agency, *Test Documentation* (2026)",
     url: "https://example.org/alpha/doc", accessed: "2026-10-20", opened: true, quote: "The alpha rate is reported for calendar years." }],
-  about: "This document was prepared to test the report chain of the data-analyst skill.",
+  about: "This document was prepared to test the report chain of data-analyst-mcp.",
   data_files: [{ label: "Alpha observations (CSV)", path: "data/alpha/obs.csv" }, { label: "Beta codebook (CSV)", path: "data/beta/codebook.csv" }],
   clearance: [{ source: "alpha", key: "C9", basis: "synthetic test series, not cleared", redistribute: false }],
 };

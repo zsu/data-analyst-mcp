@@ -2,17 +2,14 @@
 
 An MCP server for official U.S. government data. It asks the user the questions that change a headline
 number before fetching anything, gets the data from the agency at call time, packages it (CSV, data
-dictionary, provenance) and cites every result. It is a TypeScript port of the data-analyst skill, with the
-same 62 source packs.
+dictionary, provenance) and cites every result. It covers 63 sources.
 
-> **Status: 0.3.** Every one of the 62 source packs is ported, plus a Census Geocoder pack (63 sources). The test suite runs offline on recorded
-> fixtures. 145 parity cases compare the output CSVs, byte for byte, with the Python skill's on the same
-> fixtures. The analysis and audit tools are ported too, and so are hosted mode (streamable HTTP, a claude.ai
-> connector) and per-user keys.
+> **Status: 0.3.** All 63 sources work, along with the analysis and audit tools, hosted mode (streamable HTTP, a
+> claude.ai connector) and per-user keys. The test suite runs offline on recorded fixtures.
 > One gap remains: usda-fna's three PDF endpoints need a PDF text reader, and return `not_supported`.
 > The package is not published to npm yet.
 
-## Quick start
+## Install
 
 Requires Node.js 22 or later. Most sources need no key, so steps 2 and 3 are optional.
 
@@ -221,9 +218,9 @@ console.log(r.summary.tables[0].rows, r.citation.text);
 
 ## API keys
 
-[Quick start](#2-add-keys-optional) lists the keys and how to get them. When a fetch needs a key that is not set up,
+[Install, step 2](#2-add-keys-optional) lists the keys and how to get them. When a fetch needs a key that is not set up,
 `fetch` returns `key_missing` with a `setup` command for **you** to run in your own terminal. The model never asks
-for a key in chat. `setup` writes `~/.config/data-analyst/keys.json`, the same file the Python skill uses.
+for a key in chat. `setup` writes `~/.config/data-analyst/keys.json`.
 
 The local (stdio) server looks for a key in this order. `DATA_GOV_API_KEY` is the example; each source's variable is named in
 its `source_brief`.
@@ -259,9 +256,7 @@ npm install
 npm test
 npm run build
 npm run smoke
-npm run parity
 ```
 
 - `npm test` runs offline, on recorded fixtures.
 - `npm run smoke` drives the built server over stdio and makes one live fetch.
-- `npm run parity` compares the output with the Python skill's, byte for byte. It needs `../data-analyst` and Python.

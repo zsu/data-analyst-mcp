@@ -1,5 +1,5 @@
 /**
- * The bea deep pack's fetch (port of the Python skill's sources/bea/fetch.py): spec -> requests, the API route,
+ * The bea deep pack's fetch (port of sources/bea/fetch.py): spec -> requests, the API route,
  * BEA's public bulk files (NIPA flat files, Regional zips, GDP-by-industry workbooks), and one tidy CSV.
  *
  * Output (<workspace>/data/bea/):

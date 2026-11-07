@@ -1,7 +1,7 @@
 # FRED series for budget and economic analysis
 
 Every ID below was checked to exist on 2026-10-20 (titles, units, frequency and adjustment as FRED shows
-them). FRED edits titles and adds series; confirm with `fetch.py --source fred --describe <IDs>` before downloading, and
+them). FRED edits titles and adds series; confirm with the `request_schema` search `describe <IDs>` before downloading, and
 read the title back against the concept. Copyright tags were read on the series page only where marked ✔;
 read the page for the others before sharing data.
 
@@ -15,14 +15,14 @@ Contents: 1. Output and potential · 2. Prices · 3. Labor · 4. Interest rates 
 | `GDPA` | GDP, annual | Billions of dollars, annual | Calendar year; the denominator of FRED's FY*GDA188S ratios |
 | `FYGDP` | GDP, fiscal year (OMB) | Billions of dollars, annual, fiscal year (dated Sep 30) | OMB's figure from its latest budget; lags BEA revisions. The mean of the four quarters of `GDP` is the current-vintage alternative |
 | `GDPC1` | Real GDP | Billions of chained 2017 dollars, quarterly, SAAR | BEA; Public Domain ✔ |
-| `A191RL1Q225SBEA` | Real GDP, percent change from preceding period | Percent, quarterly, SAAR | BEA's published growth rate: the benchmark for `annualized(GDPC1)` |
+| `A191RL1Q225SBEA` | Real GDP, percent change from preceding period | Percent, quarterly, SAAR | BEA's published growth rate: the benchmark for an annualized growth rate computed from `GDPC1` |
 | `A939RX0Q048SBEA` | Real GDP per capita | Chained 2017 dollars, quarterly, SAAR | |
 | `GDPPOT` | Real potential GDP (CBO) | Billions of chained 2017 dollars, quarterly, NSA | CBO; Public Domain ✔; **projected ~10 years ahead**; last updated with CBO's latest outlook, so it may rest on an older GDP vintage than GDPC1 |
 | `NGDPPOT` | Nominal potential GDP (CBO) | Billions of dollars, quarterly | Projections as above |
 | `NROU` | Noncyclical rate of unemployment (CBO) | Percent, quarterly | Projections as above |
 | `GDPDEF` | GDP implicit price deflator | Index 2017=100, quarterly, SA | |
 
-Output gap = `GDPC1 / GDPPOT - 1` (both chained 2017 dollars), on dates both have (`tsstats.common_end`).
+Output gap = `GDPC1 / GDPPOT - 1` (both chained 2017 dollars), on dates both have (join on date; stop at the last date both series hold).
 
 ## 2. Prices
 | ID | What | Units, frequency | Notes |
@@ -116,21 +116,21 @@ data file is the level benchmark.
 
 ## 5a. Industrial production and capacity utilization (Federal Reserve G.17, monthly)
 `INDPRO` industrial production, total (index 2017=100), `IPMAN` manufacturing; `TCU` capacity
-utilization, total (percent), `MCUMFN` manufacturing (checked with `--describe` on 2026-10-21). The
+utilization, total (percent), `MCUMFN` manufacturing (metadata checked on 2026-10-21). The
 latest months are preliminary and revised for several months. G.17 states the gap to the long-run
 average as the difference of its one-decimal rates (76.9 - 79.4 = 2.5 points below): compute it the
 same way to match, and show the unrounded gap as a sensitivity.
 
 ## 5c. Housing starts and permits (Census New Residential Construction, monthly)
-`HOUST` total starts, `HOUST1F` single-family, `PERMIT` permits (thousands of units, SAAR; checked with
-`--describe` on 2026-10-21); `HOUSTNSA` not adjusted. The latest month is preliminary and revised twice.
+`HOUST` total starts, `HOUST1F` single-family, `PERMIT` permits (thousands of units, SAAR; metadata checked
+on 2026-10-21); `HOUSTNSA` not adjusted. The latest month is preliminary and revised twice.
 An annual total from FRED sums rounded months: Census's annual sheet sums unrounded estimates (0.1 apart).
 
 ## 5b. Unemployment insurance claims (DOL, weekly)
 `ICSA` initial claims (SA), `IC4WSA` 4-week moving average (SA), `ICNSA` (NSA), `CCSA` continued claims.
 Weeks end on Saturday; the latest week is an advance figure (preliminary). The keyless route when the dol
-pack has no key. A calendar-year average needs all the weeks of the year (`to_frequency` refuses a partial
-year).
+pack has no key. A calendar-year average needs all the weeks of the year (count them; never average a
+partial year).
 
 ## 6a. Household debt service (Federal Reserve DSR release)
 Quarterly, percent of disposable personal income: `TDSP` total, `MDSP` mortgage, `CDSP` consumer debt
@@ -139,7 +139,7 @@ archived lender-based series (2007 Q4 15.8 against 13.3), so never mix the two; 
 preliminary. Benchmark: federalreserve.gov/releases/dsr.
 
 ## 6b. Federal Reserve balance sheet (H.4.1)
-Weekly, millions of dollars (checked with `--describe` on 2026-10-21). Wednesday levels: `WALCL` total
+Weekly, millions of dollars (metadata checked on 2026-10-21). Wednesday levels: `WALCL` total
 assets, `TREAST` Treasury securities held outright, `WSHOMCB` mortgage-backed securities, `WSHOSHO` all
 securities held outright, `WLRRAL` reverse repurchase agreements (liability). Week averages (not Wednesday
 levels; do not mix with the above): `WRESBAL` reserve balances, `WTREGEN` Treasury General Account.
@@ -165,7 +165,7 @@ rest) are total minus the securities.
 ## 7. Recessions
 `USREC` (monthly; FRBSL from NBER dates; **Copyrighted: Citation Required** ✔), `USRECQ` (quarterly), `USRECD`
 (daily). 1 from the month after the NBER peak through the trough. `"recessions": true` in the spec adds USREC;
-`tsstats.recession_periods` turns it into spans for chart shading.
+for chart shading, turn its runs of 1 into start and end dates.
 Sahm rule: `SAHMREALTIME` (real-time, as first published; empty where a month's unemployment rate was not
 collected, Oct 2025) and `SAHMCURRENT` (from current UNRATE vintages): the 3-month average of the unemployment
 rate minus its low of the prior 12 months; 0.50 or more signals a recession start.
@@ -175,13 +175,14 @@ rate minus its low of the prior 12 months; 0.50 or more signals a recession star
 - Per capita personal income: `<ST>PCPI` (CAPCPI ...), annual (BEA).
 - A full cross-section in one call needs a key: spec `"regional": [{"series_id": "CAUR", "region_type": "state",
   "date": "2026-08-01"}]` (GeoFRED finds the group from any member series). Without a key, list the 50 state IDs
-  plus DC explicitly; check each with `--describe` (a 404 means the pattern does not hold for that series).
+  plus DC explicitly; check each with the `request_schema` search `describe <IDs>` (a 404 means the pattern does
+  not hold for that series).
 
 ## 9. Finding a series you do not know
-1. With a key: `python <skill>/scripts/fetch.py --source fred --search "federal outlays interest" --limit 15` (sorted by
+1. With a key: `request_schema` for fred with the search "federal outlays interest" (sorted by
    popularity; prefer the most popular series from the official source).
 2. Without a key: search https://fred.stlouisfed.org/searchresults/?st=<words> in the browser (or WebSearch
    "site:fred.stlouisfed.org <words>").
-3. Confirm with `--describe`: title, units, frequency, seasonal adjustment, last updated. Prefer the series
+3. Confirm with the `request_schema` search `describe <IDs>`: title, units, frequency, seasonal adjustment, last updated. Prefer the series
    published by the original agency (BEA, BLS, OMB, Treasury, CBO, the Board of Governors) over derived copies,
    and an SA series for short-run changes, NSA for 12-month changes and annual averages.

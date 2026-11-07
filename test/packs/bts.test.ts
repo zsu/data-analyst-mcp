@@ -1,4 +1,4 @@
-/** bts: ported from the Python skill's tests/sources/bts/test_bts.py. Fixtures r001/r002 were recorded from
+/** bts: ported from tests/sources/bts/test_bts.py. Fixtures r001/r002 were recorded from
  * data.bts.gov on 2026-10-20. */
 import { beforeAll, describe, expect, it } from "vitest";
 import * as T from "../../src/tools.js";

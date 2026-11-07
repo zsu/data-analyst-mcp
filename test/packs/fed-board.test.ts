@@ -1,4 +1,4 @@
-/** fed-board: ported from the Python skill's tests/sources/fed-board/test_fed_board.py (same fixtures, specs and values). */
+/** fed-board: ported from tests/sources/fed-board/test_fed_board.py (same fixtures, specs and values). */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";

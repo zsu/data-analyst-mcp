@@ -95,10 +95,10 @@ Columns (rates, rates_export): `labor_category`, `vendor_name`, `idv_piid` (cont
 - The API documentation marks the service as beta; the legacy CALC API was retired in February 2025.
 
 ## Access
-No key (no api.data.gov key needed; verified without one). Route `api` when api.gsa.gov answers; the
-pack keeps to 2 requests a second. Manual route: `manual_download/INSTRUCTIONS.md` gives one CSV export
+No key (no api.data.gov key needed; verified without one). `fetch` downloads when api.gsa.gov answers; the
+pack keeps to 2 requests a second. Manual route (`manual_bundle`): `manual_download/INSTRUCTIONS.md` gives one CSV export
 link per request (`export=y`, every matching row, identical rows once); the browser saves `ceilingrates_results.csv`: rename
-it to the name shown, upload, then `--ingest` (the export layout is parsed and renamed as above).
+it to the name shown, upload, then `ingest` (the export layout is parsed and renamed as above).
 Aggregation and suggestion requests get JSON links instead. Without the links: https://buy.gsa.gov/pricing/
 (CALC+ Labor Ceiling Rates), search, set filters, Export, upload.
 

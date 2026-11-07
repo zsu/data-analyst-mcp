@@ -69,7 +69,7 @@
       "ITA, IIP, MNE, IntlServTrade, IntlServSTA, InputOutput, FixedAssets and UnderlyingGDPbyIndustry datasets",
       "GDPbyIndustry API TableIDs and Industry filters (the TVA/TGO/TII workbook tables need no key)",
       "Regional metro, micropolitan, port and division areas (MSA, MIC, PORT, DIV, CSA)",
-      "live metadata lookups (--values, --params, --datasets)"
+      "live metadata lookups (request_schema searches for parameter values, parameters and datasets)"
     ],
     "extra": {},
     "demo_key": null
@@ -99,7 +99,7 @@
       ]
     },
     "manual": {
-      "how": "Run --manual-bundle (or follow --check): OUT/manual_download/bea/ holds download_bea.sh and download_bea.ps1 (one script each: public bulk files without a key, API replies with the key asked for on the user's own computer and removed from every reply) and INSTRUCTIONS.md with the same links and curl steps. Upload the files unchanged, then run --ingest."
+      "how": "Call manual_bundle: manual_download/ holds download_data.sh and download_data.ps1 (one script each: public bulk files without a key, API replies with the key asked for on the user's own computer and removed from every reply) and INSTRUCTIONS.md with the same links and curl steps. Upload the files unchanged, then call ingest."
     }
   },
   "cache": {
