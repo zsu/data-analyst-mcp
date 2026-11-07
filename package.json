@@ -21,7 +21,8 @@
     "test": "vitest run",
     "start": "node dist/bin/cli.js",
     "smoke": "tsx scripts/smoke.ts",
-    "smoke:http": "tsx scripts/smoke-http.ts"
+    "smoke:http": "tsx scripts/smoke-http.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
@@ -48,5 +49,8 @@
       "import": "./dist/index.js"
     },
     "./package.json": "./package.json"
-  }
+  },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/zsu/data-analyst-mcp.git" },
+  "keywords": ["mcp", "model-context-protocol", "government-data", "data.gov","census", "bea"]
 }

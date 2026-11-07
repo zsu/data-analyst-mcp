@@ -1,0 +1,26 @@
+name: publish
+
+# Publishes to npm when a version tag is pushed, for example: npm version patch && git push --follow-tags
+# Uses npm trusted publishing (OIDC), so no npm token is stored in the repository.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write # lets npm verify this workflow as the trusted publisher and attach provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # ships npm 11, which trusted publishing needs (11.5.1 or later)
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm publish --access public
