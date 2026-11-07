@@ -221,6 +221,11 @@ describe("method rules", () => {
     D = copy(GOOD);
     D.assumptions[3].sensitivity = "other";
     expect(fails(check(D), "assumptions").length).toBeGreaterThan(0);
+    // a description in "sensitivity" is not a row key: the message says what the field is and lists the rows
+    D.assumptions[3].sensitivity = "Including top-coded rows lowers the slope to 0.42";
+    expect(msgs(check(D), "assumptions").some((m) => m.includes("names no row") && m.includes("top_code"))).toBe(true);
+    delete D.assumptions[3].sensitivity;
+    expect(fails(check(D), "assumptions")).toEqual([]);
     fs.rmSync(P("exhibits", "sensitivity.csv"));
     expect(fails(check(GOOD), "assumptions").length).toBeGreaterThan(0);
   });

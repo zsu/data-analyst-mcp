@@ -430,10 +430,16 @@ export function checkMethod(R: any, base: string, facts: any): Result[] {
       why = 'point to the question the user answered ("question": id), or quote the user\'s own words ("request") when ' +
         "the request settles it";
     } else {
-      const row = (sensRows || new Map()).get(a?.sensitivity || p);
+      const key = a?.sensitivity || p;
+      const row = (sensRows || new Map()).get(key);
       ok = !!strip(String(a?.why_not_empirical ?? "")) && row !== undefined && !!strip(String(row?.conclusion_changes ?? ""));
       why = "judgment is the last resort: estimate it from the data or adopt a published estimate; otherwise state " +
         "why_not_empirical and add its row to exhibits/sensitivity.csv (" + SENS_COLS.join(", ") + ")";
+      // "sensitivity" is the parameter of that row, not a description: say so when it names no row.
+      if (row === undefined && a?.sensitivity && sensRows?.size) {
+        why += `; "sensitivity" ${repr(key)} names no row: it is the row's parameter (${repr([...sensRows.keys()])}), ` +
+          "or leave it out when the row's parameter is the assumption's own";
+      }
     }
     res("assumptions", ok, ok ? `assumption ${repr(p)}: ${b} ok` : `assumption ${repr(p)} (${b}): ${why}`);
   }
