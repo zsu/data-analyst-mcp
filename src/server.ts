@@ -15,7 +15,7 @@ import * as T from "./tools.js";
 import { TOOLS as ANALYSIS_TOOLS } from "./analysis/tools.js";
 import { TOOLS as REPORT_TOOLS } from "./report/tools.js";
 
-export const VERSION = "0.3.0";
+export const VERSION = "0.3.1";
 
 export const INSTRUCTIONS = `Live U.S. government data, fetched from the agency at call time; every result is cited.
 Never answer a U.S. government data question from memory, and never estimate, simulate or "illustrate" a number:
@@ -179,7 +179,8 @@ export function createServer(session = new Session()): McpServer {
       references: z.array(z.record(z.string(), z.any())).optional()
         .describe("[{id, citation, url, accessed, opened: true, used_for, quote}] (opened only after cite saved the page)"),
       assumptions: z.array(z.record(z.string(), z.any())).optional()
-        .describe("[{parameter, value, basis: empirical|literature|precedent|user|judgment, evidence, why_not_empirical, sensitivity}]"),
+        .describe("[{parameter, value, basis: empirical|literature|precedent|user|judgment, evidence, why_not_empirical, sensitivity}] " +
+          "(sensitivity: the parameter of its exhibits/sensitivity.csv row, only when that differs from the assumption's parameter)"),
       data_needs: z.array(z.record(z.string(), z.any())).optional()
         .describe("[{id, data, improves: [...], effect, how_to_get, from_user}]"),
       data_needs_note: z.string().optional().describe("Why no data would help, with data_needs: []"),

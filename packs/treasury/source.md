@@ -35,7 +35,7 @@ field meanings and the numbered gotchas: `docs/api_guide.md`; framing and conven
 | Receipts by source, outlays by function | `v1/accounting/mts/mts_table_9` | September `record_date`; `data_type_cd` D components, T "Total" | flow | $ |
 | Outlays by agency, bureau, program | `v1/accounting/mts/mts_table_5` | `record_type_cd` A agency totals; D rows sum to "Total Outlays". A program account is a `classification_desc` line under its agency (Medicaid: "Grants to States for Medicaid" under HHS, `record_type_cd` P; FY2019 $409.4 billion = OMB Table 8.5): fetch the agency's rows and match the line by name (`--values` lists up to 200 lines per column under a narrow filter) | flow | $ |
 | Gross interest expense | `v2/accounting/od/interest_expense` | all rows (detail only) sum to the total; MTS leaves out the GAS "Restoration of Interest" line (FY2025 on); TIPS lines include inflation compensation, a separate GAS "Inflation Compensation" line is not TIPS (docs/datasets.md) | flow | $ |
-| Outlays by budget function (Social Security 650, Medicare 570, defense 050, net interest 900 ...) | MTS Table 9 (`v1/accounting/mts/mts_table_9`) | function rows add to total outlays; a function is not CBO's program measure (Social Security 650 includes administration; CBO reports benefits; Medicare 570 is gross of some offsetting receipts CBO nets) | flow | $M |
+| Outlays by budget function (Social Security 650, Medicare 570, defense 050, net interest 900 ...) | MTS Table 9 (`v1/accounting/mts/mts_table_9`) | function rows add to total outlays; a function is not CBO's program measure (Social Security 650 includes administration; CBO reports benefits; Medicare 570 is already net of the premiums and other offsetting receipts credited to it, and CBO's "net Medicare" also nets a few receipts outside the function) | flow | $M |
 | Individual income tax refunds | DTS Table V `v1/accounting/dts/income_tax_refunds_issued` (cash, checks + EFT, refundable credits included, Treasury Offset Program offsets excluded); MTS Table 4 refunds (budget basis: refundable credits above liability are outlays) | the two differ by tens of billions a year and peak in different months (DTS February, MTS April): name the basis | flow | $M |
 | Savings bond (Series I) rates | `v1/accounting/od/i_bonds_interest_rates` | one row per earning period and issue month back to 1998: the rate announced for new bonds is the row whose issue month falls in its own earning period; the composite rate has a 0% floor (May 2009, May 2015), so the published formula does not reproduce those rows; dates are `earning_period_start` (no `record_date`) | stock (a rate) | % |
 | Average interest rate on the debt | `v2/accounting/od/avg_interest_rates` | `security_desc` "Total Interest-bearing Debt", "Total Marketable" (these totals leave out TIPS and FRNs: weighting the component rates by MSPD amounts reproduces them only without those two [derived 2026-10-21]); the TIPS rate is the real coupon, without inflation compensation: not comparable with nominal rates | stock | % |
@@ -92,6 +92,11 @@ them without it.
 - **Net vs gross receipts:** MTS receipts are net of refunds. When refunds are large the two can move in
   opposite directions (FY2026 customs: gross up 57 percent, net down 11 percent after $145 billion of tariff
   refunds): show gross, refunds and net (Table 4) and say which one the headline uses.
+- **Payment timing shifts:** when the first day of a month falls on a weekend or holiday, payments due that day
+  (Medicare Advantage and Part D plans, SSI, veterans' benefits, military pay) are made in the prior month. When
+  that day is October 1 they move into the prior fiscal year, by tens of billions of dollars.
+  Check October 1 at both ends of a year-over-year or multi-year comparison; if either year gained or lost
+  payments, adjust with the monthly rows (or say so) and name the shift in the answer, as CBO does.
 - **Latest release wins:** MTS releases repeat and revise earlier months: build monthly series from the latest
   `record_date`, full years from September releases; the next September restates the year (FY2024's deficit
   moved by $16 billion).

@@ -1,5 +1,6 @@
 /** scan_secrets: the 32-hex rule for key-echoing sources applies everywhere except other sources' own data (a port of
  * tests/test_scan_secrets.py, plus the scan cases of test_report_chain.py's TestSecrets). */
+import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -54,6 +55,28 @@ describe("hex32 scope", () => {
     expect(scan().length).toBeGreaterThan(0);
     write(path.join(out, "notes", "references", "x.txt"), `token ${HEX}\n`);      // only the top folder
     expect(scan().some((h) => h.includes("notes"))).toBe(true);
+  });
+
+  it("a site key in a page the cite tool downloaded is not a secret; key values still are", () => {
+    const page = path.join(out, "references", "cpi_series.html");
+    const site = "Ab12C-dE34F-gH56i-Jk78L-mN90o";
+    const body = `<script>window._API_key="${site}",function(){}</script>\n`;
+    write(page, body);
+    const rec = (o: object = {}) => write(path.join(out, "references", "opened.json"), JSON.stringify({ cpi_series: {
+      url: "https://example.gov/timeseries/X", file: "references/cpi_series.html",
+      sha256: crypto.createHash("sha256").update(body).digest("hex"), bytes: body.length, opened: "2026-11-07T00:00:00Z",
+      via: "download", content_type: "text/html", ...o } }));
+    expect(scan().length).toBeGreaterThan(0);                                        // no record: scanned as any file
+    rec();
+    expect(scan()).toEqual([]);
+    expect(scanTree([out], [site], true)[0].length).toBeGreaterThan(0);              // a configured key value: still caught
+    rec({ via: "file" });                                                            // text the model passed in
+    expect(scan().length).toBeGreaterThan(0);
+    rec({ url: "https://example.gov/x?api_key=zq99999999999999999999" });            // fetched with a credential
+    expect(scan().length).toBeGreaterThan(0);
+    rec();
+    write(page, body + `<p>api_key = "zq99999999999999999999"</p>\n`);               // changed since it was saved
+    expect(scan().length).toBeGreaterThan(0);
   });
 
   it("zip members follow the same rule", () => {
