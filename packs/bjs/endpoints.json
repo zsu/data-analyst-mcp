@@ -1,0 +1,150 @@
+{
+ "base_url": "https://api.ojp.gov/bjsdataset/v1",
+ "timeout": 90,
+ "endpoints": {
+  "query": {
+   "path": "/{dataset}.json",
+   "method": "GET",
+   "description": "NCVS Select records from BJS's API (one row per victimization, person or household, 1993 on, with weights): filter with $where and pick columns with $select. Aggregate SoQL (sum, count, $group) is refused by the site's bot check: aggregate the rows with compute.",
+   "params": {
+    "dataset": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "personal_victimization, personal_population, household_victimization, household_population (or the 4x4 id)"
+    },
+    "$select": {
+     "desc": "plain columns only, comma-separated: year, newcrime, newoff, newwgt"
+    },
+    "$where": {
+     "desc": "SoQL filter; every column is text, so quote values: year = '2024' AND newcrime = '1'"
+    },
+    "$order": {
+     "desc": "SoQL order; default :id gives stable paging"
+    }
+   },
+   "defaults": {
+    "$order": ":id"
+   },
+   "records": "",
+   "paging": {
+    "type": "offset",
+    "limit_param": "$limit",
+    "offset_param": "$offset",
+    "size": 50000,
+    "manual_size": 50000
+   },
+   "max_rows": 1000000,
+   "missing": [
+    ""
+   ],
+   "flatten": true
+  },
+  "statistical_table": {
+   "path": "https://bjs.ojp.gov/document/{report}.zip",
+   "method": "GET",
+   "description": "One CSV table from a BJS report's table package (zip): Criminal Victimization, Prisoners, Jail Inmates, Probation and Parole, Capital Punishment. Default: every line numbered (row, col1...) to find the header lines; then header_lines (e.g. '11-12') names the columns.",
+   "params": {
+    "report": {
+     "in": "path",
+     "required": true,
+     "catalog": true,
+     "desc": "report package code or alias: cv24 (criminal_victimization_2024), p23st, ji24st, ppus23, cp22st ..."
+    },
+    "member": {
+     "in": "records",
+     "required": true,
+     "desc": "the table's file in the zip, e.g. cv24t01.csv (t = table, at = appendix table, f = figure); a glob works"
+    },
+    "header_lines": {
+     "in": "records",
+     "desc": "the table's header line numbers, e.g. '11-12' (read them from a first fetch without it)"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "one header line instead of header_lines; 0 (default) returns every line numbered"
+    },
+    "carry": {
+     "in": "records",
+     "desc": "which header lines span to the right over blank cells: top (default), all, none; check the names against the numbered lines"
+    }
+   },
+   "defaults": {
+    "header_row": 0
+   },
+   "records": "$zip:",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000
+  }
+ },
+ "catalog": {
+  "personal_victimization": {
+   "id": "gcuy-rt5g",
+   "endpoint": "query",
+   "name": "NCVS Select - Personal Victimization",
+   "description": "One row per personal victimization (rape/sexual assault, robbery, aggravated and simple assault, personal theft), 1993-2024, with victim and incident characteristics; weight newwgt (series-adjusted) gives victimizations."
+  },
+  "personal_population": {
+   "id": "r4j4-fdwx",
+   "endpoint": "query",
+   "name": "NCVS Select - Personal Population",
+   "description": "Every interviewed person age 12 or older by quarter, 1993-2024, with demographics; weight wgtpercy gives persons (the rate denominator); victim and wgt_ovam_per for prevalence."
+  },
+  "household_victimization": {
+   "id": "gkck-euys",
+   "endpoint": "query",
+   "name": "NCVS Select - Household Victimization",
+   "description": "One row per household property victimization (burglary/trespassing, motor-vehicle theft, other theft), 1993-2024; weight newwgt."
+  },
+  "household_population": {
+   "id": "ya4e-n9zp",
+   "endpoint": "query",
+   "name": "NCVS Select - Household Population",
+   "description": "Every interviewed household by quarter, 1993-2024; weight wgthhcy gives households (the property-crime rate denominator)."
+  },
+  "criminal_victimization_2024": {
+   "id": "cv24",
+   "endpoint": "statistical_table",
+   "name": "Criminal Victimization, 2024 (NCJ 310547) tables",
+   "description": "Official NCVS numbers, rates per 1,000 and standard errors: violent and property victimization by type of crime 2020-2024 (cv24t01...), reporting to police, victim characteristics; appendix tables back to 1993 (cv24at01)."
+  },
+  "criminal_victimization_2023": {
+   "id": "cv23",
+   "endpoint": "statistical_table",
+   "name": "Criminal Victimization, 2023 tables",
+   "description": "The 2023 report's tables (cv23t01 ...)."
+  },
+  "prisoners_2023": {
+   "id": "p23st",
+   "endpoint": "statistical_table",
+   "name": "Prisoners in 2023 - Statistical Tables (NCJ 310197)",
+   "description": "National Prisoner Statistics: prisoners under state and federal jurisdiction by state and sex, imprisonment rates, admissions and releases, by offense, race and age (p23stt01 ... p23stt24, p23stat01 appendix)."
+  },
+  "jail_inmates_2024": {
+   "id": "ji24st",
+   "endpoint": "statistical_table",
+   "name": "Jail Inmates in 2024 - Statistical Tables",
+   "description": "Annual Survey of Jails: jail population, incarceration rates, admissions, turnover, conviction status (ji24stt01 ...)."
+  },
+  "jail_inmates_2023": {
+   "id": "ji23st",
+   "endpoint": "statistical_table",
+   "name": "Jail Inmates in 2023 - Statistical Tables",
+   "description": "The 2023 jail tables."
+  },
+  "probation_parole_2023": {
+   "id": "ppus23",
+   "endpoint": "statistical_table",
+   "name": "Probation and Parole in the United States, 2023",
+   "description": "Annual Probation and Parole Surveys: adults on probation and parole by state, entries and exits (ppus23t01 ..., figures ppus23f..)."
+  },
+  "capital_punishment_2022": {
+   "id": "cp22st",
+   "endpoint": "statistical_table",
+   "name": "Capital Punishment, 2022 - Statistical Tables",
+   "description": "Prisoners under sentence of death and executions by state and year."
+  }
+ }
+}

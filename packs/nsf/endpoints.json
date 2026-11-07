@@ -1,0 +1,33 @@
+{
+ "base_url": "https://api.nsf.gov/services/v1",
+ "timeout": 60,
+ "endpoints": {
+  "awards": {
+   "path": "/awards.json",
+   "method": "GET",
+   "description": "NSF awards (grants and cooperative agreements) from the NSF Award Search API: title, awardee institution and location, PI, amounts obligated and estimated, dates, NSF directorate, division and program, abstract. Filter by keyword, institution, state, PI, program or date range.",
+   "params": {
+    "keyword": {"desc": "words in the title or abstract; quote a phrase, e.g. \"machine learning\""},
+    "awardeeName": {"desc": "institution name or part of it"},
+    "awardeeStateCode": {"desc": "two-letter state of the awardee institution"},
+    "perfStateCode": {"desc": "two-letter state where the work is performed"},
+    "pdPIName": {"desc": "PI name (last name, or first and last)"},
+    "fundProgramName": {"desc": "NSF funding program name"},
+    "id": {"desc": "award number(s), comma-separated"},
+    "dateStart": {"desc": "award date from, MM/DD/YYYY"},
+    "dateEnd": {"desc": "award date to, MM/DD/YYYY"},
+    "startDateStart": {"desc": "award start date from, MM/DD/YYYY"},
+    "startDateEnd": {"desc": "award start date to, MM/DD/YYYY"},
+    "expDateStart": {"desc": "expiration date from, MM/DD/YYYY"},
+    "expDateEnd": {"desc": "expiration date to, MM/DD/YYYY"}
+   },
+   "defaults": {"offset": 1},
+   "records": "response.award",
+   "total": "response.metadata.totalCount",
+   "paging": {"type": "offset", "limit_param": "rpp", "offset_param": "offset", "size": 25, "manual_size": 25},
+   "max_rows": 10000,
+   "unique_key": "id",
+   "flatten": true
+  }
+ }
+}

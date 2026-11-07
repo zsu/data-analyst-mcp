@@ -1,0 +1,48 @@
+{
+ "base_url": "https://www.fhwa.dot.gov/policyinformation/statistics",
+ "timeout": 90,
+ "endpoints": {
+  "table": {
+   "path": "/{year}/xls/{table}.xlsx",
+   "method": "GET",
+   "description": "One Highway Statistics table as FHWA publishes it (Excel): travel (VM-2 vehicle-miles by state and functional system), drivers (DL-22 by age and sex), vehicles (MV-1 registrations), roads (HM-20 public road length), motor fuel (MF-1 state fuel taxes) and Highway Trust Fund (FE-9) ... Default: every line numbered (row, col1...) to find the header lines; then header_lines names the columns.",
+   "params": {
+    "year": {
+     "in": "path",
+     "required": true,
+     "desc": "the Highway Statistics edition year, e.g. 2023 (the data year for most tables)"
+    },
+    "table": {
+     "in": "path",
+     "required": true,
+     "desc": "table id in lower case without the hyphen: vm2, dl22, mv1, hm20, mf1, fe9 ..."
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "sheet name or number (default 1, not counting the hidden CRYSTAL_PERSIST sheet); DL-22 has MALES, FEMALES, TOTAL"
+    },
+    "header_lines": {
+     "in": "records",
+     "desc": "the header line numbers, e.g. '5-8' for VM-2"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "one header line instead; 0 (default) returns every line numbered"
+    },
+    "carry": {
+     "in": "records",
+     "desc": "which header lines span to the right over blank cells: top (default), all, none; check the names against the numbered lines"
+    }
+   },
+   "defaults": {
+    "header_row": 0
+   },
+   "records": "$xlsx",
+   "skip_sheets": "^CRYSTAL_PERSIST$",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000
+  }
+ }
+}

@@ -1,0 +1,92 @@
+{
+ "base_url": "https://www.huduser.gov/portal/sites/default/files/xls",
+ "timeout": 60,
+ "files": {
+  "pit_by_coc": "2007-2025-PIT-Counts-by-CoC.xlsb",
+  "pit_by_state": "2007-2025-PIT-Counts-by-State.xlsb",
+  "hic_by_coc": "2007-2025-HIC-Counts-by-CoC.xlsx",
+  "hic_by_state": "2007-2025-HIC-Counts-by-State.xlsx",
+  "veterans_by_coc": "2011-2025-PIT-Veteran-Counts-by-CoC.xlsx",
+  "veterans_by_state": "2011-2025-PIT-Veteran-Counts-by-State.xlsx"
+ },
+ "endpoints": {
+  "pit_by_coc": {
+   "path": "/2007-2025-PIT-Counts-by-CoC.xlsb",
+   "method": "GET",
+   "description": "Point-in-Time (PIT) counts of people experiencing homelessness by Continuum of Care (CoC), one sheet per year 2007-2025 (2025 AHAR edition). Manual: huduser.gov refuses scripts; the user downloads the workbook and uploads it.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year, i.e. the workbook sheet to read (2007-2025)"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year (the workbook's other sheets, e.g. a change table)"},
+    "header_row": {"in": "spec", "desc": "the header row of the sheet, 1-based (default 1)"}
+   },
+   "records": "$xls",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  },
+  "pit_by_state": {
+   "path": "/2007-2025-PIT-Counts-by-State.xlsb",
+   "method": "GET",
+   "description": "PIT counts of people experiencing homelessness by state (and the national total), one sheet per year 2007-2025. Manual.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year (sheet), 2007-2025"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year"},
+    "header_row": {"in": "spec", "desc": "the header row, 1-based (default 1)"}
+   },
+   "records": "$xls",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  },
+  "hic_by_coc": {
+   "path": "/2007-2025-HIC-Counts-by-CoC.xlsx",
+   "method": "GET",
+   "description": "Housing Inventory Count (HIC): beds and units for people experiencing homelessness (emergency shelter, transitional, safe haven, rapid re-housing, permanent supportive housing) by CoC, one sheet per year. Manual.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year (sheet)"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year"},
+    "header_row": {"in": "spec", "desc": "the header row, 1-based (default 1)"}
+   },
+   "records": "$xlsx",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  },
+  "hic_by_state": {
+   "path": "/2007-2025-HIC-Counts-by-State.xlsx",
+   "method": "GET",
+   "description": "Housing Inventory Count by state, one sheet per year. Manual.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year (sheet)"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year"},
+    "header_row": {"in": "spec", "desc": "the header row, 1-based (default 1)"}
+   },
+   "records": "$xlsx",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  },
+  "veterans_by_coc": {
+   "path": "/2011-2025-PIT-Veteran-Counts-by-CoC.xlsx",
+   "method": "GET",
+   "description": "PIT counts of veterans experiencing homelessness by CoC, one sheet per year 2011-2025. Manual.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year (sheet), 2011-2025"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year"},
+    "header_row": {"in": "spec", "desc": "the header row, 1-based (default 1)"}
+   },
+   "records": "$xlsx",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  },
+  "veterans_by_state": {
+   "path": "/2011-2025-PIT-Veteran-Counts-by-State.xlsx",
+   "method": "GET",
+   "description": "PIT counts of veterans experiencing homelessness by state, one sheet per year 2011-2025. Manual.",
+   "params": {
+    "year": {"in": "spec", "required": true, "desc": "the count year (sheet), 2011-2025"},
+    "sheet": {"in": "spec", "desc": "a sheet name other than the year"},
+    "header_row": {"in": "spec", "desc": "the header row, 1-based (default 1)"}
+   },
+   "records": "$xlsx",
+   "paging": {"type": "none"},
+   "max_rows": 100000
+  }
+ }
+}

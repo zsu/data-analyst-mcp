@@ -1,0 +1,91 @@
+{
+  "id": "onrr",
+  "title": "ONRR natural resources revenue data: federal and Native American royalties, rents, bonuses, disbursements and production",
+  "agency": "U.S. Department of the Interior, Office of Natural Resources Revenue",
+  "depth": "standard",
+  "domains": [
+    "energy",
+    "federal revenue",
+    "public lands"
+  ],
+  "keywords": [
+    "onrr",
+    "office of natural resources revenue",
+    "natural resources revenue",
+    "federal royalties",
+    "oil and gas royalties",
+    "coal royalties",
+    "offshore leasing",
+    "lease bonus",
+    "rents",
+    "federal lands",
+    "public lands revenue",
+    "mineral leasing",
+    "disbursements to states",
+    "gomesa",
+    "reclamation fund",
+    "land and water conservation fund",
+    "production on federal lands",
+    "native american mineral revenue"
+  ],
+  "questions": [
+    "federal oil and gas royalties by state",
+    "revenue from federal lands in New Mexico or Wyoming",
+    "offshore revenue in the Gulf",
+    "how much mineral revenue went to a state",
+    "oil and gas production on federal lands by year",
+    "coal royalties over time"
+  ],
+  "homepage": "https://revenuedata.onrr.gov/",
+  "terms_url": "https://revenuedata.onrr.gov/downloads/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 2000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://revenuedata.onrr.gov",
+      "probe": "https://revenuedata.onrr.gov/downloads/fiscal_year_disbursements.csv",
+      "hosts": [
+        "revenuedata.onrr.gov",
+        "revenuedata.doi.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://revenuedata.onrr.gov/downloads/ (Revenue, Disbursements or Production, then 'Downloads and documentation'), download the CSV and upload it with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are refreshed monthly; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "ONRR data are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of the Interior, Office of Natural Resources Revenue, {dataset}, revenuedata.onrr.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Revenue or disbursements? Revenue is what companies paid ONRR (by where the resource is); disbursements are what ONRR paid out to the Treasury, states, counties and funds. Default: revenue for 'how much came from', disbursements for 'how much a state got'.",
+    "Fiscal or calendar year? Federal fiscal years run October-September. Default: fiscal year, said as such."
+  ],
+  "formats": [
+    "csv"
+  ],
+  "aliases": [
+    "ONRR",
+    "Natural Resources Revenue Data",
+    "revenuedata.doi.gov"
+  ]
+}

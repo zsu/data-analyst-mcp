@@ -1,0 +1,101 @@
+{
+ "base_url": "https://nces.ed.gov",
+ "timeout": 180,
+ "endpoints": {
+  "digest_table": {
+   "path": "/programs/digest/d{edition}/tables/xls/tabn{table}.xlsx",
+   "method": "GET",
+   "description": "One table of the Digest of Education Statistics as its Excel file: enrollment, teachers, finances, degrees, outcomes, from pre-K to postsecondary. Default: every line numbered (row, col1...) to find the header lines; then header_lines (usually '3-4') names the columns.",
+   "params": {
+    "edition": {
+     "in": "path",
+     "required": true,
+     "desc": "two-digit Digest edition, e.g. 25 (Digest 2025); not every table is in every edition"
+    },
+    "table": {
+     "in": "path",
+     "required": true,
+     "desc": "table number, e.g. 203.10 (public school enrollment by grade)"
+    },
+    "header_lines": {
+     "in": "records",
+     "desc": "the header line numbers, e.g. '3-4'"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "one header line instead; 0 (default) returns every line numbered"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "sheet name or number (default 1)"
+    },
+    "carry": {
+     "in": "records",
+     "desc": "which header lines span to the right over blank cells: top (default), all, none; check the names against the numbered lines"
+    }
+   },
+   "defaults": {
+    "header_row": 0
+   },
+   "records": "$xlsx",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000
+  },
+  "ipeds": {
+   "path": "/ipeds/datacenter/data/{file}.zip",
+   "method": "GET",
+   "description": "An IPEDS complete data file (one row per institution, or institution by category), e.g. HD2023 directory, EFFY2023 12-month enrollment, C2023_A completions by CIP code, ADM2023 admissions, SFA2223 student aid, F2223_F2 finance. The revised (_rv) version is read when the zip has one.",
+   "params": {
+    "file": {
+     "in": "path",
+     "required": true,
+     "desc": "IPEDS file name as on the Data Center's Complete Data Files page, e.g. HD2023, EFFY2023, C2023_A"
+    },
+    "unitid": {
+     "in": "spec",
+     "desc": "keep only these institutions (UNITID, a list works)"
+    },
+    "state": {
+     "in": "spec",
+     "desc": "keep only these states (two-letter STABBR; files that have that column, e.g. HD)"
+    },
+    "member": {
+     "in": "records",
+     "desc": "the CSV in the zip, e.g. c2023_a.csv for the original instead of the revised file"
+    }
+   },
+   "records": "$zip:*.csv",
+   "prefer": "_rv[.]csv$",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 1000000
+  },
+  "ipeds_dictionary": {
+   "path": "/ipeds/datacenter/data/{file}_Dict.zip",
+   "method": "GET",
+   "description": "The data dictionary of an IPEDS file: variable names and titles (sheet Varlist), code values and labels (Frequencies), long descriptions (Description).",
+   "params": {
+    "file": {
+     "in": "path",
+     "required": true,
+     "desc": "the IPEDS file name, e.g. HD2023"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "Varlist (default), Frequencies, Description, Introduction"
+    }
+   },
+   "defaults": {
+    "sheet": "Varlist"
+   },
+   "records": "$zip:*.xlsx",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 100000
+  }
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "base_url": "https://data.sba.gov",
+ "timeout": 600,
+ "catalog_path": "/data.json",
+ "endpoints": {
+  "list_files": {
+   "path": "/data.json",
+   "method": "GET",
+   "description": "The loan data files SBA currently publishes (from data.sba.gov's catalog): 7(a) and 504 FOIA loan-level CSVs (file names carry the as-of date), activity reports, disaster loan workbooks. One row per file with the path for the foia request.",
+   "params": {
+    "search": {"in": "spec", "desc": "keep files whose dataset or file title contains this (e.g. FOIA, 504, Disaster)"}
+   },
+   "records": "",
+   "paging": {"type": "none"},
+   "max_rows": 5000
+  },
+  "foia": {
+   "path": "/sites/default/files/{file}.csv",
+   "method": "GET",
+   "description": "SBA 7(a) or 504 loan-level FOIA data: one row per approved loan with borrower, lender (or CDC), amount, approval date and fiscal year, NAICS industry, project state and county, congressional district, loan status, charge-off. Read streaming and filtered: give at least one of state, fiscal_year, from, naics.",
+   "params": {
+    "file": {"in": "path", "raw": true, "required": true, "desc": "the file's path under /sites/default/files without .csv, from list_files, e.g. uploaded_resources/FOIA_504_FY2010_Present_asof_260930"},
+    "state": {"in": "spec", "desc": "keep loans with this ProjectState (two letters; a list works)"},
+    "fiscal_year": {"in": "spec", "desc": "keep these ApprovalFY values (a year or a list)"},
+    "from": {"in": "spec", "desc": "first ApprovalFY to keep"},
+    "to": {"in": "spec", "desc": "last ApprovalFY to keep"},
+    "naics": {"in": "spec", "desc": "keep NaicsCode values starting with these digits (e.g. 72; a list works)"}
+   },
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 1000000
+  }
+ }
+}

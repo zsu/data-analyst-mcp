@@ -1,0 +1,84 @@
+{
+  "id": "cdc-wonder",
+  "title": "CDC WONDER: mortality, natality and population query results (manual export)",
+  "agency": "Centers for Disease Control and Prevention, National Center for Health Statistics",
+  "depth": "standard",
+  "domains": [
+    "health",
+    "mortality",
+    "vital statistics"
+  ],
+  "keywords": [
+    "cdc wonder",
+    "wonder",
+    "underlying cause of death",
+    "multiple cause of death",
+    "death certificates",
+    "mortality rate",
+    "age-adjusted death rate",
+    "deaths by cause",
+    "deaths by county",
+    "icd-10",
+    "natality",
+    "births",
+    "infant mortality",
+    "linked birth infant death",
+    "compressed mortality"
+  ],
+  "questions": [
+    "age-adjusted death rate for a cause of death by state and year",
+    "deaths by ICD-10 cause, age group and sex",
+    "county death rates for a cause",
+    "births by mother's age or state",
+    "infant mortality rate by race"
+  ],
+  "homepage": "https://wonder.cdc.gov/",
+  "terms_url": "https://wonder.cdc.gov/datause.html",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 1,
+    "max_rows": 500000
+  },
+  "routes": {
+    "manual": {
+      "how": "Open https://wonder.cdc.gov/ in a web browser, choose the database (e.g. Mortality: Underlying Cause of Death), read and accept its data use restrictions yourself, set Group By and the filters, click Send, then Export (tab-delimited .txt) with 'Show Totals' and notes as wanted. Upload the exported .txt file with ingest."
+    }
+  },
+  "cache": {
+    "mode": "none",
+    "ttl_hours": null,
+    "why": "Nothing is fetched; the uploaded export is the data."
+  },
+  "redistribution": {
+    "mode": "aggregates_only",
+    "microdata_globs": [
+      "raw/*"
+    ],
+    "why": "CDC WONDER's data use restrictions (wonder.cdc.gov/datause.html, read 2026-11-07): statistical reporting and analysis only; no attempt to identify any person or establishment; do not present or publish statistics representing nine or fewer births or deaths, including rates based on them. Exported tables are aggregates; the uploaded export stays in raw/."
+  },
+  "notices": [
+    "CDC WONDER data use restrictions (https://wonder.cdc.gov/datause.html): use for statistical reporting and analysis only; make no attempt to learn the identity of any person or establishment; do not present or publish statistics representing nine or fewer births or deaths, including rates based on counts of nine or fewer. The user accepts these on the WONDER site before running a query."
+  ],
+  "retention": null,
+  "citation": "Centers for Disease Control and Prevention, National Center for Health Statistics, {dataset}, CDC WONDER Online Database, accessed {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which WONDER database and years? Final mortality (e.g. Underlying Cause of Death by single race, 2018 on; the bridged-race file for 1999-2020) or provisional; natality. The cause is coded in ICD-10. Default: the newest final underlying-cause database.",
+    "Crude or age-adjusted rates? Comparing places or years needs age-adjusted rates (WONDER's 2000 U.S. standard population). Default: age-adjusted, with the counts."
+  ],
+  "formats": [
+    "txt"
+  ],
+  "aliases": [
+    "WONDER",
+    "CDC WONDER",
+    "Wide-ranging Online Data for Epidemiologic Research"
+  ]
+}

@@ -73,7 +73,7 @@ describe("policies", () => {
       if (probs.length) bad[id] = probs;
     }
     expect(bad).toEqual({});
-    expect(packIds().length).toBe(63);
+    expect(packIds().length).toBe(76);
   });
   it("citations fill the retrieval date", async () => {
     const [cdc] = (await allPacks()).filter((p) => p.id === "cdc");

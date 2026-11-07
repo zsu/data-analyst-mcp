@@ -8,7 +8,7 @@ England town, metro FMR area and state, per federal fiscal year.
   income limits (30%, 50%, 80% of area median) by household size; area median family income as HUD
   sets it; MTSP (LIHTC) limits.
 - Not here: market rents and home values from surveys (census ACS median gross rent), house price
-  indexes (fred, FHFA), homelessness counts and public housing (not covered), mortgage complaints
+  indexes (fred, FHFA), homelessness counts (hud-ahar), public housing (not covered), mortgage complaints
   (cfpb). FMRs are policy values (the 40th percentile gross rent standard), not observed averages.
 
 ## Endpoints and datasets

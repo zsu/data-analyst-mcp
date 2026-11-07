@@ -37,8 +37,11 @@ owns its pack data, code and recorded fixtures.
 
 ## Status
 - **Done (0.3):**
-  - 63 packs: 51 adapters in `src/adapters/`, 6 deep packs in `src/deep/`, 5 on endpoints.json alone, and
+  - 76 packs: 64 adapters in `src/adapters/`, 6 deep packs in `src/deep/`, 5 on endpoints.json alone, and
     census-geocoder;
+  - published-table reading in `src/core/tabular.ts`: `$tsv`, `header_row: 0` (every line numbered),
+    `header_lines` with `carry` (stacked headers), zip `member` and `prefer`, `skip_sheets`; header order is kept
+    (`withColumns`, `sheetNames`);
   - manual bundles and `ingest`;
   - `.xls` reading (SheetJS);
   - the analysis tools (`src/analysis/`: compute, facts, write_table, rerun, cite, handoff) and the report tools
@@ -60,5 +63,10 @@ owns its pack data, code and recorded fixtures.
   - ipums has no manual bundle; opm's bundle covers only pinned months; opm tables over 1M rows come only as Parquet,
     which `compute` cannot read; ipums report packages carry no download scripts.
   - npm publish, and an eval run with a model.
+  - Manual only (the sites refuse this server): hud-ahar, cdc-wonder, foreign-assistance, cpsc NEISS. Readers checked
+    only on files written in the tests: hud-ahar (huduser.gov refuses scripts) and
+    cdc-wonder (wonder.cdc.gov refuses this client). Check them on a real downloaded workbook or export.
+  - Not covered yet: NSF NCSES survey tables, the FJC Integrated Database, TIGERweb boundaries
+    (census-geocoder), BJS corrections reports beyond the listed packages.
 - **Pack-specific redaction patterns** (`keys.addPattern(re, pack)`) apply only inside that pack's calls
   (`withPackScope`). In one server process every pack is loaded, so a global pattern would redact other packs' data.

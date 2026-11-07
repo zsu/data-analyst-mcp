@@ -53,7 +53,7 @@ narrow `$where`), or open the dataset page.
 - Provisional data (weekly deaths, VSRR overdose, quarterly mortality) are revised for months and may be
   incomplete for recent periods; report the data date. Small counts are suppressed in several tables.
 - Leading causes of death ends in 2017 and life expectancy in 2018 on this portal; newer years are in CDC
-  WONDER (not covered here). Say so instead of mixing sources silently.
+  WONDER (the cdc-wonder pack, by manual export). Say so instead of mixing sources silently.
 - Paging uses `$limit`/`$offset` with a stable `$order` (default `:id`); without a key Socrata throttles
   heavy use (about 1,000 requests an hour). A `$group` query fails with the default order ("Column ':id'
   is not in group by"): give it an explicit `$order` on a selected or grouped column.

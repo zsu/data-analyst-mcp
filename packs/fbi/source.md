@@ -6,9 +6,9 @@ data from the FBI Uniform Crime Reporting (UCR) Program, served by the Crime Dat
 - Offenses and clearances by month (violent, property, homicide, robbery ...), national, state or agency;
   arrests; NIBRS incident breakdowns (victim, offender, location, weapon); Supplementary Homicide Reports;
   hate crimes by bias; law enforcement employees; law enforcement suicide data (LESDC).
-- Not here: victimization surveys including crimes not reported to police (BJS NCVS, not covered), prisons
-  and sentencing (BJS / U.S. Sentencing Commission), federal prosecutions and DOJ announcements (doj-news,
-  which is text), the FBI's annual "Crime in the Nation" estimate tables (published reports).
+- Not here: victimization surveys including crimes not reported to police (bjs: NCVS), prisons,
+  jails, probation and parole (bjs), federal court caseloads (uscourts), sentencing (U.S. Sentencing
+  Commission, not covered), federal prosecutions and DOJ announcements (doj-news, which is text), the FBI's annual "Crime in the Nation" estimate tables (published reports).
 - Not wrapped by this pack, though the CDE API has them (verified 2026-10): NIBRS estimates with lower and
   upper bounds (`/nibrs-estimation/national|region|state/<numeric offense ID>?year=`, years 2021 and 2022
   only, other years HTTP 400; the offense and state IDs are numeric codes not documented here) and use of

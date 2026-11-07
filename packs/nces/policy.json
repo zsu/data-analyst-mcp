@@ -1,0 +1,99 @@
+{
+  "id": "nces",
+  "title": "National Center for Education Statistics: Digest of Education Statistics tables and IPEDS data files",
+  "agency": "U.S. Department of Education, National Center for Education Statistics",
+  "depth": "standard",
+  "domains": [
+    "education",
+    "higher education"
+  ],
+  "keywords": [
+    "nces",
+    "national center for education statistics",
+    "digest of education statistics",
+    "school enrollment",
+    "public school enrollment",
+    "enrollment by grade",
+    "teachers",
+    "pupil teacher ratio",
+    "per-pupil expenditure",
+    "school finance",
+    "high school graduates",
+    "graduation rate",
+    "degrees conferred",
+    "ipeds",
+    "college enrollment",
+    "fall enrollment",
+    "completions",
+    "degrees by field",
+    "cip code",
+    "institutional characteristics",
+    "tuition and fees",
+    "admissions",
+    "student financial aid",
+    "college finance"
+  ],
+  "questions": [
+    "public school enrollment by grade over time",
+    "number of teachers and pupil/teacher ratio",
+    "current expenditure per pupil by state",
+    "bachelor's degrees conferred by field",
+    "enrollment at a college or all colleges in a state (IPEDS)",
+    "completions by CIP code and award level",
+    "admissions and yield at a university"
+  ],
+  "homepage": "https://nces.ed.gov/",
+  "terms_url": "https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 1000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://nces.ed.gov",
+      "probe": "https://nces.ed.gov/ipeds/datacenter/data/HD2023_Dict.zip",
+      "hosts": [
+        "nces.ed.gov"
+      ]
+    },
+    "manual": {
+      "how": "Digest: open the table page (https://nces.ed.gov/programs/digest/current_tables.asp, then the table) and click its Excel link, or https://nces.ed.gov/programs/digest/d<yy>/tables/xls/tabn<table>.xlsx. IPEDS: download https://nces.ed.gov/ipeds/datacenter/data/<FILE>.zip from the Complete Data Files page (https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx). Upload the file as saved with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are replaced when NCES revises them; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NCES publications and IPEDS data are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Education, National Center for Education Statistics, {dataset}, nces.ed.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Published table or institution file? Digest tables give national (and often state) totals as NCES published them; IPEDS files give one row per institution to filter and sum. Default: a Digest table for national or state totals, IPEDS for named colleges.",
+    "Which year? Digest tables are labelled by school year or fall; IPEDS files by collection year (EFFY2023 = 12-month enrollment for 2022-23). Say which, and whether the IPEDS file is provisional or revised (_rv)."
+  ],
+  "formats": [
+    "xlsx",
+    "zip",
+    "csv"
+  ],
+  "aliases": [
+    "NCES",
+    "IPEDS",
+    "Digest of Education Statistics",
+    "Integrated Postsecondary Education Data System"
+  ]
+}

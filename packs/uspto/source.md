@@ -8,7 +8,7 @@ trials, final petition decisions, and the bulk-dataset directory, via api.uspto.
   of one application; ownership (assignments); continuation families; PTAB IPR/PGR trials; petitions.
 - Not here: trademarks (not in this pack), full patent text search (USPTO Patent Public Search at
   https://ppubs.uspto.gov, a web tool), patent counts by state or country as official statistics (USPTO
-  PTMT reports, not covered), R&D spending (nsf or bea packs if present).
+  PTMT reports, not covered), R&D spending (nsf for NSF awards; bea).
 - Counts built from search results are your own tabulations, not official USPTO statistics: say so.
 
 ## Endpoints and datasets

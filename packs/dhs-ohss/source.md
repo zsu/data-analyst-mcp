@@ -13,7 +13,7 @@ from the workbooks posted on ohss.dhs.gov, plus the quarterly Legal Immigration 
 - Not here: the foreign-born population or immigrants' characteristics from surveys (census ACS); visa issuance
   (State Department, not covered); immigration court cases (EOIR, not covered); monthly enforcement statistics: the
   OHSS "Immigration Enforcement and Legal Processes Monthly Tables" stop at November 2024 and the page says the
-  report "is delayed while it is under review" (verified 2026-10-30); this pack does not read them.
+  report "is delayed while it is under review" (verified 2026-10-30); this pack does not read them. Monthly border encounters are in cbp.
 
 ## Endpoints and datasets
 | Endpoint | Returns | Key parameters |

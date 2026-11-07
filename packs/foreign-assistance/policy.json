@@ -1,0 +1,80 @@
+{
+  "id": "foreign-assistance",
+  "title": "ForeignAssistance.gov: U.S. foreign aid by country, sector and agency",
+  "agency": "U.S. Department of State, Office of Foreign Assistance",
+  "depth": "standard",
+  "domains": [
+    "foreign aid",
+    "federal spending",
+    "international"
+  ],
+  "keywords": [
+    "foreign aid",
+    "foreign assistance",
+    "foreignassistance.gov",
+    "usaid",
+    "aid to ukraine",
+    "aid to israel",
+    "military aid",
+    "humanitarian assistance",
+    "development assistance",
+    "global health aid",
+    "aid by country",
+    "aid by sector",
+    "obligations and disbursements",
+    "oda",
+    "dac sector"
+  ],
+  "questions": [
+    "how much U.S. foreign aid a country received by year",
+    "largest recipients of U.S. foreign assistance",
+    "foreign aid by sector (health, security, humanitarian)",
+    "aid managed by USAID vs State vs Defense",
+    "foreign assistance budget requests by account"
+  ],
+  "homepage": "https://foreignassistance.gov/",
+  "terms_url": "https://foreignassistance.gov/data",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 300000
+  },
+  "routes": {
+    "manual": {
+      "how": "Open https://foreignassistance.gov/data (Data Download), download the CSV (By Country, By DAC Sector, By USG Sector, By Managing Agency, By Funding Agency), and upload it with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are refreshed with the site (data last updated date shown on every page)."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "U.S. government data; the site states an Open Data License."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of State and USAID, ForeignAssistance.gov, {dataset}, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which transaction type? Obligations (commitments), Disbursements (money spent), Appropriated and Planned, or President's Budget Requests: never add them together. Default: obligations for 'how much aid', disbursements for 'how much was spent'.",
+    "Current or constant dollars? current_amount is nominal; constant_amount is inflation-adjusted. Default: current for one year, constant for trends.",
+    "Which years? Fiscal years (October-September); the latest year is incomplete until reporting closes."
+  ],
+  "formats": [
+    "csv"
+  ],
+  "aliases": [
+    "ForeignAssistance.gov",
+    "FA.gov",
+    "U.S. foreign aid"
+  ]
+}

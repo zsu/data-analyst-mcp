@@ -1,0 +1,83 @@
+{
+  "id": "nsf",
+  "title": "National Science Foundation awards (NSF Award Search API)",
+  "agency": "U.S. National Science Foundation",
+  "depth": "standard",
+  "domains": [
+    "science",
+    "research funding",
+    "federal grants"
+  ],
+  "keywords": [
+    "nsf",
+    "national science foundation",
+    "nsf grants",
+    "nsf awards",
+    "research grants",
+    "science funding",
+    "principal investigator",
+    "epscor",
+    "career award",
+    "graduate research fellowship",
+    "directorate",
+    "research funding by university"
+  ],
+  "questions": [
+    "NSF awards to a university in a year",
+    "NSF grants on a research topic (e.g. quantum computing)",
+    "NSF funding by state",
+    "awards from an NSF program",
+    "a researcher's NSF awards"
+  ],
+  "homepage": "https://www.nsf.gov/awardsearch/",
+  "terms_url": "https://resources.research.gov/common/webapi/awardapisearch-v1.htm",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 10000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.nsf.gov/services/v1",
+      "probe": "https://api.nsf.gov/services/v1/awards.json?id=2600000",
+      "hosts": [
+        "api.nsf.gov"
+      ]
+    },
+    "manual": {
+      "how": "Search at https://www.nsf.gov/awardsearch/ (Advanced Search), export the results as CSV, and upload the file; or open the API links in INSTRUCTIONS.md (25 awards per page) and save the JSON."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Awards are amended daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "NSF award data are U.S. government works in the public domain (17 U.S.C. 105). PI and program officer e-mail and phone are dropped."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. National Science Foundation, NSF Award Search ({dataset}), api.nsf.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which dollars? fundsObligatedAmt is what NSF has obligated so far; estimatedTotalAmt is the expected total over the award's life. Default: obligated, said as such.",
+    "Which dates? dateStart/dateEnd filter the award date (when NSF made the award); startDate and expDate are the award's period. Default: awards made in the period asked."
+  ],
+  "formats": [
+    "json"
+  ],
+  "aliases": [
+    "NSF",
+    "National Science Foundation",
+    "NSF Award Search"
+  ]
+}

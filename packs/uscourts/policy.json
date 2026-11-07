@@ -1,0 +1,87 @@
+{
+  "id": "uscourts",
+  "title": "U.S. Courts caseload statistics: federal court and bankruptcy filings, terminations and pending cases",
+  "agency": "Administrative Office of the U.S. Courts",
+  "depth": "standard",
+  "domains": [
+    "courts",
+    "criminal justice",
+    "bankruptcy"
+  ],
+  "keywords": [
+    "federal courts",
+    "u.s. courts",
+    "caseload statistics",
+    "bankruptcy filings",
+    "chapter 7",
+    "chapter 11",
+    "chapter 13",
+    "business bankruptcies",
+    "district courts",
+    "courts of appeals",
+    "civil cases filed",
+    "criminal cases filed",
+    "federal defendants",
+    "judicial business",
+    "pending cases",
+    "jurors"
+  ],
+  "questions": [
+    "bankruptcy filings by chapter and district",
+    "business vs consumer bankruptcy filings",
+    "civil and criminal cases filed in federal district courts",
+    "appeals filed, terminated and pending by circuit",
+    "federal court caseload trends"
+  ],
+  "homepage": "https://www.uscourts.gov/statistics-reports/caseload-statistics-data-tables",
+  "terms_url": "https://www.uscourts.gov/statistics-reports/caseload-statistics-data-tables",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.uscourts.gov",
+      "probe": "https://www.uscourts.gov/sites/default/files/document/bf_f2_0930.2026.xlsx",
+      "hosts": [
+        "www.uscourts.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://www.uscourts.gov/statistics-reports/caseload-statistics-data-tables, filter to the table, click 'Download xlsx', and upload the workbook with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Tables are published quarterly; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "Judiciary statistics are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "Administrative Office of the U.S. Courts, {dataset}, uscourts.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which period? Most tables cover a 12-month period ending March 31, June 30, September 30 or December 31 (the file name carries the end date); some cover 1 or 3 months. Default: the latest 12-month table, with the same period a year earlier.",
+    "Which series? Bankruptcy filings (bf_), Statistical Tables for the Federal Judiciary (stfj_), Federal Judicial Caseload Statistics and Judicial Business: they repeat some tables for different periods. Default: the series whose period matches the question."
+  ],
+  "formats": [
+    "xlsx"
+  ],
+  "aliases": [
+    "U.S. Courts",
+    "Administrative Office of the U.S. Courts",
+    "federal judiciary statistics"
+  ]
+}

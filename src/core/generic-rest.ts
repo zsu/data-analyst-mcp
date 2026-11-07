@@ -12,8 +12,10 @@
  *                  // "flag": true (a bare ?flagName, sent only when true), "raw": true (path value keeps slashes)
  *                  "$where": {"desc": "SoQL filter"}, "state": {"desc": "...", "enum": [...]}},
  *       "defaults": {"$order": ":id"}, "body": {...},
- *       "records": "results" | "" | "$table" | "$csv" | "$xlsx" | "$xls" | "$zip:<glob>",
+ *       "records": "results" | "" | "$table" | "$csv" | "$tsv" | "$xlsx" | "$xls" | "$zip:<glob>",
  *       "sheet": "Table 1", "header_row": 1, "total": "meta.count",
+ *       // published report tables: "header_row": 0 gives every record numbered (row, col1..), "header_lines": "11-13"
+ *       // joins a stacked header into names (tabular.publishedTable); "member": "*t02.csv" picks a zip member
  *       "paging": {"type": "offset", "limit_param": "$limit", "offset_param": "$offset", "size": 1000, "manual_size": 50000}
  *               | {"type": "page", "page_param": "page", "size_param": "per_page", "size": 100, "start": 1, "min_size": 5}
  *               | {"type": "cursor", "cursor_param": "cursor", "next": "pagination.next_cursor", "size_param": "limit"}
@@ -34,7 +36,7 @@ import { Cache } from "./cache.js";
 import { Client, DataError } from "./http.js";
 import type { Pack, Row, Spec, SpecRequest, Tables } from "./packs.js";
 import { parsePyJson, pyJsonDumps, pyQuote, pyStr, pyUrlencode, sleep } from "./py.js";
-import { decodeText, fnmatch, readCsv, sheetRecords, unzip, xlsRecords } from "./tabular.js";
+import { columnsOf, csvRecords, decodeText, fnmatch, readCsv, sheetRecords, tsvRecords, unzip, withColumns, xlsRecords } from "./tabular.js";
 
 /** A note containing this marks its table incomplete (status partial), like a max_rows cut. */
 export const INCOMPLETE = ": incomplete:";
@@ -242,7 +244,8 @@ type Body = { body: Buffer; text(): string; json(): any };
 
 export function records(ep: any, resp: Body): any[] {
   const p: string = ep.records ?? "";
-  if (p === "$csv") return readCsv(resp.text());
+  if (p === "$csv") return csvRecords(ep, resp.text());
+  if (p === "$tsv") return tsvRecords(ep, resp.text());
   if (p === "$xlsx") return sheetRecords(ep, resp.body);
   if (p === "$xls") {
     if (resp.body.subarray(0, 4).equals(Buffer.from("PK\x03\x04", "latin1"))) return sheetRecords(ep, resp.body);
@@ -253,18 +256,29 @@ export function records(ep: any, resp: Body): any[] {
   }
   if (p.startsWith("$zip:")) {
     const z = unzip(resp.body);
-    const glob = p.slice(5).toLowerCase() || "*";
-    const members = Object.keys(z).filter((n) => fnmatch(n.toLowerCase(), glob) && !n.endsWith("/")).sort();
+    // "member" (a glob, settable per request with "in": "records") picks the file when records is "$zip:"
+    const want = String(ep.member || p.slice(5));
+    const glob = want.toLowerCase() || "*";
+    let members = Object.keys(z).filter((n) => fnmatch(n.toLowerCase(), glob) && !n.endsWith("/")).sort();
     if (!members.length) {
-      throw new DataError(`no member matching ${JSON.stringify(p.slice(5))} in the zip (${Object.keys(z).slice(0, 10).join(", ")})`, "api");
+      throw new DataError(`no member matching ${JSON.stringify(want)} in the zip (${Object.keys(z).slice(0, 40).join(", ")})`, "bad_request");
+    }
+    // "prefer" (a regex): when several members match, read only those it matches, if any (a revised file over the
+    // original, say)
+    if (members.length > 1 && ep.prefer) {
+      const pref = members.filter((n) => new RegExp(String(ep.prefer), "i").test(n));
+      if (pref.length) members = pref;
     }
     const rows: any[] = [];
+    const order: string[] = [];
     for (const n of members) {
-      if (n.toLowerCase().endsWith(".xlsx")) rows.push(...sheetRecords(ep, z[n]));
-      else if (n.toLowerCase().endsWith(".xls")) rows.push(...xlsRecords(ep, z[n]));
-      else rows.push(...readCsv(decodeText(z[n])));
+      const low = n.toLowerCase();
+      const part = low.endsWith(".xlsx") ? sheetRecords(ep, z[n]) : low.endsWith(".xls") ? xlsRecords(ep, z[n])
+        : low.endsWith(".txt") ? tsvRecords(ep, decodeText(z[n])) : csvRecords(ep, decodeText(z[n]));
+      for (const c of columnsOf(part) || []) if (!order.includes(c)) order.push(c);
+      rows.push(...part);
     }
-    return rows;
+    return order.length ? withColumns(rows, order) : rows;
   }
   const data = resp.json();
   if (p === "$table") {
@@ -279,7 +293,8 @@ export function records(ep: any, resp: Body): any[] {
 
 export function clean(rows: any[], ep: any): Row[] {
   const missing = new Set<string>(ep.missing ?? [""]);
-  return rows.map((r0) => {
+  const cols = columnsOf(rows);
+  const out = rows.map((r0) => {
     const r = ep.flatten ?? true ? flatten(r0) : r0 && typeof r0 === "object" ? r0 : { value: r0 };
     const o: Row = {};
     for (const [k, v] of Object.entries(r)) {
@@ -287,6 +302,7 @@ export function clean(rows: any[], ep: any): Row[] {
     }
     return o;
   });
+  return cols ? withColumns(out, cols) : out;
 }
 
 /** The endpoint with the spec's file-reading params ("in": "records": sheet, header_row) applied. */
@@ -342,7 +358,9 @@ export async function fetchRequest(client: Client, ep0: any, params: Record<stri
       break;
     }
     prev = sig;
+    const order = columnsOf(got) ?? columnsOf(rows);
     rows = rows.concat(got);
+    if (order) withColumns(rows, order);
     const head = resp.body.subarray(0, 1).toString("latin1");
     if (ep.total && (head === "{" || head === "[")) {
       const t = Number(dig(resp.json(), ep.total));
@@ -513,7 +531,7 @@ export function manualItems(pack: Pack, spec: Spec): any[] {
     const limit = Number(r.max_rows || size);
     const pages = ["none", "cursor", "link"].includes(pg.type) ? 1 : Math.min(25, Math.max(1, Math.ceil(limit / size)));
     const rec: string = ep.records || "";
-    const ext = ({ $csv: "csv", $xlsx: "xlsx", $xls: "xls" } as Record<string, string>)[rec] ?? (rec.startsWith("$zip:") ? "zip" : "json");
+    const ext = ({ $csv: "csv", $tsv: "txt", $xlsx: "xlsx", $xls: "xls" } as Record<string, string>)[rec] ?? (rec.startsWith("$zip:") ? "zip" : "json");
     for (let i = 0; i < pages; i++) {
       const q: Record<string, unknown> = { ...query };
       const b = body !== null ? { ...body } : null;

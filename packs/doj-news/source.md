@@ -9,7 +9,7 @@ the 94 U.S. Attorney's Offices, FBI, DEA, ATF and other components) and Justice 
 - **This is text, not statistics.** A count of press releases is a count of announcements, which depend
   on press office practice, not a measure of prosecutions, convictions or crime. Say so whenever releases
   are counted. For case statistics use the U.S. Sentencing Commission or EOUSA caseload reports (not
-  covered here); for crime counts use the `fbi` pack; for court filings, `courtlistener` if present.
+  covered here); for crime counts use the `fbi` pack; for federal court caseload statistics, `uscourts`; for victimization and prisoners, `bjs`.
 - Not here: speeches and congressional testimony (no API endpoint; `/api/v1/speeches.json` answers 404).
 
 ## Endpoints and datasets

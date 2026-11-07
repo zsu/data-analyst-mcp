@@ -1,0 +1,77 @@
+{
+ "base_url": "https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents",
+ "timeout": 60,
+ "endpoints": {
+  "major_foreign_holders": {
+   "path": "/slt_table5.txt",
+   "method": "GET",
+   "description": "Major Foreign Holders of Treasury Securities (SLT Table 5): holdings by country, the latest 13 months, billions of dollars, plus All Other, Grand Total and the foreign-official split (bills, bonds and notes). One row per country and month.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep only these rows: a country name as published (Japan; China, Mainland; Korea, South), or a list; case-insensitive. Omit for every row."
+    }
+   },
+   "records": "$tsv",
+   "header_row": 6,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 10000
+  },
+  "major_foreign_holders_history": {
+   "path": "/mfhhis01.txt",
+   "method": "GET",
+   "description": "Major Foreign Holders history (mfhhis01.txt): the same table for every month from March 2000 through the last completed year, billions of dollars, one row per country and month. Series breaks are marked by footnotes in the file.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep only these rows (a name as published, or a list; case-insensitive)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first month to keep, YYYY-MM"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last month to keep, YYYY-MM"
+    },
+    "include_comparison": {
+     "in": "spec",
+     "desc": "true keeps the previous-series value of a series-break month (June 2002-2011, March 2000), marked comparison_only; default false"
+    }
+   },
+   "records": "$tsv",
+   "header_row": 0,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 100000
+  },
+  "holdings_by_country": {
+   "path": "/slt_table1.txt",
+   "method": "GET",
+   "description": "SLT Table 1: U.S. long-term securities held by foreign residents, by country and month (from September 2011), millions of dollars: holdings, net U.S. sales and valuation change for Treasuries, agency bonds, corporate and other bonds, and equities.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep only these countries (name as published, or the 5-digit TIC country code; a list works); case-insensitive"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first month to keep, YYYY-MM"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last month to keep, YYYY-MM"
+    }
+   },
+   "records": "$tsv",
+   "header_row": 9,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 200000
+  }
+ }
+}

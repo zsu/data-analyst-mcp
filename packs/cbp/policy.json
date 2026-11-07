@@ -1,0 +1,85 @@
+{
+  "id": "cbp",
+  "title": "CBP nationwide encounters: border apprehensions and inadmissibles by month, region, demographic and citizenship",
+  "agency": "U.S. Department of Homeland Security, Customs and Border Protection",
+  "depth": "standard",
+  "domains": [
+    "immigration",
+    "border security"
+  ],
+  "keywords": [
+    "cbp",
+    "customs and border protection",
+    "border encounters",
+    "southwest border",
+    "border crossings",
+    "border apprehensions",
+    "border patrol",
+    "inadmissibles",
+    "migrant encounters",
+    "unaccompanied children",
+    "uac",
+    "family units",
+    "northern border",
+    "office of field operations"
+  ],
+  "questions": [
+    "southwest border encounters by month",
+    "border apprehensions this year vs last year",
+    "encounters by citizenship (e.g. Venezuela, Mexico)",
+    "unaccompanied children encountered at the border",
+    "encounters by state or Border Patrol sector"
+  ],
+  "homepage": "https://www.cbp.gov/newsroom/stats/nationwide-encounters",
+  "terms_url": "https://www.cbp.gov/document/stats/nationwide-encounters",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 500000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.cbp.gov",
+      "probe": "https://www.cbp.gov/document/stats/nationwide-encounters",
+      "hosts": [
+        "www.cbp.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://www.cbp.gov/document/stats/nationwide-encounters, download the newest 'Nationwide Encounters' CSV (by AOR or by state), and upload it with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are replaced monthly, with revisions to earlier months."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CBP statistics are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Customs and Border Protection, Nationwide Encounters ({dataset}), cbp.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which encounters? Southwest Land Border, Northern Land Border, or nationwide (including Other: airports and seaports); Border Patrol apprehensions between ports or OFO inadmissibles at ports, or both. Default: Southwest Land Border, both components, said as such.",
+    "Which months? Federal fiscal years (October-September); the current year is partial (FYTD). Default: the latest month and the same month a year earlier."
+  ],
+  "formats": [
+    "csv",
+    "html"
+  ],
+  "aliases": [
+    "CBP",
+    "Customs and Border Protection",
+    "Border Patrol"
+  ]
+}

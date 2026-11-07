@@ -1,0 +1,26 @@
+{
+ "base_url": "https://wonder.cdc.gov",
+ "timeout": 60,
+ "endpoints": {
+  "export": {
+   "path": "https://wonder.cdc.gov/",
+   "method": "GET",
+   "description": "A CDC WONDER query result, exported from the WONDER web site (Export, tab-delimited .txt) and uploaded: deaths, populations and rates by the Group By fields chosen, e.g. underlying cause of death by year, state, age, sex, race. Manual only: wonder.cdc.gov refuses this client.",
+   "params": {
+    "database": {
+     "in": "spec",
+     "required": true,
+     "desc": "the WONDER database the query ran on, as WONDER names it (e.g. 'Underlying Cause of Death, 2018-2023, Single Race'), cited with the result"
+    },
+    "query": {
+     "in": "spec",
+     "desc": "what the query selected and grouped by, in words (for INSTRUCTIONS.md and the citation)"
+    }
+   },
+   "records": "$tsv",
+   "header_row": 1,
+   "paging": {"type": "none"},
+   "max_rows": 500000
+  }
+ }
+}

@@ -1,0 +1,91 @@
+{
+  "id": "cpsc",
+  "title": "Consumer Product Safety Commission: product recalls and NEISS injury data",
+  "agency": "U.S. Consumer Product Safety Commission",
+  "depth": "standard",
+  "domains": [
+    "consumer safety",
+    "product recalls",
+    "injuries",
+    "health"
+  ],
+  "keywords": [
+    "cpsc",
+    "consumer product safety commission",
+    "product recall",
+    "recalls",
+    "recalled product",
+    "saferproducts",
+    "crib recall",
+    "dresser tip-over",
+    "toy recall",
+    "neiss",
+    "national electronic injury surveillance system",
+    "emergency department injuries",
+    "product-related injuries",
+    "injury estimates",
+    "consumer product injuries"
+  ],
+  "questions": [
+    "consumer product recalls announced this year",
+    "recalls of cribs, dressers or strollers",
+    "recalled products made in China",
+    "recalls that mention deaths",
+    "emergency department visits for injuries involving a product (NEISS)",
+    "national estimate of injuries by product, age or sex"
+  ],
+  "homepage": "https://www.cpsc.gov/Recalls",
+  "terms_url": "https://www.saferproducts.gov/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 1000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.saferproducts.gov/RestWebServices",
+      "probe": "https://www.saferproducts.gov/RestWebServices/Recall?format=json&RecallNumber=27066",
+      "hosts": [
+        "www.saferproducts.gov"
+      ]
+    },
+    "manual": {
+      "how": "Recalls: open the Recall API link (https://www.saferproducts.gov/RestWebServices/Recall?format=json&RecallDateStart=YYYY-MM-DD) in a browser and save the JSON. NEISS: open https://www.cpsc.gov/cgibin/NEISSQuery/home.aspx, pick a User Affiliation, choose the year under Archived Annual NEISS Data with File Format Tab Delimited Text, click Find Data, save the file. Upload with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Recalls are added and updated daily; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "CPSC recall notices and NEISS public-use data are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Consumer Product Safety Commission, {dataset}, saferproducts.gov and cpsc.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Recalls or injuries? Recalls list products CPSC and firms recalled (counts of recalls and units); NEISS estimates emergency-department visits for injuries associated with products (national estimates from a sample, not counts of incidents). Default: recalls for 'recalled products', NEISS for 'how many injuries'.",
+    "Which period? Recalls by announcement date (RecallDateStart/End); NEISS by treatment year. Default: the last full calendar year."
+  ],
+  "formats": [
+    "json",
+    "tsv",
+    "xlsx"
+  ],
+  "aliases": [
+    "CPSC",
+    "Consumer Product Safety Commission",
+    "NEISS",
+    "SaferProducts.gov"
+  ]
+}

@@ -1,0 +1,166 @@
+{
+ "base_url": "https://foreignassistance.gov",
+ "timeout": 180,
+ "endpoints": {
+  "by_country": {
+   "path": "/static/us_foreign_aid_country.csv",
+   "method": "GET",
+   "description": "U.S. foreign assistance by recipient country (and regional or worldwide programs), transaction type and fiscal year, current and constant dollars (ForeignAssistance.gov Data page, 'By Country').",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep these countries: ISO3 code (UKR) or name as published (Ukraine); a list works"
+    },
+    "fiscal_year": {
+     "in": "spec",
+     "desc": "keep these fiscal years (a year or a list)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first fiscal year to keep"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last fiscal year to keep"
+    },
+    "transaction_type": {
+     "in": "spec",
+     "desc": "keep these transaction types: Obligations, Disbursements, Appropriated and Planned, President's Budget Requests (or their ids 2, 3, 1, 18)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 300000
+  },
+  "by_dac_sector": {
+   "path": "/static/us_foreign_aid_dac_sector.csv",
+   "method": "GET",
+   "description": "U.S. foreign assistance by OECD DAC (international) category and sector, transaction type and fiscal year, all countries together.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep these countries: ISO3 code (UKR) or name as published (Ukraine); a list works"
+    },
+    "fiscal_year": {
+     "in": "spec",
+     "desc": "keep these fiscal years (a year or a list)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first fiscal year to keep"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last fiscal year to keep"
+    },
+    "transaction_type": {
+     "in": "spec",
+     "desc": "keep these transaction types: Obligations, Disbursements, Appropriated and Planned, President's Budget Requests (or their ids 2, 3, 1, 18)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 300000
+  },
+  "by_usg_sector": {
+   "path": "/static/us_foreign_aid_usg_sector.csv",
+   "method": "GET",
+   "description": "U.S. foreign assistance by U.S. government category and sector (health, peace and security, humanitarian, economic development ...) and country, by transaction type and fiscal year.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep these countries: ISO3 code (UKR) or name as published (Ukraine); a list works"
+    },
+    "fiscal_year": {
+     "in": "spec",
+     "desc": "keep these fiscal years (a year or a list)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first fiscal year to keep"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last fiscal year to keep"
+    },
+    "transaction_type": {
+     "in": "spec",
+     "desc": "keep these transaction types: Obligations, Disbursements, Appropriated and Planned, President's Budget Requests (or their ids 2, 3, 1, 18)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 300000
+  },
+  "by_managing_agency": {
+   "path": "/static/us_foreign_aid_implementing.csv",
+   "method": "GET",
+   "description": "U.S. foreign assistance by managing agency (USAID, State, Defense, HHS ...) and country, by transaction type and fiscal year.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep these countries: ISO3 code (UKR) or name as published (Ukraine); a list works"
+    },
+    "fiscal_year": {
+     "in": "spec",
+     "desc": "keep these fiscal years (a year or a list)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first fiscal year to keep"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last fiscal year to keep"
+    },
+    "transaction_type": {
+     "in": "spec",
+     "desc": "keep these transaction types: Obligations, Disbursements, Appropriated and Planned, President's Budget Requests (or their ids 2, 3, 1, 18)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 300000
+  },
+  "by_funding_agency": {
+   "path": "/static/us_foreign_aid_funding.csv",
+   "method": "GET",
+   "description": "U.S. foreign assistance by funding agency and funding account (appropriation account) and country, by transaction type and fiscal year.",
+   "params": {
+    "country": {
+     "in": "spec",
+     "desc": "keep these countries: ISO3 code (UKR) or name as published (Ukraine); a list works"
+    },
+    "fiscal_year": {
+     "in": "spec",
+     "desc": "keep these fiscal years (a year or a list)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first fiscal year to keep"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last fiscal year to keep"
+    },
+    "transaction_type": {
+     "in": "spec",
+     "desc": "keep these transaction types: Obligations, Disbursements, Appropriated and Planned, President's Budget Requests (or their ids 2, 3, 1, 18)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 300000
+  }
+ }
+}

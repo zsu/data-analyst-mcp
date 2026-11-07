@@ -1,0 +1,4 @@
+{
+ "GET https://nces.ed.gov/programs/digest/d25/tables/xls/tabn203.10.xlsx": "r001.xml",
+ "GET https://nces.ed.gov/ipeds/datacenter/data/HD2023_Dict.zip": "r002.bin"
+}

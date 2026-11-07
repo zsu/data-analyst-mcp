@@ -8,7 +8,7 @@ student group, with standard errors and NAEP's own significance tests.
   science, writing, civics, U.S. history, geography, economics, technology and engineering literacy,
   music. States versus the nation, change since 2019, gaps by race, sex, economic disadvantage.
 - Not here: state test results (each state's own exams, not comparable across states), graduation rates
-  and school finance (nces or ed packs if present), college outcomes (college-scorecard).
+  and school finance (nces), college outcomes (college-scorecard).
 - NAEP is a sample survey: every number is an estimate. It reports groups, never students or schools.
 
 ## Endpoints and datasets

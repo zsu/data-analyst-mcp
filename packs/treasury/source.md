@@ -11,7 +11,7 @@ interest expense and average rates on the debt, the debt limit, auctions, exchan
   rates for federal reporting; gifts to reduce the debt; savings bonds; buybacks.
 - Not here: market yields and the daily par yield curve (treasury-yields); GDP and CPI (bea, bls, fred; or
   the spec's `context` field here, for real dollars and "% of GDP"); budget projections (CBO); historical tables in
-  % of GDP and the President's budget (OMB); who holds the debt by country (Treasury TIC, not Fiscal Data);
+  % of GDP and the President's budget (OMB); who holds the debt by country (treasury-tic, not Fiscal Data);
   state and local finances (Census).
 - Deliver data plus a short answer by default; a report only when asked (see `guide`).
 

@@ -1,0 +1,91 @@
+{
+ "base_url": "https://www.saferproducts.gov/RestWebServices",
+ "timeout": 60,
+ "endpoints": {
+  "recalls": {
+   "path": "/Recall",
+   "method": "GET",
+   "description": "CPSC product recalls (SaferProducts.gov Recall API): one row per recall with products, units, hazards, remedies, injuries, manufacturers, retailers and importers. Give at least one filter; text filters match part of the field.",
+   "params": {
+    "RecallDateStart": {
+     "desc": "recalls announced on or after this date, YYYY-MM-DD"
+    },
+    "RecallDateEnd": {
+     "desc": "recalls announced on or before this date, YYYY-MM-DD"
+    },
+    "LastPublishDateStart": {
+     "desc": "recalls published or updated on or after this date, YYYY-MM-DD"
+    },
+    "RecallNumber": {
+     "desc": "CPSC recall number, e.g. 27066"
+    },
+    "ProductName": {
+     "desc": "part of a product name (crib, dresser)"
+    },
+    "ProductType": {
+     "desc": "part of CPSC's product type (Slides, Cribs, Dressers)"
+    },
+    "RecallTitle": {
+     "desc": "part of the recall title"
+    },
+    "RecallDescription": {
+     "desc": "part of the recall description"
+    },
+    "Manufacturer": {
+     "desc": "part of a manufacturer name"
+    },
+    "Retailer": {
+     "desc": "part of the retailer text (Amazon, Walmart)"
+    },
+    "Importer": {
+     "desc": "part of an importer name"
+    },
+    "Injury": {
+     "desc": "part of the injuries text (death, burn)"
+    },
+    "Remedy": {
+     "desc": "part of the remedy text (Refund, Repair, Replace)"
+    },
+    "hazard": {
+     "in": "spec",
+     "desc": "keep recalls whose hazard text contains this (case-insensitive); filtered here, because the API's own Hazard filter matches nothing"
+    },
+    "country": {
+     "in": "spec",
+     "desc": "keep recalls with this manufacturer country (China, Vietnam); filtered here"
+    }
+   },
+   "defaults": {
+    "format": "json"
+   },
+   "records": "",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000,
+   "flatten": false
+  },
+  "neiss": {
+   "path": "https://www.cpsc.gov/cgibin/NEISSQuery/home.aspx",
+   "method": "GET",
+   "description": "NEISS: one year of emergency-department injury cases involving consumer products (about 300,000 sampled cases a year, with national weights). Manual only: cpsc.gov refuses scripts; the user downloads the archived year as Tab Delimited Text (or Excel) and uploads it.",
+   "params": {
+    "year": {
+     "in": "spec",
+     "required": true,
+     "desc": "the data year, 2006 or later"
+    },
+    "product": {
+     "in": "spec",
+     "desc": "keep cases with this NEISS product code in Product_1, Product_2 or Product_3 (a code or a list; the codes are in the NEISS Coding Manual)"
+    }
+   },
+   "records": "$tsv",
+   "header_row": 1,
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 1000000
+  }
+ }
+}

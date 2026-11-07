@@ -1,0 +1,198 @@
+{
+ "base_url": "https://revenuedata.onrr.gov",
+ "timeout": 240,
+ "endpoints": {
+  "fiscal_year_revenue": {
+   "path": "/downloads/fiscal_year_revenue.csv",
+   "method": "GET",
+   "description": "Federal and Native American natural resource revenue (royalties, rents, bonuses, other) by fiscal year, land class and category, state, county, offshore region, revenue type, lease type, commodity and product, dollars (ONRR, FY2004 on).",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "commodity": {
+     "in": "spec",
+     "desc": "keep these commodities (Oil, Gas, Coal ...; as published, case-insensitive)"
+    },
+    "revenue_type": {
+     "in": "spec",
+     "desc": "keep these revenue types: Royalties, Rents, Bonus, Other revenues, Civil penalties, Inspection fees"
+    },
+    "land_class": {
+     "in": "spec",
+     "desc": "Federal or Native American"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 600000
+  },
+  "calendar_year_revenue": {
+   "path": "/downloads/calendar_year_revenue.csv",
+   "method": "GET",
+   "description": "The same revenue by calendar year (CY2003 on).",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "commodity": {
+     "in": "spec",
+     "desc": "keep these commodities (Oil, Gas, Coal ...; as published, case-insensitive)"
+    },
+    "revenue_type": {
+     "in": "spec",
+     "desc": "keep these revenue types: Royalties, Rents, Bonus, Other revenues, Civil penalties, Inspection fees"
+    },
+    "land_class": {
+     "in": "spec",
+     "desc": "Federal or Native American"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 600000
+  },
+  "monthly_revenue": {
+   "path": "/downloads/monthly_revenue.csv",
+   "method": "GET",
+   "description": "The same revenue by month (January 2003 on); a 42 MB file: filter by state and years.",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "commodity": {
+     "in": "spec",
+     "desc": "keep these commodities (Oil, Gas, Coal ...; as published, case-insensitive)"
+    },
+    "revenue_type": {
+     "in": "spec",
+     "desc": "keep these revenue types: Royalties, Rents, Bonus, Other revenues, Civil penalties, Inspection fees"
+    },
+    "land_class": {
+     "in": "spec",
+     "desc": "Federal or Native American"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 2000000
+  },
+  "fiscal_year_disbursements": {
+   "path": "/downloads/fiscal_year_disbursements.csv",
+   "method": "GET",
+   "description": "Where the revenue went: disbursements by fiscal year to the U.S. Treasury, states and counties, the Reclamation Fund, Land and Water Conservation Fund, Historic Preservation Fund, Native American tribes and individuals, other funds (FY2003 on).",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "fund_type": {
+     "in": "spec",
+     "desc": "keep these fund types as published (State and local governments, U.S. Treasury, Reclamation Fund ...)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 600000
+  },
+  "fiscal_year_production": {
+   "path": "/downloads/fiscal_year_production.csv",
+   "method": "GET",
+   "description": "Production volumes on federal and Native American lands and offshore by fiscal year, state, county, offshore region and product (oil bbl, gas mcf, coal tons ...).",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "product": {
+     "in": "spec",
+     "desc": "keep these products as published, e.g. Oil (bbl), Gas (mcf)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 600000
+  },
+  "calendar_year_production": {
+   "path": "/downloads/calendar_year_production.csv",
+   "method": "GET",
+   "description": "The same production by calendar year.",
+   "params": {
+    "state": {
+     "in": "spec",
+     "desc": "keep these states (full name as published, e.g. New Mexico; a list works)"
+    },
+    "from": {
+     "in": "spec",
+     "desc": "first year to keep (fiscal or calendar, as the file)"
+    },
+    "to": {
+     "in": "spec",
+     "desc": "last year to keep"
+    },
+    "product": {
+     "in": "spec",
+     "desc": "keep these products as published, e.g. Oil (bbl), Gas (mcf)"
+    }
+   },
+   "records": "$csv",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 600000
+  }
+ }
+}

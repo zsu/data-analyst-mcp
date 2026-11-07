@@ -1,0 +1,4 @@
+{
+ "GET https://www.saferproducts.gov/RestWebServices/Recall?format=json&RecallDateStart=2026-10-15&RecallDateEnd=2026-10-31": "r001.json",
+ "GET https://www.saferproducts.gov/RestWebServices/Recall?format=json&ProductType=Slides&RecallDateStart=2025-01-01": "r002.json"
+}

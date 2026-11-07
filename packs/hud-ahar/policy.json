@@ -1,0 +1,88 @@
+{
+  "id": "hud-ahar",
+  "title": "HUD Annual Homelessness Assessment Report (AHAR) data: Point-in-Time and Housing Inventory Counts",
+  "agency": "U.S. Department of Housing and Urban Development",
+  "depth": "standard",
+  "domains": [
+    "homelessness",
+    "housing"
+  ],
+  "keywords": [
+    "homeless",
+    "homelessness",
+    "people experiencing homelessness",
+    "point-in-time count",
+    "pit count",
+    "ahar",
+    "annual homelessness assessment report",
+    "unsheltered",
+    "sheltered homeless",
+    "chronically homeless",
+    "homeless veterans",
+    "veteran homelessness",
+    "homeless youth",
+    "continuum of care",
+    "coc",
+    "housing inventory count",
+    "hic",
+    "shelter beds",
+    "emergency shelter",
+    "permanent supportive housing",
+    "rapid re-housing"
+  ],
+  "questions": [
+    "number of people experiencing homelessness by state",
+    "unsheltered homeless count in a city or Continuum of Care",
+    "change in homelessness since 2020",
+    "homeless veterans by state",
+    "chronically homeless individuals",
+    "emergency shelter and permanent supportive housing beds by CoC"
+  ],
+  "homepage": "https://www.huduser.gov/portal/datasets/ahar.html",
+  "terms_url": "https://www.huduser.gov/portal/datasets/ahar/2025-ahar-part-1-pit-estimates-of-homelessness-in-the-us.html",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 100000
+  },
+  "routes": {
+    "manual": {
+      "how": "Open https://www.huduser.gov/portal/datasets/ahar/2025-ahar-part-1-pit-estimates-of-homelessness-in-the-us.html in a web browser and download the workbook (2007 - 2025 Point-in-Time Estimates by CoC or by State, Housing Inventory Count by CoC or State, PIT Veteran Counts); huduser.gov refuses scripts. Upload the workbook as saved (.xlsb or .xlsx) with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Workbooks are replaced once a year with the new AHAR edition."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "HUD's AHAR data are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Housing and Urban Development, Annual Homelessness Assessment Report (AHAR), {dataset}, HUD User, downloaded {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which year? Each sheet is one count year (a single night in late January). Default: the latest year, with 2020 or the prior year for change.",
+    "Which population? Total, sheltered, unsheltered, individuals, people in families, chronically homeless, veterans, youth: these overlap. Default: total, split into sheltered and unsheltered.",
+    "Which geography? CoCs are HUD's planning areas (a city, a county or a balance of state), not cities or counties as such. Default: states, or the CoC that contains the place named, said as such."
+  ],
+  "formats": [
+    "xlsb",
+    "xlsx"
+  ],
+  "aliases": [
+    "AHAR",
+    "PIT count",
+    "Point-in-Time count",
+    "Housing Inventory Count"
+  ]
+}

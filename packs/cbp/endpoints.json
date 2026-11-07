@@ -1,0 +1,31 @@
+{
+ "base_url": "https://www.cbp.gov",
+ "timeout": 120,
+ "document_page": "/document/stats/nationwide-encounters",
+ "endpoints": {
+  "list_files": {
+   "path": "/document/stats/nationwide-encounters",
+   "method": "GET",
+   "description": "The encounter data files CBP currently publishes (read from its Nationwide Encounters document page): one row per CSV with its path for the encounters request. The files are replaced every month.",
+   "params": {},
+   "records": "",
+   "paging": {"type": "none"},
+   "max_rows": 1000
+  },
+  "encounters": {
+   "path": "/sites/default/files/{file}.csv",
+   "method": "GET",
+   "description": "Nationwide encounters (OFO inadmissibles and Border Patrol apprehensions under Title 8) by fiscal year and month, component, land border region, area of responsibility or state, demographic and citizenship. Use list_files for the current file paths.",
+   "params": {
+    "file": {"in": "path", "raw": true, "required": true, "desc": "the file's path under /sites/default/files without .csv, from list_files, e.g. 2026-11/nationwide-encounters-fy24-fy27-oct-aor"},
+    "region": {"in": "spec", "desc": "keep these Land Border Region values: Southwest Land Border, Northern Land Border, Other"},
+    "component": {"in": "spec", "desc": "keep Office of Field Operations or U.S. Border Patrol"},
+    "fiscal_year": {"in": "spec", "desc": "keep these fiscal years as published (2025; the current year is '2027 (FYTD)')"},
+    "citizenship": {"in": "spec", "desc": "keep these citizenships as published (MEXICO, VENEZUELA ...)"}
+   },
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 500000
+  }
+ }
+}

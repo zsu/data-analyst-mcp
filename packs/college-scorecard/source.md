@@ -6,7 +6,7 @@ cost, aid, debt, completion, earnings and admissions data for every U.S. college
 - Compare colleges on tuition, net price, admission rate, completion rate, median debt, Pell share and
   median earnings 6, 7 or 10 years after entry; list schools in a state, by ownership or by degree type.
 - Not here: K-12 achievement (naep), enrollment and finance surveys beyond what Scorecard carries (IPEDS
-  itself, not covered), student loan portfolio totals (fred, treasury), earnings by occupation (bls).
+  itself: nces), student loan portfolio totals (fred, treasury), earnings by occupation (bls).
 - One row per institution (UNITID). Field-of-study (program) data exist but are very large per school.
 
 ## Endpoints and datasets

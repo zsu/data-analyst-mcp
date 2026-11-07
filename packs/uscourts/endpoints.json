@@ -1,0 +1,22 @@
+{
+ "base_url": "https://www.uscourts.gov",
+ "timeout": 90,
+ "endpoints": {
+  "table": {
+   "path": "/sites/default/files/document/{file}.xlsx",
+   "method": "GET",
+   "description": "One caseload statistics table of the federal courts as its Excel file (bankruptcy filings F-2, F-5A; Statistical Tables for the Federal Judiciary; Federal Judicial Caseload Statistics; Judicial Business), by circuit and district. Default: every line numbered (row, col1...) to find the header lines; then header_lines names the columns.",
+   "params": {
+    "file": {"in": "path", "required": true, "desc": "the file name without .xlsx as on the table's page, e.g. bf_f2_0930.2026 (bankruptcy filings, table F-2, 12 months to Sept 30, 2026) or stfj_b_630.2026"},
+    "sheet": {"in": "records", "desc": "sheet name or number (default 1)"},
+    "header_lines": {"in": "records", "desc": "the header line numbers, e.g. '3-5'"},
+    "header_row": {"in": "records", "desc": "one header line instead; 0 (default) returns every line numbered"},
+    "carry": {"in": "records", "desc": "which header lines span to the right over blank cells: top (default), all, none"}
+   },
+   "defaults": {"header_row": 0},
+   "records": "$xlsx",
+   "paging": {"type": "none"},
+   "max_rows": 20000
+  }
+ }
+}

@@ -10,7 +10,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Question | Primary | Cross-check / context | Note |
 |---|---|---|---|
 | An address or a point to census geographies (FIPS, tract, district) | census-geocoder | census, cdc, hud, fema | Geocode first, then join by FIPS code; match the geography vintage to the data's year. |
-| Federal debt, deficit, interest costs | treasury | bea, fred, cbo publications via govinfo | Debt and deficits from Treasury (MTS, Debt to the Penny); GDP from BEA (fiscal-year GDP from quarters) for shares. |
+| Federal debt, deficit, interest costs | treasury | bea, fred, treasury-tic, cbo publications via govinfo | Debt and deficits from Treasury (MTS, Debt to the Penny); GDP from BEA (fiscal-year GDP from quarters) for shares. |
 | Market interest rates, yield curve | treasury-yields | fred | Treasury par yields; FRED for long histories and policy rates. Average rates on outstanding debt are in treasury. |
 | GDP, income, consumption, PCE inflation | bea | fred | BEA is the producer; FRED for vintages (ALFRED). |
 | Jobs, unemployment, payrolls, JOLTS | bls | dol, fred | BLS CPS/CES/JOLTS; DOL weekly UI claims; FRED for long series. |
@@ -58,14 +58,27 @@ Use `find_sources` with the question for a ranked suggestion.
 | Weather and climate | noaa | nws | NOAA NCEI history; NWS is forecasts and the last week of observations only. |
 | Earthquakes, water, hazards | usgs | fema | USGS events and water; FEMA declarations and claims. |
 | Disasters and insurance | fema | usaspending, census | Declarations, NFIP, public assistance. |
-| Crime and justice | fbi | doj-news, census | NIBRS transition: participation changed sharply in 2021. |
-| Higher education | college-scorecard | naep, census | Scorecard institution data. |
+| Crime and justice | fbi | bjs, uscourts, doj-news, census | NIBRS transition: participation changed sharply in 2021. Crimes known to police (fbi) differ from victimizations (bjs NCVS, including crimes not reported). |
+| Higher education | college-scorecard | nces, naep, census | Scorecard institution data; IPEDS enrollment and completions (nces). |
 | K-12 achievement | naep | census | NAEP estimates have standard errors; test significance. |
 | Federal contracting labor rates | gsa-calc | usaspending | CALC+ ceiling rates. |
 | Food composition and nutrients | usda-fooddata | cdc | FoodData Central; one row per food and nutrient. |
 | Patents and trademarks | uspto | sec | USPTO Open Data Portal (key needs a USPTO.gov account). |
 | Renewable energy resources | nrel | eia | NREL resource and incentive data. |
 | International comparisons | world-bank | bea, fred | World Bank indicators: check currency and base year. |
+| Who holds U.S. Treasury debt abroad, foreign purchases of U.S. securities | treasury-tic | treasury, fed-board | Major Foreign Holders (billions, all Treasury securities) vs SLT long-term holdings (millions): different measures; custody bias by country. |
+| Crime victimization, crimes not reported to police; prisoners, jails, probation, parole | bjs | fbi, census | BJS report tables give official rates and SEs; NCVS Select records need the weights. |
+| Federal court and bankruptcy caseloads | uscourts | bjs, doj-news | Caseload tables by circuit and district for 1-, 3- or 12-month periods. |
+| Product recalls (non-vehicle) and product-related injuries | cpsc | nhtsa, fda | Recalls are announcements; NEISS estimates are weighted samples (manual download). |
+| Homelessness counts and shelter capacity | hud-ahar | hud, census | One night in January (PIT); manual download from HUD User. |
+| Deaths by cause with age-adjusted rates, births (final vital statistics) | cdc-wonder | cdc, census | Manual WONDER export; nine-or-fewer rule; cdc's Socrata tables for provisional counts. |
+| K-12 enrollment, teachers, school finance; college enrollment and completions | nces | college-scorecard, naep, census | Digest tables for totals; IPEDS files for institutions. |
+| NSF research grants | nsf | nih, usaspending | Award Search API; obligated vs estimated totals. |
+| U.S. foreign aid by country, sector, agency | foreign-assistance | usaspending, world-bank | Obligations vs disbursements; regional rows are not countries. |
+| Driving, roads, vehicles, licensed drivers, fuel taxes by state | fhwa | bts, eia, census | Highway Statistics tables; census population for per-capita figures. |
+| Federal mineral and energy revenue, disbursements to states, production on federal lands | onrr | eia, treasury | Revenue by where the resource is; offshore and Native American revenue have no state. |
+| Border encounters by month, region, citizenship | cbp | dhs-ohss | Monthly files replaced each month; encounters are events, not people. |
+| SBA 7(a) and 504 loans by state, industry, lender | sba | usaspending, fdic | Loan-level FOIA files, streamed and filtered. |
 | Long histories, many indicators at once, data vintages | fred | the producing agency's pack | FRED re-publishes; cite the original source too; ALFRED for as-of vintages. |
 
 ## Use instead
@@ -110,15 +123,20 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | acf | standard | none | welfare, cash assistance, child care, safety net, state spending, federal grants to states | HHS Administration for Children and Families program data (TANF financial and caseload data, CCDF expenditures) |
 | actuaries | standard | none | social security, medicare, health spending, entitlement programs, long-term fiscal outlook | Social Security and Medicare Trustees Reports and National Health Expenditure data (SSA and CMS actuaries) |
 | bea | deep | required (BEA_API_KEY) | economy, national accounts, income, regional economy, international trade | Bureau of Economic Analysis (BEA) Data API and bulk files |
+| bjs | standard | none | crime, criminal justice, public safety, corrections | Bureau of Justice Statistics: National Crime Victimization Survey and corrections statistics |
 | bls | deep | optional (BLS_API_KEY) | labor, employment, prices, inflation, wages, productivity | Bureau of Labor Statistics Public Data API |
 | bts | standard | none | transportation, freight, travel | Bureau of Transportation Statistics Open Data (data.bts.gov) |
+| cbp | standard | none | immigration, border security | CBP nationwide encounters: border apprehensions and inadmissibles by month, region, demographic and citizenship |
 | cdc | standard | none | health, mortality, public health | CDC Open Data (data.cdc.gov) |
+| cdc-wonder | standard | none | health, mortality, vital statistics | CDC WONDER: mortality, natality and population query results (manual export) |
 | census | standard | required (CENSUS_API_KEY) | demographics, population, income, housing, poverty, education, program participation, international trade, state and local government finance, economic indicators, survey microdata | Census Bureau Data API (ACS, decennial census, population estimates, SIPP, economic indicators, international trade, government finances) |
+| census-geocoder | standard | none | geography, demographics | Census Geocoder (addresses and coordinates to census geographies) |
 | cfpb | standard | none | finance, consumer protection | CFPB Consumer Complaint Database |
 | clinical-trials | standard | none | health, clinical research | ClinicalTrials.gov (API v2) |
 | cms | standard | none | health, health care, medicare | CMS Provider Data and Medicare data (data.cms.gov) |
 | college-scorecard | standard | optional (DATA_GOV_API_KEY) | education, higher education, student debt | College Scorecard (U.S. Department of Education) |
 | congress | standard | optional (DATA_GOV_API_KEY) | legislation, congress, votes | Congress.gov API (Library of Congress) with House and Senate roll-call votes |
+| cpsc | standard | none | consumer safety, product recalls, injuries, health | Consumer Product Safety Commission: product recalls and NEISS injury data |
 | dhs-ohss | standard | none | immigration, demographics | DHS Office of Homeland Security Statistics: Yearbook of Immigration Statistics |
 | doj-news | standard | none | justice, law enforcement, news releases | Department of Justice News (justice.gov press releases and blog) |
 | dol | standard | optional (DOL_API_KEY) | workplace safety, labor enforcement, unemployment insurance, labor, unemployment trust fund | Department of Labor (DOL Open Data API: OSHA, WHD, ETA unemployment claims, MSHA; OUI unemployment insurance trust fund files) |
@@ -133,33 +151,42 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | federal-register | standard | none | legislation, regulation, executive actions | Federal Register (federalregister.gov API) |
 | fema | standard | none | disasters, emergency management, housing, insurance, federal spending | OpenFEMA (FEMA open data API) |
 | fhfa | standard | none | housing, house prices, mortgage finance | FHFA House Price Index, conforming loan limits and Public Use Databases (fhfa.gov files) |
+| fhwa | standard | none | transportation, highways, energy | FHWA Highway Statistics: travel, drivers, vehicles, roads, motor fuel and highway finance by state |
+| foreign-assistance | standard | none | foreign aid, federal spending, international | ForeignAssistance.gov: U.S. foreign aid by country, sector and agency |
 | fred | deep | optional (FRED_API_KEY) | economy, finance, federal budget, prices, interest rates, revisions | FRED, ALFRED and GeoFRED (Federal Reserve Bank of St. Louis) |
 | fsa | standard | none | education, student loans, federal credit, higher education finance | Federal Student Aid Data Center (student loan portfolio, Title IV volume by school) |
 | govinfo | standard | optional (DATA_GOV_API_KEY) | legislation, regulation, government publications | GovInfo (Government Publishing Office API) |
 | gsa-calc | standard | none | federal procurement, contracting, labor rates | GSA CALC+ Labor Ceiling Rates (Quick Rate API) |
 | hud | standard | required (HUD_USER_TOKEN) | housing | HUD Fair Market Rents and Income Limits API (HUD User) |
+| hud-ahar | standard | none | homelessness, housing | HUD Annual Homelessness Assessment Report (AHAR) data: Point-in-Time and Housing Inventory Counts |
 | ipums | deep | required (IPUMS_API_KEY) | labor, earnings, income, poverty, demographics, immigration, health insurance, health care spending, access to care, survey microdata | IPUMS microdata (USA/ACS, CPS and other collections) |
 | irs-soi | standard | none | taxes, income, migration, geography | IRS Statistics of Income: individual income tax data by ZIP code, county, state and migration (irs.gov) |
 | medicaid | standard | none | health, health care, medicaid, federal spending, prescription drugs | Medicaid and CHIP open data (data.medicaid.gov) |
 | naep | standard | none | education, k-12, student achievement | NAEP, The Nation's Report Card (NAEP Data Service) |
+| nces | standard | none | education, higher education | National Center for Education Statistics: Digest of Education Statistics tables and IPEDS data files |
 | nhtsa | standard | none | vehicle safety, transportation, consumer protection | NHTSA Vehicle Safety APIs (recalls, complaints, NCAP ratings, vPIC) |
 | nih | standard | none | health, research funding, science | NIH RePORTER (research grants) |
 | noaa | standard | optional (NOAA_API_KEY) | weather, climate, environment | NOAA NCEI climate data (Access Data Service, Climate Data Online) |
 | nrel | standard | optional (DATA_GOV_API_KEY) | energy, transportation, environment | NREL / NLR Developer APIs (alt fuel stations, utility rates, solar resource, PVWatts) |
+| nsf | standard | none | science, research funding, federal grants | National Science Foundation awards (NSF Award Search API) |
 | nws | standard | none | weather, emergency management | National Weather Service API (forecasts, alerts, observations) |
 | nyfed | standard | none | monetary policy, interest rates, federal debt financing, financial conditions | New York Fed Markets Data API (reference rates, SOMA, Treasury operations, primary dealers) |
 | omb | standard | none | federal budget, public finance, federal debt, federal credit | OMB President's Budget data (Historical Tables, Public Budget Database, Federal Credit Supplement) via GovInfo |
+| onrr | standard | none | energy, federal revenue, public lands | ONRR natural resources revenue data: federal and Native American royalties, rents, bonuses, disbursements and production |
 | open-payments | standard | none | health, health care, industry payments | CMS Open Payments (openpaymentsdata.cms.gov) |
 | opm | deep | none | federal workforce, government employment, public sector pay, personnel | OPM Federal Workforce Data (FWD / EHRI) |
 | pbgc | standard | none | pensions, retirement, social insurance | PBGC Pension Insurance Data Tables (single-employer and multiemployer programs) |
 | philfed | standard | none | macroeconomic forecasts, economic outlook, inflation expectations, real-time data | Philadelphia Fed Real-Time Data Research Center (Survey of Professional Forecasters, Greenbook/Tealbook, Livingston Survey, Real-Time Data Set) |
 | regulations | standard | optional (DATA_GOV_API_KEY) | legislation, regulation, rulemaking | Regulations.gov (API v4) |
+| sba | standard | none | small business, federal lending, federal spending | SBA loan data: 7(a) and 504 loans (FOIA loan-level files), activity reports, disaster loans |
 | sec | standard | none | finance, corporations, securities | SEC EDGAR (XBRL financial data, filings, full-text search) |
 | senate-lobbying | standard | optional (LDA_API_KEY) | legislation, lobbying, influence | Lobbying Disclosure (LDA.gov API) |
 | snapqc | standard | none | nutrition assistance, social safety net, household microdata, program administration | SNAP Quality Control (QC) public-use microdata: characteristics of SNAP households (snapqcdata.net) |
 | treasury | deep | none | federal budget, federal debt, public finance, spending, revenue | U.S. Treasury Fiscal Data (fiscaldata.treasury.gov) |
+| treasury-tic | standard | none | federal debt, international finance, capital flows | Treasury International Capital (TIC): foreign holdings of U.S. Treasury and other securities |
 | treasury-yields | standard | none | interest rates, bond market, finance | Treasury Daily Interest Rate Statistics (home.treasury.gov) |
 | usaspending | standard | none | spending, federal budget, procurement, grants | USAspending.gov API (federal awards and spending) |
+| uscourts | standard | none | courts, criminal justice, bankruptcy | U.S. Courts caseload statistics: federal court and bankruptcy filings, terminations and pending cases |
 | usda-fna | standard | none | nutrition assistance, social safety net, state policy, program administration, school meals | USDA Food and Nutrition Administration: SNAP, WIC and child nutrition program data, SNAP State Options Report and SNAP State Activity Reports |
 | usda-fooddata | standard | optional (DATA_GOV_API_KEY) | nutrition, food, health, agriculture | USDA FoodData Central |
 | usda-nass | standard | required (USDA_NASS_API_KEY) | agriculture, food | USDA NASS Quick Stats |

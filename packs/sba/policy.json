@@ -1,0 +1,86 @@
+{
+  "id": "sba",
+  "title": "SBA loan data: 7(a) and 504 loans (FOIA loan-level files), activity reports, disaster loans",
+  "agency": "U.S. Small Business Administration",
+  "depth": "standard",
+  "domains": [
+    "small business",
+    "federal lending",
+    "federal spending"
+  ],
+  "keywords": [
+    "sba",
+    "small business administration",
+    "sba loans",
+    "7(a) loans",
+    "7a loans",
+    "504 loans",
+    "sba lenders",
+    "certified development company",
+    "small business lending",
+    "loan charge-offs",
+    "sba loans by state",
+    "sba loans by industry",
+    "disaster loans"
+  ],
+  "questions": [
+    "SBA 7(a) loans approved in a state by fiscal year",
+    "504 loans by industry (NAICS)",
+    "largest SBA lenders",
+    "charge-off rate of SBA loans",
+    "SBA loans to restaurants in a state"
+  ],
+  "homepage": "https://data.sba.gov/",
+  "terms_url": "https://data.sba.gov/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 1000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://data.sba.gov",
+      "probe": "https://data.sba.gov/data.json",
+      "hosts": [
+        "data.sba.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://data.sba.gov/, find '7(a) & 504 FOIA', download the CSV (FOIA - 7(a) or 504, by period) and upload it with ingest; the filters apply to the uploaded file."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Files are replaced quarterly (the as-of date is in the file name)."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "SBA publishes these loan records under FOIA as public data; U.S. government works (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Small Business Administration, {dataset}, data.sba.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which program? 7(a) (lender loans with an SBA guaranty) or 504 (CDC loans for real estate and equipment, with a third-party lender part): they are different files and different dollars. Default: 7(a), said as such.",
+    "Approvals or outcomes? GrossApproval is the approved amount (504: the CDC's part; ThirdPartyDollars is the lender's); LoanStatus and GrossChargeOffAmount describe outcomes as of the file's date. Default: count and dollars approved by ApprovalFY."
+  ],
+  "formats": [
+    "csv",
+    "json"
+  ],
+  "aliases": [
+    "SBA",
+    "Small Business Administration",
+    "7(a)",
+    "504"
+  ]
+}

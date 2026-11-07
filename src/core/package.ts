@@ -15,7 +15,7 @@ import type { SourceRecord } from "./context.js";
 import type { Pack, Row, Spec } from "./packs.js";
 import * as pol from "./policy.js";
 import { pyStr, stableJson } from "./py.js";
-import { readCsv, writeCsv } from "./tabular.js";
+import { columnsOf, readCsv, writeCsv } from "./tabular.js";
 
 const LABEL_ONLY = new Set(["description", "label", "labels", "notes", "source_note"]);
 
@@ -90,17 +90,8 @@ function rowsAndCols(table: Table): [Row[], string[]] {
   return [table, cols];
 }
 
-const COLUMNS = Symbol("columns");
-
-/** The rows, marked with the column order to write (Python's dict order, for keys JS would reorder). */
-export function withColumns<T extends Row[]>(rows: T, columns: string[]): T {
-  Object.defineProperty(rows, COLUMNS, { value: [...columns], enumerable: false, configurable: true });
-  return rows;
-}
-
-export function columnsOf(rows: unknown): string[] | undefined {
-  return Array.isArray(rows) ? (rows as any)[COLUMNS] : undefined;
-}
+// the column-order mark lives in tabular.ts, so file readers can set it too
+export { columnsOf, withColumns } from "./tabular.js";
 
 const sha256 = (file: string) => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 const nowIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, "+00:00");

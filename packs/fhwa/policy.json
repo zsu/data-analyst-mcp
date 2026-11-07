@@ -1,0 +1,91 @@
+{
+  "id": "fhwa",
+  "title": "FHWA Highway Statistics: travel, drivers, vehicles, roads, motor fuel and highway finance by state",
+  "agency": "U.S. Department of Transportation, Federal Highway Administration",
+  "depth": "standard",
+  "domains": [
+    "transportation",
+    "highways",
+    "energy"
+  ],
+  "keywords": [
+    "fhwa",
+    "federal highway administration",
+    "highway statistics",
+    "vehicle miles traveled",
+    "vmt",
+    "miles driven",
+    "licensed drivers",
+    "drivers by age",
+    "registered vehicles",
+    "vehicle registrations",
+    "public road mileage",
+    "road length",
+    "lane miles",
+    "functional system",
+    "gas tax",
+    "motor fuel tax",
+    "highway trust fund",
+    "highway finance"
+  ],
+  "questions": [
+    "vehicle miles traveled by state",
+    "miles driven per capita by state",
+    "licensed drivers by age and sex",
+    "registered vehicles by state",
+    "public road miles by state and functional system",
+    "state motor fuel tax receipts",
+    "Highway Trust Fund receipts attributable to each state"
+  ],
+  "homepage": "https://www.fhwa.dot.gov/policyinformation/statistics.cfm",
+  "terms_url": "https://www.fhwa.dot.gov/policyinformation/statistics.cfm",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 3,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://www.fhwa.dot.gov/policyinformation/statistics",
+      "probe": "https://www.fhwa.dot.gov/policyinformation/statistics/2023/xls/vm2.xlsx",
+      "hosts": [
+        "www.fhwa.dot.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://www.fhwa.dot.gov/policyinformation/statistics/<year>/<table>.cfm (e.g. 2023/vm2.cfm), click the XLSX link, save the workbook and upload it with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Tables are revised in place during the year; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "FHWA statistics are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Transportation, Federal Highway Administration, Highway Statistics {dataset}, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which edition and year? Highway Statistics <year> tables mostly hold that year's data (VM-2 2023 = travel in 2023); tables are revised in later editions. Default: the latest edition that has the table.",
+    "Which table? Travel VM-2 (by functional system), drivers DL-22, vehicles MV-1, road length HM-20, motor fuel MF-1, trust fund FE-9. Default: the table whose title matches the question, named in the answer."
+  ],
+  "formats": [
+    "xlsx"
+  ],
+  "aliases": [
+    "FHWA",
+    "Highway Statistics",
+    "Federal Highway Administration"
+  ]
+}

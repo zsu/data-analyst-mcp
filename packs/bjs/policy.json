@@ -1,0 +1,114 @@
+{
+  "id": "bjs",
+  "title": "Bureau of Justice Statistics: National Crime Victimization Survey and corrections statistics",
+  "agency": "U.S. Department of Justice, Bureau of Justice Statistics",
+  "depth": "standard",
+  "domains": [
+    "crime",
+    "criminal justice",
+    "public safety",
+    "corrections"
+  ],
+  "keywords": [
+    "bjs",
+    "bureau of justice statistics",
+    "ncvs",
+    "national crime victimization survey",
+    "victimization",
+    "victimization rate",
+    "crime victims",
+    "crimes not reported to police",
+    "reporting to police",
+    "violent victimization",
+    "property victimization",
+    "rape",
+    "sexual assault",
+    "robbery",
+    "aggravated assault",
+    "simple assault",
+    "burglary",
+    "motor vehicle theft",
+    "domestic violence",
+    "intimate partner violence",
+    "prisoners",
+    "prison population",
+    "imprisonment rate",
+    "incarceration",
+    "national prisoner statistics",
+    "jail population",
+    "jail inmates",
+    "probation",
+    "parole",
+    "capital punishment",
+    "death row",
+    "executions"
+  ],
+  "questions": [
+    "violent victimization rate per 1,000 persons by year",
+    "share of violent crimes reported to police",
+    "number of robberies or assaults according to the victimization survey",
+    "property crime victimization rate for households",
+    "state and federal prison population by state",
+    "imprisonment rate per 100,000 residents",
+    "jail population and incarceration rate",
+    "adults on probation or parole by state",
+    "prisoners under sentence of death by state"
+  ],
+  "homepage": "https://bjs.ojp.gov/",
+  "terms_url": "https://bjs.ojp.gov/national-crime-victimization-survey-ncvs-api",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 1000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://api.ojp.gov/bjsdataset/v1",
+      "probe": "https://api.ojp.gov/bjsdataset/v1/gcuy-rt5g.json?$limit=1",
+      "hosts": [
+        "api.ojp.gov",
+        "bjs.ojp.gov"
+      ]
+    },
+    "manual": {
+      "how": "NCVS Select: open https://api.ojp.gov/bjsdataset/v1/<id>.csv?$where=year='2024'&$limit=200000 in a browser (ids: gcuy-rt5g personal victimization, r4j4-fdwx personal population, gkck-euys household victimization, ya4e-n9zp household population) and save the CSV. Report tables: download https://bjs.ojp.gov/document/<code>.zip (e.g. cv24, p23st) from the report page. Upload the file with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Datasets are replaced when a new year is added; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "BJS data and tables are U.S. government works in the public domain (17 U.S.C. 105); NCVS Select files are public-use, de-identified records."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Justice, Bureau of Justice Statistics, {dataset}, bjs.ojp.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Published estimate or own tabulation? BJS's report tables (statistical_table, e.g. cv24) carry the official numbers, rates and standard errors; tabulating NCVS Select records with the weights reproduces the numbers (2024 violent victimizations: 6,671,636 vs. 6,671,640 published), but standard errors need the survey design and are not computed here. Default: the report table when it has the breakdown asked for.",
+    "Victimizations, incidents or prevalence? NCVS counts victimizations by default (one per victim per crime); prevalence counts unique victims (weight wgt_ovam_per and the victim flag). Default: victimizations and the rate per 1,000 persons age 12 or older (households for property crime).",
+    "Which year? 2024 comes from the legacy half of a split sample (larger standard errors). Collection year: crimes are counted in the year of the interview, not the year they happened."
+  ],
+  "formats": [
+    "json",
+    "csv",
+    "zip"
+  ],
+  "aliases": [
+    "BJS",
+    "NCVS",
+    "Bureau of Justice Statistics",
+    "National Crime Victimization Survey",
+    "National Prisoner Statistics"
+  ]
+}

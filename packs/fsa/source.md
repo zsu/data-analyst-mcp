@@ -11,7 +11,7 @@ school and award-year quarter (from COD). Published .xls workbooks, read into ti
 - Loans originated and disbursed, and Pell/TEACH grants disbursed, by school, state and program, per award year.
 - Not here: college costs, completion, earnings and debt at graduation by institution (college-scorecard);
   federal outlays and awards for student aid (treasury, usaspending); household debt from
-  surveys (fred for the Fed's G.19 consumer credit series); enrollment counts (IPEDS, not a pack).
+  surveys (fred for the Fed's G.19 consumer credit series); enrollment counts (IPEDS: nces).
 
 ## Endpoints and datasets
 | Endpoint | Returns (one row per ...) | Params | Units | Coverage |

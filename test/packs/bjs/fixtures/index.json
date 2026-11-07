@@ -1,0 +1,4 @@
+{
+ "GET https://api.ojp.gov/bjsdataset/v1/gcuy-rt5g.json?%24order=%3Aid&%24select=year%2C+newcrime%2C+newoff%2C+seriousviolent%2C+notify%2C+newwgt&%24where=year+%3D+%272024%27+AND+newcrime+%3D+%271%27&%24limit=50000&%24offset=0": "r001.json",
+ "GET https://bjs.ojp.gov/document/cv24.zip": "r002.bin"
+}

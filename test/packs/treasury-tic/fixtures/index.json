@@ -1,0 +1,4 @@
+{
+ "GET https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.txt": "r001.bin",
+ "GET https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/mfhhis01.txt": "r002.bin"
+}

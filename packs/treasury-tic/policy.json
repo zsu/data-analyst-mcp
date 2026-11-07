@@ -1,0 +1,89 @@
+{
+  "id": "treasury-tic",
+  "title": "Treasury International Capital (TIC): foreign holdings of U.S. Treasury and other securities",
+  "agency": "U.S. Department of the Treasury and Federal Reserve Board",
+  "depth": "standard",
+  "domains": [
+    "federal debt",
+    "international finance",
+    "capital flows"
+  ],
+  "keywords": [
+    "tic",
+    "treasury international capital",
+    "foreign holders",
+    "major foreign holders",
+    "foreign holdings of treasuries",
+    "who owns the debt",
+    "who holds the debt",
+    "china holdings",
+    "japan holdings",
+    "foreign official",
+    "foreign central banks",
+    "slt",
+    "cross-border securities",
+    "foreign purchases of u.s. securities",
+    "net foreign sales",
+    "capital flows",
+    "foreign-held debt"
+  ],
+  "questions": [
+    "how much U.S. Treasury debt does China hold",
+    "largest foreign holders of Treasury securities",
+    "Japan's Treasury holdings over time",
+    "foreign official holdings of Treasury bills and bonds",
+    "foreign holdings of U.S. corporate bonds and stocks by country",
+    "net foreign purchases of Treasuries by country"
+  ],
+  "homepage": "https://home.treasury.gov/data/treasury-international-capital-tic-system",
+  "terms_url": "https://home.treasury.gov/subfooter/site-policies-and-notices",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "max_rows": 200000
+  },
+  "routes": {
+    "api": {
+      "base": "https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents",
+      "probe": "https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.txt",
+      "hosts": [
+        "ticdata.treasury.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open the text files in a browser and save them: https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.txt (latest 13 months), .../mfhhis01.txt (history from 2000) or .../slt_table1.txt (long-term securities by country). Upload the saved .txt file with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Monthly releases revise the last months; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "U.S. government work in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of the Treasury, Treasury International Capital (TIC) System, {dataset}, ticdata.treasury.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which measure? Major Foreign Holders counts all Treasury securities (bills, bonds and notes) in billions; SLT Table 1 counts long-term securities only (no bills), in millions, and also covers agency, corporate bonds and stocks. Default: Major Foreign Holders for 'how much debt does X hold'.",
+    "Which months? slt_table5 has the latest 13 months; mfhhis01 has March 2000 through the last full year. Default: the latest month, with the year-earlier month for comparison."
+  ],
+  "formats": [
+    "txt"
+  ],
+  "aliases": [
+    "TIC",
+    "Treasury International Capital",
+    "Major Foreign Holders"
+  ]
+}
