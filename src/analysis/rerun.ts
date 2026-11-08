@@ -55,7 +55,8 @@ export async function rerunWorkspace(workspace: string): Promise<RerunResult> {
       exhibits[rel] = { same: false, detail: `${rel} has no recorded compute steps, so it cannot be replayed: make it with compute` };
       continue;
     }
-    const inputs = Object.fromEntries(Object.entries(entry.inputs as Record<string, { path: string }>).map(([k, v]) => [k, v.path]));
+    const inputs = Object.fromEntries(Object.entries(entry.inputs as Record<string, { path: string; columns?: string[] }>)
+      .map(([k, v]) => [k, Array.isArray(v.columns) ? { path: v.path, columns: v.columns } : v.path]));
     try {
       const r = runPipeline(ws, { inputs, steps: entry.steps, from: entry.from });
       const text = tableCsv(r.table);

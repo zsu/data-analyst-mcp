@@ -5,8 +5,12 @@
  * is a fixed function here. The same steps replay from the recorded inputs (rerun.ts), so every exhibit and
  * every number read from it is reproduced by the server, not typed.
  *
+ * Inputs are workspace CSVs (data/<id>/, exhibits/, published/) or Parquet files under data/<id>/ (the opm pack writes
+ * tables over 1M rows only as Parquet); an input may name the columns to read ({path, columns}), which for Parquet
+ * is the only part decoded.
+ *
  * exhibits/lineage.json: {"exhibits/<x>.csv": {"packs": [...], "tool": "compute", "from": alias,
- *   "inputs": {alias: {"path", "sha256"}}, "steps": [...], "sha256": <the CSV's hash>}}. The older format is
+ *   "inputs": {alias: {"path", "sha256", "columns"?}}, "steps": [...], "sha256": <the CSV's hash>}}. The older format is
  * {"exhibits/<x>.csv": [packs]}; lineagePacks() reads both.
  */
 import fs from "node:fs";
@@ -14,18 +18,22 @@ import path from "node:path";
 import { addStateCodes, alignCheck, CombineError, deflate, fiscalYear, toFiscal } from "./combine.js";
 import { compare, compile, evaluate, ExprError, isTruthy, type Ctx, type Node } from "./expr.js";
 import { pyRepr } from "./pyfmt.js";
-import { cellText, newRow, parseTable, sha256, tableCsv, type Row, type Table, type Value } from "./table.js";
+import { replicateSe } from "./replicate.js";
+import { cellText, newRow, ParquetInputError, parseTable, readParquetTable, sha256, tableCsv, type Row, type Table,
+  type Value } from "./table.js";
 
 export class ComputeError extends Error {}
 
 export const LINEAGE = "exhibits/lineage.json";
 export const PACK_ID = /^[a-z0-9][a-z0-9_-]*$/;
-const INPUT_RE = /^(data\/[a-z0-9][a-z0-9_-]*\/[^/]+|exhibits\/[^/]+|published\/[^/]+)\.csv$/;
+const INPUT_RE = /^((data\/[a-z0-9][a-z0-9_-]*\/[^/]+|exhibits\/[^/]+|published\/[^/]+)\.csv|data\/[a-z0-9][a-z0-9_-]*\/[^/]+\.parquet)$/;
 const SAVE_RE = /^exhibits\/[A-Za-z0-9][A-Za-z0-9_.-]*\.csv$/;
 
 export type Step = Record<string, any>;
-export type Pipeline = { inputs: Record<string, string>; steps: Step[]; from?: string };
-export type LineageEntry = { packs: string[]; tool: string; from?: string; inputs: Record<string, { path: string; sha256: string }>;
+export type Input = string | { path: string; columns?: string[] };
+export type Pipeline = { inputs: Record<string, Input>; steps: Step[]; from?: string };
+export type InputRecord = { path: string; sha256: string; columns?: string[] };
+export type LineageEntry = { packs: string[]; tool: string; from?: string; inputs: Record<string, InputRecord>;
   steps: Step[]; sha256: string };
 
 // ---------------------------------------------------------------------- paths and lineage
@@ -37,12 +45,50 @@ export function relPath(p: string): string {
 export function inputPath(workspace: string, rel: string): string {
   const r = relPath(rel);
   if (r.split("/").some((s) => s === ".." || s === "") || !INPUT_RE.test(r)) {
-    throw new ComputeError(`input ${pyRepr(rel)}: a workspace CSV path like data/<id>/<table>.csv, exhibits/<name>.csv or ` +
-      "published/<name>.csv");
+    throw new ComputeError(`input ${pyRepr(rel)}: a workspace path like data/<id>/<table>.csv, data/<id>/<table>.parquet, ` +
+      "exhibits/<name>.csv or published/<name>.csv");
   }
   const abs = path.resolve(workspace, r);
   if (path.relative(workspace, abs).startsWith("..")) throw new ComputeError(`input ${pyRepr(rel)} is outside the workspace`);
   return abs;
+}
+
+/** An input as {path, columns?}: a path string, or an object naming the columns to read. */
+export function normInput(alias: string, v: unknown): { path: string; columns?: string[] } {
+  if (typeof v === "string") return { path: v };
+  if (v && typeof v === "object" && !Array.isArray(v) && typeof (v as any).path === "string") {
+    const extra = Object.keys(v).filter((k) => k !== "path" && k !== "columns");
+    if (extra.length) throw new ComputeError(`input ${alias}: unknown key(s) ${pyRepr(extra)}; an input is a path or {path, columns}`);
+    const cols = (v as any).columns;
+    if (cols === undefined || cols === null) return { path: (v as any).path };
+    if (!Array.isArray(cols) || !cols.length || !cols.every((c) => typeof c === "string")) {
+      throw new ComputeError(`input ${alias}: columns is a non-empty list of column names`);
+    }
+    return { path: (v as any).path, columns: [...new Set(cols as string[])] };
+  }
+  throw new ComputeError(`input ${alias}: a workspace path, or {path, columns: [names]}, not ${pyRepr(v)}`);
+}
+
+/** Read one input as a typed table (only its named columns, when given). */
+function readInput(alias: string, abs: string, inp: { path: string; columns?: string[] }, buf: Buffer): Table {
+  if (relPath(inp.path).endsWith(".parquet")) {
+    try {
+      return readParquetTable(buf, abs, inp.columns);
+    } catch (e: any) {
+      if (e instanceof ParquetInputError) throw new ComputeError(`input ${alias} (${relPath(inp.path)}): ${e.message}`);
+      throw new ComputeError(`input ${alias}: ${relPath(inp.path)} could not be read as Parquet: ${e?.message || e}`);
+    }
+  }
+  const t = parseTable(buf.toString("utf8"));
+  const want = inp.columns;
+  if (!want) return t;
+  const miss = want.filter((c) => !t.cols.includes(c));
+  if (miss.length) throw new ComputeError(`input ${alias}: no column${miss.length > 1 ? "s" : ""} ${miss.join(", ")}; the columns are ${pyRepr(t.cols)}`);
+  return { cols: want, rows: t.rows.map((r) => {
+    const o = newRow();
+    for (const c of want) o[c] = r[c];
+    return o;
+  }) };
 }
 
 export function readLineage(workspace: string): Record<string, any> {
@@ -78,15 +124,16 @@ export function packList(x: unknown): string[] {
 
 // ---------------------------------------------------------------------- verbs
 const VERBS = ["filter", "derive", "select", "rename", "rollup", "join", "pivot_wider", "pivot_longer", "orderby", "slice",
-  "dedupe", "concat", "fiscal_year", "to_fiscal", "state_codes", "deflate", "align_check", "as", "from"];
-const EXTRA: Record<string, string[]> = { filter: ["groupby"], derive: ["groupby"], rollup: ["groupby"], join: ["on", "how", "suffix"] };
+  "dedupe", "concat", "fiscal_year", "to_fiscal", "state_codes", "deflate", "align_check", "replicate_se", "as", "from"];
+const EXTRA: Record<string, string[]> = { filter: ["groupby"], derive: ["groupby"], rollup: ["groupby"], replicate_se: ["groupby"],
+  join: ["on", "how", "suffix"] };
 
-function need(t: Table, cols: string[], what: string): void {
+export function need(t: Table, cols: string[], what: string): void {
   const miss = cols.filter((c) => !t.cols.includes(c));
   if (miss.length) throw new ComputeError(`${what}: no column${miss.length > 1 ? "s" : ""} ${miss.join(", ")}; the columns are ${pyRepr(t.cols)}`);
 }
 
-function strList(v: unknown, what: string): string[] {
+export function strList(v: unknown, what: string): string[] {
   const xs = typeof v === "string" ? [v] : v;
   if (!Array.isArray(xs) || !xs.every((x) => typeof x === "string")) throw new ComputeError(`${what}: a column name or a list of names`);
   return xs as string[];
@@ -95,7 +142,7 @@ function strList(v: unknown, what: string): string[] {
 const keyOf = (r: Row, on: string[]) => on.map((k) => (r[k] === null ? "\u0001null" : cellText(r[k]))).join("\u0000");
 
 /** Groups of row indexes by key, in the order pandas groupby gives (sorted by the keys; gaps last). */
-function groupRows(t: Table, by: string[], sorted: boolean): Row[][] {
+export function groupRows(t: Table, by: string[], sorted: boolean): Row[][] {
   if (!by.length) return [t.rows];
   const m = new Map<string, Row[]>();
   for (const r of t.rows) {
@@ -336,22 +383,25 @@ function wrap<T>(i: number, verb: string, fn: () => T): T {
   }
 }
 
-export type PipelineResult = { table: Table; notes: string[]; inputs: Record<string, { path: string; sha256: string }> };
+export type PipelineResult = { table: Table; notes: string[]; inputs: Record<string, InputRecord> };
 
 /** Read the inputs and run the steps (no file is written). */
 export function runPipeline(workspace: string, p: Pipeline): PipelineResult {
   if (!p.inputs || typeof p.inputs !== "object" || !Object.keys(p.inputs).length) {
-    throw new ComputeError('inputs: {alias: "data/<id>/<table>.csv" | "exhibits/<x>.csv"}, at least one');
+    throw new ComputeError('inputs: {alias: "data/<id>/<table>.csv" | "data/<id>/<table>.parquet" | "exhibits/<x>.csv" | ' +
+      "{path, columns}}, at least one");
   }
   const env = new Map<string, Table>();
   const inputs: PipelineResult["inputs"] = {};
-  for (const [alias, rel] of Object.entries(p.inputs)) {
+  for (const [alias, raw] of Object.entries(p.inputs)) {
     if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(alias) || alias === "this" || alias.startsWith("__")) throw new ComputeError(`input alias ${pyRepr(alias)}: letters, digits and _ only`);
+    const inp = normInput(alias, raw);
+    const rel = inp.path;
     const abs = inputPath(workspace, rel);
     if (!fs.existsSync(abs)) throw new ComputeError(`input ${alias}: no file ${relPath(rel)} in the workspace (fetch it first, or check the path)`);
     const buf = fs.readFileSync(abs);
-    inputs[alias] = { path: relPath(rel), sha256: sha256(buf) };
-    env.set(alias, parseTable(buf.toString("utf8")));
+    inputs[alias] = { path: relPath(rel), sha256: sha256(buf), ...(inp.columns ? { columns: inp.columns } : {}) };
+    env.set(alias, readInput(alias, abs, inp, buf));
   }
   const start = p.from ?? Object.keys(p.inputs)[0];
   if (!env.has(start)) throw new ComputeError(`from: ${pyRepr(start)} is not an input alias (${Object.keys(p.inputs).join(", ")})`);
@@ -370,7 +420,7 @@ export function runPipeline(workspace: string, p: Pipeline): PipelineResult {
     const verbs = Object.keys(step).filter((k) => VERBS.includes(k));
     if (verbs.length !== 1) {
       throw new ComputeError(`step ${i + 1}: name exactly one verb (${VERBS.join(", ")}); got ${pyRepr(Object.keys(step))}` +
-        (Object.keys(step).includes("groupby") ? ' (groupby goes with rollup, derive or filter in the same step: {"groupby": [...], "rollup": {...}})' : ""));
+        (Object.keys(step).includes("groupby") ? ' (groupby goes with rollup, derive, filter or replicate_se in the same step: {"groupby": [...], "rollup": {...}})' : ""));
     }
     const verb = verbs[0];
     const extra = Object.keys(step).filter((k) => k !== verb && !(EXTRA[verb] || []).includes(k));
@@ -485,6 +535,12 @@ export function runPipeline(workspace: string, p: Pipeline): PipelineResult {
             `deflated by ${o.name}`);
           break;
         }
+        case "replicate_se": {
+          const r = replicateSe(cur, arg, by);
+          cur = r.table;
+          notes.push(...r.notes);
+          break;
+        }
         case "align_check": {
           const o = arg || {};
           const names = strList(o.tables, "align_check tables");
@@ -523,7 +579,7 @@ export type ComputeArgs = Pipeline & { save_as: string; packs?: string[]; previe
 export function compute(workspace: string, a: ComputeArgs) {
   const save = relPath(a.save_as);
   if (!SAVE_RE.test(save) || save === LINEAGE) throw new ComputeError(`save_as ${pyRepr(a.save_as)}: exhibits/<name>.csv (letters, digits, _ . -)`);
-  if (Object.values(a.inputs || {}).some((r) => relPath(r) === save)) {
+  if (Object.entries(a.inputs || {}).some(([k, r]) => relPath(normInput(k, r).path) === save)) {
     throw new ComputeError(`save_as ${save} is also an input: save to a new name, so the exhibit can be replayed from its inputs`);
   }
   const r = runPipeline(workspace, a);

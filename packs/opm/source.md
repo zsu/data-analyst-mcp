@@ -68,7 +68,8 @@ effective month also needs the next two or three files (late reports).
 
 ## Data format and traps
 `fetch` writes `data/opm/`: `opm_<dataset>.parquet`, `opm_<dataset>.csv` up to 1,000,000 rows (above that only
-the Parquet file, which `compute` cannot read: narrow the request or use `aggregate`), `manifest.json` (every
+the Parquet file; `compute` reads it too: name only the columns you need, `{"path": "data/opm/opm_employment.parquet",
+"columns": [...]}`, or narrow the request or use `aggregate`), `manifest.json` (every
 source file, version, publish date, SHA-256, rows, missing columns), `request.json`, `data_dictionary.csv`,
 `README.md`, `spec_used.json`. Read the result's `notes`: a filter column absent from an older file
 means those rows were NOT filtered; missing requested columns are filled with nulls.

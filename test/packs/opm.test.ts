@@ -13,7 +13,7 @@ import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { load } from "../../src/core/packs.js";
 import * as T from "../../src/tools.js";
 import { buildPlan, listSummary, OpmClient, scriptRules, writeDownloadScripts } from "../../src/deep/opm.js";
-import { ParquetFile } from "../../src/deep/_opm_parquet.js";
+import { ParquetFile } from "../../src/core/parquet.js";
 import { csv, failure, fetchOk, fixtures, isolate, newSession, prepare, TEST_DIR } from "../helpers.js";
 
 const SPEC = { description: "Separations by category, August 2026 file",

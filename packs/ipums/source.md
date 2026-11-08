@@ -109,11 +109,13 @@ weights, terms).
 - **Extract gotchas**: IPUMS adds detailed versions automatically (EDUC brings EDUCD); a data-quality
   flag or case-selection code that a sample lacks returns HTTP 400 (fix the spec and fetch again);
   ACS 2020 1-year has experimental weights.
-- **Standard errors**: this server has no replicate-weight or design-based standard errors yet. Report
-  which weight each estimate uses and that standard errors were not computed; without them, never call a
-  difference "statistically different" (when standard errors exist, the rule is beyond 1.645 standard errors,
-  90 percent; otherwise "about the same"). The methods, for reference: ACS person estimates use REPWTP (80
-  replicates), household estimates (tenure, household income) REPWT with HHWT, Census's own method; a
+- **Standard errors**: request the replicate weights (`REPWTP`, `REPWT`) and use `compute`'s `replicate_se`
+  step: `{"replicate_se": {"estimates": {...}, "weight": "PERWT", "replicates": "REPWTP1:REPWTP80", "method": "sdr"}}`
+  (4/80, Census's method; ASEC `ASECWT` with `REPWTP1:REPWTP160`). Design-based (STRATA/CLUSTER) standard errors
+  are not computed here. Without standard errors, report which weight each estimate uses and that standard errors
+  were not computed, and never call a difference "statistically different" (with them, the rule is beyond 1.645
+  standard errors of the difference, 90 percent; otherwise "about the same"). The methods: ACS person estimates
+  use REPWTP (80 replicates), household estimates (tenure, household income) REPWT with HHWT, Census's own method; a
   linearized SE with STRATA and CLUSTER (added automatically) can understate a PUMS margin (half of the
   replicate one in a 2024 tenure check), so replicates are preferred. CPS ASEC: REPWTP (160) for person
   estimates, or REPWT (160) with ASECWTH on householders (`RELATE == 101`) for household estimates such as
@@ -132,9 +134,9 @@ weights, terms).
   every threshold or definition for sensitivity; benchmark a headline number against a published figure (Census, BLS).
 - Public IPUMS data cannot show legal status, benefits, or full administrative controls: say so.
 
-Analysis: build tables with `compute` on `data/ipums/ipums_extract.csv`, decoding values with `codebook.csv`. This
-server has no IPUMS recode helpers or replicate-weight standard errors yet: say which weight you used, and that
-standard errors were not computed.
+Analysis: build tables with `compute` on `data/ipums/ipums_extract.csv`, decoding values with `codebook.csv`, and
+standard errors with its `replicate_se` step (replicate weights in the extract). This server has no IPUMS recode
+helpers.
 Typical questions, conventions (populations, definitions, benchmarks) and chart forms:
 `docs/report_patterns.md`.
 

@@ -1,6 +1,7 @@
 /**
- * Parquet for the opm pack, with Node built-ins only (no Parquet package is installed): a reader for flat files
- * (the FWD API serves every column as an optional UTF-8 string) and a small writer for the filtered tables.
+ * Parquet with Node built-ins only (no Parquet package is installed): a reader for flat files (the OPM FWD API
+ * serves every column as an optional UTF-8 string; compute reads data/<id>/*.parquet inputs with it) and a small
+ * writer (the opm pack's filtered tables).
  *
  * Reader: Thrift compact footer, data pages v1 and v2, dictionary pages; encodings PLAIN, PLAIN_DICTIONARY,
  * RLE_DICTIONARY, RLE (booleans), DELTA_BINARY_PACKED, DELTA_LENGTH_BYTE_ARRAY, DELTA_BYTE_ARRAY,
@@ -483,8 +484,9 @@ export class ParquetFile {
   cols: Col[] = [];
   numRows: number;
 
-  constructor(public path: string) {
-    this.buf = fs.readFileSync(path);
+  /** `buf`: the file's bytes when the caller has read them already. */
+  constructor(public path: string, buf?: Buffer) {
+    this.buf = buf ?? fs.readFileSync(path);
     const n = this.buf.length;
     if (n < 12 || this.buf.toString("latin1", 0, 4) !== "PAR1" || this.buf.toString("latin1", n - 4) !== "PAR1") {
       throw new Error(`${path} is not a Parquet file`);

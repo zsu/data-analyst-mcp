@@ -27,7 +27,7 @@ import type { DeepContext, DeepPack, DeepResult, Pack } from "../core/packs.js";
 import { pyFloatRepr, pyJsonDumps, pyUrlencode } from "../core/py.js";
 import { readCsv } from "../core/tabular.js";
 import * as io from "./_opm_io.js";
-import { writeParquet, type WriteColumn } from "./_opm_parquet.js";
+import { writeParquet, type WriteColumn } from "../core/parquet.js";
 import { closeMatches, pyRepr } from "./_opm_py.js";
 
 const SOURCE = "opm";

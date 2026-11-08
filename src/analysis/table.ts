@@ -6,11 +6,14 @@
  * double exactly; "True"/"False" columns are booleans; an empty cell is null (a gap); anything else is text, so
  * "1,234" stays text unless converted with number(). Writing follows the Python csv conventions (writeCsv): CRLF,
  * minimal quoting, True/False, integers without ".0", other floats as Python's repr.
+ * A Parquet input (readParquetTable) is read as the cell texts the CSV of the same table holds and typed the same
+ * way, so compute gives the same result from either file.
  */
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { parse } from "csv-parse/sync";
 import { stringify } from "csv-stringify/sync";
+import { ParquetFile } from "../core/parquet.js";
 import { pyFloatRepr } from "../core/py.js";
 import { readCsv, writeCsv } from "../core/tabular.js";
 
@@ -33,37 +36,89 @@ export function newRow(): Row {
   return Object.create(null);
 }
 
+type Kind = "num" | "bool" | "text";
+type Cell = string | null | undefined;
+
+/** The kind of a column from its cell texts: num or bool when every non-empty cell is one, else text. */
+function kindOf(n: number, at: (i: number) => Cell): Kind {
+  let k: Kind | null = null;
+  for (let i = 0; i < n; i++) {
+    const v = at(i);
+    if (v === null || v === undefined || v === "") continue;
+    const s = String(v);
+    const kind = numericText(s) ? "num" : s === "True" || s === "False" ? "bool" : "text";
+    if (k === null) k = kind;
+    else if (k !== kind) k = "text";
+    if (k === "text") break;
+  }
+  return k ?? "text";
+}
+
+function typed(v: Cell, kind: Kind): Value {
+  if (v === null || v === undefined || v === "") return null;
+  if (kind === "num") return Number(v);
+  if (kind === "bool") return v === "True";
+  return String(v);
+}
+
 /** Rows of a CSV text typed column by column (see the module comment). */
 export function parseTable(text: string): Table {
   const t = text.replace(BOM, "");
   const cols = headerOf(t);
   const raw = readCsv(t);
-  const kinds: Record<string, "num" | "bool" | "text"> = Object.create(null);
-  for (const c of cols) {
-    let k: "num" | "bool" | "text" | null = null;
-    for (const r of raw) {
-      const v = r[c];
-      if (v === null || v === undefined || v === "") continue;
-      const s = String(v);
-      const kind = numericText(s) ? "num" : s === "True" || s === "False" ? "bool" : "text";
-      if (k === null) k = kind;
-      else if (k !== kind) k = "text";
-      if (k === "text") break;
-    }
-    kinds[c] = k ?? "text";
-  }
+  const kinds: Record<string, Kind> = Object.create(null);
+  for (const c of cols) kinds[c] = kindOf(raw.length, (i) => raw[i][c] as Cell);
   const rows = raw.map((r) => {
     const o = newRow();
-    for (const c of cols) {
-      const v = r[c];
-      if (v === null || v === undefined || v === "") o[c] = null;
-      else if (kinds[c] === "num") o[c] = Number(v);
-      else if (kinds[c] === "bool") o[c] = v === "True";
-      else o[c] = String(v);
-    }
+    for (const c of cols) o[c] = typed(r[c] as Cell, kinds[c]);
     return o;
   });
   return { cols, rows };
+}
+
+/** A table from columns of cell texts (null = a gap), typed exactly as parseTable types the same CSV. */
+export function tableFromColumns(cols: string[], data: Record<string, Cell[]>, n: number): Table {
+  const kinds = cols.map((c) => kindOf(n, (i) => data[c][i]));
+  const rows: Row[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const o = newRow();
+    cols.forEach((c, j) => (o[c] = typed(data[c][i], kinds[j])));
+    rows[i] = o;
+  }
+  return { cols, rows };
+}
+
+/** The most cells (rows x columns) compute decodes from one Parquet input; above it, name the columns needed.
+ * Measured: 1M rows x 30 string columns (30M cells) took 3.1 GB of heap and 28 s, against a default heap of
+ * about 4 GB, and later steps copy rows. 25M cells leaves room for those copies: a 2M-row OPM month with 12 columns. */
+export const PARQUET_MAX_CELLS = { value: 25_000_000 };
+
+export class ParquetInputError extends Error {}
+
+/** A Parquet file's table: only `columns` (in that order) when given, else every column in the file's order. */
+export function readParquetTable(buf: Buffer, file: string, columns?: string[] | null): Table {
+  const pq = new ParquetFile(file, buf);
+  const have = pq.columns();
+  const cols = columns && columns.length ? [...new Set(columns)] : have;
+  const miss = cols.filter((c) => !have.includes(c));
+  if (miss.length) throw new ParquetInputError(`no column${miss.length > 1 ? "s" : ""} ${miss.join(", ")}; the columns are ${have.join(", ")}`);
+  const cells = pq.numRows * cols.length;
+  if (cells > PARQUET_MAX_CELLS.value) {
+    throw new ParquetInputError(`${pq.numRows.toLocaleString("en-US")} rows x ${cols.length} columns is more than compute ` +
+      `reads at once (${PARQUET_MAX_CELLS.value.toLocaleString("en-US")} cells): name the columns you need ` +
+      `(inputs {alias: {path, columns: [...]}}), or narrow the fetch (filters, aggregate)`);
+  }
+  const data: Record<string, Cell[]> = Object.create(null);
+  for (const c of cols) data[c] = [];
+  let n = 0;
+  for (const g of pq.rowGroups(cols)) {
+    for (const c of cols) {
+      const xs = g.data[c] ?? new Array(g.rows).fill(null);
+      for (let i = 0; i < g.rows; i++) data[c].push(xs[i]);
+    }
+    n += g.rows;
+  }
+  return tableFromColumns(cols, data, n);
 }
 
 /** The first `n` records of a CSV text as arrays (csv.reader). */

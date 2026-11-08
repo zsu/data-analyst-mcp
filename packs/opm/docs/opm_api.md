@@ -59,7 +59,8 @@ The client retries 429 and 5xx with backoff.
 - **Data dictionary:** an Excel file (`FWD Data Dictionary.xlsx`); this pack ships it as
   `data_dictionary.csv` (copied into every `data/opm/` folder; `request_schema` lists its columns), so it
   never needs downloading.
-- **Reading Parquet:** `fetch` and `ingest` read the Parquet files themselves; no other software is needed.
+- **Reading Parquet:** `fetch` and `ingest` read the Parquet files themselves, and `compute` takes the
+  `data/opm/*.parquet` it writes as inputs; no other software is needed.
 
 ## Other OPM tools (no API)
 - **Table Builder** (https://data.opm.gov/explore-data/data/table-builder): aggregate tables in a browser;

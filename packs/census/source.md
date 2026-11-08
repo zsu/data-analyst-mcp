@@ -196,8 +196,8 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
   Census's replicate weight file (CPS_ASEC_ASCII_REPWGT_<year> on www2.census.gov, about 70 MB, no key), after
   two gates: the file's weight sums equal the totals its SAS layout states, and every person's PWWGT0 equals
   MARSUPWT (2020: the 2020-based file is tried when the main one does not match). Census's replicate standard error
-  is sqrt(4/80 * sum of squared replicate differences), MOE = 1.645 * SE (this server does not compute it; see
-  Analysis below). Checked 2026-11-04 with that method: Maryland's 2024 uninsured rate in the civilian
+  is sqrt(4/80 * sum of squared replicate differences), MOE = 1.645 * SE (`compute`'s `replicate_se` step with
+  `method: "sdr"` gives both; see Analysis below). Checked 2026-11-04 with that method: Maryland's 2024 uninsured rate in the civilian
   noninstitutionalized population from PUMS was 6.26 +/- 0.32 percent, published S2701 6.3 +/- 0.3; the nation
   8.19 vs 8.2.
   - Universe: published insurance and labor tables use the civilian noninstitutionalized population
@@ -220,8 +220,12 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
     in early ASECs): the pack leaves them out and says so. CPS basic monthly has no replicate weights at all; month-to-month person links need HRHHID, HRHHID2 and
     PULINENO with care (ipums CPSIDP links them). CPS codes differ from ACS codes (PEMLR, PRCITSHP, A_HGA /
     PEEDUCA): recode each survey from its own codebook.
-  - Analysis: build tables with `compute`. This server has no PUMS recode helpers or replicate-weight standard
-    errors yet: say which weight you used, and that standard errors were not computed.
+  - Analysis: build tables with `compute`. Standard errors: fetch with `replicates`, then a `replicate_se` step,
+    e.g. `{"groupby": ["ST"], "replicate_se": {"estimates": {"uninsured": "sum(PWGTP * (HICOV == 2)) / sum(PWGTP)"},
+    "weight": "PWGTP", "replicates": "PWGTP1:PWGTP80", "method": "sdr"}}` (ASEC: `MARSUPWT`, `"PWWGT1:PWWGT160"`;
+    household estimates: `WGTP`/`HSUP_WGT` with their replicates on one row per household). A difference between
+    years or groups needs its SE from the same replicates: write it as one estimate. CPS basic monthly and SIPP from
+    the API have no replicate weights: say no standard error was computed. This server has no PUMS recode helpers.
 - Time series (`timeseries/...`): give `time` (`2026`, `2026-08`, `2026-Q2`, or `from 2024-01 to 2026-08`).
   Economic indicators (eits) return one row per code combination: `category_code` (industry or tax type),
   `data_type_code` (level, percent change, ...), `seasonally_adj` (yes/no), `time_slot_id`, `error_data` (yes =

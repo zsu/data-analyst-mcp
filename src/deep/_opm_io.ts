@@ -2,7 +2,7 @@
  * Read raw OPM workforce files in chunks (port of the Python pack's opm_io.py).
  *
  * Formats:
- *   .parquet   from the API (the only format it serves); read by _opm_parquet.ts.
+ *   .parquet   from the API (the only format it serves); read by src/core/parquet.ts.
  *   .txt/.csv  from the FWD Data Downloads web page ("Download .TXT"). Delimiter sniffed (comma, pipe, tab,
  *              semicolon, caret); the first row must be the field names. Streamed.
  *   .json      from the web page ("Download .JSON"): a JSON array of records, JSON Lines, or an object wrapping
@@ -18,7 +18,7 @@ import zlib from "node:zlib";
 import { parse } from "csv-parse";
 import { unzipSync } from "fflate";
 import { parsePyJson, pyStr } from "../core/py.js";
-import { ParquetFile } from "./_opm_parquet.js";
+import { ParquetFile } from "../core/parquet.js";
 
 export const CHUNK_ROWS = 250_000;
 export const DATASET_MARKERS: Record<string, string> = { separations: "separation_category",

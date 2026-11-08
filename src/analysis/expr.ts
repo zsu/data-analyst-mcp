@@ -717,6 +717,24 @@ export function compile(src: unknown, cols: string[], o: { agg?: boolean; win?: 
   return n;
 }
 
+/** A copy of a compiled expression with every read of column `from` reading column `to` instead (replicate weights). */
+export function substituteColumn(n: Node, from: string, to: string): Node {
+  switch (n.t) {
+    case "lit":
+      return n;
+    case "col":
+      return n.name === from ? { t: "col", name: to } : n;
+    case "un":
+      return { t: "un", op: n.op, a: substituteColumn(n.a, from, to) };
+    case "bin":
+      return { t: "bin", op: n.op, a: substituteColumn(n.a, from, to), b: substituteColumn(n.b, from, to) };
+    case "cond":
+      return { t: "cond", c: substituteColumn(n.c, from, to), a: substituteColumn(n.a, from, to), b: substituteColumn(n.b, from, to) };
+    case "call":
+      return { t: "call", fn: n.fn, args: n.args.map((x) => substituteColumn(x, from, to)) };
+  }
+}
+
 export function isTruthy(v: Value): boolean {
   return truthy(v);
 }

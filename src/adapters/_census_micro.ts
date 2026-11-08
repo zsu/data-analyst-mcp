@@ -145,13 +145,13 @@ export function microPlan(ds: string, params: Record<string, any>, meta: Record<
   notes.push(`microdata keys and weights added: ${added.join(", ")} (weight every estimate; never count rows)`);
   if (reps.length) {
     notes.push(`${reps.length} replicate weights added (${reps[0]}-${reps[reps.length - 1]}): SE = sqrt(4/80 * sum over r of ` +
-      "(estimate_r - estimate)^2), Census's method for ACS PUMS");
+      "(estimate_r - estimate)^2), Census's method for ACS PUMS: compute's replicate_se step with method sdr gives it");
   }
   if (asecReps) {
     notes.push("160 replicate weights PWWGT1-PWWGT160 joined from Census's ASEC replicate weight file " +
       "(CPS_ASEC_ASCII_REPWGT_<year>) on PH_SEQ and PPPOS: SE = sqrt(4/160 * sum over r of " +
       "(estimate_r - estimate)^2); household estimates: the reference person's row (A_EXPRRP 1-2) " +
-      "with HSUP_WGT and the same replicates");
+      "with HSUP_WGT and the same replicates; compute's replicate_se step with method sdr gives it");
   }
   const cols = [...user, ...added, ...reps.filter((r) => !user.includes(r))];
   const join = (spec.join || spec.keys).filter((k) => !absent.has(k));

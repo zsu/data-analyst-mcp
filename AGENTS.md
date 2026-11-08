@@ -61,6 +61,10 @@ owns its pack data, code and recorded fixtures.
     `knownKeys`); the path guard `src/core/guard.ts`; scrubbing of written files and the cache; same-site keys
     (`Client.keyAllowed`); hosted pages with tokens in the URL fragment, security headers, HKDF keys from a 32+
     character `DATA_ANALYST_SECRET` (keys stored by 0.3 still open). Tests: test/secrets.test.ts.
+  - `compute` reads `data/<id>/*.parquet` (the reader is `src/core/parquet.ts`, typed as the same CSV would be) and
+    takes `{path, columns}` inputs (only those columns are decoded; a cap, `PARQUET_MAX_CELLS`, refuses more); its
+    `replicate_se` step (`src/analysis/replicate.ts`) gives replicate-weight SEs and MOEs (sdr, fay, jk1, brr,
+    custom), from microdata weights or from published replicate estimates.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**
@@ -68,10 +72,10 @@ owns its pack data, code and recorded fixtures.
   - Deep packs have no hook to write their own manual bundle: the opm and ipums bundle writers are exported but
     not reachable from `manual_bundle`.
   - actuaries and usda-outlook could use `manualItemsAsync` to look up the newest links live.
-  - No per-source statistics helpers (survey weights, replicate-weight standard errors): `compute` covers general
-    analysis.
-  - ipums has no manual bundle; opm's bundle covers only pinned months; opm tables over 1M rows come only as Parquet,
-    which `compute` cannot read; ipums report packages carry no download scripts.
+  - No design-based (linearized, STRATA/PSU) standard errors: NHIS and MEPS have no replicate weights, so their
+    SEs are not computed here.
+  - ipums has no manual bundle; opm's bundle covers only pinned months; ipums report packages carry no download
+    scripts.
   - npm publish, and an eval run with a model.
   - Manual only (the sites refuse this server): hud-ahar, cdc-wonder, foreign-assistance, cpsc NEISS. Readers checked
     only on files written in the tests: hud-ahar (huduser.gov refuses scripts) and

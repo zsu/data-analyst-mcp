@@ -79,7 +79,7 @@ describe("compute on fetched data", () => {
     expect(f.code).toBe("invalid_request");
     expect(f.message).toContain("step 1 (filter): unknown column nope");
     f = await failure(() => compute(s, { inputs: { c: "../secret.csv" }, save_as: "exhibits/x.csv", steps: [] }));
-    expect(f.message).toContain("a workspace CSV path");
+    expect(f.message).toContain("a workspace path like data/<id>/<table>.csv");
     f = await failure(() => compute(s, { inputs: { c: CAUSES }, save_as: "data/cdc/x.csv", steps: [] }));
     expect(f.message).toContain("exhibits/<name>.csv");
     compute(s, { inputs: { c: CAUSES }, save_as: "exhibits/a.csv", steps: [] });

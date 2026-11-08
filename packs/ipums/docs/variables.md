@@ -51,9 +51,10 @@ The ACS starts in 2000 (large samples from 2005, group quarters from 2006). CPS 
 
 Pooling several years for one estimate: either average the yearly estimates, or divide the weights by the number of years so that totals stay annual.
 
-**Standard errors.** Census recommends replicate weights. This server cannot compute replicate or
-design-based standard errors yet: report which weight was used and that standard errors were not computed.
-The methods below are for reference.
+**Standard errors.** Census recommends replicate weights. `compute`'s `replicate_se` step computes replicate
+standard errors (`"weight": "PERWT", "replicates": "REPWTP1:REPWTP80", "method": "sdr"`); filtering to a domain
+before it is fine with replicates. Design-based (linearized) standard errors are not computed here: without
+replicates, report which weight was used and that standard errors were not computed. The methods:
 - **USA (ACS):** request `REPWTP` to get 80 columns. They add a lot of size to multi-year extracts; a linearized SE with the automatic `STRATA` and `CLUSTER` is a fallback only: it can be far off for quantities the ACS weights are raked to (age, sex: median-age margins came out 3 to 13 times the replicate ones) and understate others. Prefer replicates; to save size, case-select a second extract with REPWTP to the areas compared.
 - **CPS ASEC:** request `REPWTP` to get 160 columns for replicate standard errors.
 - **NHIS, MEPS:** no replicate weights; Taylor linearization with the design variables (added automatically).

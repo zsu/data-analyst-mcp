@@ -105,8 +105,8 @@ export const TOOLS: ToolDef[] = [
   {
     name: "compute",
     title: "Compute an exhibit",
-    description: "Run declarative steps over full workspace tables (fetched data/<id>/<table>.csv, earlier exhibits, " +
-      "published/*.csv) and save the result as exhibits/<name>.csv with its lineage, so the rerun gate can replay it. " +
+    description: "Run declarative steps over full workspace tables (fetched data/<id>/<table>.csv or .parquet, earlier " +
+      "exhibits, published/*.csv) and save the result as exhibits/<name>.csv with its lineage, so the rerun gate can replay it. " +
       "Call it for every table the answer or report draws numbers from; never compute cited numbers by hand.\n" +
       "Each step is an object with one verb: {filter: expr}, {derive: {col: expr}}, {select: [cols]}, {rename: {old: new}}, " +
       "{groupby: [keys], rollup: {col: aggregate expr}} (groupby also goes with derive or filter: per-group windows and " +
@@ -119,13 +119,25 @@ export const TOOLS: ToolDef[] = [
       "{deflate: {value, period, index: alias, index_period?, index_value, name: \"CPI-U, BLS CUUR0000SA0\", base?: \"2024\", as?}}, " +
       "{align_check: {tables: [aliases or \"this\"], on: [keys], units: {alias: \"billions of dollars, nominal, fiscal years\"}}} " +
       "(refuses repeated keys, missing units, no overlap; run it before a join of two sources).\n" +
+      "Survey standard errors: {groupby?: [keys], replicate_se: {estimates: {rate: \"sum(PWGTP * (HICOV == 2)) / sum(PWGTP)\"}, " +
+      "weight: \"PWGTP\", replicates: \"PWGTP1:PWGTP80\" | [cols], method: sdr|fay|jk1|brr|custom, rho? (fay), scale? (custom), " +
+      "also?: {n: \"count()\"}, confidence?: 90|95|99}} recomputes each weighted estimate with every replicate weight in place " +
+      "of the weight and adds <name>_se and <name>_moe (90 percent by default, Census's). SE = sqrt(c * sum over r of " +
+      "(estimate_r - estimate)^2), c = 4/R for sdr (ACS PUMS 4/80, CPS ASEC 4/160), 1/(R(1-rho)^2) for fay, (R-1)/R for jk1, " +
+      "1/R for brr; use the method the pack's notes name. An SE of a difference or ratio needs it as one estimate, e.g. " +
+      "\"sum(W*(YEAR==2024)*X)/sum(W*(YEAR==2024)) - sum(W*(YEAR==2023)*X)/sum(W*(YEAR==2023))\". " +
+      "{replicate_se: {estimate: col, replicates, method, as?}} instead reads a table that already holds replicate estimates " +
+      "(one row per estimate) and adds <as>_se and <as>_moe to each row.\n" +
       "Expressions: column names (col(\"a b\") for odd names), numbers, \"text\", true/false/null, + - * / % **, " +
       "== != < <= > >=, && || ! (and/or/not), c ? a : b. Functions: " + list(FUNCTIONS) + ". Aggregates: " + list(AGGREGATES) +
       ". Windows (in row order, per group): " + list(WINDOWS) + ". Nothing else runs: no property access, no other calls. " +
-      "CSV cells that are plain numbers are numbers; \"1,234\" stays text until number(); an empty cell is null (a gap). " +
+      "CSV cells that are plain numbers are numbers; \"1,234\" stays text until number(); an empty cell is null (a gap); " +
+      "Parquet cells are typed the same way. For a big file, read only the columns needed: {alias: {path, columns: [...]}}. " +
       "Returns the columns, row count, the first rows (preview, at most 50) and the file.",
     inputSchema: {
-      inputs: z.record(z.string(), z.string()).describe('{alias: "data/<id>/<table>.csv" | "exhibits/<x>.csv" | "published/<x>.csv"}'),
+      inputs: z.record(z.string(), z.union([z.string(), z.object({ path: z.string(), columns: z.array(z.string()).optional() })]))
+        .describe('{alias: "data/<id>/<table>.csv" | "data/<id>/<table>.parquet" | "exhibits/<x>.csv" | "published/<x>.csv" | ' +
+          "{path, columns: [the columns to read]}}"),
       steps: z.array(z.record(z.string(), z.any())).describe("The steps, in order (see the description)"),
       save_as: z.string().describe("exhibits/<name>.csv"),
       from: z.string().optional().describe("The input alias the steps start from (default: the first)"),

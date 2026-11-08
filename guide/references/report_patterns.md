@@ -91,8 +91,11 @@ the exact endpoint when two give identical published totals, series IDs (resolve
 **Precision and suppression**
 - Survey estimates: weight them (the pack names the weight), keep unweighted cell sizes, and suppress or
   footnote cells below the pack's threshold. Say whether differences that drive conclusions are large
-  relative to sampling error. This server has no survey-weight or replicate standard-error helpers yet:
-  report which weight was used and that standard errors were not computed, unless the pack publishes them.
+  relative to sampling error. With replicate weights (census ACS PUMS and ASEC `replicates`, ipums
+  `REPWTP`), compute's `replicate_se` step gives each estimate's SE and 90 percent MOE by the method the pack
+  names; the SE of a difference comes from the same replicates (one estimate), never from combining two SEs
+  when both share a sample. Without replicates, report which weight was used and that standard errors were not
+  computed, unless the pack publishes them.
 - Administrative files with redaction (withheld pay or location): report coverage and say how the
   estimates treat redacted records; the pack's audit hooks require it.
 
