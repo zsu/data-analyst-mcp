@@ -57,6 +57,10 @@ owns its pack data, code and recorded fixtures.
     `takeGlobalFlags`), `requests` on results, the off-loopback refusal, the `Client` response cache (only for
     `cache.mode: persistent`), the `--workspace` option, `paired_with` (`src/core/routing.ts`) and the library entry
     `src/index.ts`. The library uses `runFetch` and `runIngest`, the same code as the tools without the gate.
+  - 0.4 adds secret protection: redaction of every encoded form, primed at startup (`rememberServerSecrets`,
+    `knownKeys`); the path guard `src/core/guard.ts`; scrubbing of written files and the cache; same-site keys
+    (`Client.keyAllowed`); hosted pages with tokens in the URL fragment, security headers, HKDF keys from a 32+
+    character `DATA_ANALYST_SECRET` (keys stored by 0.3 still open). Tests: test/secrets.test.ts.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**
