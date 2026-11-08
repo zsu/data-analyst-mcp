@@ -15,7 +15,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { LINEAGE, readLineage, relPath, runPipeline } from "./compute.js";
 import { derivationExpr, evalDerivation, readCell, readFacts } from "./facts.js";
-import { tableCsv } from "./table.js";
+import { tableCsv, type Table } from "./table.js";
 
 export type RerunResult = {
   exhibits: Record<string, { same: boolean; detail?: string }>;
@@ -34,6 +34,7 @@ export async function rerunWorkspace(workspace: string): Promise<RerunResult> {
   const ws = path.resolve(workspace);
   const lin = readLineage(ws);
   const replayed = new Map<string, string>();         // exhibit -> the CSV text its steps give now
+  const parsed = new Map<string, Table>();            // each input file read once for every recipe that uses it
   const exhibits: RerunResult["exhibits"] = {};
   const exDir = path.join(ws, "exhibits");
   const files = fs.existsSync(exDir)
@@ -58,7 +59,7 @@ export async function rerunWorkspace(workspace: string): Promise<RerunResult> {
     const inputs = Object.fromEntries(Object.entries(entry.inputs as Record<string, { path: string; columns?: string[] }>)
       .map(([k, v]) => [k, Array.isArray(v.columns) ? { path: v.path, columns: v.columns } : v.path]));
     try {
-      const r = runPipeline(ws, { inputs, steps: entry.steps, from: entry.from });
+      const r = runPipeline(ws, { inputs, steps: entry.steps, from: entry.from }, parsed);
       const text = tableCsv(r.table);
       replayed.set(rel, text);
       const changed = Object.entries(r.inputs).filter(([k, v]) => entry.inputs[k]?.sha256 && entry.inputs[k].sha256 !== v.sha256)

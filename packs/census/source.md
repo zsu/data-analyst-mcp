@@ -191,6 +191,8 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
   is weighted, never a row count. Filters are upper-case variable predicates (`"AGEP": "25:54"`, `"HICOV": 2`),
   repeated on every call; geography: `state`, or `for: "public use microdata area:*"` with a state (ACS);
   no state = the nation (ACS fetched state by state, 51 calls, about 2 minutes for the 3.4 million persons).
+  Every result has a `state` column (the FIPS code): group on it. The ACS PUMS state variable is `ST` through
+  the 2022 file and `STATE` from 2023 on (1-year, 5-year and Puerto Rico; the other name is not a variable).
   `replicates: true` adds PWGTP1-80 for ACS (`"household"`: WGTP1-80, `"both"`); columns past 50 come in
   further calls joined on the keys. For the ASEC (2005 on) it adds PH_SEQ and PPPOS and joins PWWGT1-160 from
   Census's replicate weight file (CPS_ASEC_ASCII_REPWGT_<year> on www2.census.gov, about 70 MB, no key), after
@@ -221,7 +223,7 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
     PULINENO with care (ipums CPSIDP links them). CPS codes differ from ACS codes (PEMLR, PRCITSHP, A_HGA /
     PEEDUCA): recode each survey from its own codebook.
   - Analysis: build tables with `compute`. Standard errors: fetch with `replicates`, then a `replicate_se` step,
-    e.g. `{"groupby": ["ST"], "replicate_se": {"estimates": {"uninsured": "sum(PWGTP * (HICOV == 2)) / sum(PWGTP)"},
+    e.g. `{"groupby": ["state"], "replicate_se": {"estimates": {"uninsured": "sum(PWGTP * (HICOV == 2)) / sum(PWGTP)"},
     "weight": "PWGTP", "replicates": "PWGTP1:PWGTP80", "method": "sdr"}}` (ASEC: `MARSUPWT`, `"PWWGT1:PWWGT160"`;
     household estimates: `WGTP`/`HSUP_WGT` with their replicates on one row per household). A difference between
     years or groups needs its SE from the same replicates: write it as one estimate. CPS basic monthly and SIPP from

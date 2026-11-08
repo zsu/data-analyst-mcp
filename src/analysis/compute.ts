@@ -174,8 +174,8 @@ function derive(t: Table, spec: unknown, by: string[]): Table {
   for (const [name, src] of exprs(spec, "derive")) {
     const node = compile(src, cols, { what: "derive" });
     for (const g of groupRows({ cols, rows }, by, false)) {
-      const ctx: Ctx = { i: 0, group: g, cache: new Map() };
-      const vals = g.map((r, i) => evaluate(node, { ...ctx, row: r, i }));
+      const ctx: Ctx = { i: 0, group: g, cache: new Map() }; // moved row by row: evaluate keeps no reference to it
+      const vals = g.map((r, i) => ((ctx.row = r), (ctx.i = i), evaluate(node, ctx)));
       g.forEach((r, i) => (r[name] = vals[i]));
     }
     if (!cols.includes(name)) cols = [...cols, name];
@@ -385,8 +385,10 @@ function wrap<T>(i: number, verb: string, fn: () => T): T {
 
 export type PipelineResult = { table: Table; notes: string[]; inputs: Record<string, InputRecord> };
 
-/** Read the inputs and run the steps (no file is written). */
-export function runPipeline(workspace: string, p: Pipeline): PipelineResult {
+/** Read the inputs and run the steps (no file is written). `parsed` keeps each input read once across calls (the
+ * rerun replays many recipes over one large microdata file); it is keyed by path, content hash and columns, and is
+ * safe to share because no step changes its input table in place (every verb builds new rows). */
+export function runPipeline(workspace: string, p: Pipeline, parsed?: Map<string, Table>): PipelineResult {
   if (!p.inputs || typeof p.inputs !== "object" || !Object.keys(p.inputs).length) {
     throw new ComputeError('inputs: {alias: "data/<id>/<table>.csv" | "data/<id>/<table>.parquet" | "exhibits/<x>.csv" | ' +
       "{path, columns}}, at least one");
@@ -400,8 +402,15 @@ export function runPipeline(workspace: string, p: Pipeline): PipelineResult {
     const abs = inputPath(workspace, rel);
     if (!fs.existsSync(abs)) throw new ComputeError(`input ${alias}: no file ${relPath(rel)} in the workspace (fetch it first, or check the path)`);
     const buf = fs.readFileSync(abs);
-    inputs[alias] = { path: relPath(rel), sha256: sha256(buf), ...(inp.columns ? { columns: inp.columns } : {}) };
-    env.set(alias, readInput(alias, abs, inp, buf));
+    const sha = sha256(buf);
+    inputs[alias] = { path: relPath(rel), sha256: sha, ...(inp.columns ? { columns: inp.columns } : {}) };
+    const key = `${abs}\u0000${sha}\u0000${inp.columns ? JSON.stringify(inp.columns) : ""}`;
+    let t = parsed?.get(key);
+    if (!t) {
+      t = readInput(alias, abs, inp, buf);
+      parsed?.set(key, t);
+    }
+    env.set(alias, t);
   }
   const start = p.from ?? Object.keys(p.inputs)[0];
   if (!env.has(start)) throw new ComputeError(`from: ${pyRepr(start)} is not an input alias (${Object.keys(p.inputs).join(", ")})`);

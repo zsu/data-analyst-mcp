@@ -560,7 +560,10 @@ function call(n: Extract<Node, { t: "call" }>, ctx: Ctx): Value {
   const fn = n.fn;
   if (AGGREGATES[fn]) {
     if (ctx.cache.has(n)) return ctx.cache.get(n) as Value;
-    const sub = (i: number): Ctx => ({ row: ctx.group[i], i, group: ctx.group, cache: new Map() });
+    // one context for every row of the group, moved row by row (evaluate keeps no reference to it), and one cache:
+    // what the cache holds (a nested aggregate, a cumsum) depends only on the group, so the rows can share it
+    const inner: Ctx = { row: undefined, i: 0, group: ctx.group, cache: new Map() };
+    const sub = (i: number): Ctx => ((inner.row = ctx.group[i]), (inner.i = i), inner);
     const vals = fn === "count" && !n.args.length ? ctx.group.map(() => 1 as Value)
       : ctx.group.map((_, i) => evaluate(n.args[0], sub(i)));
     const w = fn === "weighted_mean" ? ctx.group.map((_, i) => evaluate(n.args[1], sub(i))) : undefined;

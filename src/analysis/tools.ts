@@ -10,7 +10,7 @@ import { compute, ComputeError } from "./compute.js";
 import { AGGREGATES, FUNCTIONS, WINDOWS } from "./expr.js";
 import { FactError, registerFacts } from "./facts.js";
 import { summarize } from "./handoff.js";
-import { rerunWorkspace } from "./rerun.js";
+import { awaitRerun, RerunPending } from "./rerun_job.js";
 import { writeTable, WriteTableError } from "./write_table.js";
 
 const list = (o: Record<string, unknown>) => Object.keys(o).filter((k) => k !== "col").join(", ");
@@ -56,7 +56,14 @@ export function factsTool(s: Session, a: any) {
 }
 
 export async function rerunTool(s: Session) {
-  const r = await rerunWorkspace(s.workspace);
+  let r;
+  try {
+    r = await awaitRerun(s.workspace);
+  } catch (e) {
+    if (!(e instanceof RerunPending)) throw e;
+    throw fail("in_progress", e.message, "Call rerun again in about 30 seconds: it waits on this same replay (it does not " +
+      "start another) and answers at once when it is done. Do not change the workspace meanwhile.", { retry_after_s: 30 });
+  }
   const bad = [...Object.entries(r.exhibits).filter(([, v]) => !v.same).map(([k]) => k),
     ...Object.entries(r.facts).filter(([, v]) => !v.same).map(([k]) => `fact ${k}`)];
   return { status: "ok", summary: { reproduced: !bad.length, not_reproduced: bad, ...r },

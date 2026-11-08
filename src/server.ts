@@ -15,8 +15,9 @@ import { Session } from "./session.js";
 import * as T from "./tools.js";
 import { TOOLS as ANALYSIS_TOOLS } from "./analysis/tools.js";
 import { TOOLS as REPORT_TOOLS } from "./report/tools.js";
+import { TOOLS as WORKSPACE_TOOLS } from "./workspace_tool.js";
 
-export const VERSION = "0.6.0";
+export const VERSION = "0.7.0";
 
 export const INSTRUCTIONS = `Live U.S. government data, fetched from the agency at call time; every result is cited.
 Never answer a U.S. government data question from memory, and never estimate, simulate or "illustrate" a number:
@@ -34,6 +35,9 @@ for me" option, your recommended option first), with your question tool when you
 question with record_decisions; fetch refuses until they are settled (gate_blocked says what is missing).
 
 Errors carry a code and a fix: follow the fix, never repeat a call unchanged, never present a failure as data.
+in_progress is the exception: a long rerun continues in the background, and the same call made again waits on it.
+If files an earlier call made are missing (the server restarted in a new workspace), open_workspace lists the
+earlier workspaces and reopens one.
 Keys are never asked for in chat: key_missing gives the user a command or page to store a key themselves.
 
 Citations: cite page_url and the citation text with its retrieval date; copy every notice word for word.
@@ -269,7 +273,7 @@ export function createServer(session = new Session()): McpServer {
     annotations: READ,
   }, wrap(s, T.readFile));
 
-  for (const t of [...ANALYSIS_TOOLS, ...REPORT_TOOLS]) {
+  for (const t of [...ANALYSIS_TOOLS, ...REPORT_TOOLS, ...WORKSPACE_TOOLS]) {
     server.registerTool(t.name, { title: t.title, description: t.description, inputSchema: t.inputSchema,
       annotations: t.annotations ?? { readOnlyHint: false, openWorldHint: false } }, wrap(s, t.handler));
   }

@@ -24,7 +24,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { rerunWorkspace } from "../analysis/rerun.js";
+import { awaitRerun, RerunPending } from "../analysis/rerun_job.js";
 import { workspaceFile } from "../core/guard.js";
 import { redact } from "../core/keys.js";
 import { decodeText } from "../core/tabular.js";
@@ -666,14 +666,16 @@ export function checkFact(name: string, f: any, base: string): [boolean, string]
   return [true, `${name}: derived (${String(f.derivation).slice(0, 60)})`];
 }
 
-/** --rerun: replay every exhibit's lineage and recompute every table fact (rerunWorkspace); facts.json and the
- * tracked exhibit CSVs must come out the same. Nothing in the workspace is changed. */
-export async function rerun(base: string, fpath: string, tracked: string[]): Promise<Result[]> {
+/** --rerun: replay every exhibit's lineage and recompute every table fact (rerunWorkspace, as a background job); facts.json and the
+ * tracked exhibit CSVs must come out the same. Nothing in the workspace is changed.
+ * `until`: when to stop waiting for the background rerun (RerunPending is thrown then; the tool says call again). */
+export async function rerun(base: string, fpath: string, tracked: string[], until?: number): Promise<Result[]> {
   if (!fs.existsSync(fpath)) return [["replication", false, "--rerun needs facts.json; register the facts first (the facts tool)"]];
   let r;
   try {
-    r = await rerunWorkspace(base);
+    r = await awaitRerun(base, until);
   } catch (e) {
+    if (e instanceof RerunPending) throw e;
     return [["replication", false, "the rerun failed: " + redact(e instanceof Error ? e.message : String(e)).slice(-400)]];
   }
   const out: Result[] = [];

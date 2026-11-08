@@ -163,6 +163,7 @@ To host the server for claude.ai or a team, see [docs/hosting.md](docs/hosting.m
 | `handoff` | the per-source data hand-off |
 | `check_key` | whether a key is set up (never shows it), and tested live where the source allows |
 | `read_file` | a small text file from the workspace |
+| `open_workspace` | after a server restart (which starts a new, empty workspace), lists the earlier workspaces and reopens one (local server only) |
 
 **Asking before fetching is enforced, not just suggested.** `fetch` returns `gate_blocked` until, for that
 source, the model has read `source_brief` and the schemas of the requests it uses, and has recorded how each
@@ -173,7 +174,12 @@ resources, for clients that let users pick prompts or attach resources.
 **Results** have one shape. Success: `{status: "ok" | "partial", summary, files, citation, notes}`. Failure:
 `{status: "error", code, message, fix, retry_after_s?}`. The codes are `invalid_request`, `not_found`,
 `not_supported`, `agency_rejected`, `agency_unavailable`, `key_missing`, `key_rejected`, `rate_limited`,
-`gate_blocked` and `server_error`.
+`gate_blocked`, `in_progress` and `server_error`. `in_progress` comes from a rerun (`rerun`, or an audit with
+`rerun: true`) that needs longer than a client waits for one call: the replay continues in a worker thread,
+the same call made again waits on that same replay, and the finished result is kept until the workspace
+changes. `DATA_ANALYST_RERUN_WAIT_S` sets how long a call waits first (default 45 seconds). The replay gets its own heap,
+`DATA_ANALYST_RERUN_HEAP_MB` (default: 60 percent of the memory the process may use, a container's limit when it
+has one); if it runs out, the audit reports that, and the server keeps running.
 
 ## Options
 
@@ -272,7 +278,8 @@ model never sees them. See [docs/hosting.md](docs/hosting.md) and the `Dockerfil
 
 Each session writes to its own folder under `$DATA_ANALYST_OUT` (default: the system temp folder,
 `data-analyst-mcp/<session>`), with `data/<source>/` and `decisions.json` inside. Nothing is written inside the
-package.
+package. A local server that restarts (a client may restart it after a call it gave up on) starts a new folder;
+the earlier one stays, and `open_workspace` reopens it. `--workspace <folder>` keeps one fixed folder instead.
 
 ## Development
 

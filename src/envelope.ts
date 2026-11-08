@@ -12,7 +12,7 @@ import type { Policy } from "./core/policy.js";
 import * as pol from "./core/policy.js";
 
 export type Code = "invalid_request" | "not_found" | "not_supported" | "agency_rejected" | "agency_unavailable" |
-  "key_missing" | "key_rejected" | "rate_limited" | "gate_blocked" | "server_error";
+  "key_missing" | "key_rejected" | "rate_limited" | "gate_blocked" | "in_progress" | "server_error";
 
 export type Failure = { status: "error"; code: Code; message: string; fix: string; retry_after_s?: number;
   upstream_excerpt?: string; [k: string]: unknown };

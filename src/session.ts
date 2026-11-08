@@ -21,8 +21,9 @@ export type Question = {
 };
 
 export class Session {
-  readonly id: string;
-  readonly workspace: string;
+  id: string;
+  /** Changed only by reopen (open_workspace, local mode). */
+  workspace: string;
   briefed = new Set<string>();
   schemas = new Map<string, Set<string>>();
   /** Remote mode: the signed-in account whose stored keys this session uses (OAuth subject). */
@@ -41,6 +42,13 @@ export class Session {
     this.id = id || `${new Date().toISOString().slice(0, 10)}-${crypto.randomBytes(4).toString("hex")}`;
     this.workspace = path.resolve(workspace || path.join(workspaceRoot(), this.id));
     fs.mkdirSync(this.workspace, { recursive: true });
+  }
+
+  /** Continue in an earlier workspace (after a server restart): its files and decisions.json come back; the fetch
+   * gate's evidence (source_brief and request_schema seen) is this process's own and starts empty. */
+  reopen(dir: string): void {
+    this.workspace = path.resolve(dir);
+    this.id = path.basename(this.workspace);
   }
 
   sawSchema(source: string, names: string[]): void {

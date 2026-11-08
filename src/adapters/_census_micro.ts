@@ -414,6 +414,25 @@ export function asecJoin(src: string, dst: string, cols: string[], blob: Buffer,
 }
 
 // ---------------------------------------------------------------------- variable metadata and codebook
+/** Variables Census renamed between files: `old` up to the year before `from`, `new` from `from` on (checked live
+ * 2026-11-08 on acs1/pums, acs5/pums and acs1/pumspr: ST 200 through 2022, STATE 200 from 2023). */
+const MICRO_RENAMES: { kind: string; old: string; new: string; from: number; also?: string }[] = [
+  { kind: "acs_pums", old: "ST", new: "STATE", from: 2023, also: "every result also has a state column to group on" },
+];
+
+/** Why `v` is not a variable of `ds` when Census renamed it, or null. */
+export function renameHint(ds: string, v: string): string | null {
+  const kind = microKind(ds), year = datasetYear(ds);
+  if (!kind || year === null) return null;
+  for (const r of MICRO_RENAMES) {
+    if (r.kind !== kind) continue;
+    const tail = r.also ? `; ${r.also}` : "";
+    if (v === r.old && year >= r.from) return `${r.old} is named ${r.new} from the ${r.from} file on${tail}`;
+    if (v === r.new && year < r.from) return `${r.new} is named ${r.old} before the ${r.from} file${tail}`;
+  }
+  return null;
+}
+
 /** {variable: metadata} from /variables/<VAR>.json (cached 30 days); an unknown name is a spec error (strict), else
  * left out of the result. */
 export async function microMeta(client: Client, pack: Pack, ds: string, vars: string[], strict = true): Promise<Record<string, any>> {
@@ -437,7 +456,9 @@ export async function microMeta(client: Client, pack: Pack, ds: string, vars: st
     if (cache) cache.put(url, r.body, { dataset: ds });
   }
   if (bad.length && strict) {
-    throw new DataError(`not variables of ${ds}: ${bad.join(", ")}; find names with the request_schema search "${ds}: <words>"`, "bad_request");
+    const hints = bad.map((v) => renameHint(ds, v)).filter((h): h is string => h !== null);
+    throw new DataError(`not variables of ${ds}: ${bad.join(", ")}` + hints.map((h) => ` (${h})`).join("") +
+      `; find names with the request_schema search "${ds}: <words>"`, "bad_request");
   }
   return out;
 }

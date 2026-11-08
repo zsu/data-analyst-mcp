@@ -17,6 +17,7 @@ import { unzipSync, zipSync } from "fflate";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 const rerunStub = vi.hoisted(() => ({ impl: null as null | ((w: string) => any) }));
+process.env.DATA_ANALYST_RERUN_INLINE = "1"; // the stub lives in this thread: no worker, nothing kept
 vi.mock("../src/analysis/rerun.js", async (orig) => {
   const real: any = await orig();
   return { ...real, rerunWorkspace: (w: string) => (rerunStub.impl ? rerunStub.impl(w) : real.rerunWorkspace(w)) };

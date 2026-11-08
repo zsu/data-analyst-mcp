@@ -1185,7 +1185,7 @@ export function checkPublished(base: string): [string, boolean, string, string[]
   return out;
 }
 
-export async function audit(out: string, online = false, rerunIt = false): Promise<Result[]> {
+export async function audit(out: string, online = false, rerunIt = false, rerunUntil?: number): Promise<Result[]> {
   const base = path.resolve(out);
   const results: Result[] = [];
   const res = (check: string, ok: unknown, msg: string) => void results.push([check, !!ok, msg]);
@@ -1237,7 +1237,7 @@ export async function audit(out: string, online = false, rerunIt = false): Promi
   if (rerunIt) {
     const exdir = path.join(base, "exhibits");
     const tracked = fs.existsSync(exdir) ? fs.readdirSync(exdir).filter((f) => f.endsWith(".csv")).sort().map((f) => path.join(exdir, f)) : [];
-    results.push(...(await MA.rerun(base, fpath, tracked)));
+    results.push(...(await MA.rerun(base, fpath, tracked, rerunUntil)));
   }
   return results;
 }

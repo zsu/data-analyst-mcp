@@ -80,6 +80,17 @@ owns its pack data, code and recorded fixtures.
       Estimate recipes: `packs/irs-soi/docs/estimate_patterns.md`. Tests: test/packs/irs-soi-tables.test.ts.
     - `xlsxSheets`/`xlsSheets` take an optional `marks` output: each cell's number-format marker and indent
       (`formatMark`), for tables that mark cells by format only.
+  - 0.7 adds:
+    - long reruns (`src/analysis/rerun_job.ts`): the rerun runs in a worker thread (`rerun_worker.ts`; from the
+      sources it loads with tsx), one job per workspace keyed by a fingerprint of the files it reads; a call waits
+      `DATA_ANALYST_RERUN_WAIT_S` (45) and then answers `in_progress` (call again: it waits on the same job). The
+      finished result is kept until those files change. The worker's heap is `DATA_ANALYST_RERUN_HEAP_MB` (default
+      60 percent of the allowed memory); only a worker that cannot load falls back to an in-thread replay, never
+      one that ran out of memory. `DATA_ANALYST_RERUN_INLINE=1` replays in-thread with nothing kept (tests that
+      stub `rerunWorkspace`). The rerun parses each input once across recipes. Tests: test/rerun-job.test.ts.
+    - `open_workspace` (`src/workspace_tool.ts`, local only) lists and reopens earlier workspaces after a restart.
+    - census microdata: a renamed variable is named in the error (`renameHint`: ACS PUMS `ST` is `STATE` from the
+      2023 files on).
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**

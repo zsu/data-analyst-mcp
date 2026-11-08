@@ -8,7 +8,7 @@ import path from "node:path";
 import zlib from "node:zlib";
 import { beforeAll, describe, expect, it } from "vitest";
 import adapter, { manualItemsAsync, normalize, parseUpload, withMoe } from "../../src/adapters/census.js";
-import { asecJoin, asecRwIndex, asecRwValues, iterRows, mergeChunks } from "../../src/adapters/_census_micro.js";
+import { asecJoin, asecRwIndex, asecRwValues, iterRows, mergeChunks, microMeta, renameHint } from "../../src/adapters/_census_micro.js";
 import { censusGet } from "../../src/adapters/_census_util.js";
 import { DataError } from "../../src/core/http.js";
 import { load } from "../../src/core/packs.js";
@@ -384,6 +384,27 @@ describe("census", () => {
     await censusGet(fake, "https://www2.census.gov/programs-surveys/cps/datasets/2026/march/");
     await censusGet(fake, "/2024/acs/acs1/pums", { get: "AGEP" });
     expect(seen.map(([, k]) => k)).toEqual([false, true]);
+  });
+
+  it("names the renamed PUMS state variable (ST to STATE from 2023)", async () => {
+    expect(renameHint("2024/acs/acs1/pums", "ST")).toContain("ST is named STATE from the 2023 file on");
+    expect(renameHint("2023/acs/acs5/pums", "ST")).toContain("STATE");
+    expect(renameHint("2023/acs/acs1/pumspr", "ST")).toContain("STATE");
+    expect(renameHint("2022/acs/acs5/pums", "STATE")).toContain("STATE is named ST before the 2023 file");
+    expect(renameHint("2022/acs/acs1/pums", "ST")).toBeNull(); // still ST then
+    expect(renameHint("2024/acs/acs1/pums", "AGEP")).toBeNull();
+    expect(renameHint("2026/cps/asec/mar", "ST")).toBeNull();
+    // microMeta's refusal carries the hint (a 404 on /variables/ST.json, as the live API answers)
+    fixtures("census"); // no response cache
+    const fake: any = { base: "https://api.census.gov/data",
+      request: async (_m: string, p: string) => p.endsWith("/ST.json")
+        ? { status: 404, body: Buffer.from("<html>not found</html>") }
+        : { status: 200, body: Buffer.from('{"name": "PWGTP"}'), json: () => ({ name: "PWGTP" }) } };
+    const e = await microMeta(fake, await load("census"), "2024/acs/acs1/pums", ["ST", "PWGTP"]).catch((x) => x);
+    expect(e).toBeInstanceOf(DataError);
+    expect(e.kind).toBe("bad_request");
+    expect(e.message).toContain("not variables of 2024/acs/acs1/pums: ST (ST is named STATE from the 2023 file on");
+    expect(e.message).toContain("state column");
   });
 
   it("merges chunks out of order, and refuses a missing person", () => {

@@ -337,7 +337,8 @@ function readJson(p: string): any {
 
 const mtime = (p: string) => fs.statSync(p).mtimeMs;
 
-export async function audit(reportPath: string, htmlPath?: string, online = false, rerunIt = false): Promise<Result[]> {
+export async function audit(reportPath: string, htmlPath?: string, online = false, rerunIt = false,
+  rerunUntil?: number): Promise<Result[]> {
   const base = path.dirname(path.resolve(reportPath));
   const R = MA.merged(base, readJson(reportPath));
   const mode = R.mode || "report";
@@ -619,7 +620,7 @@ export async function audit(reportPath: string, htmlPath?: string, online = fals
   }
   if (rerunIt) {
     const tracked = (R.exhibits || []).filter((e: any) => e.data).map((e: any) => path.join(base, e.data));
-    results.push(...(await MA.rerun(base, fpath, tracked)));
+    results.push(...(await MA.rerun(base, fpath, tracked, rerunUntil)));
   }
   return results;
 }

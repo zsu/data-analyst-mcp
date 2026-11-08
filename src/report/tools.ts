@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+import { rerunWaitMs, RerunPending, startRerun } from "../analysis/rerun_job.js";
 import { fail } from "../envelope.js";
 import type { Session } from "../session.js";
 import type { ToolDef } from "../toolkit.js";
@@ -18,7 +19,9 @@ const checks = (results: Result[]) => results.map(([check, ok, message]) => ({ c
 function readReport(s: Session): any {
   const p = path.join(s.workspace, "report.json");
   if (!fs.existsSync(p)) {
-    throw fail("not_found", "report.json is not in the workspace", "Call build_report with the report object first.");
+    throw fail("not_found", "report.json is not in the workspace", "Call build_report with the report object first. If " +
+      "build_report already ran in this conversation, the server restarted in a new workspace: call open_workspace " +
+      "(no arguments lists the earlier ones) and reopen that one, then call this tool again.");
   }
   try {
     return JSON.parse(fs.readFileSync(p, "utf8").replace(/^﻿/, ""));
@@ -27,10 +30,27 @@ function readReport(s: Session): any {
   }
 }
 
-async function guarded<T>(fn: () => Promise<T> | T): Promise<T> {
+/** A rerun still replaying when the call must answer: the model calls the same tool again. */
+export function pending(e: RerunPending, tool: string): never {
+  throw fail("in_progress", e.message + " (nothing was audited yet: the result comes with the replay)",
+    `Call ${tool} again with the same arguments in about 30 seconds: it waits on this same replay (it does not start ` +
+    "another) and answers at once when the replay is done. Do not change the workspace meanwhile: that starts the " +
+    "replay over. Tell the user the audit is still running.", { retry_after_s: 30 });
+}
+
+/** Start the background rerun now, so it runs while the other checks do; returns when the call stops waiting. */
+export function rerunDeadline(s: Session, rerun?: boolean): number | undefined {
+  if (!rerun) return undefined;
+  const until = Date.now() + rerunWaitMs();
+  startRerun(s.workspace);
+  return until;
+}
+
+async function guarded<T>(fn: () => Promise<T> | T, tool = "the tool"): Promise<T> {
   try {
     return await fn();
   } catch (e) {
+    if (e instanceof RerunPending) pending(e, tool);
     if (e instanceof BuildError || e instanceof SourceError) {
       throw fail("invalid_request", e.message, "Fix report.json, the facts or the workspace as the message says, then call the tool again.");
     }
@@ -48,15 +68,16 @@ export async function auditAnswerTool(s: Session, a: { answer: string; online?: 
   }
   const p = path.join(s.workspace, "answer.md");
   fs.writeFileSync(p, a.answer.endsWith("\n") ? a.answer : a.answer + "\n", "utf8");
+  const until = rerunDeadline(s, a.rerun);
   return guarded(async () => {
     NOTES.length = 0;
-    const results = await AA.audit(s.workspace, !!a.online, !!a.rerun);
+    const results = await AA.audit(s.workspace, !!a.online, !!a.rerun, until);
     const out = AA.printed(results, AA.CHECKS, a.answer, NOTES);
     return { status: "ok", summary: out.verdict, passed: out.passed, checks: checks(results), report: out.lines.join("\n"),
       files: [p], notes: [...NOTES],
       next: out.passed ? "Send the answer exactly as audited (with every disclosure line it carries)."
         : "Fix every FAIL (each message says what to do), then call audit_answer again with the revised reply. Never send an answer that failed." };
-  });
+  }, "audit_answer");
 }
 
 export async function buildReportTool(s: Session, a: { report: any }) {
@@ -76,15 +97,16 @@ export async function buildReportTool(s: Session, a: { report: any }) {
 
 export async function auditReportTool(s: Session, a: { online?: boolean; rerun?: boolean }) {
   readReport(s);
+  const until = rerunDeadline(s, a.rerun);
   return guarded(async () => {
     NOTES.length = 0;
-    const results = await AR.audit(path.join(s.workspace, "report.json"), undefined, !!a.online, !!a.rerun);
+    const results = await AR.audit(path.join(s.workspace, "report.json"), undefined, !!a.online, !!a.rerun, until);
     const out = AA.printed(results, AR.CHECKS, "", NOTES);
     return { status: "ok", summary: out.verdict, passed: out.passed, checks: checks(results), report: out.lines.join("\n"),
       files: [path.join(s.workspace, "report.html")], notes: [...NOTES],
       next: out.passed ? "Hand the report and replication_package.zip to the user."
         : "Fix every FAIL, call build_report again, then audit_report again." };
-  });
+  }, "audit_report");
 }
 
 export function styleCheckTool(s: Session, a: { report?: any; min?: number }) {
