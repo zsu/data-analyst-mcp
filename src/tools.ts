@@ -48,7 +48,7 @@ function keyStatus(p: Pack) {
 // ---------------------------------------------------------------------- guide
 const TOPICS: Record<string, string> = {
   workflow: "WORKFLOW.md", routing: "references/routing.md", style: "references/style_guide.md",
-  report_patterns: "references/report_patterns.md",
+  report_patterns: "references/report_patterns.md", report_schema: "references/report_schema.md",
 };
 
 export function guide(_s: Session, a: { topic?: string }) {

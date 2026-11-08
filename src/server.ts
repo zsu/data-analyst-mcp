@@ -162,8 +162,9 @@ export function createServer(session = new Session()): McpServer {
     title: "Method guide",
     description: "The analyst's method: framing the question, asking only critical questions, choosing sources, " +
       "the accuracy checklist and combining sources. Call once at the start of a data question. Topics: workflow " +
-      "(default), routing (which sources answer which questions, usual pairings), style, report_patterns.",
-    inputSchema: { topic: z.enum(["workflow", "routing", "style", "report_patterns"]).optional() },
+      "(default), routing (which sources answer which questions, usual pairings), style, report_patterns, report_schema " +
+      "(every report.json key build_report reads).",
+    inputSchema: { topic: z.enum(["workflow", "routing", "style", "report_patterns", "report_schema"]).optional() },
     annotations: READ,
   }, wrap(s, T.guide));
 

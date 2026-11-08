@@ -120,10 +120,11 @@ FAIL, and send it only when it prints AUDIT PASSED. Data only: send the `handoff
 and what could not be fetched with its route.
 
 ## 7. Report or paper (only when asked)
-Read `guide("report_patterns")` and `guide("style")`. Write the report as `build_report`'s report object, with
-every number as `{{fact_name}}` and a `sources` list of the pack ids used; run `style_check`, `build_report`,
-then `audit_report` (`rerun: true`), and rebuild until it prints AUDIT PASSED. The builder applies each source's
-notices, redistribution rules (microdata never leaves the workspace) and vintage blocks.
+Read `guide("report_patterns")`, `guide("report_schema")` (every report.json key) and `guide("style")`. Write the
+report as `build_report`'s report object, with every number as `{{fact_name}}` and a `sources` list of the pack
+ids used; run `style_check`, `build_report`, then `audit_report` (`rerun: true`), and rebuild until it prints
+AUDIT PASSED. The builder applies each source's notices, redistribution rules (microdata never leaves the
+workspace) and vintage blocks.
 
 ## Integrity rules
 - Never invent, estimate from memory, simulate or "illustrate" a number. If data cannot be fetched, say so

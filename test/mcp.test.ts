@@ -43,6 +43,16 @@ describe("mcp server", () => {
     expect((doc.contents[0] as any).text.length).toBeGreaterThan(500);
   });
 
+  it("serves the report.json schema as a guide topic", async () => {
+    const g = await call("guide", { topic: "report_schema" });
+    expect(g.isError).toBe(false);
+    expect(g.data.topics).toContain("report_schema");
+    for (const k of ["x_order", "series_order", "stacked_h", "notes_page", "introduction.subsections", "appendixes", "clearance",
+      "data_files", "replication", "recession_note", "y_min"]) expect(g.data.text).toContain(`\`${k}\``);
+    const tools = (await client.listTools()).tools;
+    expect(tools.find((t) => t.name === "build_report")!.description).toContain('guide("report_schema")');
+  });
+
   it("walks the whole path: find, brief, decide, schema, fetch, read", async () => {
     const found = await call("find_sources", { question: "leading causes of death in New York" });
     expect(found.data.candidates[0].source).toBe("cdc");

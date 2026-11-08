@@ -126,7 +126,8 @@ export const TOOLS: ToolDef[] = [
       "object (mode report: an exhibit chartbook; mode paper: prose-led). Facts are cited as {{name}} or {{name|fmt}}, " +
       "references as [@id], footnotes as [^n]; exhibits name a CSV in exhibits/ and a chart {type, x, y, series, ...}. " +
       "Each source's notices, Data Vintage block and redistribution rules are applied (microdata and withheld rows never " +
-      "enter the ZIP). Returns the report.html and ZIP paths; call audit_report next.",
+      "enter the ZIP). Every report.json key (chart types and options, cover, notes_page, footnote scoping, clearance, " +
+      "replication) is listed in guide(\"report_schema\"). Returns the report.html and ZIP paths; call audit_report next.",
     inputSchema: {
       report: z.record(z.string(), z.any()).describe("The report.json object (title, mode, sources, at_a_glance, sections, exhibits, methods, ...)"),
     },
