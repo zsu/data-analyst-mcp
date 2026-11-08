@@ -115,7 +115,8 @@ analyzing" first.
 - How fetch proceeds: a folder that already holds the same request is reused (also when only labels, sources
   or copyright changed: it is rebuilt from raw/; `force: true` downloads again). With a stored key it uses the
   API. Without one it takes FRED's keyless graph downloads when the request needs no key-only feature: mention
-  once what a key adds. A key-only feature with no key fails with `key_missing`: the user stores a key with
+  once what a key adds. If FRED rejects the stored key or the API does not answer, the same applies: it switches to
+  the keyless downloads (route `api_keyless`, with a note saying why); tell the user about the key problem in one line. A key-only feature with no key fails with `key_missing`: the user stores a key with
   `npx -y data-analyst-mcp setup fred` in their own terminal; never ask for the key in chat; offer as-of
   vintages or explicit state IDs instead. A spec problem fails with `invalid_request`.
 - Manual download: `manual_bundle` writes `manual_download/INSTRUCTIONS.md`, which lists one browser link per

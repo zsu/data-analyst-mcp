@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { inspect } from "node:util";
 import { zipSync } from "fflate";
-import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import * as keys from "../../src/core/keys.js";
 import { load } from "../../src/core/packs.js";
 import * as pol from "../../src/core/policy.js";
@@ -78,6 +78,73 @@ describe("fred routes and fetch", () => {
     const r = await fetchOk(s, "fred", { description: "x", series: [{ id: "GDPC1", start: "2024-01-01", end: "2025-12-31" }] });
     expect(r.summary.route).toBe("api");
     expect(JSON.stringify(r)).not.toContain(FAKE);
+  });
+
+  /** A copy of the fixtures where FRED's series call for GDPC1 answers as given. */
+  const brokenApi = (hit: any) => {
+    const fx = fs.mkdtempSync(path.join(os.tmpdir(), "fred-fx-"));
+    for (const f of fs.readdirSync(FIX)) fs.copyFileSync(path.join(FIX, f), path.join(fx, f));
+    const idx = JSON.parse(fs.readFileSync(path.join(fx, "index.json"), "utf8"));
+    idx["GET https://api.stlouisfed.org/fred/series?series_id=GDPC1&file_type=json"] = hit;
+    fs.writeFileSync(path.join(fx, "index.json"), JSON.stringify(idx));
+    return fx;
+  };
+  const REJECTED = { file: "api_key_rejected.json", status: 400 }; // FRED's documented answer to an unknown key
+  const fetchWith = async (fx: string, spec: any) => {
+    withKey();
+    const s = newSession();
+    await prepare(s, "fred", spec);
+    process.env.DATA_ANALYST_FIXTURES = fx;
+    return { s, r: T.fetchData(s, { source: "fred", spec }) };
+  };
+
+  it("a rejected key falls back to the keyless graph downloads when nothing key-only is asked", async () => {
+    const { s, r: p } = await fetchWith(brokenApi(REJECTED), PIPE);
+    const r: any = await p;
+    expect(r.status).toBe("ok");
+    expect(r.summary.route).toBe("api_keyless");
+    const notes = r.notes.join(" ");
+    expect(notes).toContain("FRED rejected the stored key");
+    expect(notes).toContain("is not registered");
+    expect(notes).toContain("downloaded without the key (keyless graph downloads)");
+    expect(notes).toContain("No working FRED API key");
+    expect(notes).not.toContain("A free key");
+    const req = JSON.parse(read(s, "request.json"));
+    expect([req.route, req.keyless]).toEqual(["api_keyless", true]);
+    expect(csv(s, "fred", "fred_observations").find((x) => x.series_id === "GDPC1" && x.date === "2020-04-01")!.value)
+      .toBe("19077.992");
+    expect(JSON.stringify(r)).not.toContain(FAKE);
+    // the keyless calls go only to FRED's graph hosts, never with the key
+    expect(req.requests.every((u: string) => /^https:\/\/(fred|alfred)\.stlouisfed\.org\//.test(u) && !u.includes(FAKE)))
+      .toBe(true);
+  });
+
+  it("an API outage (maintenance page) falls back to the keyless graph downloads", async () => {
+    const page = { body: "<!DOCTYPE html><html><title>Site Maintenance</title></html>" };
+    const r: any = await (await fetchWith(brokenApi(page), PIPE)).r;
+    expect(r.summary.route).toBe("api_keyless");
+    expect(r.notes.join(" ")).toContain("The FRED API did not answer");
+  });
+
+  it("a rejected key still fails when the spec needs a key-only feature", async () => {
+    const spec = { description: "x", series: [{ id: "GDPC1", start: "2020-04-01", end: "2020-04-01", vintage: "first_release" }] };
+    const f = await failure((await fetchWith(brokenApi(REJECTED), spec)).r);
+    expect(f.code).toBe("key_rejected");
+    expect(f.message).toContain("FRED rejected the API key");
+  });
+
+  it("a rejected key and keyless downloads that cannot connect: key_rejected naming both", async () => {
+    const spy = vi.spyOn(api.Keyless.prototype, "metadata")
+      .mockRejectedValue(new api.FredError("fredgraph.xlsx: network error: ECONNRESET", "network"));
+    try {
+      const f = await failure((await fetchWith(brokenApi(REJECTED), PIPE)).r);
+      expect(f.code).toBe("key_rejected");
+      expect(f.message).toContain("FRED rejected the API key");
+      expect(f.message).toContain("the keyless graph downloads failed too: fredgraph.xlsx: network error");
+      expect(JSON.stringify(f)).not.toContain(FAKE);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("a key-only need without a key: key_missing with the manual route; the bundle lists every file (test_03)", async () => {

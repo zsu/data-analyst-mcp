@@ -5,8 +5,10 @@
  * Routes: with a FRED_API_KEY the API (full metadata, source, copyright tag, every vintage kind, GeoFRED, the release
  * calendar and whole releases); without one FRED's own keyless graph downloads (fredgraph.csv / alfredgraph.csv /
  * fredgraph.xlsx: latest and as-of vintages, titles and units, no source or copyright), unless the spec needs a key-only
- * feature (then key_missing with the manual route). A folder that already holds the same request is reused; when only
- * labels, sources or copyright changed it is rebuilt from data/fred/raw/ without downloading.
+ * feature (then key_missing with the manual route). A rejected key or an API outage switches to the keyless downloads
+ * when the spec needs no key-only feature (the result's route says which was taken, and a note says why). A folder
+ * that already holds the same request is reused; when only labels, sources or copyright changed it is rebuilt from
+ * data/fred/raw/ without downloading.
  *
  * Lookups (the Python --describe, --search, --vintagedates and --release-dates) go through request_schema search:
  *   "describe GDPC1 GDPPOT"            title, units, frequency, source, release, copyright (keyless: titles and units)
@@ -26,7 +28,7 @@ import * as pol from "../core/policy.js";
 import { trail } from "../core/context.js";
 import { readCsv } from "../core/tabular.js";
 import {
-  copyrightFromTag, copyrightStatus, findApiKey, FredClient, FredError, GRAPH_MAX, Keyless, KEY_URL, seriesUrl,
+  copyrightFromTag, copyrightStatus, findApiKey, FredClient, FredError, type FredKind, GRAPH_MAX, Keyless, KEY_URL, seriesUrl,
 } from "./_fred_api.js";
 import {
   coreManualItems, csvColumns, dataDir, existingData, fetchApi, fetchKeyless, fingerprint, ingest, keyOnlyNeeds,
@@ -91,21 +93,46 @@ async function fetch(ctx: DeepContext): Promise<DeepResult> {
   }
   const n0 = trail().length;
   const [key] = findApiKey();
+  const needs = keyOnlyNeeds(s);
+  const keyless: [string, string] = ["api_keyless", "FRED graph downloads (fredgraph.csv / alfredgraph.csv, no key)"];
   let parts, route: string, acquired: string;
+  const extra: string[] = [];
   if (key) {
-    parts = await fetchApi(s, new FredClient(key));
-    [route, acquired] = ["api", "FRED API download"];
+    try {
+      parts = await fetchApi(s, new FredClient(key));
+      [route, acquired] = ["api", "FRED API download"];
+    } catch (e) {
+      if (!(e instanceof FredError && FALLBACK.has(e.fk)) || needs.length) throw e;
+      const why = e.message.split("\n")[0].slice(0, 300);
+      extra.push(e.fk === "auth"
+        ? `FRED rejected the stored key (${why}; check or renew it at ${KEY_URL}); this request needs nothing only the ` +
+          "API provides, so it was downloaded without the key (keyless graph downloads). Tell the user about the key " +
+          "problem in one line."
+        : `The FRED API did not answer (${why}); this request needs nothing only the API provides, so it was downloaded ` +
+          "without the key (keyless graph downloads).");
+      parts = await fetchKeyless(s, new Keyless()).catch((k) => {
+        if (!(k instanceof DataError)) throw k;
+        throw new FredError(`${e.message}; the keyless graph downloads failed too: ${k.message}`, e.fk);
+      });
+      [route, acquired] = keyless;
+    }
   } else {
-    const needs = keyOnlyNeeds(s);
     if (needs.length) throw new FredError("fred: this request needs a FRED_API_KEY key for: " + needs.join("; "), "key_missing");
     parts = await fetchKeyless(s, new Keyless());
-    [route, acquired] = ["api_keyless", "FRED graph downloads (fredgraph.csv / alfredgraph.csv, no key)"];
+    [route, acquired] = keyless;
   }
   const p = packageData(ctx.pack, parts, s, out, route, acquired, null, n0);
-  const extra = route === "api_keyless" ? ["No FRED API key: the keyless graph downloads were used (no source, notes or " +
-    `copyright status per series; read each series page before sharing). A free key (${KEY_URL}) adds them.`] : [];
+  if (route === "api_keyless") {
+    extra.push((key ? "No working FRED API key" : "No FRED API key") + ": the keyless graph downloads were used (no " +
+      "source, notes or copyright status per series; read each series page before sharing)." +
+      (key ? "" : ` A free key (${KEY_URL}) adds them.`));
+  }
   return result(p, s, d, route, extra);
 }
+
+/** API failures the keyless graph downloads can stand in for: a rejected key (key_rejected) or an API outage
+ * (agency_unavailable). A request that needs a key-only feature still fails. */
+const FALLBACK = new Set<FredKind>(["auth", "network", "rate", "unavailable", "http"]);
 
 async function ingestFiles(ctx: DeepContext & { files: string[] }): Promise<DeepResult> {
   const s = spec(ctx.spec);
@@ -283,7 +310,8 @@ const SCHEMAS: Record<string, any> = {
 function schema(names: string[]): any[] {
   return names.map((n) => ({ name: n, ...SCHEMAS[n], lookups: LOOKUPS,
     routes: "with FRED_API_KEY: the API (source, notes, copyright tag); without: FRED's keyless graph downloads (latest and " +
-      "as-of vintages only; copyright unknown), unless a key-only feature is asked (then key_missing)" }));
+      "as-of vintages only; copyright unknown), unless a key-only feature is asked (then key_missing). A rejected key or an API " +
+      "outage falls back to the keyless downloads when nothing key-only is asked" }));
 }
 
 /** Which operations a spec uses (never throws: the gate calls it before the spec is checked). */
