@@ -25,6 +25,8 @@ export class Session {
   /** Changed only by reopen (open_workspace, local mode). */
   workspace: string;
   briefed = new Set<string>();
+  /** Packs whose request_schema spec_format was already sent (it is the same every call). */
+  specFormatSent = new Set<string>();
   schemas = new Map<string, Set<string>>();
   /** Remote mode: the signed-in account whose stored keys this session uses (OAuth subject). */
   account: string | null = null;

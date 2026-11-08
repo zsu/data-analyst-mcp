@@ -64,8 +64,9 @@ describe("answer workflow, end to end", () => {
       text: `Mortality data. ${quote} Provisional counts are revised as records arrive.` });
     expect(r.status, JSON.stringify(r)).toBe("ok");
     r = await call("record_decisions", {
-      literature_search: [{ unavailable: true, reason_code: "no_search_tool", reason: "this test client has no search tool" }],
       disclosures: { literature: "No literature search could be run here." },
+      method: {
+      literature_search: [{ unavailable: true, reason_code: "no_search_tool", reason: "this test client has no search tool" }],
       references: [{ id: "nchs_deaths", citation: "NCHS, Mortality data (National Vital Statistics System)",
         url: "https://www.cdc.gov/nchs/nvss/deaths.htm", accessed: "2026-11-07", opened: true, used_for: "final counts", quote }],
       assumptions: [{ parameter: "counts_final", value: "final 2017 counts", basis: "precedent",
@@ -74,7 +75,7 @@ describe("answer workflow, end to end", () => {
       data_needs: [{ id: "published_total", data: "The NCHS published 2017 New York death total",
         improves: ["Deaths in New York, all causes"], effect: "a benchmark for the headline", how_to_get: "CDC WONDER",
         from_user: false }],
-    });
+    } });
     expect(r.status).toBe("ok");
 
     const answer = `In 2017, ${deathsText} people died in New York (final counts), and heart disease caused ${shareText} of ` +

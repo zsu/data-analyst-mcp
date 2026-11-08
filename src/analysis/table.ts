@@ -13,6 +13,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { parse } from "csv-parse/sync";
 import { stringify } from "csv-stringify/sync";
+import { namesHint } from "../core/compact.js";
 import { ParquetFile } from "../core/parquet.js";
 import { pyFloatRepr } from "../core/py.js";
 import { readCsv, writeCsv } from "../core/tabular.js";
@@ -76,6 +77,36 @@ export function parseTable(text: string): Table {
   return { cols, rows };
 }
 
+/** A CSV text's cells, header row first (the grid parseTable reads). */
+export function csvGrid(text: string): string[][] {
+  return parse(text.replace(BOM, ""), { relax_column_count: true, relax_quotes: true, skip_empty_lines: true }) as string[][];
+}
+
+/** The typed table of a parsed grid, typed exactly as parseTable types the same CSV: `header` as headerOf gives it,
+ * only the columns `want` (in that order) when given. A name the header repeats takes its last column, as parseTable. */
+export function tableFromGrid(header: string[], grid: string[][], want?: string[]): Table {
+  const head = grid[0] || [];
+  const at = new Map<string, number>();
+  head.forEach((h, i) => at.set(h, i));
+  const cols = want ?? header;
+  const n = Math.max(0, grid.length - 1);
+  const idx = cols.map((c) => at.get(c));
+  const cell = (r: string[], j: number | undefined): Cell => (j === undefined || j >= r.length ? null : r[j]);
+  const kinds = idx.map((j) => kindOf(n, (i) => cell(grid[i + 1], j)));
+  const rows: Row[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const r = grid[i + 1], o = newRow();
+    for (let k = 0; k < cols.length; k++) o[cols[k]] = typed(cell(r, idx[k]), kinds[k]);
+    rows[i] = o;
+  }
+  return { cols: [...cols], rows };
+}
+
+/** A Parquet file's column names, from its schema (no data decoded). */
+export function parquetColumns(buf: Buffer, file: string): string[] {
+  return new ParquetFile(file, buf).columns();
+}
+
 /** A table from columns of cell texts (null = a gap), typed exactly as parseTable types the same CSV. */
 export function tableFromColumns(cols: string[], data: Record<string, Cell[]>, n: number): Table {
   const kinds = cols.map((c) => kindOf(n, (i) => data[c][i]));
@@ -101,7 +132,7 @@ export function readParquetTable(buf: Buffer, file: string, columns?: string[] |
   const have = pq.columns();
   const cols = columns && columns.length ? [...new Set(columns)] : have;
   const miss = cols.filter((c) => !have.includes(c));
-  if (miss.length) throw new ParquetInputError(`no column${miss.length > 1 ? "s" : ""} ${miss.join(", ")}; the columns are ${have.join(", ")}`);
+  if (miss.length) throw new ParquetInputError(`no column${miss.length > 1 ? "s" : ""} ${miss.join(", ")}; ${namesHint(miss, have, "columns", (v) => (v as string[]).join(", "))}`);
   const cells = pq.numRows * cols.length;
   if (cells > PARQUET_MAX_CELLS.value) {
     throw new ParquetInputError(`${pq.numRows.toLocaleString("en-US")} rows x ${cols.length} columns is more than compute ` +

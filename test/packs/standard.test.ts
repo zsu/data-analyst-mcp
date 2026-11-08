@@ -25,7 +25,7 @@ describe("cdc", () => {
     expect(rows[0].deaths).toBe("155358");
     expect(fs.existsSync(path.join(s.workspace, "data", "cdc", "README.md"))).toBe(true);
     expect(r.citation.publisher).toContain("Centers for Disease Control");
-    expect(r.citation.request_urls[0]).toMatch(/^https:\/\/data\.cdc\.gov\/resource\//);
+    expect(r.requests[0].url).toMatch(/^https:\/\/data\.cdc\.gov\/resource\//);
     expect(r.summary.tables[0].preview_csv[0]).toContain("cause_name");
   });
 

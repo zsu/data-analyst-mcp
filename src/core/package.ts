@@ -16,6 +16,8 @@ import * as keys from "./keys.js";
 import type { Pack, Row, Spec } from "./packs.js";
 import * as pol from "./policy.js";
 import { pyStr, stableJson } from "./py.js";
+import { parse as parseCsv } from "csv-parse/sync";
+import { writeParquet } from "./parquet.js";
 import { columnsOf, readCsv, writeCsv } from "./tabular.js";
 
 const LABEL_ONLY = new Set(["description", "label", "labels", "notes", "source_note"]);
@@ -148,7 +150,31 @@ export function takeScrubbed(dir: string): string[] {
 export const scrubNote = (files: string[]) => `A key the agency echoed in its response was replaced with [REDACTED] in ` +
   `${files.join(", ")}: those files differ from the published bytes there.`;
 
-export type TableMeta = { name: string; file: string; rows: number; columns: string[]; sha256: string };
+export type TableMeta = { name: string; file: string; rows: number; columns: string[]; sha256: string; parquet?: string };
+
+/** A microdata CSV at least this large also gets a Parquet copy beside it, so compute can decode only the columns a
+ * recipe needs (the CSV stays the file of record: its checksum is in request.json). */
+export const PARQUET_BESIDE_MIN_BYTES = { value: 5_000_000 };
+
+/** The same table as `<name>.parquet`: every column as text, an empty cell as a gap (compute types it as the CSV). */
+export function parquetBeside(csvPath: string): string | null {
+  const grid = parseCsv(fs.readFileSync(csvPath, "utf8").replace(/^\uFEFF/, ""),
+    { relax_column_count: true, relax_quotes: true, skip_empty_lines: true }) as string[][];
+  const head = grid[0] || [];
+  if (!head.length || new Set(head).size !== head.length) return null;     // a repeated name has no Parquet form
+  const n = grid.length - 1;
+  const cols = head.map((name, j) => {
+    const values: (string | null)[] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const r = grid[i + 1];
+      values[i] = j < r.length && r[j] !== "" ? r[j] : null;
+    }
+    return { name, kind: "string" as const, values };
+  });
+  const out = csvPath.replace(/\.csv$/i, ".parquet");
+  writeParquet(out, cols, n, "data-analyst-mcp");
+  return out;
+}
 export type WriteResult = { data_dir: string; tables: TableMeta[]; retrieved: string; citation: string };
 
 export function write(out: string, pack: Pack, tables: Record<string, Table>, spec: Spec, o: {
@@ -176,6 +202,11 @@ export function write(out: string, pack: Pack, tables: Record<string, Table>, sp
       t.discard();
     } else fs.writeFileSync(path.join(d, file), writeCsv(rows, cols));
     scrubFile(path.join(d, file));                 // before the checksum: request.json then matches the file
+    // a large microdata table also as Parquet (from the scrubbed CSV); a stale copy from an earlier fetch goes
+    const pq = path.join(d, `${name}.parquet`);
+    fs.rmSync(pq, { force: true });
+    const parquet = t instanceof FileTable && fs.statSync(path.join(d, file)).size >= PARQUET_BESIDE_MIN_BYTES.value
+      ? parquetBeside(path.join(d, file)) : null;
     for (const c of cols) {
       const nonmiss = rows.map((r) => r[c]).filter((v) => v !== "" && v !== null && v !== undefined);
       dictionary.push({ table: name, column: c, type: infer(nonmiss.slice(0, 500)),
@@ -183,7 +214,7 @@ export function write(out: string, pack: Pack, tables: Record<string, Table>, sp
         example: nonmiss.length ? pyStr(nonmiss[0]).slice(0, 80) : "" });
     }
     metaTables.push({ name, file, rows: t instanceof FileTable ? t.rows : rows.length, columns: cols,
-      sha256: sha256(path.join(d, file)) });
+      sha256: sha256(path.join(d, file)), ...(parquet ? { parquet: path.basename(parquet) } : {}) });
   }
   const earlier = earlierFetches(d, new Set(metaTables.map((t) => t.file)));
   const kept = new Set(earlier.flatMap((e) => e.tables.map((t: any) => t.name)));

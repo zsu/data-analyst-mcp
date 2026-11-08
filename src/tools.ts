@@ -5,7 +5,11 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { parse } from "csv-parse/sync";
+import { columnList, inLongRun, namesHint } from "./core/compact.js";
 import { trail, withRun } from "./core/context.js";
+import { outline, pick, splitSections } from "./core/sections.js";
+import { AGGREGATES, FUNCTIONS, WINDOWS } from "./analysis/expr.js";
 import { GUIDE_DIR, mode } from "./core/env.js";
 import * as gr from "./core/generic-rest.js";
 import * as guard from "./core/guard.js";
@@ -46,16 +50,42 @@ function keyStatus(p: Pack) {
 }
 
 // ---------------------------------------------------------------------- guide
-const TOPICS: Record<string, string> = {
-  workflow: "WORKFLOW.md", routing: "references/routing.md", style: "references/style_guide.md",
+export const TOPICS: Record<string, string> = {
+  workflow: "WORKFLOW.md", routing: "references/routing.md", report: "references/report_quick.md",
+  compute: "references/compute.md", style: "references/style_guide.md",
   report_patterns: "references/report_patterns.md", report_schema: "references/report_schema.md",
 };
 
-export function guide(_s: Session, a: { topic?: string }) {
+/** compute's function lists, from the expression engine itself (so the guide never goes stale). */
+function computeLists(): string {
+  const names = (o: Record<string, unknown>) => Object.keys(o).filter((k) => k !== "col").join(", ");
+  return `\n## Functions\nFunctions: ${names(FUNCTIONS)}.\nAggregates: ${names(AGGREGATES)}.\n` +
+    `Windows (in row order, per group): ${names(WINDOWS)}.\n`;
+}
+
+/** A topic longer than this is served as an outline first, then by section. */
+export const GUIDE_WHOLE_MAX = 12_000;
+
+export function guide(_s: Session, a: { topic?: string; section?: string | string[] }) {
   const topic = a.topic || "workflow";
   const file = TOPICS[topic];
   if (!file) throw fail("invalid_request", `unknown topic ${JSON.stringify(topic)}`, `Use one of: ${Object.keys(TOPICS).join(", ")}.`);
-  return { status: "ok", topic, text: fs.readFileSync(path.join(GUIDE_DIR, file), "utf8"), topics: Object.keys(TOPICS) };
+  const text = fs.readFileSync(path.join(GUIDE_DIR, file), "utf8") + (topic === "compute" && a.section ? computeLists() : "");
+  const secs = splitSections(text);
+  const names = a.section === undefined ? [] : Array.isArray(a.section) ? a.section : [a.section];
+  if (names.length) {
+    const got = pick(secs, names);
+    if (got.unknown.length) {
+      throw fail("invalid_request", `no section ${got.unknown.map((n) => JSON.stringify(n)).join(", ")} in ${topic}`,
+        `Use a title from this outline (or its number): ${outline(secs).map((o) => o.section).join("; ")}.`);
+    }
+    return { status: "ok", topic, section: names, text: got.text };
+  }
+  if (topic === "compute") return { status: "ok", topic, text: text + computeLists(), topics: Object.keys(TOPICS) };
+  if (text.length <= GUIDE_WHOLE_MAX) return { status: "ok", topic, text, topics: Object.keys(TOPICS) };
+  return { status: "ok", topic, text: secs[0].title ? "" : secs[0].text, outline: outline(secs), topics: Object.keys(TOPICS),
+    next: `This topic is long: call guide again with topic "${topic}" and section (a title from outline or its number; ` +
+      "a list for several), only for the parts the task needs." };
 }
 
 // ---------------------------------------------------------------------- find_sources
@@ -82,7 +112,32 @@ function requestIndex(p: Pack): { name: string; summary: string }[] {
   return [...gr.endpointIndex(p), ...(p.adapter?.describe ? p.adapter.describe(p) : [])];
 }
 
-export async function sourceBrief(s: Session, a: { source: string; doc?: string }) {
+/** Playbook sections left out of a brief unless asked for: the key status, rules and failure fixes carry their
+ * essentials; the rest (keyless and manual routes) matters only when a fetch cannot run. */
+const BRIEF_ON_REQUEST = ["Access"];
+
+/** The playbook a brief carries: every section but BRIEF_ON_REQUEST, or the sections asked for, or all of it. */
+function playbookOf(p: Pack, a: { sections?: string[]; full?: boolean }) {
+  const md = fs.readFileSync(p.sourceMd, "utf8");
+  const secs = splitSections(md);
+  if (a.full) return { playbook: md };
+  if (a.sections?.length) {
+    const got = pick(secs, a.sections);
+    if (got.unknown.length) {
+      throw fail("invalid_request", `no playbook section ${got.unknown.map((n) => JSON.stringify(n)).join(", ")} for ${p.id}`,
+        `Sections: ${outline(secs).map((o) => o.section).join("; ")}.`);
+    }
+    return { playbook: got.text };
+  }
+  const held = secs.filter((x) => BRIEF_ON_REQUEST.some((t) => x.title.toLowerCase() === t.toLowerCase()));
+  return {
+    playbook: secs.filter((x) => !held.includes(x)).map((x) => x.text).join("").trimEnd() + "\n",
+    ...(held.length ? { playbook_on_request: held.map((x) => ({ section: x.title, chars: x.text.length,
+      for: "keyless and manual routes, rate limits: read it when a fetch fails or no key is set up" })) } : {}),
+  };
+}
+
+export async function sourceBrief(s: Session, a: { source: string; doc?: string; sections?: string[]; full?: boolean }) {
   const p = await pack(a.source);
   const docsDir = path.join(p.dir, "docs");
   const docs = fs.existsSync(docsDir) ? fs.readdirSync(docsDir).filter((f) => f.endsWith(".md")).sort() : [];
@@ -91,6 +146,9 @@ export async function sourceBrief(s: Session, a: { source: string; doc?: string 
     if (!docs.includes(name)) throw fail("invalid_request", `no doc ${JSON.stringify(a.doc)} for ${p.id}`, `Docs: ${docs.join(", ") || "none"}.`);
     return { status: "ok", source: p.id, doc: name, text: fs.readFileSync(path.join(docsDir, name), "utf8") };
   }
+  const pb = playbookOf(p, a);
+  // a later call for some sections returns just them (the rest of the brief was given already)
+  if (a.sections?.length && !a.full && s.briefed.has(p.id)) return { status: "ok", source: p.id, ...pb };
   s.briefed.add(p.id);
   const P = p.policy;
   const qs = questionsOf(p);
@@ -99,7 +157,7 @@ export async function sourceBrief(s: Session, a: { source: string; doc?: string 
     ready: !p.missing.length,
     ...(p.missing.length ? { not_ready: `This source's code (${p.missing.join(", ")}) is not ported to this server yet: ` +
       "fetch will refuse it. Use another source that has the measure." } : {}),
-    playbook: fs.readFileSync(p.sourceMd, "utf8"),
+    ...pb,
     questions_to_ask: qs,
     key: keyStatus(p),
     rules: { notices: P.notices, redistribution: { mode: P.redistribution.mode, why: P.redistribution.why },
@@ -108,8 +166,8 @@ export async function sourceBrief(s: Session, a: { source: string; doc?: string 
     spec_kind: p.deep ? "this source's own spec format (see the playbook and request_schema)" : "requests",
     requests: requestIndex(p),
     // cross-referencing: the questions this source usually answers with others (routing table), and where to go instead
-    paired_with: pairingsFor(p.id).map((r) => ({ question: r.question, primary: r.primary, cross_check: r.cross_check,
-      note: r.note })),
+    // the note on each pairing is in guide("routing")
+    paired_with: pairingsFor(p.id).map((r) => ({ question: r.question, primary: r.primary, cross_check: r.cross_check })),
     ...(P.use_instead?.length ? { use_instead: P.use_instead.map((u) => ({ question: u.question, source: u.source, why: u.why })) } : {}),
     catalog_entries: Object.keys(p.endpoints?.catalog || {}).length,
     docs,
@@ -121,7 +179,7 @@ export async function sourceBrief(s: Session, a: { source: string; doc?: string 
 }
 
 // ---------------------------------------------------------------------- request_schema
-export async function requestSchema(s: Session, a: { source: string; names?: string[]; search?: string }) {
+export async function requestSchema(s: Session, a: { source: string; names?: string[]; search?: string; detail?: boolean }) {
   const p = await pack(a.source);
   if (!a.names?.length && !a.search) {
     throw fail("invalid_request", "give names (request names from source_brief) or search", "Call again with names or search.");
@@ -134,10 +192,10 @@ export async function requestSchema(s: Session, a: { source: string; names?: str
   if (a.names?.length) {
     const known = requestIndex(p).map((r) => r.name);
     const bad = a.names.filter((n) => !known.includes(n));
-    if (bad.length) throw fail("invalid_request", `unknown request(s) ${bad.join(", ")} for ${p.id}`, `Known: ${known.join(", ")}.`);
+    if (bad.length) throw fail("invalid_request", `unknown request(s) ${bad.join(", ")} for ${p.id}`, `Use a known request name: ${namesHint(bad, known, "requests", (v) => (v as string[]).join(", "))}.`);
     if (p.deep) {
       try {
-        out.schemas = await p.deep.schema(a.names, p);
+        out.schemas = await p.deep.schema(a.names, p, { detail: !!a.detail });
       } catch (e) {
         if (e instanceof DataError) throw new ToolError(fromDataError(e, p.policy));
         throw e;
@@ -154,6 +212,9 @@ export async function requestSchema(s: Session, a: { source: string; names?: str
           "allow_empty: true when no rows is a correct answer"],
       };
     }
+    // the spec format is the same on every call: sent once per pack per session
+    if (s.specFormatSent.has(p.id)) out.spec_format = "as in this session's first request_schema call for this source";
+    s.specFormatSent.add(p.id);
     s.sawSchema(p.id, a.names);
   }
   return out;
@@ -164,7 +225,10 @@ export function recordDecisions(s: Session, a: { questions?: Question[]; disclos
   [k: string]: unknown }) {
   const questions = a.questions || [];
   const problems = questions.flatMap((q) => Session.questionProblems(q));
-  const rest = Object.fromEntries(Object.entries(a).filter(([k, v]) => k !== "questions" && v !== undefined));
+  // the audit fields come in `method` (the tool's schema) or at the top level (the library, older callers)
+  const method = a.method && typeof a.method === "object" && !Array.isArray(a.method) ? a.method as Record<string, unknown> : {};
+  const rest = Object.fromEntries([...Object.entries(method), ...Object.entries(a)]
+    .filter(([k, v]) => k !== "questions" && k !== "method" && v !== undefined));
   const d = s.recordDecisions({ questions, ...rest });
   return { status: problems.length ? "partial" : "ok", recorded: questions.map((q) => q.id),
     fields: Object.keys(rest), problems, decisions_file: s.decisionsPath, questions_total: d.questions.length,
@@ -307,9 +371,45 @@ function chooseRoute(p: Pack, spec: any): string {
   throw new ToolError({ ...f, ...keylessOffer(p, spec), manual_bundle: BUNDLE_HINT });
 }
 
-function preview(file: string, n = PREVIEW_ROWS): string[] {
+/** Columns a fetch preview shows at most: the file has them all, the preview is for a first look. */
+const PREVIEW_COLS = 12;
+const PREVIEW_HEAD_BYTES = 256 * 1024;
+
+/** The CSV's header and first n rows, read from the head of the file only, narrowed to PREVIEW_COLS columns
+ * (numbered runs such as replicate weights left out first). */
+export function preview(file: string, n = PREVIEW_ROWS): string[] {
   if (!fs.existsSync(file) || !file.toLowerCase().endsWith(".csv")) return [];
-  return fs.readFileSync(file, "utf8").split(/\r?\n/).slice(0, n + 1).filter(Boolean);
+  const fd = fs.openSync(file, "r");
+  let head: string;
+  let whole: boolean;
+  try {
+    const size = fs.fstatSync(fd).size;
+    const buf = Buffer.alloc(Math.min(PREVIEW_HEAD_BYTES, size));
+    const got = fs.readSync(fd, buf, 0, buf.length, 0);
+    head = buf.subarray(0, got).toString("utf8");
+    whole = got >= size;
+  } finally {
+    fs.closeSync(fd);
+  }
+  let grid: string[][];
+  try {
+    const cut = whole ? head : head.slice(0, head.lastIndexOf("\n") + 1);
+    grid = parse(cut, { relax_column_count: true, relax_quotes: true, bom: true, to_line: n + 1 }) as string[][];
+  } catch {
+    return head.split(/\r?\n/).slice(0, n + 1).filter(Boolean);
+  }
+  if (!grid.length) return [];
+  const cols = grid[0];
+  if (cols.length <= PREVIEW_COLS) return grid.map(csvLine);
+  const runs = inLongRun(cols);
+  const keep = [...cols.keys()].filter((i) => !runs.has(cols[i])).slice(0, PREVIEW_COLS);
+  const lines = grid.map((r) => csvLine(keep.map((i) => r[i] ?? "")));
+  lines.push(`(${keep.length} of ${cols.length} columns shown; the file has them all)`);
+  return lines;
+}
+
+function csvLine(cells: string[]): string {
+  return cells.map((c) => (/[",\r\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(",");
 }
 
 function failWith(e: unknown, p: Pack, spec: any): never {
@@ -422,13 +522,15 @@ function result(p: Pack, dir: string, tables: packages.TableMeta[], notes: strin
     status: partial ? "partial" : "ok",
     summary: {
       source: p.id, route, retrieved,
-      tables: tables.map((t) => ({ table: `${p.id}/${t.name}`, rows: t.rows, columns: t.columns,
+      tables: tables.map((t) => ({ table: `${p.id}/${t.name}`, rows: t.rows, columns: columnList(t.columns || []),
         preview_csv: preview(path.join(dir, t.file)) })),
     },
-    files: [...tables.map((t) => path.join(dir, t.file)), path.join(dir, "data_dictionary.csv"), path.join(dir, "README.md"),
+    files: [...tables.flatMap((t) => [path.join(dir, t.file), ...(t.parquet ? [path.join(dir, t.parquet)] : [])]),
+      path.join(dir, "data_dictionary.csv"), path.join(dir, "README.md"),
       path.join(dir, "request.json"), ...(o.extraFiles || [])].filter((f, i, all) => fs.existsSync(f) && all.indexOf(f) === i),
-    citation: citation(p.policy, { route: o.citeRoute ?? route, requests, retrieved, dataset: o.dataset, text: o.citation,
-      vintage: o.vintage }),
+    // the request URLs are in requests below (and request.json): not repeated in the citation here
+    citation: { ...citation(p.policy, { route: o.citeRoute ?? route, requests, retrieved, dataset: o.dataset, text: o.citation,
+      vintage: o.vintage }), request_urls: undefined },
     // the upstream requests behind this result (credential-free URLs; every one is in request.json)
     requests: (requests || []).slice(0, 10).map((r: any) => ({ method: r.method, url: r.url, status: r.status,
       cached: !!r.cached, fetched_at: r.fetched_at })),
@@ -550,7 +652,12 @@ export async function runIngest(p: Pack, spec: any, given: string[], workspace: 
 }
 
 // ---------------------------------------------------------------------- read_file
-export function readFile(s: Session, a: { path: string; max_bytes?: number }) {
+/** read_file's default size: enough for a README or request.json; a codebook is read with match. */
+const READ_DEFAULT = 20_000;
+/** Lines a match returns at most. */
+const MATCH_MAX_LINES = 200;
+
+export function readFile(s: Session, a: { path: string; max_bytes?: number; match?: string }) {
   const abs = path.resolve(s.workspace, a.path);
   const rel = path.relative(s.workspace, abs);
   if (!guard.workspaceFile(a.path, s.workspace)) {
@@ -560,11 +667,38 @@ export function readFile(s: Session, a: { path: string; max_bytes?: number }) {
   if (!fs.existsSync(abs) || !fs.statSync(abs).isFile()) {
     throw fail("not_found", `no file ${rel}`, "Use a path from a fetch result's files (relative to the workspace).");
   }
-  const max = Math.min(a.max_bytes || READ_MAX, READ_MAX);
+  const max = Math.min(a.max_bytes || READ_DEFAULT, READ_MAX);
   const buf = fs.readFileSync(abs);
+  if (a.match) {
+    let re: RegExp;
+    try {
+      re = new RegExp(a.match, "i");
+    } catch (e) {
+      throw fail("invalid_request", `match is not a valid regular expression: ${(e as Error).message}`,
+        "Give a plain word or a simple pattern such as \"COW|ESR\".");
+    }
+    // the header (first line) and the lines that match, each with its line number
+    const lines = buf.toString("utf8").split(/\r?\n/);
+    const hits: string[] = [];
+    let n = 0;
+    for (let i = 1; i < lines.length; i++) {
+      if (!re.test(lines[i])) continue;
+      n++;
+      if (hits.length < MATCH_MAX_LINES) hits.push(`${i + 1}: ${lines[i]}`);
+    }
+    let text = [`1: ${lines[0]}`, ...hits].join("\n");
+    const cut = text.length > max;
+    if (cut) text = text.slice(0, max);
+    const [safe, masked] = guard.maskCredentials(text);
+    return { status: n > hits.length || cut ? "partial" : "ok", path: rel, bytes: buf.length, matched_lines: n, text: safe,
+      ...(n > hits.length || cut || masked ? { note: [n > hits.length ? `first ${hits.length} of ${n} matching lines` : "",
+        cut ? `first ${max} characters` : "", masked ? "credential-shaped text was replaced with [REDACTED]" : ""]
+        .filter(Boolean).join("; ") } : {}) };
+  }
   // an upload may hold a key the server never saw (a response the agency echoed it in): credential-shaped text goes too
   const [text, masked] = guard.maskCredentials(buf.subarray(0, max).toString("utf8"));
   return { status: buf.length > max ? "partial" : "ok", path: rel, bytes: buf.length, text,
     ...(buf.length > max || masked ? { note: [buf.length > max ? `first ${max} of ${buf.length} bytes` : "",
-      masked ? "credential-shaped text was replaced with [REDACTED]" : ""].filter(Boolean).join("; ") } : {}) };
+      masked ? "credential-shaped text was replaced with [REDACTED]" : ""].filter(Boolean).join("; "),
+      ...(buf.length > max ? { more: "max_bytes reads more (up to 100000); match returns only the lines you need" } : {}) } : {}) };
 }

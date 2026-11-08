@@ -36,8 +36,25 @@ export type Preview = { header: string[]; rows: string[][]; same: [string, strin
 
 /** The first n rows of a CSV, showing the columns that vary (a column with one value in the first `sample` rows is
  * listed once under "same", so values are not crowded out by labels). */
-export function preview(file: string, n = PREVIEW_ROWS, sample = 200): Preview {
-  const grid = readCsvGrid(fs.readFileSync(file, "utf8"));
+export function preview(file: string, n = PREVIEW_ROWS, sample = 200, knownRows?: number | null): Preview {
+  // only the head of the file is parsed (a microdata CSV can be tens of MB); the row count comes from the
+  // provenance record, or from counting line ends when the file is larger than the head
+  const size = fs.statSync(file).size;
+  const whole = size <= PREVIEW_HEAD_BYTES;
+  let text: string;
+  if (whole) text = fs.readFileSync(file, "utf8");
+  else {
+    const fd = fs.openSync(file, "r");
+    try {
+      const buf = Buffer.alloc(PREVIEW_HEAD_BYTES);
+      const got = fs.readSync(fd, buf, 0, buf.length, 0);
+      text = buf.subarray(0, got).toString("utf8");
+      text = text.slice(0, text.lastIndexOf("\n") + 1);
+    } finally {
+      fs.closeSync(fd);
+    }
+  }
+  const grid = readCsvGrid(text);
   const head = grid[0] || [];
   const rows: string[][] = [];
   let total = 0;
@@ -45,12 +62,32 @@ export function preview(file: string, n = PREVIEW_ROWS, sample = 200): Preview {
     total++;
     if (rows.length < sample) rows.push([...row, ...Array(Math.max(0, head.length - row.length)).fill("")]);
   }
+  if (!whole) total = typeof knownRows === "number" ? knownRows : lineCount(file) - 1;
   const vary = head.map((_, i) => i).filter((i) => new Set(rows.map((r) => r[i])).size > 1);
   const show = (vary.length ? vary : head.map((_, i) => i)).slice(0, PREVIEW_COLS);
   const same: [string, string][] = head.map((h, i) => [h, i] as const)
     .filter(([, i]) => !vary.includes(i) && rows.length && rows[0][i] !== "").map(([h, i]) => [h, rows[0][i]]);
   return { header: show.map((i) => head[i]), rows: rows.slice(0, n).map((r) => show.map((i) => r[i])), same: same.slice(0, 6),
     hidden: head.length - show.length - same.slice(0, 6).length, total, columns: head.length };
+}
+
+/** A preview parses at most this much of a file. */
+const PREVIEW_HEAD_BYTES = 512 * 1024;
+
+/** Data lines of a CSV file (line ends counted in chunks; a final line without one counts too). */
+function lineCount(file: string): number {
+  const fd = fs.openSync(file, "r");
+  const buf = Buffer.alloc(1 << 20);
+  let n = 0, last = 10, got: number;
+  try {
+    while ((got = fs.readSync(fd, buf, 0, buf.length, null)) > 0) {
+      for (let i = 0; i < got; i++) if (buf[i] === 10) n++;
+      last = buf[got - 1];
+    }
+  } finally {
+    fs.closeSync(fd);
+  }
+  return last === 10 ? n : n + 1;
 }
 
 function tableMd(pv: Preview): string[] {
@@ -119,7 +156,7 @@ export function sourceSummary(out: string, d: string): SourceSummary {
       files.push({ file: rel, rows: t.rows ?? null, ...tag });
       continue;
     }
-    const pv = preview(p);
+    const pv = preview(p, PREVIEW_ROWS, 200, typeof t.rows === "number" ? t.rows : null);
     files.push({ file: rel, rows: pv.total, columns: pv.columns, preview: micro ? null : pv, ...tag });
   }
   const retrieved = rec.retrieved || rec.downloaded || "";

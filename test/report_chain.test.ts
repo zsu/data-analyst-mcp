@@ -322,7 +322,26 @@ describe("audit", () => {
     const tool = TOOLS.find((t) => t.name === "audit_report")!;
     const r: any = await tool.handler(new Session(undefined, out), {});
     expect(r.summary).toBe("AUDIT PASSED");
-    expect(r.checks.every((c: any) => c.status === "PASS")).toBe(true);
+    expect(r.checks).toEqual([]);                                               // failures only by default
+    expect(r.check_counts.fail).toBe(0);
+    expect(r.check_counts.pass).toBeGreaterThan(10);
+    const v: any = await tool.handler(new Session(undefined, out), { verbose: true });
+    expect(v.checks.length).toBe(r.check_counts.pass);
+  });
+
+  it("build_report rebuilds report.json with a patch, and returns the style score", async () => {
+    const o = copyOut("patched");
+    const tool = TOOLS.find((t) => t.name === "build_report")!;
+    const s = new Session(undefined, o);
+    const before = JSON.parse(fs.readFileSync(path.join(o, "report.json"), "utf8"));
+    const r: any = await tool.handler(s, { patch: { subtitle: "Patched subtitle", "sections.0.heading": "New Heading" } });
+    expect(r.status).toBe("ok");
+    expect(typeof r.style.score).toBe("number");
+    const after = JSON.parse(fs.readFileSync(path.join(o, "report.json"), "utf8"));
+    expect(after.subtitle).toBe("Patched subtitle");
+    expect(after.sections[0].heading).toBe("New Heading");
+    expect(after.sections.length).toBe(before.sections.length);              // the rest is as it was
+    expect(fs.readFileSync(path.join(o, "report.html"), "utf8")).toContain("Patched subtitle");
   });
 
   it("fails on forced microdata", async () => {

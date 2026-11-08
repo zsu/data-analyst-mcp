@@ -323,8 +323,8 @@ function tree(base: string, top: string): string[] {
   return out.sort();
 }
 
-type Member = { name: string; path: string; filter: [string, Set<string>] | null };
-type Excluded = { name: string; reason: string; policy: boolean };
+export type Member = { name: string; path: string; filter: [string, Set<string>] | null };
+export type Excluded = { name: string; reason: string; policy: boolean };
 
 function planPackage(ctx: Ctx): [Member[], Excluded[]] {
   const names = [...replicationFiles(ctx.R, ctx.base), ...tree(ctx.base, "data"), ...tree(ctx.base, "reproduce")];
@@ -335,7 +335,37 @@ function planPackage(ctx: Ctx): [Member[], Excluded[]] {
     if (d.ok) members.push({ name: n, path: path.join(ctx.base, n), filter: d.filter });
     else excluded.push({ name: n, reason: d.reason, policy: d.policy });
   }
-  return [members, excluded];
+  return sizeRule(members, excluded);
+}
+
+/** A data CSV larger than this stays out of the package when its table can be had otherwise (the terms allow it in:
+ * this is about size only). A 37 MB microdata CSV made a 10 MB ZIP that took 3.4 s to write on every build. */
+export const PACKAGE_CSV_MAX = { value: 10_000_000 };
+
+/** One copy of each data table: a large CSV gives way to its Parquet copy, or to a re-fetch from its request; a small
+ * CSV keeps its place and its Parquet copy stays out. */
+export function sizeRule(members: Member[], excluded: Excluded[]): [Member[], Excluded[]] {
+  const byName = new Map(members.map((m) => [m.name, m]));
+  const drop = new Map<string, string>();
+  for (const m of members) {
+    const k = /^(data\/[^/]+\/.+)\.csv$/i.exec(m.name);
+    if (!k) continue;
+    const pq = byName.get(`${k[1]}.parquet`);
+    const large = (x: Member) => !x.filter && fs.statSync(x.path).size > PACKAGE_CSV_MAX.value;
+    const mb = Math.floor(PACKAGE_CSV_MAX.value / 1_000_000);
+    const refetch = `fetch it again with the spec in ${m.name.split("/").slice(0, 2).join("/")}/request.json`;
+    if (!large(m)) {
+      if (pq) drop.set(pq.name, `the same table as ${m.name}, which is in the package`);
+    } else if (pq && !large(pq)) {
+      drop.set(m.name, `larger than ${mb} MB: the same table is in ${pq.name}`);
+    } else {
+      drop.set(m.name, `larger than ${mb} MB: ${refetch}`);
+      if (pq) drop.set(pq.name, `the same table as ${m.name}, also larger than ${mb} MB: ${refetch}`);
+    }
+  }
+  if (!drop.size) return [members, excluded];
+  return [members.filter((m) => !drop.has(m.name)),
+    [...excluded, ...[...drop].map(([name, reason]) => ({ name, reason, policy: false }))]];
 }
 
 /** The request to rebuild one source's data: its provenance "spec", report.json sources[].spec, or spec.json. */
@@ -512,21 +542,31 @@ function makePackage(ctx: Ctx): [string, Member[], Excluded[]] {
   files["REPLICATION.md"] = [Buffer.from(replicationReadme(ctx, excluded), "utf8"), { level: 6 }];
   knownKeys();
   const leaked: string[] = [];
+  const digest = crypto.createHash("sha256");
+  for (const name of Object.keys(files)) digest.update(`${name}\u0000`).update(files[name][0]);
   for (const m of members) {
     const data = m.filter ? Buffer.from(PS.filteredCsv(m.path, m.filter[0], m.filter[1])[0], "utf8") : fs.readFileSync(m.path);
     if (holdsSecret(data)) leaked.push(m.name);
     files[m.name] = [data, { level: 6 }];
+    digest.update(`${m.name}\u0000`).update(data);
   }
   // checked before anything is written: a package with a key in it is never made, not even in part
   if (leaked.length) {
     fs.rmSync(zp, { force: true });
     fail(`an API key is in ${str(leaked.slice(0, 5))}; no replication package was written (remove it and build again)`);
   }
-  try {
-    fs.writeFileSync(zp + ".part", zipSync(files));
-    fs.renameSync(zp + ".part", zp);
-  } finally {
-    fs.rmSync(zp + ".part", { force: true });
+  // the same members with the same bytes as the ZIP already there: it is not written again (zipping is the slow part)
+  const sum = digest.digest("hex");
+  const mf = path.join(ctx.base, ".replication_package.sha256");
+  const same = fs.existsSync(zp) && fs.existsSync(mf) && fs.readFileSync(mf, "utf8").trim() === `${sum} ${fileSha(zp)}`;
+  if (!same) {
+    try {
+      fs.writeFileSync(zp + ".part", zipSync(files));
+      fs.renameSync(zp + ".part", zp);
+    } finally {
+      fs.rmSync(zp + ".part", { force: true });
+    }
+    fs.writeFileSync(mf, `${sum} ${fileSha(zp)}\n`);
   }
   // a last guard: the policy check of core on everything that went in
   const names = members.map((m) => m.name);

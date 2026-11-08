@@ -60,13 +60,13 @@ export type DeepContext = { pack: Pack; spec: any; workspace: string; force: boo
 /**
  * A deep pack (its own spec format and operations; the Python version had its own fetch.py).
  *   operations  the request index source_brief shows: names and one-line summaries
- *   schema      full schemas of named operations (request_schema)
+ *   schema      schemas of named operations (request_schema): compact, or in full with opts.detail
  *   uses        which operations a spec uses (the gate checks that their schemas were read)
  *   checkSpec   problems with a spec ([] = valid), before any request
  */
 export type DeepPack = {
   operations: { name: string; summary: string }[];
-  schema: (names: string[], pack: Pack) => any[] | Promise<any[]>;
+  schema: (names: string[], pack: Pack, opts?: { detail?: boolean }) => any[] | Promise<any[]>;
   uses: (spec: any) => string[];
   specExample?: any;
   search?: (query: string, pack: Pack) => any[] | Promise<any[]>;

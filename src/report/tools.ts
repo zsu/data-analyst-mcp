@@ -14,7 +14,38 @@ import { SourceError } from "./policyset.js";
 import { scanWorkspace } from "./scan_secrets.js";
 import { styleCheck } from "./style_check.js";
 
-const checks = (results: Result[]) => results.map(([check, ok, message]) => ({ check, status: ok ? "PASS" : "FAIL", message }));
+/** The checks a result lists: the failures only (the report lines already count each check), every one when verbose. */
+const checks = (results: Result[], verbose = false) => results.filter(([, ok]) => verbose || !ok)
+  .map(([check, ok, message]) => ({ check, status: ok ? "PASS" : "FAIL", message }));
+const counts = (results: Result[]) => ({ pass: results.filter(([, ok]) => ok).length, fail: results.filter(([, ok]) => !ok).length });
+
+/** Set `value` at a dotted path of `obj` ("sections.0.body"), making objects (or arrays, for a numeric next key). */
+export function setPath(obj: any, dotted: string, value: unknown): void {
+  const keys = dotted.split(".").filter((k) => k !== "");
+  if (!keys.length) throw fail("invalid_request", `patch key ${JSON.stringify(dotted)} is empty`, "Give a dotted path, e.g. \"sections.0.body\".");
+  if (keys.some((k) => k === "__proto__" || k === "constructor" || k === "prototype")) {
+    throw fail("invalid_request", `patch key ${JSON.stringify(dotted)} is not allowed`, "Use the report's own keys.");
+  }
+  let cur = obj;
+  for (let i = 0; i < keys.length - 1; i++) {
+    const k = Array.isArray(cur) ? Number(keys[i]) : keys[i];
+    if (Array.isArray(cur) && (!Number.isInteger(k) || (k as number) < 0)) {
+      throw fail("invalid_request", `patch key ${JSON.stringify(dotted)}: ${keys[i]} is not a list index`, "Use a number for a list position.");
+    }
+    if (cur[k] === undefined || cur[k] === null || typeof cur[k] !== "object") cur[k] = /^\d+$/.test(keys[i + 1]) ? [] : {};
+    cur = cur[k];
+  }
+  const last = keys[keys.length - 1];
+  if (value === null) {
+    if (Array.isArray(cur)) cur.splice(Number(last), 1);
+    else delete cur[last];
+  } else {
+    cur[Array.isArray(cur) ? Number(last) : last] = value;
+  }
+}
+
+/** At most this many style issues come back with a build (the score covers them all; style_check lists every one). */
+const BUILD_STYLE_ISSUES = 15;
 
 function readReport(s: Session): any {
   const p = path.join(s.workspace, "report.json");
@@ -62,7 +93,7 @@ async function guarded<T>(fn: () => Promise<T> | T, tool = "the tool"): Promise<
   }
 }
 
-export async function auditAnswerTool(s: Session, a: { answer: string; online?: boolean; rerun?: boolean }) {
+export async function auditAnswerTool(s: Session, a: { answer: string; online?: boolean; rerun?: boolean; verbose?: boolean }) {
   if (typeof a.answer !== "string" || !a.answer.trim()) {
     throw fail("invalid_request", "answer is empty", "Pass the reply exactly as you will send it to the user.");
   }
@@ -73,39 +104,53 @@ export async function auditAnswerTool(s: Session, a: { answer: string; online?: 
     NOTES.length = 0;
     const results = await AA.audit(s.workspace, !!a.online, !!a.rerun, until);
     const out = AA.printed(results, AA.CHECKS, a.answer, NOTES);
-    return { status: "ok", summary: out.verdict, passed: out.passed, checks: checks(results), report: out.lines.join("\n"),
-      files: [p], notes: [...NOTES],
+    return { status: "ok", summary: out.verdict, passed: out.passed, check_counts: counts(results),
+      checks: checks(results, a.verbose), report: out.lines.join("\n"), files: [p], notes: [...NOTES],
       next: out.passed ? "Send the answer exactly as audited (with every disclosure line it carries)."
         : "Fix every FAIL (each message says what to do), then call audit_answer again with the revised reply. Never send an answer that failed." };
   }, "audit_answer");
 }
 
-export async function buildReportTool(s: Session, a: { report: any }) {
-  if (!a.report || typeof a.report !== "object" || Array.isArray(a.report)) {
+export async function buildReportTool(s: Session, a: { report?: any; patch?: Record<string, unknown> }) {
+  const given = a.report !== undefined && a.report !== null;
+  if (given && (typeof a.report !== "object" || Array.isArray(a.report))) {
     throw fail("invalid_request", "report must be a report.json object", "Pass the report as an object (title, sections, exhibits, ...).");
   }
+  if (a.patch !== undefined && (!a.patch || typeof a.patch !== "object" || Array.isArray(a.patch))) {
+    throw fail("invalid_request", "patch must be an object {\"dotted.path\": value}", 'For example {"sections.0.body": "..."}; null removes a key.');
+  }
+  // no report: rebuild from the workspace's report.json (after a patch, or as it is)
+  const R = given ? a.report : readReport(s);
+  for (const [k, v] of Object.entries(a.patch || {})) setPath(R, k, v);
   const p = path.join(s.workspace, "report.json");
-  fs.writeFileSync(p, JSON.stringify(a.report, null, 2), "utf8");
+  fs.writeFileSync(p, JSON.stringify(R, null, 2), "utf8");
   return guarded(() => {
     const r = build(p);
+    const st = styleCheck(R);
     return { status: "ok", summary: { mode: r.mode, sources: r.sources, exhibits: r.exhibits, facts_cited: r.facts_cited,
       bytes: r.bytes, external_refs: r.external_refs, package_members: r.package.members, left_out: r.package.left_out,
-      notices: r.notices }, files: [r.report, r.package.file, p], notes: r.notes,
-      next: "Call audit_report (rerun: true) before handing the report to the user; fix every FAIL and rebuild." };
+      notices: r.notices },
+      style: { summary: st.summary, passed: st.pass, score: st.score, target: st.target,
+        issues: st.issues.slice(0, BUILD_STYLE_ISSUES),
+        ...(st.issues.length > BUILD_STYLE_ISSUES ? { more_issues: st.issues.length - BUILD_STYLE_ISSUES } : {}) },
+      files: [r.report, r.package.file, p], notes: r.notes,
+      next: (st.pass ? "" : "Fix the style issues with patch (build_report with patch only, not the whole report). ") +
+        "Call audit_report (rerun: true) before handing the report to the user; fix every FAIL with patch and rebuild." };
   });
 }
 
-export async function auditReportTool(s: Session, a: { online?: boolean; rerun?: boolean }) {
+export async function auditReportTool(s: Session, a: { online?: boolean; rerun?: boolean; verbose?: boolean }) {
   readReport(s);
   const until = rerunDeadline(s, a.rerun);
   return guarded(async () => {
     NOTES.length = 0;
     const results = await AR.audit(path.join(s.workspace, "report.json"), undefined, !!a.online, !!a.rerun, until);
     const out = AA.printed(results, AR.CHECKS, "", NOTES);
-    return { status: "ok", summary: out.verdict, passed: out.passed, checks: checks(results), report: out.lines.join("\n"),
-      files: [path.join(s.workspace, "report.html")], notes: [...NOTES],
+    return { status: "ok", summary: out.verdict, passed: out.passed, check_counts: counts(results),
+      checks: checks(results, a.verbose), report: out.lines.join("\n"), files: [path.join(s.workspace, "report.html")],
+      notes: [...NOTES],
       next: out.passed ? "Hand the report and replication_package.zip to the user."
-        : "Fix every FAIL, call build_report again, then audit_report again." };
+        : "Fix every FAIL (build_report with patch, or with no report after editing facts or exhibits), then audit_report again." };
   }, "audit_report");
 }
 
@@ -131,12 +176,13 @@ export const TOOLS: ToolDef[] = [
       "decisions.json audit_allow), that directions, years, rows and names match those facts, that dollar comparisons " +
       "across years state nominal or real, the method record (questions, literature, disclosures, references opened, " +
       "assumptions, sensitivity, data needs, benchmark), provenance, links (online: true requests them) and secrets; " +
-      "rerun: true replays every exhibit recipe and fact. Returns every check with PASS/FAIL and its message, and " +
-      "\"AUDIT PASSED\" only when nothing fails. Send the answer only after it passes.",
+      "rerun: true replays every exhibit recipe and fact. Returns one line per check, the failures with their messages " +
+      "(verbose: every check), and \"AUDIT PASSED\" only when nothing fails. Send the answer only after it passes.",
     inputSchema: {
       answer: z.string().describe("The reply as it will be sent (Markdown)"),
       online: z.boolean().optional().describe("Also request every external link"),
       rerun: z.boolean().optional().describe("Replay every exhibit recipe and recompute every fact"),
+      verbose: z.boolean().optional().describe("List every check, not only the failures"),
     },
     annotations: { readOnlyHint: false, idempotentHint: true, openWorldHint: true },
     handler: auditAnswerTool,
@@ -149,9 +195,14 @@ export const TOOLS: ToolDef[] = [
       "references as [@id], footnotes as [^n]; exhibits name a CSV in exhibits/ and a chart {type, x, y, series, ...}. " +
       "Each source's notices, Data Vintage block and redistribution rules are applied (microdata and withheld rows never " +
       "enter the ZIP). Every report.json key (chart types and options, cover, notes_page, footnote scoping, clearance, " +
-      "replication) is listed in guide(\"report_schema\"). Returns the report.html and ZIP paths; call audit_report next.",
+      "replication) is listed in guide(\"report_schema\"); guide(\"report\") is the short form. Send the report once: " +
+      "later fixes are a patch (no report: the workspace's report.json is rebuilt). Returns the paths and the style " +
+      "score with the sentences to fix; call audit_report next.",
     inputSchema: {
-      report: z.record(z.string(), z.any()).describe("The report.json object (title, mode, sources, at_a_glance, sections, exhibits, methods, ...)"),
+      report: z.record(z.string(), z.any()).optional().describe("The report.json object (title, mode, sources, at_a_glance, " +
+        "sections, exhibits, methods, ...). Default: the workspace's report.json"),
+      patch: z.record(z.string(), z.any()).optional().describe('Changes by dotted path, e.g. {"sections.0.body": "...", ' +
+        '"exhibits.1.title": "..."}; null removes a key'),
     },
     annotations: { readOnlyHint: false, idempotentHint: true, openWorldHint: false },
     handler: buildReportTool,
@@ -162,11 +213,12 @@ export const TOOLS: ToolDef[] = [
     description: "The release gate for a report built with build_report: facts, hand-typed numbers, exhibits, links (online: " +
       "true requests them), the page (up to date, disclaimer, nothing external, no raw markup), vintage, each source's " +
       "notices and audit hooks, clearances, secrets, style, chartbook structure, the method record, benchmarks and the " +
-      "replication package; rerun: true replays every exhibit recipe and fact. Returns every check with PASS/FAIL and its " +
-      "message, and \"AUDIT PASSED\" only when nothing fails.",
+      "replication package; rerun: true replays every exhibit recipe and fact. Returns one line per check, the failures " +
+      "with their messages (verbose: every check), and \"AUDIT PASSED\" only when nothing fails.",
     inputSchema: {
       online: z.boolean().optional().describe("Also request every external link"),
       rerun: z.boolean().optional().describe("Replay every exhibit recipe and recompute every fact"),
+      verbose: z.boolean().optional().describe("List every check, not only the failures"),
     },
     annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: true },
     handler: auditReportTool,
@@ -176,7 +228,8 @@ export const TOOLS: ToolDef[] = [
     title: "Check the report's style",
     description: "Lint the prose of report.json (or the report object given) against the house style guide: percent in " +
       "words, no first person, small numbers spelled out, plain words, sentence length. Returns the score (percent of " +
-      "sentences with no issue; target 90) and every sentence with its issues. Nothing is written into the report.",
+      "sentences with no issue; target 90) and every sentence with its issues. Nothing is written into the report. " +
+      "build_report already returns the score and the first issues.",
     inputSchema: {
       report: z.record(z.string(), z.any()).optional().describe("A report.json object; default: the workspace's report.json"),
       min: z.number().optional().describe("The target score (default 90)"),

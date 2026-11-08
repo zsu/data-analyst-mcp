@@ -41,7 +41,8 @@ describe("facts", () => {
     const r = facts(s, { add: [{ name: "ok", table: "exhibits/e.csv", where: { year: 2024 }, column: "v" }] });
     expect(r.summary.added.ok.value).toBe(1992.47);
     expect(r.summary.added.ok.pack).toBe("bls");
-    expect(r.summary.added.ok.where).toEqual({ year: "2024" });
+    expect(r.summary.added.ok).toEqual({ value: 1992.47, text: r.summary.added.ok.text, pack: "bls" }); // no input echo
+    expect(JSON.parse(fs.readFileSync(path.join(s.workspace, "facts.json"), "utf8")).ok.where).toEqual({ year: "2024" });
   });
 
   it("refuses empty cells, missing rows and columns, and text", async () => {

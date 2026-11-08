@@ -232,6 +232,9 @@ describe("opm", () => {
     await T.sourceBrief(s, { source: "opm" });
     const sc: any = await T.requestSchema(s, { source: "opm", names: ["separations"] });
     expect(sc.schemas[0].available.first).toBe("2005-01");
-    expect(sc.schemas[0].columns.some((c: any) => c.name === "separation_category")).toBe(true);
+    expect(typeof sc.schemas[0].columns.separation_category).toBe("string");     // compact: name -> short definition
+    const full: any = await T.requestSchema(s, { source: "opm", names: ["separations"], detail: true });
+    expect(full.schemas[0].columns.some((c: any) => c.name === "separation_category")).toBe(true);
+    expect(full.spec_format).toMatch(/first request_schema call/);               // sent once per source
   });
 });

@@ -157,7 +157,7 @@ const FORMAT = {
     allow_empty: "optional; a filter that matches no rows is an error unless true" }],
 };
 
-function schema(names: string[], pack: Pack): any[] {
+function schema(names: string[], pack: Pack, opts: { detail?: boolean } = {}): any[] {
   return names.map((n) => {
     if (n === "context") {
       return { name: "context", summary: "CPI-U (FRED CPIAUCNS, else BLS CUUR0000SA0) or GDP (FRED GDP, else World Bank, calendar years only) " +
@@ -173,8 +173,12 @@ function schema(names: string[], pack: Pack): any[] {
       discovery: { search: "request_schema search with words searches the live catalog (falls back to the bundled catalog.json)",
         fields: "request_schema search \"<endpoint>\" gives fields, labels, types, units, row count, first and last row",
         values: "request_schema search \"<endpoint> <filter JSON> values\" lists every code and description column's values under the filter (at most 20,000 rows)" },
-      curated: cat.filter((e) => e.guidance).map((e) => Object.fromEntries(["endpoint", "table", "frequency", "earliest_date", "guidance"]
-        .filter((k) => k in e).map((k) => [k, e[k]]))),
+      curated: opts.detail
+        ? cat.filter((e) => e.guidance).map((e) => Object.fromEntries(["endpoint", "table", "frequency", "earliest_date", "guidance"]
+          .filter((k) => k in e).map((k) => [k, e[k]])))
+        : Object.fromEntries(cat.filter((e) => e.guidance).map((e) => [e.endpoint,
+          [e.table, e.frequency, e.earliest_date ? `from ${e.earliest_date}` : ""].filter(Boolean).join("; ")])),
+      ...(opts.detail ? {} : { curated_note: "endpoint: table; frequency; first date. request_schema with detail: true adds each one's guidance" }),
       all_endpoints: cat.length,
       output: "data/treasury/<name>.csv (API field names, values as published, \"null\" -> empty), fetch_spec.json (query URLs, " +
         "row counts, first/last date, labels, types, unit hints, SHA-256, route), README.md (data dictionary, values of every code column)" };

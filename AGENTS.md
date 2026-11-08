@@ -91,6 +91,41 @@ owns its pack data, code and recorded fixtures.
     - `open_workspace` (`src/workspace_tool.ts`, local only) lists and reopens earlier workspaces after a restart.
     - census microdata: a renamed variable is named in the error (`renameHint`: ACS PUMS `ST` is `STATE` from the
       2023 files on).
+  - 0.8 adds smaller results and faster compute (tests: test/results-size.test.ts):
+    - Results are compact JSON. Long lists are shortened (`src/core/compact.ts`): numbered runs collapse
+      (`PWGTP1-80`), and an unknown name lists the nearest names, not every column.
+    - `source_brief` leaves the playbook's Access section out unless asked (`sections`, `full`), and the notes on
+      `paired_with`. Product-specific traps live in `packs/<id>/docs/*.md` (census microdata and timeseries,
+      govinfo collections, congress votes and nominations_crs, irs-soi tables and eo), read through `doc`.
+    - `guide` takes `section`; a topic over 12k returns its outline (`src/core/sections.ts`). New topics: `report`
+      (one page for a report) and `compute` (verbs, functions, replicate_se; the compute description is short).
+    - fetch: the preview reads the file's head, at most 12 columns, without replicate-weight runs. The request
+      URLs are not repeated in the citation.
+    - compute: previews are rounded and narrow, facts return `{name, value, text}`, and request_schema shortens
+      deep schemas unless `detail: true`.
+    - `build_report` takes `patch` (dotted paths), or no report (it rebuilds report.json), and returns the style
+      score. The audits list failures only (`verbose: true` lists every check), with `check_counts`.
+    - `read_file` takes `match` and reads 20 KB by default. `handoff` sends its previews once, in `text`.
+      record_decisions takes the audit fields in `method`.
+    - Annotations: fetch is not read-only, and workspace writers are `destructiveHint: false`. open_workspace is
+      not listed in hosted mode.
+    - compute speed and size (`src/analysis/compute.ts`):
+      - a dry run of the steps on empty tables catches a misspelt column before the parse;
+      - a single-input recipe that narrows (select, rollup, replicate_se, pivot_wider with id_cols) reads only
+        the columns it names (`neededColumns`);
+      - parsed CSV grids are cached by path and hash (`DATA_ANALYST_PARSE_CACHE_MB`, default 512);
+      - caps: `CSV_MAX_RAW_CELLS` and `PARQUET_MAX_CELLS`;
+      - derive adds columns in place to rows the pipeline owns.
+    - `package.write` writes `<name>.parquet` beside a microdata CSV of 5 MB or more (`FileTable`), and compute
+      decodes only the needed columns from it.
+    - The replication ZIP keeps one copy of each table. A data file over 10 MB stays out with a re-fetch note
+      (`sizeRule`), and an unchanged package is not zipped again.
+    - On the Maryland PUMS run (62,777 × 175):
+      - recipes: 2.6-20.6 s → 1-12 s, with the same outputs; the rest is replicate_se arithmetic;
+      - ZIP: 10.3 MB → 0.3 MB;
+      - census brief: 40k → 20.5k chars.
+    - Not done: a background (worker) path for a long compute. No recipe on the measured run came near the
+      60 s client limit.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**

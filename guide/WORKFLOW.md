@@ -20,7 +20,7 @@ fetched file. **Accuracy comes before everything else.**
 | `cite(url, id, text?)` | snapshot a page a reference cites (pass the text your own fetch tool returned) |
 | `rerun` | replay every exhibit and fact from the fetched data |
 | `audit_answer(answer, rerun)` | the release gate for a quick answer: send the answer only when it prints AUDIT PASSED |
-| `build_report(report)`, `style_check`, `audit_report` | a report or paper, only when asked |
+| `build_report(report)`, `audit_report` | a report or paper, only when asked (`style_check` lints prose alone) |
 | `handoff` | the per-source data hand-off (data-only replies) |
 | `read_file(path)` | a small text file from the workspace |
 
@@ -120,9 +120,12 @@ FAIL, and send it only when it prints AUDIT PASSED. Data only: send the `handoff
 and what could not be fetched with its route.
 
 ## 7. Report or paper (only when asked)
-Read `guide("report_patterns")`, `guide("report_schema")` (every report.json key) and `guide("style")`. Write the
-report as `build_report`'s report object, with every number as `{{fact_name}}` and a `sources` list of the pack
-ids used; run `style_check`, `build_report`, then `audit_report` (`rerun: true`), and rebuild until it prints
+Read `guide("report")`: what the build and the audit require, a minimal report, the chart keys and the style
+rules, in one page. The full references come by section when needed (`guide("report_schema")`,
+`guide("report_patterns")`, `guide("style")`). Write the report as `build_report`'s report object, with every
+number as `{{fact_name}}` and a `sources` list of the pack ids used. `build_report` returns the style score with the
+sentences to fix; fix with `patch` (or with no report: it rebuilds from report.json), never by sending the whole
+object again. Then `audit_report` (`rerun: true`): it returns the failures only; rebuild until it prints
 AUDIT PASSED. The builder applies each source's notices, redistribution rules (microdata never leaves the
 workspace) and vintage blocks.
 

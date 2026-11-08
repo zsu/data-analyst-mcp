@@ -53,7 +53,7 @@ returns the national cross-section for one date, to filter by state FIPS),
 `pep_population_2021` 2021/pep/population (POP_2020, POP_2021; states and above only),
 `pep_population_2019` (2010-2019, down to places), `cbp` 2023/cbp,
 `ecnbasic_2022`, `sipp` latest/sipp (SIPP microdata; 2022-2025 on the API, one per calendar year).
-Microdata (one row per person; see the PUMS and CPS trap below): `acs1_pums` latest/acs/acs1/pums (2004-2024),
+Microdata (one row per person; the traps are in doc "microdata"): `acs1_pums` latest/acs/acs1/pums (2004-2024),
 `acs5_pums` latest/acs/acs5/pums (2009-2024), `acs1_pumspr` (Puerto Rico), `cps_asec` latest/cps/asec/mar
 (1992-2026, survey year: income is for the year before), CPS basic monthly `<YYYY>/cps/basic/<jan..dec>`
 (1989-2026).
@@ -95,46 +95,6 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
    "params": {"dataset": "dec_pl_2020", "get": "NAME,P1_001N", "for": "state:*"}}]}
 ```
 
-```json
-{"description": "Share of people without health coverage in December, SIPP 2024 (weighted by WPFINWGT)",
- "requests": [{"name": "sipp_coverage_dec", "endpoint": "query",
-   "params": {"dataset": "2024/sipp", "get": "TAGE,RHLTHMTH,TPTOTINC", "MONTHCODE": "12"}}]}
-```
-
-```json
-{"description": "Uninsured rate, Maryland, ACS 2024 1-year PUMS with replicate weights; CPS September 2026",
- "requests": [{"name": "md_pums", "endpoint": "query",
-   "params": {"dataset": "2024/acs/acs1/pums", "get": "AGEP,HICOV,RELSHIPP,ESR,PINCP", "state": "MD",
-              "replicates": true}},
-  {"name": "cps_sep", "endpoint": "query",
-   "params": {"dataset": "2026/cps/basic/sep", "get": "PRTAGE,PEMLR,PRCITSHP", "PRTAGE": "25:54"}}]}
-```
-
-```json
-{"description": "Retail sales, 2026 to date; customs duty on imports from China, August 2026, by HS chapter",
- "requests": [{"name": "retail_2026", "endpoint": "query",
-   "params": {"dataset": "eits_retail", "get": "cell_value,data_type_code,category_code,seasonally_adj,time_slot_id,error_data",
-              "for": "us:*", "time": "2026"}},
-  {"name": "china_duty_2026_08", "endpoint": "query",
-   "params": {"dataset": "trade_imports_hs", "get": "CTY_NAME,I_COMMODITY,GEN_VAL_MO,CON_VAL_MO,DUT_VAL_MO,CAL_DUT_MO",
-              "CTY_CODE": "5700", "COMM_LVL": "HS2", "time": "2026-08"}}]}
-```
-```json
-{"description": "State and local government finances by state, 2024",
- "requests": [{"name": "govfin_2024", "endpoint": "query",
-   "params": {"dataset": "govs_finances", "get": "AGG_DESC,GOVTYPE,AMOUNT,AMOUNT_CV", "for": "state:*", "time": "2024"}}]}
-```
-
-```json
-{"description": "Adults with difficulty paying usual household expenses, nation, every 2024 Pulse cycle; homeownership rate 2025",
- "requests": [{"name": "pulse_expense_2024", "endpoint": "query",
-   "params": {"dataset": "pulse", "get": "MEASURE_NAME,MEASURE_LABEL,RATE,RATE_MOE,TOTAL,UNIVERSE,CYCLE,PHASE,COL_START_DATE,COL_END_DATE",
-              "for": "us:*", "time": "2024", "MEASURE_NAME": "EXPENSE"}},
-  {"name": "homeownership_2025", "endpoint": "query",
-   "params": {"dataset": "eits_homeownership", "get": "cell_value,data_type_code,category_code,seasonally_adj,time_slot_id,geo_level_code,error_data",
-              "for": "us:*", "time": "2025", "category_code": "RATE"}}]}
-```
-
 ## Data format and traps
 - Margins of error: every ACS `...E` estimate is fetched with its `...M` margin of error (`...PE` with
   `...PM`), each in its own column, at the 90% confidence level. They are never dropped (`moe: false`
@@ -149,7 +109,8 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
   interval are not exact; the group() call returns the EA annotation (median+, median-).
 - Values arrive as text, exactly as published; NAME reads "Montgomery County, Maryland". Geography
   code columns (state, county, place, tract) are strings with leading zeros: keep them as text.
-- 1-year vs 5-year: 1-year (normally released each September for the prior year; the 2025 release was not on the API on 2026-10-20) covers only areas of 65,000+
+- 1-year vs 5-year: 1-year (normally released each September for the prior year; the 2025 release was not on
+  the API on 2026-10-20) covers only areas of 65,000+
   and has no tracts, block groups or ZCTAs; 5-year (normally each December) covers all areas but pools
   five years. Never compare a 1-year with a 5-year figure, and do not compare overlapping 5-year
   periods (2019-2023 vs 2020-2024). No standard 2020 ACS 1-year release exists (experimental only).
@@ -170,106 +131,13 @@ Find others: `request_schema` search `"median household income"` (latest ACS 5-y
   the last API vintage with place and county subdivision estimates. Vintages 2022 and 2024-2025 (county
   and city/town totals for 2022-2025) are not on the API: use the Census estimates files at
   https://www.census.gov/programs-surveys/popest/data/tables.html (manual download) and name the vintage.
-- SIPP (`sipp`, `20XX/sipp`): public-use microdata, one row per person per reference month (MONTHCODE
-  1-12). The reference year is the calendar year before the file's label: `2024/sipp` was collected in
-  2024 about January-December 2023; say "2023" for its figures. Filter MONTHCODE (12 = December) for a
-  point in time, or average the months for the year. The pack always adds SSUID, PNUM (person = SSUID + PNUM), MONTHCODE and
-  WPFINWGT, the person weight: every estimate is weighted by WPFINWGT, never a row count. No geography but
-  `state`, which filters TST_INTV (state of the interview address); SIPP is designed for national estimates.
-  -9 means NA or missing in most variables: drop it before summing. Standard errors need the replicate
-  weights, which are not on the API (bulk file `rw<YYYY>_csv.zip`, REPWGT1-REPWGT240, at
-  https://www2.census.gov/programs-surveys/sipp/data/datasets/<YYYY>/; method in the year's user guide); without them
-  give the point estimate and say no standard error was computed. Variable names and codes:
-  `request_schema` search `"<YYYY>/sipp: health insurance"` or the dataset's variables.json. The bulk primary file
-  (`pu<YYYY>_csv.zip`, about 100 MB) has every variable, for a manual download.
-- ACS PUMS and CPS microdata (`acs1_pums`, `acs5_pums`, `cps_asec`, `<YYYY>/cps/basic/<mon>`): one row per
-  person, values and codes exactly as published, with `<request>_codebook.csv` (every code's label, the
-  variable's suggested weight). The pack adds the keys and weights: ACS SERIALNO, SPORDER, PWGTP (persons), WGTP
-  (households: SPORDER 1 with RELSHIPP 20); ASEC H_SEQ, A_LINENO, PERIDNUM, MARSUPWT, HSUP_WGT; basic HRHHID,
-  HRHHID2, PULINENO, PWSSWGT (final weight), PWCMPWGT (composite: employment levels that match BLS). For hourly
-  and weekly earnings in a basic month, request PWORWGT (outgoing rotation groups, HRMIS 4 and 8). Every estimate
-  is weighted, never a row count. Filters are upper-case variable predicates (`"AGEP": "25:54"`, `"HICOV": 2`),
-  repeated on every call; geography: `state`, or `for: "public use microdata area:*"` with a state (ACS);
-  no state = the nation (ACS fetched state by state, 51 calls, about 2 minutes for the 3.4 million persons).
-  Every result has a `state` column (the FIPS code): group on it. The ACS PUMS state variable is `ST` through
-  the 2022 file and `STATE` from 2023 on (1-year, 5-year and Puerto Rico; the other name is not a variable).
-  `replicates: true` adds PWGTP1-80 for ACS (`"household"`: WGTP1-80, `"both"`); columns past 50 come in
-  further calls joined on the keys. For the ASEC (2005 on) it adds PH_SEQ and PPPOS and joins PWWGT1-160 from
-  Census's replicate weight file (CPS_ASEC_ASCII_REPWGT_<year> on www2.census.gov, about 70 MB, no key), after
-  two gates: the file's weight sums equal the totals its SAS layout states, and every person's PWWGT0 equals
-  MARSUPWT (2020: the 2020-based file is tried when the main one does not match). Census's replicate standard error
-  is sqrt(4/80 * sum of squared replicate differences), MOE = 1.645 * SE (`compute`'s `replicate_se` step with
-  `method: "sdr"` gives both; see Analysis below). Checked 2026-11-04 with that method: Maryland's 2024 uninsured rate in the civilian
-  noninstitutionalized population from PUMS was 6.26 +/- 0.32 percent, published S2701 6.3 +/- 0.3; the nation
-  8.19 vs 8.2.
-  - Universe: published insurance and labor tables use the civilian noninstitutionalized population
-    (drop RELSHIPP 37, the institutionalized group quarters population, and ESR 4-5, armed forces). Codes below zero or 0 often mean N/A (PINCP -19999 under 15, ESR 0 under 16): read the codebook.
-  - Dollars: ACS amounts need ADJINC (ADJHSG for housing costs), which the pack adds when a dollar variable asks
-    for it: value * ADJINC / 1,000,000 is in the survey year's dollars, as the published tables are. PUMS is a
-    subsample of the full ACS: a PUMS figure differs slightly from the published table (inside its MOE);
-    publish your figure as your own calculation and benchmark it against the table.
-  - CPS: ASEC income, poverty (PERLIS) and full-year insurance (COV) refer to the previous calendar year; NOW_COV
-    is coverage at the interview. Census's method for standard errors: weight MARSUPWT with replicates
-    PWWGT1-160, SE = sqrt(4/160 * sum of squared differences); household estimates on householders only, with
-    HSUP_WGT and the same replicates. Checked 2026-11-04 with that method: 2025 official poverty from the 2026 ASEC was
-    34,505 thousand +/- 909 and 10.2 +/- 0.3 percent (PERLIS 1 among PERLIS != -1), P60-290 Table 1 34,510 +/- 909
-    and 10.2 +/- 0.3. Before 2005 there is no replicate file: use the ipums pack.
-    The API's 2020 and 2021 ASEC weights are the 2010-Census-based ones (their PWWGT0 matched the main replicate
-    file, checked 2026-11-04); Census advises its 2020-based weights to compare those years with 2022 on, and
-    they are not on the API: say which weights a 2020-2021 comparison uses.
-    ASEC files before 2001 take no state geography on the API (HTTP 500): fetch the nation and filter on the
-    file's state variable, or use ipums. Older files lack some keys and weights (HRHHID2 before 2004, PERIDNUM
-    in early ASECs): the pack leaves them out and says so. CPS basic monthly has no replicate weights at all; month-to-month person links need HRHHID, HRHHID2 and
-    PULINENO with care (ipums CPSIDP links them). CPS codes differ from ACS codes (PEMLR, PRCITSHP, A_HGA /
-    PEEDUCA): recode each survey from its own codebook.
-  - Analysis: build tables with `compute`. Standard errors: fetch with `replicates`, then a `replicate_se` step,
-    e.g. `{"groupby": ["state"], "replicate_se": {"estimates": {"uninsured": "sum(PWGTP * (HICOV == 2)) / sum(PWGTP)"},
-    "weight": "PWGTP", "replicates": "PWGTP1:PWGTP80", "method": "sdr"}}` (ASEC: `MARSUPWT`, `"PWWGT1:PWWGT160"`;
-    household estimates: `WGTP`/`HSUP_WGT` with their replicates on one row per household). A difference between
-    years or groups needs its SE from the same replicates: write it as one estimate. CPS basic monthly and SIPP from
-    the API have no replicate weights: say no standard error was computed. This server has no PUMS recode helpers.
-- Time series (`timeseries/...`): give `time` (`2026`, `2026-08`, `2026-Q2`, or `from 2024-01 to 2026-08`).
-  Economic indicators (eits) return one row per code combination: `category_code` (industry or tax type),
-  `data_type_code` (level, percent change, ...), `seasonally_adj` (yes/no), `time_slot_id`, `error_data` (yes =
-  the row is a margin or standard error, not an estimate). The codes are not in the API's metadata: run one
-  narrow query and read the codes that come back, or the program's definitions page (census.gov/econ/currentdata),
-  then filter on them; never sum across data types or adjustment flags. Monthly indicators are revised (advance,
-  preliminary, revised): say which release. Units: retail and construction $ millions, housing units in
-  thousands, QTAX `CELL_VALUE` $ millions (variables.json labels say so); government finances `AMOUNT` $ thousands
-  with a coefficient of variation `AMOUNT_CV` (percent, sample-based local figures). Government finance years are
-  each government's fiscal year, not the calendar year. International trade: values in dollars; `GEN_VAL_MO`
-  general imports vs `CON_VAL_MO` imports for consumption; `CAL_DUT_MO` is the duty calculated on imports for
-  consumption (an estimate of duty owed, not Treasury's customs receipts); `COMM_LVL` HS2/HS4/HS6/HS10 must be
-  fixed or totals double-count; `CTY_CODE` country codes (5700 China, 2010 Mexico, 1220 Canada); it takes no
-  for= geography; `SUMMARY_LVL` CGP rows are country groups, not countries (drop them before summing).
-- Household Pulse (`pulse`, `pulse_covid`) is an experimental data product: an online survey of adults 18+ in
-  housing units, contacted by e-mail and text, with weighted response rates of 4.7 to 7.3 percent at the end
-  (7.3 percent in week 63, October 2023; 4.7 percent in Phase 4.2 cycle 09, September 2024; each period's Source
-  and Accuracy statement, census.gov/programs-surveys/household-pulse-survey/technical-documentation.html). Say so
-  with every figure. `pulse` (timeseries/hhpulse) is long: one row per `MEASURE_NAME` (13 measures: EXPENSE,
-  FOODSCARCE, ENERGYBILL, EVICTFOR, PRICEINCR, PRICEWORRY, LONELY, ...), `CYCLE` and geography; filter
-  `MEASURE_NAME` and `CYCLE`. It holds `time=2024` only (Phase 4.0 cycles 01-03, 4.1 04-07, 4.2 08-09, January 9 to
-  September 16, 2024); `time=2025` returns no rows. `pulse_covid` (timeseries/hps) is wide: `<M>_RATE`,
-  `<M>_RT_MOE`, `<M>_TOTAL`, `<M>_MOE`, `<M>_UNIV` per collection `WEEK` (01-63, April 2020 to October 2023; from
-  Phase 2 a "week" is a two-week collection period). Questions came and went, so a measure is empty in weeks
-  that did not ask it (EXPENSE is empty in weeks 01-12, first asked in week 13, August 2020). The survey ended on 2024-09-16 and continued from 2025 inside HTOPS,
-  whose tables are not on the API.
-  `RATE` is the percent of `UNIVERSE` (`TOTAL` / `UNIVERSE`; EXPENSE, 2024 cycle 09: 87,697,083 / 236,337,862 =
-  37.1), not of `UNITS_TOTAL` (all adults). Report `RATE_MOE` (`<M>_RT_MOE`) with every rate; Census uses
-  90 percent confidence intervals for Pulse, but the API does not state the level of its margins. State margins
-  are several times the national one (cycle 09 EXPENSE: Maryland 34.3 +/- 3.4, nation 37.1 +/- 0.7): test a
-  difference against both margins before calling it one. Do not splice `pulse_covid` and `pulse` into one series
-  or compare across phases without saying the question set and contact frame changed (Phase 4.2 added prepaid
-  wireless numbers, "potentially impacting comparability with previous cycles", Phase 4.2 User Notes).
-- HVS (`eits_homeownership`, timeseries/eits/hv) is quarterly (`time=2025-Q3`), from the CPS: `category_code`
-  RATE has `data_type_code` HOR (homeownership rate, not seasonally adjusted), SAHOR (seasonally adjusted,
-  `seasonally_adj` yes), RVR (rental vacancy rate), HVR (homeowner vacancy rate), and E_HOR, E_RVR, E_HVR
-  (`error_data` yes: the 90 percent margin of error in percentage points, e.g. 0.5 for HOR); category ESTIMATE
-  holds the housing inventory in thousands (TOTAL, OCC, OWNOCC, RNTOCC, VACANT, RENT, SALE, SEASON, ...). Never
-  mix HOR and SAHOR in one series. The API has the nation only; the release's Table 4 is the benchmark (2025
-  HOR 65.1, 65.0, 65.3, 65.7 matched the API on 2026-11-03). Fourth quarter 2025 rests on November and December
-  only: October 2025 was not collected during the lapse in federal funding (release footnote); say so when it
-  is used.
+- ACS PUMS, CPS and SIPP microdata (`acs1_pums`, `acs5_pums`, `cps_asec`, `cps/basic`, `sipp`): read
+  `source_brief({source: "census", doc: "microdata"})` before the first fetch. It has the keys and weights the
+  pack adds, the `ST`/`STATE` rename, replicate weights and standard errors, universes, ADJINC, and the
+  checked benchmarks.
+- Time series (`timeseries/...`: economic indicators, international trade, government finances, Household
+  Pulse, HVS): read `source_brief({source: "census", doc: "timeseries"})` before the first fetch. It has the
+  `time` forms, the code columns to fix, units, revisions and each survey's caveats.
 - Key: since 2026-05-12 every data query needs a key; the API redirects keyless queries to a "Missing
   Key" page, which the pack reports as a key error. Metadata (variables, discovery) still answer
   without a key.

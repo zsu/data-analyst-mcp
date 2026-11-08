@@ -5,17 +5,16 @@ import { z } from "zod";
 import { fail } from "../envelope.js";
 import type { Session } from "../session.js";
 import type { ToolDef } from "../toolkit.js";
+import { columnList } from "../core/compact.js";
 import { cite, CiteError } from "./cite.js";
 import { compute, ComputeError } from "./compute.js";
-import { AGGREGATES, FUNCTIONS, WINDOWS } from "./expr.js";
 import { FactError, registerFacts } from "./facts.js";
 import { summarize } from "./handoff.js";
 import { awaitRerun, RerunPending } from "./rerun_job.js";
 import { writeTable, WriteTableError } from "./write_table.js";
 
-const list = (o: Record<string, unknown>) => Object.keys(o).filter((k) => k !== "col").join(", ");
 
-const COMPUTE_FIX = "Fix the step the message names (columns, verbs and functions are listed in the compute description) " +
+const COMPUTE_FIX = "Fix the step the message names (verbs and functions: guide(\"compute\")) " +
   "and call compute again.";
 
 export function computeTool(s: Session, a: any) {
@@ -27,7 +26,8 @@ export function computeTool(s: Session, a: any) {
     throw e;
   }
   return {
-    status: "ok", summary: { file: r.rel, rows: r.rows, columns: r.columns, packs: r.packs, preview: r.preview },
+    status: "ok", summary: { file: r.rel, rows: r.rows, columns: columnList(r.columns), packs: r.packs, preview: r.preview,
+      ...(r.preview_note ? { preview_note: r.preview_note } : {}) },
     files: [r.file], notes: r.notes,
     next: "Register each number you will cite with facts (table: this file, where: the row's key values, column), " +
       "so the answer and report quote it and the rerun gate reproduces it.",
@@ -42,9 +42,12 @@ export function factsTool(s: Session, a: any) {
     try {
       saved = JSON.parse(fs.readFileSync(path.join(s.workspace, "facts.json"), "utf8"));
     } catch { /* none yet */ }
-    const facts = (r.names as string[]).map((n) => ({ name: n, value: saved[n]?.value ?? null, text: saved[n]?.text ?? null,
-      label: saved[n]?.label ?? null }));
-    return { status: "ok", summary: { added: r.added, facts: r.names }, facts, files: [r.file], notes: r.notes,
+    // compact: each fact's value and the text the model quotes, and only value/text/pack for the ones just added (the
+    // rest of each record is its own input echoed back)
+    const facts = (r.names as string[]).map((n) => ({ name: n, value: saved[n]?.value ?? null, text: saved[n]?.text ?? null }));
+    const added = Object.fromEntries(Object.entries(r.added).map(([n, rec]: [string, any]) =>
+      [n, { value: rec?.value ?? null, text: rec?.text ?? null, ...(rec && "pack" in rec ? { pack: rec.pack } : {}) }]));
+    return { status: "ok", summary: { added }, facts, files: [r.file], notes: r.notes,
       next: "Quote each fact's text in the answer exactly (or {{name}} / {{name|fmt}} in report.json)." };
   } catch (e) {
     if (e instanceof FactError) {
@@ -90,17 +93,17 @@ export async function citeTool(s: Session, a: any) {
 
 export function handoffTool(s: Session) {
   const r = summarize(s.workspace);
-  return { status: "ok", summary: { sources: r.sources, unpackaged: r.unpackaged }, text: r.text, action: r.action };
+  // the previews are in text (Markdown); the summary keeps the facts about each file, not the previews again
+  const sources = r.sources.map((x: any) => ({ ...x, files: (x.files || []).map(({ preview: _p, ...f }: any) => f) }));
+  return { status: "ok", summary: { sources, unpackaged: r.unpackaged }, text: r.text, action: r.action };
 }
 
 const scalar = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+// described once, in the facts description (these fields repeat in add and derived)
 const flags = {
-  fmt: z.string().optional().describe("Format code: raw, num:0, pct:1 (share 0-1), pct100:1 (already percent), pp:1, pp100:1, " +
-    "bp:0, dollars:0, thousands:-3, millions:1, billions:1, usd_b:1 (value in dollars), usd_b_scaled:1 (already billions), " +
-    "ratio:2, index:1, year; prefixes signed:, abs:, from_millions: ...; suffix :abs"),
+  fmt: z.string().optional().describe("A format code (see the description)"),
   label: z.string().optional(),
-  pack: z.union([z.string(), z.array(z.string())]).nullable().optional()
-    .describe("The source pack(s) the number comes from (inferred from data/<id>/ or the exhibit's lineage); [] for none"),
+  pack: z.union([z.string(), z.array(z.string())]).nullable().optional().describe("Source pack(s); [] for none"),
   headline: z.boolean().optional().describe("A number the answer leads with (needs a benchmark.csv row)"),
   preliminary: z.boolean().optional().describe("An early estimate the agency will revise"),
   vintage: z.string().nullable().optional().describe("The vintage, when not the latest"),
@@ -112,35 +115,19 @@ export const TOOLS: ToolDef[] = [
   {
     name: "compute",
     title: "Compute an exhibit",
-    description: "Run declarative steps over full workspace tables (fetched data/<id>/<table>.csv or .parquet, earlier " +
-      "exhibits, published/*.csv) and save the result as exhibits/<name>.csv with its lineage, so the rerun gate can replay it. " +
-      "Call it for every table the answer or report draws numbers from; never compute cited numbers by hand.\n" +
-      "Each step is an object with one verb: {filter: expr}, {derive: {col: expr}}, {select: [cols]}, {rename: {old: new}}, " +
-      "{groupby: [keys], rollup: {col: aggregate expr}} (groupby also goes with derive or filter: per-group windows and " +
-      "shares), {join: alias, on: [keys] | {left: right}, how: inner|left, suffix?: [\"_x\",\"_y\"]}, " +
-      "{pivot_wider: {names_from, values_from, id_cols?, fill?}}, {pivot_longer: {cols, names_to, values_to}}, " +
-      "{orderby: [col, \"-col\" for descending]}, {slice: n | [start, end]}, {dedupe: true | [cols]}, {concat: [aliases]}, " +
-      "{as: name} (keep the current table under a name), {from: name} (switch to a table); combine helpers: " +
-      "{fiscal_year: {date, as?}}, {to_fiscal: {date, value, how: sum|mean|last, freq: M|Q}} (adds periods and complete; " +
-      "incomplete years are flagged, never full), {state_codes: col} (adds state_usps, state_fips, state_name), " +
-      "{deflate: {value, period, index: alias, index_period?, index_value, name: \"CPI-U, BLS CUUR0000SA0\", base?: \"2024\", as?}}, " +
-      "{align_check: {tables: [aliases or \"this\"], on: [keys], units: {alias: \"billions of dollars, nominal, fiscal years\"}}} " +
-      "(refuses repeated keys, missing units, no overlap; run it before a join of two sources).\n" +
-      "Survey standard errors: {groupby?: [keys], replicate_se: {estimates: {rate: \"sum(PWGTP * (HICOV == 2)) / sum(PWGTP)\"}, " +
-      "weight: \"PWGTP\", replicates: \"PWGTP1:PWGTP80\" | [cols], method: sdr|fay|jk1|brr|custom, rho? (fay), scale? (custom), " +
-      "also?: {n: \"count()\"}, confidence?: 90|95|99}} recomputes each weighted estimate with every replicate weight in place " +
-      "of the weight and adds <name>_se and <name>_moe (90 percent by default, Census's). SE = sqrt(c * sum over r of " +
-      "(estimate_r - estimate)^2), c = 4/R for sdr (ACS PUMS 4/80, CPS ASEC 4/160), 1/(R(1-rho)^2) for fay, (R-1)/R for jk1, " +
-      "1/R for brr; use the method the pack's notes name. An SE of a difference or ratio needs it as one estimate, e.g. " +
-      "\"sum(W*(YEAR==2024)*X)/sum(W*(YEAR==2024)) - sum(W*(YEAR==2023)*X)/sum(W*(YEAR==2023))\". " +
-      "{replicate_se: {estimate: col, replicates, method, as?}} instead reads a table that already holds replicate estimates " +
-      "(one row per estimate) and adds <as>_se and <as>_moe to each row.\n" +
-      "Expressions: column names (col(\"a b\") for odd names), numbers, \"text\", true/false/null, + - * / % **, " +
-      "== != < <= > >=, && || ! (and/or/not), c ? a : b. Functions: " + list(FUNCTIONS) + ". Aggregates: " + list(AGGREGATES) +
-      ". Windows (in row order, per group): " + list(WINDOWS) + ". Nothing else runs: no property access, no other calls. " +
-      "CSV cells that are plain numbers are numbers; \"1,234\" stays text until number(); an empty cell is null (a gap); " +
-      "Parquet cells are typed the same way. For a big file, read only the columns needed: {alias: {path, columns: [...]}}. " +
-      "Returns the columns, row count, the first rows (preview, at most 50) and the file.",
+    description: "Run declarative steps over full workspace tables (data/<id>/<table>.csv or .parquet, earlier exhibits, " +
+      "published/*.csv) and save exhibits/<name>.csv with its lineage, so the rerun gate can replay it. Call it for every " +
+      "table the answer or report draws numbers from; never compute cited numbers by hand.\n" +
+      "Steps, one verb each: filter, derive, select, rename, groupby with rollup (or with derive/filter for per-group " +
+      "windows and shares), join, pivot_wider, pivot_longer, orderby, slice, dedupe, concat, as, from; helpers " +
+      "fiscal_year, to_fiscal, state_codes, deflate, align_check (before joining two sources); replicate_se (survey " +
+      "standard errors and MOEs from replicate weights, e.g. ACS PUMS PWGTP1:PWGTP80 with sdr). Example: " +
+      '[{"filter": "AGEP >= 16"}, {"derive": {"fed": "COW == 5 ? 1 : 0"}}, {"groupby": ["fed"], "rollup": ' +
+      '{"n": "sum(PWGTP)"}}].\n' +
+      "Expressions: column names (col(\"a b\") for odd ones), numbers, \"text\", + - * / % **, comparisons, && || !, " +
+      "c ? a : b, and the listed functions, aggregates and windows. guide(\"compute\") has every verb's arguments, " +
+      "the function list and the replicate_se methods. For a big file, name the columns: {alias: {path, columns}}. " +
+      "Returns the columns, row count, a short preview and the file.",
     inputSchema: {
       inputs: z.record(z.string(), z.union([z.string(), z.object({ path: z.string(), columns: z.array(z.string()).optional() })]))
         .describe('{alias: "data/<id>/<table>.csv" | "data/<id>/<table>.parquet" | "exhibits/<x>.csv" | "published/<x>.csv" | ' +
@@ -163,7 +150,10 @@ export const TOOLS: ToolDef[] = [
       "a derivation: written as an expression over fact names (\"deaths_2024 / deaths_2020 - 1\") it is computed here, so " +
       "leave value out; a prose derivation needs value. Refuses empty cells and NaN, an ambiguous pack, unknown formats and " +
       "units slips (a share given to pct100, millions given to usd_b ...); nothing is saved when any fact is refused. " +
-      "Returns each fact with its text (the value as the answer prints it: quote it exactly) and notes (rounding ties).",
+      "Returns each fact with its text (the value as the answer prints it: quote it exactly) and notes (rounding ties). " +
+      "fmt codes: raw, num:0, pct:1 (share 0-1), pct100:1 (already percent), pp:1, pp100:1, bp:0, dollars:0, thousands:-3, " +
+      "millions:1, billions:1, usd_b:1 (value in dollars), usd_b_scaled:1 (already billions), ratio:2, index:1, year; " +
+      "prefixes signed:, abs:, from_millions: ...; suffix :abs. pack is inferred from data/<id>/ or the exhibit's lineage.",
     inputSchema: {
       add: z.array(z.object({ name: z.string(), table: z.string(), where: z.record(z.string(), scalar), column: z.string(), ...flags }))
         .optional().describe("Table facts"),

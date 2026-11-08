@@ -93,47 +93,14 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
   (verified 2026-10-22): those need one `bill` call per law, a second spec with
   `"for_each": {"csv": "data/congress/<laws>.csv", "map": {"billType": "type", "billNumber": "number"},
   "lower": true}` (bill numbers repeat across types; one call per row of the laws CSV). Counting "bills passed" needs a chamber action, not `latestAction` alone.
-- Votes: a bill usually has several recorded votes (cloture, motions to proceed, amendments, passage,
-  conference). `bill_votes` lists every one with the action text. Final passage is each chamber's LAST
-  recorded vote that cleared the bill ("On Passage", "On Passage of the Bill", "On Motion to Concur ...",
-  "On Agreeing to the Conference Report"): take the latest date, not the first "On Passage". A bill used
-  as a vehicle for other text (CHIPS and Science moved as H.R. 4346, first passed as a legislative-branch
-  appropriation) has an early "On Passage" vote on the old text; the Clerk's `description` can keep the
-  old title. Voice votes and unanimous consent leave no roll call and no row.
+- Votes (roll calls, party totals, member ids, whole-session counts, `house_votes`): read
+  `source_brief({source: "congress", doc: "votes"})` before counting votes.
 - Zero rows can be the right answer (no private laws in the 118th Congress, no votes on a bill): mark
   such requests `"allow_empty": true`, or the fetch stops and names them.
-- Party totals: House rows take the Clerk's totals by party; Senate rows are counted from the member
-  list (`yea_D`, `nay_R`, ...; independents as I). `not_voting` counts absent members; vacant seats are
-  not counted anywhere, so totals can be under 435 or 100. The Vice President's tie-breaking vote is in
-  `tie_breaker`, not in the member rows.
-- Member ids differ by source: House rows and Congress.gov use bioguide ids (A000370); Senate XML uses
-  LIS ids (S354). Join Senate votes to members by name and state, or a crosswalk, not by id.
-- `vote` keeps the published word (Yea, Aye, Nay, No, Present, Not Voting, Guilty); `position` maps it
-  to yea, nay, present, not_voting or other. House "Aye"/"No" are recorded votes, same meaning.
 - Cosponsors: `sponsorshipWithdrawnDate` marks withdrawals (still listed);
   `cosponsors.countIncludingWithdrawnCosponsors` in `bill` counts them. Count by `party` for a party split.
-- Cost estimates: `bill_cbo_estimates` gives only what Congress.gov lists: title, publication date,
-  description and a cbo.gov link for each estimate. No dollar figures are in the API; the estimate
-  itself is a PDF or web page (committee reports in govinfo CRPT often reprint it as text).
-- CRS: `crs_reports` lists reports Congress.gov publishes (newest first, about 14,000 in Oct 2026);
-  there is no keyword search: use a date range and `title_contains`, then `crs_report` for the summary.
-  `fromDateTime`/`toDateTime` filter on the UPDATE date (one September window returned 1,244 products
-  published 2004-2026): for "published in a month" filter the rows on `publishDate` afterwards. `publishDate`
-  is the current version's date, so a product first issued in the month and revised later drops out (a
-  floor, say so). The list's `version` is not the product version: `crs_report` gives `currentVersion`.
-  `bill_summaries` are CRS summaries of each bill version (HTML in `text`, plain in `text_plain`); some fields
-  are over 131,072 characters: when reading the CSV with your own code, raise the reader's field size limit first.
-- Nominations (traps seen in Oct 2026 data; the Senate Résumé's "Civilian nominees" table is the benchmark):
-  military and "Other Civilian" lists (Foreign Service, PHS, NOAA officers) are list nominations without a
-  description; `nominationType` (`isCivilian`, `isMilitary`) is missing on some rows of older Congresses
-  (every row of the 119th has one); a PN split into parts
-  (PN12-41) counts once per part; en bloc votes confirm many nominees at once. `latestAction` is the last
-  step, which can be a later procedural motion ("motion to reconsider tabled") or, for a nomination held over,
-  its confirmation in the next session: count outcomes by date from `nomination_actions`, within the
-  session's dates. A split PN's actions need `nominationNumber` "1255-17": `"for_each": {"csv":
-  "data/congress/<noms>.csv", "column": "citation", "param": "nominationNumber", "strip": "PN"}` (`number` alone
-  returns nothing for a split PN). The naive count (civilian flag + `latestAction` "Confirmed") gave 60 percent for 2023
-  against the Résumé's 47.
+- Nominations, CRS reports and cost estimates: read `source_brief({source: "congress", doc:
+  "nominations_crs"})` before using them.
 - Paging: 250 per request (`limit`/`offset`). Lists default to the newest update first.
 - Vetoes: a vetoed bill's `latestAction` often is a later procedural step, and no endpoint filters bills by
   action. Read `bill_actions` (for_each over candidate bills that passed both chambers and are not law) for
@@ -141,17 +108,6 @@ confirm each bill with `bill_titles` (`for_each` on congress, billType, billNumb
   President to the contrary notwithstanding"). The Senate's veto page (senate.gov/legislative/vetoes, regular
   and pocket vetoes per President) is the benchmark. Reserved bill numbers (H.R. 1-10, S. 1-10 for leaders)
   have no actions: allow_empty or drop them first.
-- Whole-session vote counts and party splits: no endpoint returns party totals in bulk, so a session takes
-  one `roll_call` per vote (about 1,000 a year, several minutes). For the House's questions and results
-  (`house_votes` has no question column; `house_vote` keeps only party totals), `for_each` over the
-  `house_votes` list's `rollCallNumber` with `roll_call` `"summary": "true"` and the year: one row per vote with
-  question ("On Motion to Suspend the Rules and Pass"), vote type ("2/3 YEA-AND-NAY"), result and totals. `house_votes` lists quorum calls too (vote
-  type "Quorum"): the Résumé counts them apart from yea-and-nay and recorded votes. The Speaker election's
-  member rows have position `other` (votes are names). Say how independents are counted in a party split.
-- `house_votes`/`house_vote` (Congress.gov) start with the 115th Congress (2017; the 114th lists 0 votes,
-  verified 2026-10-22); `roll_call` reads the Clerk
-  XML for 1990 on (and falls back to the Congress.gov member list for the 115th on if the Clerk file
-  cannot be read). Senate XML covers the 101st Congress (1989) on.
 - Dates: Congress.gov timestamps are UTC (`2025-01-22T...Z`); vote `date` is the vote's own calendar
   date (ISO), `date_published` keeps the source text.
 

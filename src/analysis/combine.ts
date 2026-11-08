@@ -11,6 +11,7 @@
  *   deflate(...)            real dollars with a named index and base period
  * Python printed its reports; here they are returned as notes.
  */
+import { namesHint } from "../core/compact.js";
 import { dateParts } from "./expr.js";
 import { pyRepr } from "./pyfmt.js";
 import { cellText, newRow, type Row, type Table, type Value } from "./table.js";
@@ -47,7 +48,7 @@ export function state(x: Value, as: "usps" | "fips" | "name" = "usps"): string {
 }
 
 export function addStateCodes(t: Table, col: string): Table {
-  if (!t.cols.includes(col)) throw new CombineError(`state_codes: no column ${col}; the columns are ${pyRepr(t.cols)}`);
+  if (!t.cols.includes(col)) throw new CombineError(`state_codes: no column ${col}; ${namesHint([col], t.cols, "columns", pyRepr)}`);
   const names = ["state_usps", "state_fips", "state_name"];
   const rows = t.rows.map((r) => {
     const o: Row = Object.assign(newRow(), r);
@@ -75,7 +76,7 @@ export function fiscalYear(v: Value, col = "date"): number {
 /** Calendar-period data to fiscal years. Flows: how "sum"; rates and indexes: "mean"; stocks: "last". */
 export function toFiscal(t: Table, date: string, value: string, how: "sum" | "mean" | "last" = "sum",
   freq: "M" | "Q" = "M"): { table: Table; notes: string[] } {
-  for (const c of [date, value]) if (!t.cols.includes(c)) throw new CombineError(`to_fiscal: no column ${c}; the columns are ${pyRepr(t.cols)}`);
+  for (const c of [date, value]) if (!t.cols.includes(c)) throw new CombineError(`to_fiscal: no column ${c}; ${namesHint([c], t.cols, "columns", pyRepr)}`);
   if (!["sum", "mean", "last"].includes(how)) throw new CombineError(`to_fiscal: how is "sum", "mean" or "last", not ${pyRepr(how)}`);
   if (!["M", "Q"].includes(freq)) throw new CombineError(`to_fiscal: freq is "M" or "Q", not ${pyRepr(freq)}`);
   const notes: string[] = [];

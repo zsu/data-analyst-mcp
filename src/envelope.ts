@@ -63,7 +63,7 @@ export function fromDataError(e: DataError, P?: Policy): Failure {
       return { status: "error", code: "invalid_request", message: m, fix: "Fix the request from request_schema and source_brief, then call fetch again." };
     case "bad_request":
     case "api":
-      return { status: "error", code: "agency_rejected", message: m, upstream_excerpt: m.slice(0, 600),
+      return { status: "error", code: "agency_rejected", message: m,
         fix: "The agency refused a value: change it as the message says (request_schema lists valid parameters; " +
           "source_brief has the traps). Never repeat the call unchanged." };
     case "not_found":

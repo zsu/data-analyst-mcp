@@ -40,7 +40,8 @@ describe("handoff", () => {
     const noaa = r.sources.find((x: any) => x.source === "noaa");
     expect([noaa.route, noaa.retrieved]).toEqual(["api", "2026-03-04"]);
     expect(noaa.files[0].rows).toBe(10);
-    const pv = noaa.files[0].preview;
+    expect(noaa.files[0]).not.toHaveProperty("preview");                          // the tool sends it once, in text
+    const pv = (handoff.summarize(out).sources.find((x: any) => x.source === "noaa") as any).files[0].preview;
     expect(pv.header).toEqual(["year", "amount"]);                                // the columns that vary come first
     expect(pv.rows.length).toBe(handoff.PREVIEW_ROWS);
     expect(pv.same).toContainEqual(["region", "North"]);

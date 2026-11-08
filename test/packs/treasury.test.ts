@@ -105,7 +105,10 @@ describe("treasury", () => {
   it("the dataset schema lists the curated endpoints", async () => {
     const r: any = await T.requestSchema(newSession(), { source: "treasury", names: ["dataset"] });
     expect(r.schemas[0].all_endpoints).toBeGreaterThan(180);
-    expect(r.schemas[0].curated.some((e: any) => e.endpoint === "v1/accounting/mts/mts_table_9")).toBe(true);
+    expect(r.schemas[0].curated["v1/accounting/mts/mts_table_9"]).toBeTruthy();   // compact: endpoint -> table
+    const full: any = await T.requestSchema(newSession(), { source: "treasury", names: ["dataset"], detail: true });
+    expect(full.schemas[0].curated.some((e: any) => e.endpoint === "v1/accounting/mts/mts_table_9" && e.guidance)).toBe(true);
+    expect(JSON.stringify(r.schemas[0]).length).toBeLessThan(JSON.stringify(full.schemas[0]).length / 2);
   });
 
   it("fields", async () => {

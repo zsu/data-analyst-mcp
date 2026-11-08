@@ -938,7 +938,13 @@ function dictionaryRows(pack: Pack): Record<string, string>[] {
   return p ? (readCsv(fs.readFileSync(p, "utf8")) as Record<string, string>[]) : [];
 }
 
-async function schema(names: string[], pack: Pack): Promise<any[]> {
+/** A column definition as the compact schema shows it. */
+function shortDef(s: string, max = 90): string {
+  const t = String(s || "").replace(/\s+/g, " ").trim();
+  return t.length <= max ? t : t.slice(0, max - 3).replace(/\s+\S*$/, "") + "...";
+}
+
+async function schema(names: string[], pack: Pack, opts: { detail?: boolean } = {}): Promise<any[]> {
   const dict = dictionaryRows(pack);
   const out: any[] = [];
   for (const n of names) {
@@ -960,7 +966,10 @@ async function schema(names: string[], pack: Pack): Promise<any[]> {
         aggregate: "optional {\"by\": [columns]}: counts (headcount), pay_redacted, pay_n and pay_sum per group instead of microdata; keeps only the by columns",
         pin: "optional {\"<dataset>_<YYYYMM>\": version}: exact file versions (from an earlier manifest.json)" },
       always_kept: ALWAYS[n],
-      columns: dict.filter((r) => r[n] === "Y").map((r) => ({ name: r.field, definition: r.definition, example: r.sample_value })),
+      columns: opts.detail
+        ? dict.filter((r) => r[n] === "Y").map((r) => ({ name: r.field, definition: r.definition, example: r.sample_value }))
+        : Object.fromEntries(dict.filter((r) => r[n] === "Y").map((r) => [r.field, shortDef(r.definition)])),
+      ...(opts.detail ? {} : { columns_note: "definitions shortened: request_schema with detail: true gives them in full, with an example value" }),
       available });
   }
   return out;

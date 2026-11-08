@@ -72,6 +72,7 @@ describe("remote, open", () => {
   it("serves tools per session, links files instead of paths, and drops the workspace at close", async () => {
     const r = await start();
     const c = await connect(r.url);
+    expect((await c.listTools()).tools.map((t) => t.name)).not.toContain("open_workspace"); // local only
     expect((await c.listTools()).tools.map((t) => t.name)).toContain("fetch");
     await ready(c, "cdc");
     await call(c, "request_schema", { source: "cdc", names: ["query"] });

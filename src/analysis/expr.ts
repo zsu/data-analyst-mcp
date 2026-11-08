@@ -12,6 +12,7 @@
  * Values: numbers, text, booleans and null (a gap). Arithmetic on text is an error (convert with number()), and
  * a gap propagates (null + 1 is null); a division by zero is null.
  */
+import { namesHint } from "../core/compact.js";
 import { pyFloatRepr } from "../core/py.js";
 import { pyRepr, pyRound } from "./pyfmt.js";
 import type { Row, Value } from "./table.js";
@@ -712,7 +713,7 @@ export function compile(src: unknown, cols: string[], o: { agg?: boolean; win?: 
   const info = inspect(n);
   const missing = info.cols.filter((c) => !cols.includes(c));
   if (missing.length) {
-    throw new ExprError(`unknown column${missing.length > 1 ? "s" : ""} ${missing.join(", ")}; the columns are ${pyRepr(cols)}` +
+    throw new ExprError(`unknown column${missing.length > 1 ? "s" : ""} ${missing.join(", ")}; ${namesHint(missing, cols, "columns", pyRepr)}` +
       " (quote text values: \"New York\"; a name with spaces or dots: col(\"a b\"))");
   }
   if (info.agg && o.agg === false) throw new ExprError(`aggregates are not allowed in ${o.what || "this step"}`);
