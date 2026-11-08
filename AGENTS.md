@@ -70,6 +70,16 @@ owns its pack data, code and recorded fixtures.
       epa-aqs, noaa, usgs, bea, fred, ipums): accepted, rejected, unreachable or unclear. Tests: test/check-key.test.ts.
     - fred falls back to the keyless graph downloads when the key is rejected or the API is down.
     - the `guide` topic `report_schema` (`guide/references/report_schema.md`): every report.json key build_report reads.
+  - Since 0.5:
+    - irs-soi reads the SOI published tables (`table`, `table_list`): 125 tables in `packs/irs-soi/tables.json`
+      (Publication 1304 and tax shares by percentile, Publication 16, partnerships, sole proprietorships, the IRS
+      Data Book, historical tables, estate, gift, wealth, exempt organizations, international). The year's file is
+      taken from the table's index page, never built. One layout reader for all of them
+      (`src/adapters/_irs-soi_tables.ts`): column-number row, stacked headers, page blocks, side-by-side panels,
+      sections, row levels, markers as `FLAG`. Also `eo_bmf` and `eo_extract` (`src/adapters/_irs-soi_eo.ts`).
+      Estimate recipes: `packs/irs-soi/docs/estimate_patterns.md`. Tests: test/packs/irs-soi-tables.test.ts.
+    - `xlsxSheets`/`xlsSheets` take an optional `marks` output: each cell's number-format marker and indent
+      (`formatMark`), for tables that mark cells by format only.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**
@@ -87,5 +97,8 @@ owns its pack data, code and recorded fixtures.
     cdc-wonder (wonder.cdc.gov refuses this client). Check them on a real downloaded workbook or export.
   - Not covered yet: NSF NCSES survey tables, the FJC Integrated Database, TIGERweb boundaries
     (census-geocoder), BJS corrections reports beyond the listed packages.
+  - irs-soi does not read: Form 990 e-file XML, the tax gap (PDF only), the Corporation Source Book (frozen at
+    2013), fixed-width `.dat` Form 990 extracts (some of 2012-2017), older table series under other numbers
+    (e.g. Publication 1304 `in01ar` before 2012).
 - **Pack-specific redaction patterns** (`keys.addPattern(re, pack)`) apply only inside that pack's calls
   (`withPackScope`). In one server process every pack is loaded, so a global pattern would redact other packs' data.

@@ -1,6 +1,9 @@
-# IRS Statistics of Income: individual income tax data by geography (irs.gov)
-Depth: standard. Key: none. Counts and amounts from all individual income tax returns (Forms 1040), by ZIP code,
-county and state and by AGI size class, plus taxpayer migration between states and counties.
+# IRS Statistics of Income: tax statistics by geography, national tables, business, estate and nonprofits (irs.gov)
+Depth: standard. Key: none. Counts and amounts from tax returns: individual returns (Forms 1040) by ZIP code,
+county and state and by AGI size class, taxpayer migration between states and counties, and the SOI published
+tables (national individual tables and tax shares by percentile, corporations, partnerships, sole
+proprietorships, the IRS Data Book, historical tables, estate and gift tax, personal wealth, exempt organizations,
+international), plus the Exempt Organizations Business Master File and the Form 990 extracts.
 
 ## When to use
 - Number of returns, adjusted gross income (AGI), wages, dividends, capital gains, business income, deductions
@@ -8,12 +11,20 @@ county and state and by AGI size class, plus taxpayer migration between states a
   or state; average AGI per return; the income mix of a place; returns with AGI of $200,000 or more (ZIP,
   county) or $1 million or more (state).
 - Households (returns), people and AGI moving into or out of a state or county between two filing years.
+- Budget and economic estimates from published tax data (`table`): national income and tax by size of AGI, income
+  taxed at each rate (static revenue effect of a rate change), average tax rates and tax shares of the top 1%,
+  0.1% ..., the corporate tax base (net income, income subject to tax, tax after credits by industry or asset
+  size), pass-through business income (partnerships, S corporations, sole proprietorships), IRS gross collections
+  and refunds by type of tax and by state, estate and gift tax by size of estate and by state, wealth of top
+  wealth holders, the nonprofit sector (Form 990 totals, private foundations), controlled foreign corporations,
+  foreign tax credits and country-by-country reports. Recipes: `docs/estimate_patterns.md`.
+- One nonprofit or the nonprofits of a state (`eo_bmf`: registry; `eo_extract`: Form 990 financial data).
 - Not here: person- or household-level income, poverty and median household income (census: ACS); personal
-  income and GDP by state or county (bea); national tables such as Publication 1304 / Table 1.1 (SOI publishes
-  them as .xls workbooks only: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income;
-  manual); business, corporate, estate and exempt-organization statistics (other SOI pages, not covered);
-  tax-return microdata: the Individual Public-Use Microdata File is not public (it was sold under license; tax
-  years 2012-2015 are no longer available, and SOI has announced a synthetic file instead), so no row-level data.
+  income, GDP and corporate profits in the national accounts (bea); federal receipts by month and the budget
+  totals (treasury, omb); projections (CBO, not covered); tax-return microdata: the Individual Public-Use
+  Microdata File is not public (it was sold under license; tax years 2012-2015 are no longer available, and SOI
+  has announced a synthetic file instead), so no row-level data; Form 990 e-file XML (100-500 MB zips of single
+  returns); tax gap estimates (PDF only); the Corporation Source Book (frozen at 2013).
 
 ## Endpoints and datasets
 One all-states CSV per year under `https://www.irs.gov/pub/irs-soi/` (verified 2026-10-30). The adapter
@@ -37,7 +48,85 @@ not posted yet ends with `not_found` naming the file. Variable lists and layouts
 the index pages (ZIP `{yy}zpdoc.docx`, county `{yy}incydocguide.docx`, state `{yy}incmdocguide.doc`,
 migration `{y1y2}inpublicmigdoc.pdf`).
 
+## Published tables (`table`, `table_list`)
+SOI publishes its national statistics as .xls/.xlsx workbooks, one per table and year. `packs/irs-soi/tables.json`
+catalogs 125 of them (checked 2026-11-08); `table_list` lists them (`product`, `query`; `live: true` adds the
+years posted now). File names change over the years (the Data Book renumbered its tables in 2006, `97in11.xls`,
+`ccr`/`nr`/`tabl` suffixes), so the adapter reads the table's index page and takes the year's link from it; a link
+the page gets wrong is corrected in the catalog (`overrides`: partnership Tables 5 and 7 for 2023).
+
+| Product (ids) | Tables | Years | Year |
+|---|---|---|---|
+| Individual, Publication 1304 (`in_1.1` ... `in_3.6`) | 1.1 income and tax by size of AGI, 1.2 by marital status, 1.4 sources of income, 1.4A capital gains, 1.6 age, 1.7 dependents, 2.1 itemized deductions, 2.5 EITC, 2.7 ACA, 3.1-3.6 tax computation, tax by rate (3.5: income taxed at each rate) | TY1996-2023 | tax year |
+| Individual, percentiles (`shares_4.1`, `shares_4.2`, `shares_4.3`) | returns, AGI floor, AGI, income tax, average tax rate and shares, top 0.001% ... top 50% and bottom 50% | 2001-2023 in one file | edition |
+| Corporations, Publication 16 (`corp_1` ... `corp_14`) | 1 minor industry, 2.1-2.4A size of total assets (2.3 C corporations, 2.4 S corporations), 3.x size of receipts, 4 size of tax, 5.x minor industry, 6-9 S corporations, 10 foreign (1120-F), 11 tax and credits, 12-14 COGS, depreciation, research credit; `corp_1-CV` coefficients of variation | TY2014-2023 (Table 1 from 1994) | tax year |
+| Partnerships (`partnership_1` ... `_7`, `_10`, `_23`) | by industrial group: income and deductions, balance sheets, rental real estate, income allocated to partners, LLCs, receipts, foreign transactions | TY1993-2023 | tax year |
+| Sole proprietorships (`soleprop_1` ... `_4`) | by industrial sector: receipts, deductions, payroll, net income; income statements; size of receipts; returns with Schedule C | TY1996-2023 | tax year |
+| Integrated business data (`business_1`, `business_3`) | returns, receipts and net income by form of business, 1980-2015; by NAICS sector | to 2015 | edition / tax year |
+| IRS Data Book (`databook_1-1` ... `_1-8`, `_3-1`, `_6-1`, `_6-2`) | collections and refunds by type of tax, returns filed, by state; gross collections by type of tax 1960 onward (1-6); audit coverage; costs; cost of collecting $100 | FY1995-2025 | fiscal year |
+| Historical tables (`historical_1` ... `_24`) | individual series since 1913/1950, corporations since 1909, NIPA vs SOI income (8, 15), excise taxes by type FY1999 onward (20), returns filed (21), corporate rates 1909-2010 (24) | one file each | edition |
+| Estate, gift, wealth (`estate_1` ... `_5`, `gift_1`, `wealth_1` ... `_6`) | estate returns by size of gross estate and tax status, by state, charitable bequests, beneficiaries, occupation; gift returns; top wealth holders | FY2001-2024; gift 2003-2021; wealth 2001-2019 | filing year |
+| Exempt organizations (`eo_1` ... `_4`, `eo_excise`, `pf_1` ... `_4`) | Form 990 501(c)(3) by asset size, by Code section, 990-EZ, Form 4720 excise; private foundations | 1985-2024 | tax year |
+| International (`cfc_1` ... `_3`, `ftc_1` ... `_3`, `cbc_1A` ... `cbc_4`) | controlled foreign corporations, corporate foreign tax credit, country-by-country reports | to 2021/2023 | tax year |
+
+Parameters: `table` (an id, or a product word and number: "corporation 2.1", "data book 1-6"); `year` (or
+`tax_year`, `fiscal_year`, `filing_year`; `start_year`/`end_year`, one workbook each); default the latest posted.
+A whole-series table (`shares_4.x`, `databook_1-6`, `historical_*`, `business_1`) holds every year in one file:
+the latest edition is read and the years are rows or columns (filter them with `rows`, `section` or `columns`).
+`rows` keeps rows by label (an exact label, else the labels containing the text), `section` by section label,
+`columns` by published column number or header text; `layout: "wide"` gives one row per line; `sheet` picks a
+sheet of a multi-sheet workbook; `header_lines` overrides the header reading (rarely needed: see the notes).
+
+How a workbook is read (no settings per table): title and headnote lines; the header lines down to the row of
+column numbers (`1`, `(1)`, or `-1` shown as `(1)`); label-only lines become `SECTION` (a label running over two
+lines is joined); the row level comes from the cell indent (or leading spaces) and gives `LEVEL` and `PARENT`;
+footnote lines after the last data line go to the notes. A sheet printed as pages (1998 tables: columns 1-20 on
+page 1, 21-40 on page 2) is read block by block; side-by-side panels (older partnership and sole proprietorship
+tables) take each cell's label from the nearest label column to its left. A table without column numbers
+(Publication 16 Table 2.1 for 2014, some historical tables) is read with the header down to the first line with
+a label and a number, and says so in the notes, with `COL` empty.
+
+Output (long, the default): `TABLE, YEAR, YEAR_TYPE, SHEET, SECTION, LINE, LEVEL, PARENT, ROW_LABEL, COL, COLUMN,
+VALUE, FLAG, UNITS`. `COLUMN` joins the header lines with " | " ("All returns | Adjusted gross income less deficit
+| Amount"); `COL` is the published column number, stable within a year (not across years: check `COLUMN`).
+`VALUE` is the number as published (no thousands separators); `FLAG` holds the cell's markers: `*` estimate based
+on few sample returns (high sampling variability; in newer workbooks the `*` is only in the number format and is
+read from it), `**` data combined or suppressed, `d`/`[d]` deleted to avoid disclosure (included in totals), `[n]`
+a footnote (e.g. `[2]` less than 0.05 percent), `n.a.` not available, `--`/`-` zero or not applicable as the
+table's footnotes say. `UNITS` is the money unit of the headnote (usually thousands of dollars; gift tables whole
+dollars; historical tables millions or billions); count, percent and average columns are as their header says.
+
+## Exempt organizations (`eo_bmf`, `eo_extract`)
+- `eo_bmf`: `https://www.irs.gov/pub/irs-soi/eo_{st}.csv` (one per state, PR, XX = international; updated monthly,
+  1,975,975 organizations on 2026-10-13), 28 columns. Filters: `ntee` (prefix), `subsection` (`03` = 501(c)(3)),
+  `ein`, `name`, `columns`. EIN and ZIP stay text. ASSET_AMT, INCOME_AMT, REVENUE_AMT are whole dollars from the
+  latest return on file (TAX_PERIOD differs by organization). Codes: https://www.irs.gov/pub/foia/ig/tege/eo-info.pdf.
+- `eo_extract`: the SOI annual extract of Form 990 (`form: 990`), 990-EZ (`990ez`) or 990-PF (`990pf`) data,
+  `{yy}eoextract990.zip` etc. (2018-2024; `{yy}eofinextract...` 2012-2017), listed on
+  soi-tax-stats-annual-extract-of-tax-exempt-organization-financial-data. The 2024 Form 990 zip is 57 MB holding a
+  247 MB CSV of 246 columns; it is read as a stream keeping only `ein` or the organizations of `state` (their EINs
+  from the current EO BMF, so an organization that moved or lost exemption is missed). The 990-PF CSV drops EIN
+  leading zeros: they are restored. Field definitions: `{yy}eofinextractdoc.xlsx`. Years whose zip holds a
+  fixed-width `.dat` file (some of 2012-2017) are refused.
+
 ## Spec examples
+```json
+{"description": "Static revenue effect of one more point on the 37 percent rate, TY2023",
+ "requests": [{"name": "rate37", "endpoint": "table",
+               "params": {"table": "in_3.5", "year": 2023, "rows": ["Total"], "columns": ["37 percent"]}}]}
+```
+```json
+{"description": "Tax shares and average tax rates of the top 1 percent, 2001-2023",
+ "requests": [{"name": "top1", "endpoint": "table",
+               "params": {"table": "shares_4.1", "columns": ["Top 1 percent"],
+                          "section": ["Total income tax share", "Average tax rate", "Adjusted gross income share"]}}]}
+```
+```json
+{"description": "Corporate tax base by asset size and IRS collections by type of tax",
+ "requests": [{"name": "corp", "endpoint": "table", "params": {"table": "corp_2.1", "year": 2023,
+               "rows": ["Net income (less deficit)", "Income subject to tax", "Total income tax after credits"]}},
+              {"name": "coll", "endpoint": "table", "params": {"table": "databook_1-6", "rows": ["2021", "2022", "2023", "2024", "2025"]}}]}
+```
 ```json
 {"description": "Maryland counties, tax year 2022: returns and AGI by AGI class",
  "requests": [{"name": "md_county", "endpoint": "county_agi",
@@ -117,8 +206,26 @@ Manual route (`manual_bundle`): INSTRUCTIONS.md lists the direct link of each fi
 e.g. `22incyallagi.csv`); download it from the index page (ZIP: soi-tax-stats-individual-income-tax-statistics-zip-code-data-soi,
 county: soi-tax-stats-county-data, state: soi-tax-stats-historic-table-2, migration: soi-tax-stats-migration-data,
 all under https://www.irs.gov/statistics/), upload it unchanged, and `ingest` filters it like `fetch` does.
-Per-state Excel files, years before the CSV files, and the national .xls tables are manual and not read here.
+Per-state Excel files and years before the CSV files are manual and not read here.
+`table`: one GET of the table's index page per run, then one GET per workbook (20-300 KB). Manual route: the index
+page and the file pattern; upload the workbook under its published name (`23in11si.xls`), and `ingest` reads it
+like `fetch` (the year from the name). `eo_bmf`: one GET per state file (up to about 25 MB for California);
+`eo_extract`: one GET of the extract page, the state's EO BMF file, and the zip (10-57 MB, held in memory and
+read as a stream). Manual: upload the zip under its published name (and `eo_<state>.csv` with `state`).
+
+Traps for estimates from the published tables (see `docs/estimate_patterns.md`):
+- Estimates from samples: totals are reliable; cells marked `*` are not; Publication 16 Table 1 has its
+  coefficients of variation in `corp_1-CV`.
+- Tax year, filing year, fiscal year: Publication 1304 and Publication 16 are tax years; the Data Book is IRS
+  fiscal years (October-September) of collections; estate tables are filing years (returns filed in the year, of
+  decedents of earlier years). Do not mix them without saying so.
+- Lag: the latest tax year is 2-3 years back (TY2023 posted in 2025-2026).
+- Definitions change: AGI classes, the "total income tax" item, and table numbers change between years; compare
+  `COLUMN` text, not only `COL`, across years.
+- Business tables count returns, not firms; the corporate tables include S corporations, REITs and RICs unless the
+  table is "other than Forms 1120S, 1120-REIT and 1120-RIC" (`corp_2.3`, `corp_3.3`, `corp_5.3`).
 
 ## Citation and terms
-"Internal Revenue Service, Statistics of Income Division, <product, e.g. County Data, Tax Year 2022>,
-irs.gov/statistics, retrieved <date>." Public domain (U.S. government work); redistribution allowed.
+"Internal Revenue Service, Statistics of Income Division, <product, e.g. County Data, Tax Year 2022, or
+Publication 1304 Table 1.1, Tax Year 2023>, irs.gov/statistics, retrieved <date>." The EO BMF: "Internal Revenue
+Service, Exempt Organizations Business Master File Extract, <month year>". Public domain (U.S. government work); redistribution allowed.

@@ -25,6 +25,9 @@ Use `find_sources` with the question for a ranked suggestion.
 | Social Security and Medicare trust funds, national health spending projections | actuaries | treasury, cms, medicaid | Trustees Reports (intermediate assumptions) and CMS NHE; SSA tables by manual download. |
 | Medicaid and CHIP enrollment, spending, drug use | medicaid | cms, census | data.medicaid.gov; preliminary vs updated rows; recent CMS-64 expenditure reports are manual downloads. |
 | Income tax returns, AGI and migration by state, county, ZIP code | irs-soi | census, bea | SOI amounts in thousands; tax year vs filing year; small cells suppressed. |
+| Tax base and revenue estimates: income and tax by size of AGI, tax by rate, top 1 percent shares, corporate and pass-through income, estate tax | irs-soi | omb, treasury, bea | SOI published tables (`table`, packs/irs-soi/docs/estimate_patterns.md); estimates are static; tax years lag 2-3 years; `*` cells have high sampling variability. |
+| IRS collections and refunds by type of tax and by state | irs-soi | treasury, omb | IRS Data Book (fiscal years; state = filer's address); Treasury MTS for monthly federal receipts. |
+| Nonprofits: registry, Form 990 finances, private foundations | irs-soi | census | EO BMF (current registry by state), SOI Form 990 extracts by EIN or state, SOI exempt-organization tables. |
 | State and local government taxes, finances, pensions | census | pbgc, bea | Census QTAX (quarterly) and annual government finances; fiscal years differ by government. |
 | Imports, exports, tariffs and customs duty | census | usitc, treasury, world-bank | Census international trade by HS code with calculated duty; USITC HTS for statutory rates by line; Treasury MTS customs duties for receipts. |
 | Economic forecasts and forecast benchmarks | philfed | fred, usda-outlook | SPF and Greenbook (5-year lag) forecasts; USDA WASDE and baseline for agriculture. |
@@ -160,7 +163,7 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | hud | standard | required (HUD_USER_TOKEN) | housing | HUD Fair Market Rents and Income Limits API (HUD User) |
 | hud-ahar | standard | none | homelessness, housing | HUD Annual Homelessness Assessment Report (AHAR) data: Point-in-Time and Housing Inventory Counts |
 | ipums | deep | required (IPUMS_API_KEY) | labor, earnings, income, poverty, demographics, immigration, health insurance, health care spending, access to care, survey microdata | IPUMS microdata (USA/ACS, CPS and other collections) |
-| irs-soi | standard | none | taxes, income, migration, geography | IRS Statistics of Income: individual income tax data by ZIP code, county, state and migration (irs.gov) |
+| irs-soi | standard | none | taxes, income, migration, geography, budget, business, nonprofits, wealth | IRS Statistics of Income: income tax data by ZIP code, county, state and migration; national tax tables (Publication 1304, Publication 16, Data Book), business, estate, nonprofit and international statistics (irs.gov) |
 | medicaid | standard | none | health, health care, medicaid, federal spending, prescription drugs | Medicaid and CHIP open data (data.medicaid.gov) |
 | naep | standard | none | education, k-12, student achievement | NAEP, The Nation's Report Card (NAEP Data Service) |
 | nces | standard | none | education, higher education | National Center for Education Statistics: Digest of Education Statistics tables and IPEDS data files |

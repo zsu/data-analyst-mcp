@@ -107,8 +107,54 @@ function attrs(tag: string): Record<string, string> {
 
 const texts = (xml: string) => [...xml.matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)].map((m) => unxml(m[1])).join("");
 
-/** Sheets of an .xlsx as lists of row values, in workbook order. */
-export function xlsxSheets(src: Uint8Array, only?: Set<string>): Record<string, (string | null)[][]> {
+/**
+ * What a cell's style prints beside its value, for published tables that mark cells by format only: `fmt` = the
+ * literal text of the number format's section for the value's sign ("* " for `"* "#,##0`: an estimate with high
+ * sampling variability), `indent` = the alignment indent (a row's level in a stub column). Fill characters
+ * (`* ` unquoted, as in accounting formats) and `$ ( ) - % , .` are not literals that mark a cell.
+ */
+export type CellMark = { fmt?: string; indent?: number };
+export type Marks = Record<string, (CellMark | null)[][]>;
+
+/** The marking literal text of a number format code for a value (see CellMark), or "". */
+export function formatMark(code: string | undefined, value?: string | null): string {
+  if (!code || code === "General" || code === "@") return "";
+  const sections: string[] = [];
+  let cur = "";
+  for (let i = 0; i < code.length; i++) {
+    const ch = code[i];
+    if (ch === '"') {
+      const j = code.indexOf('"', i + 1);
+      cur += code.slice(i, j < 0 ? code.length : j + 1);
+      i = j < 0 ? code.length : j;
+    } else if (ch === "\\" || ch === "_" || ch === "*") {
+      cur += code.slice(i, i + 2);
+      i++;
+    } else if (ch === ";") {
+      sections.push(cur);
+      cur = "";
+    } else cur += ch;
+  }
+  sections.push(cur);
+  const n = Number(value);
+  const sec = value === undefined || value === null || value === "" || !Number.isFinite(n) ? sections[sections.length > 3 ? 3 : 0]
+    : n < 0 && sections.length > 1 ? sections[1] : n === 0 && sections.length > 2 ? sections[2] : sections[0];
+  let lit = "";
+  for (let i = 0; i < sec.length; i++) {
+    const ch = sec[i];
+    if (ch === '"') {
+      const j = sec.indexOf('"', i + 1);
+      lit += sec.slice(i + 1, j < 0 ? sec.length : j);
+      i = j < 0 ? sec.length : j;
+    } else if (ch === "\\") lit += sec[++i] ?? "";
+    else if (ch === "_" || ch === "*") i++; // padding / fill character
+    else if (ch === "[") i = Math.max(i, sec.indexOf("]", i)); // [Red], [<0], [$-409]
+  }
+  return lit.replace(/[\s$()\-%,.]/g, "");
+}
+
+/** Sheets of an .xlsx as lists of row values, in workbook order. With `marks`, also each cell's CellMark. */
+export function xlsxSheets(src: Uint8Array, only?: Set<string>, marks?: Marks): Record<string, (string | null)[][]> {
   let z: Record<string, Uint8Array>;
   try {
     z = unzipSync(src);
@@ -123,6 +169,22 @@ export function xlsxSheets(src: Uint8Array, only?: Set<string>): Record<string, 
     const a = attrs(m[0]);
     target[a.Id] = a.Target;
   }
+  // cell styles (only when marks are asked): cellXfs index -> [number format code, indent]
+  const xfs: [string | undefined, number][] = [];
+  if (marks) {
+    const styles = read("xl/styles.xml");
+    const fmts = new Map<string, string>();
+    for (const m of styles.matchAll(/<numFmt\b[^>]*>/g)) {
+      const a = attrs(m[0]);
+      fmts.set(a.numFmtId, a.formatCode);
+    }
+    const cellXfs = /<cellXfs\b[^>]*>([\s\S]*?)<\/cellXfs>/.exec(styles)?.[1] || "";
+    for (const m of cellXfs.matchAll(/<xf\b([^>]*?)(?:\/>|>([\s\S]*?)<\/xf>)/g)) {
+      const a = attrs(m[1]);
+      const al = /<alignment\b[^>]*>/.exec(m[2] || "");
+      xfs.push([fmts.get(a.numFmtId), al ? Number(attrs(al[0]).indent || 0) : 0]);
+    }
+  }
   const out: Record<string, (string | null)[][]> = {};
   const order: string[] = [];
   for (const m of read("xl/workbook.xml").matchAll(/<sheet\b[^>]*>/g)) {
@@ -132,8 +194,10 @@ export function xlsxSheets(src: Uint8Array, only?: Set<string>): Record<string, 
     let tgt = (target[a["r:id"]] || "").replace(/^\/+/, "");
     if (!tgt.startsWith("xl/")) tgt = "xl/" + tgt;
     const rows: (string | null)[][] = [];
+    const markRows: (CellMark | null)[][] = [];
     for (const rm of read(tgt).matchAll(/<row\b[^>]*?(?:\/>|>([\s\S]*?)<\/row>)/g)) {
       const vals = new Map<number, string | null>();
+      const mk = new Map<number, CellMark>();
       for (const cm of (rm[1] || "").matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
         const ca = attrs(cm[1]);
         let col = 0;
@@ -145,11 +209,18 @@ export function xlsxSheets(src: Uint8Array, only?: Set<string>): Record<string, 
         else if (ca.t === "inlineStr") val = texts(inner);
         else val = v ? unxml(v[1]) : null;
         vals.set(col - 1, val);
+        if (marks && ca.s !== undefined && xfs[Number(ca.s)]) {
+          const [code, indent] = xfs[Number(ca.s)];
+          const fmt = val === null || ca.t === "s" || ca.t === "inlineStr" || ca.t === "str" ? "" : formatMark(code, val);
+          if (fmt || indent) mk.set(col - 1, { ...(fmt ? { fmt } : {}), ...(indent ? { indent } : {}) });
+        }
       }
       const n = vals.size ? Math.max(...vals.keys()) + 1 : 0;
       rows.push(Array.from({ length: n }, (_, i) => vals.get(i) ?? null));
+      if (marks) markRows.push(Array.from({ length: n }, (_, i) => mk.get(i) ?? null));
     }
     out[a.name] = rows;
+    if (marks) marks[a.name] = markRows;
   }
   return inOrder(out, order);
 }
@@ -309,10 +380,10 @@ export function sheetRecords(ep: any, src: Uint8Array): Row[] {
  * them: every row from the first to the last used one, padded to the sheet's width with null; whole-number
  * floats as integers ("2024"), other floats as Python writes them, text as is, booleans "1"/"0".
  */
-export function xlsSheets(src: Uint8Array): Record<string, (string | null)[][]> {
+export function xlsSheets(src: Uint8Array, marks?: Marks): Record<string, (string | null)[][]> {
   let wb: XLSX.WorkBook;
   try {
-    wb = XLSX.read(src, { type: "buffer", cellDates: false, cellText: false, cellNF: false, cellHTML: false });
+    wb = XLSX.read(src, { type: "buffer", cellDates: false, cellText: false, cellNF: !!marks, cellHTML: false });
   } catch {
     throw new DataError("expected an .xls workbook, got something else (an HTML page?)", "api");
   }
@@ -320,6 +391,7 @@ export function xlsSheets(src: Uint8Array): Record<string, (string | null)[][]> 
   for (const name of wb.SheetNames) {
     const sh = wb.Sheets[name];
     const rows: (string | null)[][] = [];
+    const markRows: (CellMark | null)[][] = [];
     // the extent of the cells that hold a value (xlrd's nrows/ncols), not the declared dimensions, which
     // also count blank formatted cells
     let maxR = -1, maxC = -1;
@@ -334,6 +406,7 @@ export function xlsSheets(src: Uint8Array): Record<string, (string | null)[][]> 
     if (maxR >= 0) {
       for (let r = 0; r <= maxR; r++) {
         const vals: (string | null)[] = [];
+        const mk: (CellMark | null)[] = [];
         for (let c = 0; c <= maxC; c++) {
           const cell = sh[XLSX.utils.encode_cell({ r, c })];
           const v = cell?.v;
@@ -341,11 +414,17 @@ export function xlsSheets(src: Uint8Array): Record<string, (string | null)[][]> 
           else if (cell!.t === "n") vals.push(Number.isInteger(v) ? String(v) : pyFloatRepr(v as number));
           else if (cell!.t === "b") vals.push(v ? "1" : "0");
           else vals.push(String(v));
+          if (marks) {
+            const fmt = cell?.t === "n" ? formatMark(cell.z as string | undefined, vals[vals.length - 1]) : "";
+            mk.push(fmt ? { fmt } : null);
+          }
         }
         rows.push(vals);
+        if (marks) markRows.push(mk);
       }
     }
     out[name] = rows;
+    if (marks) marks[name] = markRows;
   }
   return inOrder(out, wb.SheetNames);
 }

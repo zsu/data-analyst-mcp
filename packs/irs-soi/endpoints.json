@@ -83,6 +83,78 @@
       "paging": {"type": "none"},
       "max_rows": 200000,
       "flatten": false
+    },
+    "table": {
+      "path": "/{file}",
+      "method": "GET",
+      "description": "One SOI published table (an .xls/.xlsx workbook on irs.gov) as tidy rows: national individual tables by size of AGI and by percentile (Publication 1304, tax shares of the top 1%), corporations (Publication 16), partnerships, sole proprietorships, integrated business data, the IRS Data Book (collections, refunds and returns by type of tax and state), historical tables, estate tax, gift tax, personal wealth, exempt organizations and private foundations, and international (CFC, foreign tax credit, country-by-country). `table` names a catalog entry (table_list lists all 125, e.g. in_1.1, in_3.5, shares_4.1, corp_1, corp_2.1, partnership_1, soleprop_1, databook_1-6, estate_1, eo_1). The adapter finds the year's file on the table's index page, downloads it and reads the layout: header lines, the column-number row, sections, row levels, footnote markers. Long layout (default): one row per cell, TABLE, YEAR, YEAR_TYPE, SHEET, SECTION, LINE, LEVEL, PARENT, ROW_LABEL, COL (the published column number), COLUMN (the header lines joined with ' | '), VALUE (as published), FLAG (marker: * high sampling variability, ** or d or [d] suppressed/combined, [n] footnote, n.a.), UNITS (the headnote's money unit, usually thousands of dollars).",
+      "params": {
+        "table": {"in": "spec", "required": true, "desc": "catalog id (see table_list), or a product word and table number such as 'corporation 2.1' or 'data book 1-6'"},
+        "year": {"in": "spec", "desc": "tax year (fiscal year for the Data Book, filing year for estate and gift tables); default the latest posted"},
+        "tax_year": {"in": "spec", "desc": "same as year"},
+        "fiscal_year": {"in": "spec", "desc": "same as year (Data Book)"},
+        "filing_year": {"in": "spec", "desc": "same as year (estate and gift)"},
+        "start_year": {"in": "spec", "desc": "first year of a range (one workbook each)"},
+        "end_year": {"in": "spec", "desc": "last year of a range"},
+        "rows": {"in": "spec", "desc": "keep rows whose label equals one of these texts (or, for an item equal to no label, contains it), e.g. ['$1,000,000 or more']"},
+        "columns": {"in": "spec", "desc": "keep columns by published column number (e.g. [1, 3]) or header text (e.g. ['Taxable income'])"},
+        "section": {"in": "spec", "desc": "keep rows under a section label containing this text (e.g. 'Accumulated from largest', 'Average tax rate')"},
+        "layout": {"in": "spec", "enum": ["long", "wide"], "desc": "long (default: one row per cell) or wide (one row per line, a column per table column)"},
+        "sheet": {"in": "spec", "desc": "sheet name or 1-based number for multi-sheet workbooks; default every sheet with a table"},
+        "header_lines": {"in": "spec", "desc": "1-based header line numbers, only for a workbook whose header the reader gets wrong (see the notes)"}
+      },
+      "records": "$adapter",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    },
+    "table_list": {
+      "path": "/",
+      "method": "GET",
+      "description": "The catalog of SOI published tables the table endpoint reads (packs/irs-soi/tables.json): TABLE id, PRODUCT, NUMBER, TITLE, YEAR_TYPE, FIRST_YEAR, LAST_YEAR_VERIFIED, WHOLE_SERIES (one file holds every year), INDEX (the page listing the files). live: true also reads each index page and lists YEARS_POSTED now.",
+      "params": {
+        "product": {"in": "spec", "desc": "keep products containing this text: individual, percentile, corporations, partnerships, sole, integrated, Data Book, historical, estate, gift, wealth, exempt, international"},
+        "query": {"in": "spec", "desc": "words to find in the table titles, e.g. 'tax shares percentile' or 'excise'"},
+        "live": {"in": "spec", "desc": "true: read the index pages and list the years posted now (one request per page)"}
+      },
+      "records": "$adapter",
+      "paging": {"type": "none"},
+      "max_rows": 1000,
+      "flatten": false
+    },
+    "eo_bmf": {
+      "path": "/eo_{state}.csv",
+      "method": "GET",
+      "description": "Exempt Organizations Business Master File extract: every organization recognized as tax-exempt, one CSV per state (updated monthly; 2.0 million organizations nationally), 28 columns: EIN, NAME, address, SUBSECTION (501(c) type), FOUNDATION, RULING, DEDUCTIBILITY, ACTIVITY, NTEE_CD, ASSET_CD, INCOME_CD, ASSET_AMT, INCOME_AMT, REVENUE_AMT (whole dollars, latest return on file), TAX_PERIOD and more. Codes in https://www.irs.gov/pub/foia/ig/tege/eo-info.pdf.",
+      "params": {
+        "state": {"in": "spec", "required": true, "desc": "state(s): USPS code or name, PR, or XX (international); one file each, 10 at most"},
+        "ntee": {"in": "spec", "desc": "NTEE code prefix(es), e.g. 'E' (health) or 'B82'"},
+        "subsection": {"in": "spec", "desc": "501(c) subsection(s), e.g. '03' for 501(c)(3)"},
+        "ein": {"in": "spec", "desc": "EIN(s), 9 digits (leading zeros kept)"},
+        "name": {"in": "spec", "desc": "text to find in NAME or SORT_NAME"},
+        "columns": {"in": "spec", "desc": "columns to keep beside EIN, NAME and STATE"}
+      },
+      "records": "$adapter",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
+    },
+    "eo_extract": {
+      "path": "/{yy}eoextract{form}.zip",
+      "method": "GET",
+      "description": "SOI annual extract of Form 990, 990-EZ or 990-PF financial data (every return filed in the year; 2012-2024): one zip per form and year (57 MB for the 2024 Form 990 file, a 247 MB CSV of 246 columns), read as a stream keeping only the asked EINs, or the organizations of the asked states (EINs from the current EO BMF). Amounts in whole dollars; field names and definitions in the year's {yy}eofinextractdoc.xlsx. Some 2012-2017 files are fixed-width .dat files and are refused.",
+      "params": {
+        "year": {"in": "spec", "required": false, "desc": "filing year of the extract, 2012-2024"},
+        "filing_year": {"in": "spec", "desc": "same as year"},
+        "form": {"in": "spec", "enum": ["990", "990ez", "990pf", "990EZ", "990PF", "990-EZ", "990-PF"], "desc": "990 (default), 990ez or 990pf"},
+        "ein": {"in": "spec", "desc": "EIN(s) to keep"},
+        "state": {"in": "spec", "desc": "keep the organizations of these states (EO BMF)"},
+        "columns": {"in": "spec", "desc": "columns to keep beside EIN (names as in the extract, e.g. totrevenue, totfuncexpns)"}
+      },
+      "records": "$adapter",
+      "paging": {"type": "none"},
+      "max_rows": 200000,
+      "flatten": false
     }
   },
   "catalog": {
@@ -109,6 +181,30 @@
       "name": "SOI Migration Data (state-to-state and county-to-county)",
       "endpoint": "migration",
       "description": "taxpayer migration inflow outflow between states and counties; households, people and income moving; net migration"
+    },
+    "tables": {
+      "id": "table",
+      "name": "SOI published tables (Publication 1304, Publication 16, Data Book, ...)",
+      "endpoint": "table",
+      "description": "national tax statistics tables: income and tax by AGI size, tax shares by percentile, corporate tax base, partnerships, sole proprietorships, IRS collections by type of tax and state, estate tax, nonprofits; budget and revenue estimates"
+    },
+    "table_list": {
+      "id": "table_list",
+      "name": "Catalog of SOI published tables",
+      "endpoint": "table_list",
+      "description": "list of SOI tables, titles and years"
+    },
+    "eo_bmf": {
+      "id": "eo_bmf",
+      "name": "Exempt Organizations Business Master File",
+      "endpoint": "eo_bmf",
+      "description": "nonprofit organizations registry by state: EIN, name, 501(c) type, NTEE, assets, revenue"
+    },
+    "eo_extract": {
+      "id": "eo_extract",
+      "name": "SOI Form 990 / 990-EZ / 990-PF annual extracts",
+      "endpoint": "eo_extract",
+      "description": "nonprofit financial data from Form 990 returns: revenue, expenses, assets by organization"
     }
   }
 }

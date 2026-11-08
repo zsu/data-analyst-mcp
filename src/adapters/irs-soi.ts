@@ -31,6 +31,11 @@ import type { Adapter, Pack, Row, Spec, SpecRequest, Tables } from "../core/pack
 import { readJson } from "../core/policy.js";
 import { pyStr } from "../core/py.js";
 import { pyRepr, state, StateError } from "./_dol_states.js";
+import { checkTable, manualTableItems, Pages, fetchTable, tableList, uploadedTable } from "./_irs-soi_catalog.js";
+import { BMF_PAGE, checkEo, EXTRACT_FILES, EXTRACT_PAGE, fetchBmf, fetchExtract, type Get } from "./_irs-soi_eo.js";
+
+/** Endpoints read by the published-table and exempt-organization modules (not the geographic CSV files). */
+const OTHER = new Set(["table", "table_list", "eo_bmf", "eo_extract"]);
 
 const BASE = "https://www.irs.gov/pub/irs-soi";
 const INDEX: Record<string, string> = {
@@ -149,6 +154,10 @@ function checkSpec(spec: Spec, _pack: Pack): string[] {
   const thisYear = new Date().getFullYear();
   for (const r of spec.requests || []) {
     const name = pyRepr(r.name ?? null), endpoint = r.endpoint || "";
+    if (OTHER.has(endpoint)) {
+      probs.push(...(endpoint.startsWith("eo_") ? checkEo(r) : checkTable(r)));
+      continue;
+    }
     if (!(endpoint in EPS())) continue; // generic resolve() names the unknown endpoint
     const p: any = r.params || {};
     const ep = EPS()[endpoint];
@@ -434,6 +443,8 @@ async function fetch(spec: Spec, pack: Pack, _route: string): Promise<[Tables, s
   const notes: string[] = [];
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "data-analyst-irs-soi-")); // outside the package; removed below
   const got = new Map<string, string>(); // file name -> local path (one download per run)
+  const pages = new Pages(client); // index pages, read once per run
+  const get: Get = async (url) => (await client.get(url)).body;
   try {
     for (const r of spec.requests) {
       const [ep, , probs] = gr.resolve(pack, r);
@@ -441,6 +452,17 @@ async function fetch(spec: Spec, pack: Pack, _route: string): Promise<[Tables, s
       const endpoint = r.endpoint!;
       const p: any = r.params || {};
       const limit = Number(r.max_rows || ep.max_rows || pack.policy.limits.max_rows || 200000);
+      if (OTHER.has(endpoint)) {
+        const rows = endpoint === "table" ? await fetchTable(r, pages, limit, notes)
+          : endpoint === "table_list" ? await tableList(r, pages)
+            : endpoint === "eo_bmf" ? await fetchBmf(r, get, limit, notes) : await fetchExtract(r, get, limit, notes);
+        if (!rows.length && !r.allow_empty) {
+          throw new DataError(`request ${pyRepr(r.name)} matched no rows: check the filters (see source.md); add ` +
+            '"allow_empty": true if none is a correct answer', "bad_request");
+        }
+        tables[r.name] = rows;
+        continue;
+      }
       let rows: Row[] = [];
       const missing: string[] = [];
       for (const y of years(r)) {
@@ -489,6 +511,29 @@ function manualItems(spec: Spec, _pack: Pack): any[] {
   const items: any[] = [];
   for (const r of spec.requests || []) {
     const endpoint = r.endpoint || "";
+    if (endpoint === "table") {
+      items.push(...manualTableItems(r));
+      continue;
+    }
+    if (endpoint === "eo_bmf") {
+      try {
+        for (const s of list(r.params?.state)) {
+          const k = pyStr(s).trim().toUpperCase();
+          const st = (k === "PR" || k === "XX" ? k : state(s, "usps")).toLowerCase();
+          items.push({ name: `${r.name}#${st}`, request: r.name, url: `${BASE}/eo_${st}.csv`, filename: `eo_${st}.csv`,
+            needs_key: false, method: "GET", body: null, note: `the EO BMF file of ${st.toUpperCase()}, uploaded unchanged; listed on ${BMF_PAGE}` });
+        }
+      } catch (e) {
+        if (!(e instanceof StateError)) throw e;
+      }
+      continue;
+    }
+    if (endpoint === "eo_extract") {
+      items.push({ name: `${r.name}#1`, request: r.name, url: EXTRACT_PAGE, filename: `${r.name}.zip`, needs_key: false, method: "GET",
+        body: null, note: "download the asked year's extract zip for the asked form (e.g. 23eoextract990.zip) and upload it under its " +
+          "published name; with state, also upload the EO BMF file(s) eo_<state>.csv" });
+      continue;
+    }
     if (!(endpoint in EPS())) continue;
     const p: any = r.params || {};
     let ys: number[];
@@ -511,6 +556,25 @@ function manualItems(spec: Spec, _pack: Pack): any[] {
 async function parseUpload(_pack: Pack | null, req: SpecRequest, files: string[]): Promise<Row[]> {
   const endpoint = req.endpoint || "";
   const p: any = req.params || {};
+  if (OTHER.has(endpoint)) {
+    const notes: string[] = [];
+    const max = Number(req.max_rows || 200000);
+    if (endpoint === "table") return uploadedTable(req, files, max, notes);
+    if (endpoint === "table_list") return tableList(req, null);
+    // the uploaded file of the same name stands for each URL; the extract page is replaced by the uploaded zip's name
+    const byName = new Map(files.map((f) => [path.basename(f).toLowerCase(), f]));
+    const get: Get = async (url) => {
+      if (url === EXTRACT_PAGE) {
+        const zips = files.map((f) => path.basename(f)).filter((n) => Object.values(EXTRACT_FILES).some((re) => re.test(n)));
+        return Buffer.from(zips.map((n) => `<a href="/pub/irs-soi/${n}">${n}</a>`).join("\n"));
+      }
+      const name = decodeURIComponent(url.split("/").pop() || "").toLowerCase();
+      const f = byName.get(name);
+      if (!f) throw new DataError(`upload ${name} (the published file, unchanged) for request ${pyRepr(req.name)}`, "bad_request");
+      return fs.readFileSync(f);
+    };
+    return endpoint === "eo_bmf" ? fetchBmf(req, get, max, notes) : fetchExtract(req, get, max, notes);
+  }
   const ys = years(req);
   const byName = new Map(ys.map((y) => [file(endpoint, y, p).toLowerCase(), y] as [string, number]));
   let rows: Row[] = [];
