@@ -224,9 +224,12 @@ export function createServer(session = new Session()): McpServer {
 
   server.registerTool("check_key", {
     title: "Check key",
-    description: "Whether a source's API key is set up (never shows the key) and, if not, what the user does.",
-    inputSchema: { source: z.string() },
-    annotations: READ,
+    description: "Whether a source's API key is set up (never shows the key) and, if not, what the user does. When a " +
+      "key is set up and the source has a live check, it is tested with one small call to the agency's own site: " +
+      "key.live.outcome is accepted, rejected (code key_rejected, with the fix), unreachable (the host did not answer; " +
+      "the key was not tested) or unclear. Sources without a live check say tested: false. live: false skips the call.",
+    inputSchema: { source: z.string(), live: z.boolean().optional().describe("false: only say whether a key is set up (no call)") },
+    annotations: { readOnlyHint: true, openWorldHint: true },
   }, wrap(s, T.checkKey));
 
   server.registerTool("fetch", {

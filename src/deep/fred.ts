@@ -349,6 +349,7 @@ const pack: DeepPack = {
   fetch,
   ingest: ingestFiles,
   manualItems: (raw: any) => coreManualItems(spec(raw)),
+  ping: () => new FredClient(null, 30).ping(),
 };
 
 export default pack;

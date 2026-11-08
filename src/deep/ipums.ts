@@ -720,5 +720,6 @@ const pack: DeepPack = {
   checkSpec: (spec) => specProblems(spec),
   fetch,
   ingest,
+  ping: () => new IpumsClient(null, 30).ping(),
 };
 export default pack;

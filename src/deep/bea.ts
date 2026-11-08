@@ -236,6 +236,7 @@ const pack: DeepPack = {
   fetch,
   ingest,
   manualItems: (spec) => manualItems(spec),
+  ping: () => new BeaClient({ timeout: 30, useCache: false }).ping(),
 };
 
 export default pack;

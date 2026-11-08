@@ -9,13 +9,13 @@ import { trail, withRun } from "./core/context.js";
 import { GUIDE_DIR, mode } from "./core/env.js";
 import * as gr from "./core/generic-rest.js";
 import * as guard from "./core/guard.js";
-import { DataError } from "./core/http.js";
+import { DataError, type ErrorKind } from "./core/http.js";
 import { findAuthKey } from "./core/keys.js";
 import * as manual from "./core/manual.js";
 import { pairingsFor } from "./core/routing.js";
 import * as packages from "./core/package.js";
 import * as packs from "./core/packs.js";
-import type { Pack, Spec } from "./core/packs.js";
+import type { Pack, PingResult, Spec } from "./core/packs.js";
 import * as pol from "./core/policy.js";
 import { citation, fail, fromDataError, ToolError } from "./envelope.js";
 import { Session, type Question } from "./session.js";
@@ -172,12 +172,64 @@ export function recordDecisions(s: Session, a: { questions?: Question[]; disclos
 }
 
 // ---------------------------------------------------------------------- check_key
-export async function checkKey(_s: Session, a: { source: string }) {
+/** A ping kind (core, or a deep pack's own) as the core kind fromDataError maps to a code and fix. */
+const PING_KINDS: Record<string, ErrorKind> = { budget: "rate_limit", unavailable: "http", request: "bad_request",
+  other: "http" };
+const CORE_KINDS = new Set<string>(["key_missing", "auth", "network", "not_found", "rate", "rate_limit", "bad_request",
+  "api", "http", "fixture_missing", "blocked"]);
+
+/**
+ * Test the key live with the pack's ping (one small call, uncached, inside its own request trail). The client is the
+ * pack's own, so the key goes only to its site (Client.keyAllowed). Outcomes: accepted, rejected (code key_rejected),
+ * unreachable (the host did not answer: the key was not tested) or unclear (an answer that says neither).
+ */
+async function liveKeyTest(p: Pack): Promise<Record<string, unknown>> {
+  const ping = p.deep?.ping ? () => p.deep!.ping!(p)
+    : p.adapter?.ping ? () => p.adapter!.ping!(gr.clientFor(p, undefined, { cache: null, retries: 1, timeout: 20 }))
+    : null;
+  if (!ping) {
+    return { tested: false, reason: "this source has no live key check: the key is set up but was not tested; the " +
+      "first fetch tests it" };
+  }
+  let r: PingResult;
+  try {
+    r = await withRun(ping);
+  } catch (e) {
+    if (!(e instanceof DataError)) throw e;
+    r = { kind: e.kind, detail: e.message };
+  }
+  const kind = r.kind || "ok";
+  const detail = r.detail || "";
+  if (kind === "ok" && r.auth_ok !== false && r.reachable !== false) {
+    return { tested: true, outcome: "accepted", detail: detail || "the agency answered a request made with the key" };
+  }
+  if (kind === "auth" || kind === "key_missing") {
+    const f = fromDataError(new DataError(detail || `${p.id}: the key was rejected`, "auth"), p.policy);
+    return { tested: true, outcome: "rejected", detail: f.message, code: f.code, fix: f.fix };
+  }
+  if (kind === "network") {
+    return { tested: true, outcome: "unreachable", detail, code: "agency_unavailable",
+      fix: "The agency's host did not answer, so the key was not tested (it may be fine). Tell the user the check " +
+        "could not reach the agency; check the network connection, proxy or firewall, then call check_key again." };
+  }
+  const f = fromDataError(new DataError(detail || `${p.id}: ${kind}`, CORE_KINDS.has(kind) ? kind as ErrorKind :
+    PING_KINDS[kind] ?? "http"), p.policy);
+  return { tested: true, outcome: "unclear", detail: f.message, code: f.code,
+    fix: "The agency answered, but not in a way that says whether the key is good (" + kind + "). A fetch may still " +
+      "work; if it fails, follow its fix. " + f.fix };
+}
+
+export async function checkKey(_s: Session, a: { source: string; live?: boolean }) {
   const p = await pack(a.source);
   const k = keyStatus(p);
   const ready = k.required !== "required" || k.configured;
-  return { status: "ok", source: p.id, key: k, can_fetch: ready && !p.missing.length,
-    ...(ready ? {} : { fix: fromDataError(new DataError(`${p.id}: ${p.policy.auth.env} is not set up`, "key_missing"), p.policy).fix }) };
+  const live = !k.configured ? { tested: false, reason: "no key is set up" }
+    : a.live === false ? { tested: false, reason: "not asked (live: false)" }
+    : await liveKeyTest(p);
+  const rejected = live.outcome === "rejected";
+  return { status: "ok", source: p.id, key: { ...k, live }, can_fetch: ready && !rejected && !p.missing.length,
+    ...(rejected ? { fix: live.fix }
+      : ready ? {} : { fix: fromDataError(new DataError(`${p.id}: ${p.policy.auth.env} is not set up`, "key_missing"), p.policy).fix }) };
 }
 
 // ---------------------------------------------------------------------- the gate

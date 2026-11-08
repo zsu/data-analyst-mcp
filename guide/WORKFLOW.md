@@ -13,7 +13,7 @@ fetched file. **Accuracy comes before everything else.**
 | `record_decisions(...)` | the method record in `decisions.json`: how each critical question was settled, the literature searched, references, assumptions, data needs |
 | `fetch(id, spec)` | download into the workspace; returns rows, columns, a preview, the files, the citation and notes |
 | `manual_bundle` / `ingest` | when the server cannot get the data: a one-command download for the user's own computer, then package what they downloaded |
-| `check_key(id)` | whether a key is set up (never shows it) |
+| `check_key(id)` | whether a key is set up (never shows it); tests it live where the source allows (`key.live.outcome`) |
 | `compute(inputs, steps, save_as)` | every table the answer draws numbers from, as `exhibits/<name>.csv`, with its steps recorded so `rerun` can replay it |
 | `facts(add, derived)` | register every number the answer cites; returns the exact text to quote |
 | `write_table(path, ...)` | `exhibits/benchmark.csv`, `exhibits/sensitivity.csv`, `published/<name>.csv` (figures read from an agency page) |

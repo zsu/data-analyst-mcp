@@ -21,6 +21,12 @@ export type SpecRequest = { name: string; endpoint?: string; dataset?: string; p
   max_rows?: number; allow_empty?: boolean; for_each?: any; [k: string]: any };
 export type Spec = { description?: string; requests: SpecRequest[]; [k: string]: any };
 
+/**
+ * What a key check (an adapter's or deep pack's ping) found. kind "" or "ok": the key was accepted; "auth" or
+ * "key_missing": rejected; "network": the host did not answer; any other kind: the answer said neither.
+ */
+export type PingResult = { auth_ok?: boolean | null; reachable?: boolean; kind: string; detail: string };
+
 /** Hooks a standard pack's adapter may define (the Python adapter.py hook names, in camelCase). */
 export type Adapter = {
   fetch?: (spec: Spec, pack: Pack, route: string) => Promise<[Tables, string[]]>;
@@ -34,7 +40,8 @@ export type Adapter = {
   manualItemsAsync?: (spec: Spec, pack: Pack) => Promise<any[]>;
   parseUpload?: (pack: Pack, req: SpecRequest, files: string[]) => Row[] | Promise<Row[]>;
   search?: (query: string, pack: Pack) => any[] | Promise<any[]>;
-  ping?: (client: Client) => Promise<{ auth_ok: boolean; kind: string; detail: string }>;
+  /** A live key check (check_key): one small call with the key. */
+  ping?: (client: Client) => Promise<PingResult>;
   /** Extra one-line request summaries for source_brief (beside endpoints.json's). */
   describe?: (pack: Pack) => { name: string; summary: string }[];
   keyOnlyNeeds?: (spec: Spec) => string[];
@@ -68,6 +75,8 @@ export type DeepPack = {
   ingest?: (ctx: DeepContext & { files: string[] }) => Promise<DeepResult>;
   manualItems?: (spec: any, pack: Pack) => any[];
   keylessFiles?: (spec: any, pack: Pack) => any[];
+  /** A live key check (check_key), run only when a key is set up. */
+  ping?: (pack: Pack) => Promise<PingResult>;
 };
 
 export type Pack = {

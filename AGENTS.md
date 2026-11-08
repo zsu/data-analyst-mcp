@@ -65,6 +65,8 @@ owns its pack data, code and recorded fixtures.
     takes `{path, columns}` inputs (only those columns are decoded; a cap, `PARQUET_MAX_CELLS`, refuses more); its
     `replicate_se` step (`src/analysis/replicate.ts`) gives replicate-weight SEs and MOEs (sdr, fay, jk1, brr,
     custom), from microdata weights or from published replicate estimates.
+  - `check_key` tests a set-up key live through the pack's `ping` (`Adapter.ping`, `DeepPack.ping`: census, eia,
+    epa-aqs, noaa, usgs, bea, fred, ipums): accepted, rejected, unreachable or unclear. Tests: test/check-key.test.ts.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**

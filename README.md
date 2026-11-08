@@ -128,7 +128,8 @@ sources use it. `setup epa-aqs` also asks for `AQS_EMAIL`. Or put the variables 
 ### 3. Check it
 
 Ask your assistant: *"Is my api.data.gov key set up?"* The `check_key` tool reports whether the key was found and where,
-never its value. To list only the sources you can use, start the server with `--hide-unconfigured` (see
+never its value. For census, eia, epa-aqs, noaa, usgs, bea, fred and ipums it also tests the key with one small call
+to the agency's own site and says whether it was accepted, rejected or the site could not be reached. To list only the sources you can use, start the server with `--hide-unconfigured` (see
 [Options](#options)).
 
 ### 4. Try it
@@ -160,7 +161,7 @@ To host the server for claude.ai or a team, see [docs/hosting.md](docs/hosting.m
 | `audit_answer`, `rerun` | the release gate: every number in the answer is a registered fact, the method record is complete, and the analysis reproduces |
 | `build_report`, `style_check`, `audit_report` | an HTML report and replication ZIP, only when asked |
 | `handoff` | the per-source data hand-off |
-| `check_key` | whether a key is set up (never shows it) |
+| `check_key` | whether a key is set up (never shows it), and tested live where the source allows |
 | `read_file` | a small text file from the workspace |
 
 **Asking before fetching is enforced, not just suggested.** `fetch` returns `gate_blocked` until, for that
