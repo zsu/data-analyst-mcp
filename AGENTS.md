@@ -70,7 +70,7 @@ owns its pack data, code and recorded fixtures.
       epa-aqs, noaa, usgs, bea, fred, ipums): accepted, rejected, unreachable or unclear. Tests: test/check-key.test.ts.
     - fred falls back to the keyless graph downloads when the key is rejected or the API is down.
     - the `guide` topic `report_schema` (`guide/references/report_schema.md`): every report.json key build_report reads.
-  - Since 0.5:
+  - 0.6 adds:
     - irs-soi reads the SOI published tables (`table`, `table_list`): 125 tables in `packs/irs-soi/tables.json`
       (Publication 1304 and tax shares by percentile, Publication 16, partnerships, sole proprietorships, the IRS
       Data Book, historical tables, estate, gift, wealth, exempt organizations, international). The year's file is
