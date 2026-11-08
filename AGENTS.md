@@ -61,12 +61,15 @@ owns its pack data, code and recorded fixtures.
     `knownKeys`); the path guard `src/core/guard.ts`; scrubbing of written files and the cache; same-site keys
     (`Client.keyAllowed`); hosted pages with tokens in the URL fragment, security headers, HKDF keys from a 32+
     character `DATA_ANALYST_SECRET` (keys stored by 0.3 still open). Tests: test/secrets.test.ts.
-  - `compute` reads `data/<id>/*.parquet` (the reader is `src/core/parquet.ts`, typed as the same CSV would be) and
-    takes `{path, columns}` inputs (only those columns are decoded; a cap, `PARQUET_MAX_CELLS`, refuses more); its
-    `replicate_se` step (`src/analysis/replicate.ts`) gives replicate-weight SEs and MOEs (sdr, fay, jk1, brr,
-    custom), from microdata weights or from published replicate estimates.
-  - `check_key` tests a set-up key live through the pack's `ping` (`Adapter.ping`, `DeepPack.ping`: census, eia,
-    epa-aqs, noaa, usgs, bea, fred, ipums): accepted, rejected, unreachable or unclear. Tests: test/check-key.test.ts.
+  - 0.5 adds:
+    - `compute` reads `data/<id>/*.parquet` (the reader is `src/core/parquet.ts`, typed as the same CSV would be)
+      and takes `{path, columns}` inputs (only those columns are decoded; a cap, `PARQUET_MAX_CELLS`, refuses
+      more); its `replicate_se` step (`src/analysis/replicate.ts`) gives replicate-weight SEs and MOEs (sdr, fay,
+      jk1, brr, custom), from microdata weights or from published replicate estimates.
+    - `check_key` tests a set-up key live through the pack's `ping` (`Adapter.ping`, `DeepPack.ping`: census, eia,
+      epa-aqs, noaa, usgs, bea, fred, ipums): accepted, rejected, unreachable or unclear. Tests: test/check-key.test.ts.
+    - fred falls back to the keyless graph downloads when the key is rejected or the API is down.
+    - the `guide` topic `report_schema` (`guide/references/report_schema.md`): every report.json key build_report reads.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**
