@@ -101,7 +101,9 @@ export function fromDataError(e: DataError, P?: Policy): Failure {
 export function toFailure(e: unknown, P?: Policy): Failure {
   if (e instanceof ToolError) return redactDeep(e.failure);
   if (e instanceof DataError) return redactDeep(fromDataError(e, P));
-  const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+  // JSON.parse quotes the start of the text it failed on: never pass a file's contents on
+  const msg = (e instanceof Error ? `${e.name}: ${e.message}` : String(e))
+    .replace(/"(?:[^"\\]|\\.)*"(?:\.\.\.)?(?=\s+is not valid JSON)/g, "the text");
   return redactDeep({ status: "error", code: "server_error", message: msg,
     fix: "An unexpected error: report it to the user; do not retry unchanged." } as Failure);
 }

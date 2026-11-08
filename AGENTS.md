@@ -28,6 +28,12 @@ owns its pack data, code and recorded fixtures.
   - CSVs are written with CRLF line ends and minimal quoting. Booleans are written `True`/`False`.
 - **Invariants (tests enforce them).**
   - No tool output contains a key: every result goes through `redact`, and test/mcp.test.ts injects fake keys.
+  - A path a model supplies goes through `src/core/guard.ts` (`checkReadable`, `checkFiles`, `workspaceFile`,
+    `reportPathProblems`): never a key file, never a file holding a key. test/secrets.test.ts checks every tool path.
+  - No written file keeps a key: `package.write` and `result()` scrub with `scrubFile`/`takeScrubbed`, the cache and
+    the replication ZIP never take one, and remote `/files` refuses one.
+  - A key goes only to its client's own site (`Client.keyAllowed`): never along a link from a response. On a
+    cross-host redirect, query and header keys are dropped; a body key (BLS) follows a 307/308 wherever it points.
   - `fetch` is gated on `source_brief`, `request_schema` and `record_decisions`.
   - Every success carries a `citation`, and every failure a `code` and `fix`.
   - Never write inside the package folder at run time.

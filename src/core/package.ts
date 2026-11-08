@@ -12,6 +12,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { SourceRecord } from "./context.js";
+import * as keys from "./keys.js";
 import type { Pack, Row, Spec } from "./packs.js";
 import * as pol from "./policy.js";
 import { pyStr, stableJson } from "./py.js";
@@ -101,6 +102,52 @@ const today = () => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 };
 
+const SCRUB_MAX = 1 << 30;
+
+/**
+ * Every file under dir with a known key (in any form) rewritten with [REDACTED] in its place: an agency that echoes
+ * the key in a response must not leave it in the workspace (the model reads it, the user downloads it). Returns the
+ * changed files, relative to dir. Files over 1 GB are left as they are.
+ */
+export function scrubDir(dir: string): string[] {
+  const changed: string[] = [];
+  const walk = (d: string) => {
+    if (!fs.existsSync(d)) return;
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const f = path.join(d, e.name);
+      if (e.isDirectory()) walk(f);
+      else if (e.isFile() && scrubFile(f)) changed.push(path.relative(dir, f).replaceAll("\\", "/"));
+    }
+  };
+  walk(dir);
+  return changed.sort();
+}
+
+const SCRUBBED = new Set<string>();
+
+/** One file scrubbed in place; true when it held a key (remembered for takeScrubbed). */
+export function scrubFile(f: string): boolean {
+  if (!fs.existsSync(f) || fs.statSync(f).size > SCRUB_MAX) return false;
+  const [buf, hit] = keys.scrubBytes(fs.readFileSync(f));
+  if (hit) {
+    fs.writeFileSync(f, buf);
+    SCRUBBED.add(path.resolve(f));
+  }
+  return hit;
+}
+
+/** Scrub every file under dir, then the files under it scrubbed since the last call (relative to dir), cleared. */
+export function takeScrubbed(dir: string): string[] {
+  scrubDir(dir);
+  const pre = path.resolve(dir) + path.sep;
+  const got = [...SCRUBBED].filter((f) => f.startsWith(pre));
+  for (const f of got) SCRUBBED.delete(f);
+  return got.map((f) => f.slice(pre.length).replaceAll("\\", "/")).sort();
+}
+
+export const scrubNote = (files: string[]) => `A key the agency echoed in its response was replaced with [REDACTED] in ` +
+  `${files.join(", ")}: those files differ from the published bytes there.`;
+
 export type TableMeta = { name: string; file: string; rows: number; columns: string[]; sha256: string };
 export type WriteResult = { data_dir: string; tables: TableMeta[]; retrieved: string; citation: string };
 
@@ -128,6 +175,7 @@ export function write(out: string, pack: Pack, tables: Record<string, Table>, sp
       fs.copyFileSync(t.path, path.join(d, file));
       t.discard();
     } else fs.writeFileSync(path.join(d, file), writeCsv(rows, cols));
+    scrubFile(path.join(d, file));                 // before the checksum: request.json then matches the file
     for (const c of cols) {
       const nonmiss = rows.map((r) => r[c]).filter((v) => v !== "" && v !== null && v !== undefined);
       dictionary.push({ table: name, column: c, type: infer(nonmiss.slice(0, 500)),
@@ -146,13 +194,18 @@ export function write(out: string, pack: Pack, tables: Record<string, Table>, sp
   if (dictionary.length) fs.writeFileSync(dictPath, writeCsv(dictionary, ["table", "column", "type", "non_missing", "example"]));
   if (o.raw) {
     fs.mkdirSync(path.join(d, "raw"), { recursive: true });
-    for (const [rel, data] of Object.entries(o.raw)) fs.writeFileSync(path.join(d, "raw", path.basename(rel)), data);
+    for (const [rel, data] of Object.entries(o.raw)) {
+      const f = path.join(d, "raw", path.basename(rel));
+      fs.writeFileSync(f, data);
+      scrubFile(f);
+    }
   }
   const req = { source: pack.id, spec, fingerprint: fingerprint(spec), route: o.route, acquired: o.acquired ?? "api",
     retrieved, vintage: o.vintage ?? "", requests: o.requests || [], tables: metaTables, problems: o.problems || [],
     notes: o.notes || [], earlier_fetches: earlier,
     policy: { redistribution: P.redistribution.mode, cache: P.cache.mode } };
   fs.writeFileSync(path.join(d, "request.json"), JSON.stringify(req, (k, v) => (k.startsWith("_") ? undefined : v), 2));
+  scrubFile(path.join(d, "request.json"));
   const cite = pol.citation(P, o.route, { retrieved: today(), vintage: o.vintage ?? "", dataset: spec?.description ?? "" });
   let extra = o.extraReadme ?? "";
   if (earlier.length) {

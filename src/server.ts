@@ -7,7 +7,8 @@ import path from "node:path";
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { GUIDE_DIR, PACKS_DIR } from "./core/env.js";
-import { redact, withKeyProvider, withPackScope } from "./core/keys.js";
+import { redact, redactDeep, rememberServerSecrets, withKeyProvider, withPackScope } from "./core/keys.js";
+import { knownKeys } from "./report/scan_secrets.js";
 import { packIds } from "./core/packs.js";
 import { toFailure } from "./envelope.js";
 import { Session } from "./session.js";
@@ -79,23 +80,48 @@ function remoteView(s: Session, out: any): any {
   return view;
 }
 
+/** A result as the text the client gets: every string redacted, then the JSON text once more. */
+function render(s: Session, out: unknown): string {
+  return redact(JSON.stringify(redactDeep(remoteView(s, out)), null, 1));
+}
+
+const LAST_RESORT = JSON.stringify({ status: "error", code: "unexpected", message: "internal error (details withheld)",
+  fix: "Call the tool again; if it fails the same way, report it." }, null, 1);
+
+/** The packs a call is about: its source, its sources[].source, or the data/<id>/ folder of a path it reads. */
+export function callPacks(a: any): string[] {
+  const ids = new Set<string>();
+  if (typeof a?.source === "string") ids.add(a.source);
+  for (const x of Array.isArray(a?.sources) ? a.sources : []) if (typeof x?.source === "string") ids.add(x.source);
+  for (const p of [a?.path, ...(Array.isArray(a?.files) ? a.files : [])]) {
+    const m = typeof p === "string" ? /(?:^|[\\/])data[\\/]([a-z0-9-]+)[\\/]/i.exec(p) : null;
+    if (m) ids.add(m[1]);
+  }
+  return [...ids];
+}
+
 function wrap<A>(s: Session, fn: Handler<A>) {
   return async (a: A) => {
     const call = async () => {
-      let out: unknown;
+      let text: string;
       let isError = false;
       try {
-        out = s.keyProvider ? await withKeyProvider(s.keyProvider, () => fn(s, a)) : await fn(s, a);
+        const out = s.keyProvider ? await withKeyProvider(s.keyProvider, () => fn(s, a)) : await fn(s, a);
+        text = render(s, out);
       } catch (e) {
-        out = toFailure(e);
         isError = true;
+        try {
+          text = render(s, toFailure(e));
+        } catch {
+          text = LAST_RESORT;
+        }
       }
       // redacted inside the pack scope too, so that pack's own patterns apply to its result text
-      return { content: [{ type: "text" as const, text: redact(JSON.stringify(remoteView(s, out), null, 1)) }], isError };
+      return { content: [{ type: "text" as const, text }], isError };
     };
     // a pack's own redaction patterns (keys its API echoes) apply only inside calls for that pack
-    const pack = typeof (a as any)?.source === "string" ? (a as any).source : "";
-    const r = pack ? await withPackScope(pack, call) : await call();
+    const packs = callPacks(a);
+    const r = packs.length ? await withPackScope(packs, call) : await call();
     s.lastSeen = Date.now();
     return r;
   };
@@ -128,6 +154,9 @@ const specSchema = z.record(z.string(), z.any()).describe(
 export function createServer(session = new Session()): McpServer {
   const server = new McpServer({ name: "data-analyst", version: VERSION }, { instructions: INSTRUCTIONS });
   const s = session;
+  // every key this machine has, and the server's own secrets, are redacted from the first call on
+  rememberServerSecrets();
+  knownKeys();
 
   server.registerTool("guide", {
     title: "Method guide",
@@ -247,19 +276,20 @@ export function createServer(session = new Session()): McpServer {
     argsSchema: { question: z.string().describe("The question to answer") },
   }, ({ question }) => ({
     messages: [{ role: "user", content: { type: "text",
-      text: `${fs.readFileSync(path.join(GUIDE_DIR, "WORKFLOW.md"), "utf8")}\n\n---\n\nQuestion: ${question}` } }],
+      text: redact(`${fs.readFileSync(path.join(GUIDE_DIR, "WORKFLOW.md"), "utf8")}\n\n---\n\nQuestion: ${question}`) } }],
   }));
 
   server.registerResource("source", new ResourceTemplate("source://{id}", {
     list: () => ({ resources: packIds().map((id) => ({ uri: `source://${id}`, name: `${id} playbook`, mimeType: "text/markdown" })) }),
   }), { title: "Source playbook", description: "A source pack's source.md", mimeType: "text/markdown" }, (uri, { id }) => {
     const pid = String(id);
-    if (!packIds().includes(pid)) throw new Error(`unknown source ${pid}`);
-    return { contents: [{ uri: uri.href, mimeType: "text/markdown", text: fs.readFileSync(path.join(PACKS_DIR, pid, "source.md"), "utf8") }] };
+    if (!packIds().includes(pid)) throw new Error("unknown source id");
+    return { contents: [{ uri: uri.href, mimeType: "text/markdown",
+      text: redact(fs.readFileSync(path.join(PACKS_DIR, pid, "source.md"), "utf8")) }] };
   });
 
   server.registerResource("guide", "guide://workflow", { title: "Method guide", mimeType: "text/markdown" }, (uri) => ({
-    contents: [{ uri: uri.href, mimeType: "text/markdown", text: fs.readFileSync(path.join(GUIDE_DIR, "WORKFLOW.md"), "utf8") }],
+    contents: [{ uri: uri.href, mimeType: "text/markdown", text: redact(fs.readFileSync(path.join(GUIDE_DIR, "WORKFLOW.md"), "utf8")) }],
   }));
 
   return server;

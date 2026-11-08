@@ -25,6 +25,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { rerunWorkspace } from "../analysis/rerun.js";
+import { workspaceFile } from "../core/guard.js";
 import { redact } from "../core/keys.js";
 import { decodeText } from "../core/tabular.js";
 import { pyFloatRepr } from "../core/py.js";
@@ -649,6 +650,7 @@ export function checkBenchmark(base: string, facts?: any): Result[] {
 export function checkFact(name: string, f: any, base: string): [boolean, string] {
   if (f.source) {
     const sp = path.join(base, f.source);
+    if (!workspaceFile(f.source, base)) return [false, `${name}: source ${f.source} is outside the workspace`];
     if (!fs.existsSync(sp)) return [false, `${name}: source ${f.source} does not exist`];
     const where = isObj(f.where) ? f.where : {};
     const rows = readCsv(sp)[1].filter((r) => Object.entries(where).every(([k, v]) => str(r[k]) === str(v)));

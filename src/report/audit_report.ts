@@ -28,9 +28,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { unzipSync } from "fflate";
-import { checkPublicHost } from "../analysis/cite.js";
+import { guardedGet } from "../analysis/cite.js";
 import { lineagePacks } from "../analysis/compute.js";
 import { mode as serverMode } from "../core/env.js";
+import { reportPathProblems } from "../core/guard.js";
 import * as pol from "../core/policy.js";
 import type { Policy } from "../core/policy.js";
 import * as MA from "./method_audit.js";
@@ -267,16 +268,21 @@ export function* allStrings(x: unknown): Generator<string> {
 
 /** [ok, message] for one external link (HTTP < 400; 403 and time-outs to scripts are accepted with a note). */
 export async function checkUrl(u: string): Promise<[boolean, string]> {
-  if (serverMode() === "remote") {
-    try {
-      await checkPublicHost(u);
-    } catch (e) {
-      return [false, `${u}: ${(e as Error).message}`];
-    }
-  }
   let status: number | null = null, err: any = null;
   const codes: number[] = [];
-  for (const ua of [UA, BROWSER_UA]) {           // some hosts refuse a browser-like agent, others anything else
+  if (serverMode() === "remote") {
+    // every hop through the guarded lookup: a redirect or a DNS change cannot reach a private address
+    try {
+      const r = await guardedGet(u, 20);
+      if (r.status < 400) return [true, `${u}: HTTP ${r.status}`];
+      status = r.status;
+      codes.push(r.status);
+    } catch (e: any) {
+      if (/^refused/.test(String(e?.message))) return [false, `${u}: ${e.message}`];
+      err = e;
+    }
+  }
+  for (const ua of serverMode() === "remote" ? [] : [UA, BROWSER_UA]) {  // some hosts refuse a browser-like agent, others anything else
     status = null;
     try {
       const r = await fetch(u, { method: "GET", headers: { "User-Agent": ua }, signal: AbortSignal.timeout(20000), redirect: "follow" });
@@ -320,7 +326,13 @@ export function readTextFile(p: string): string {
 }
 
 function readJson(p: string): any {
-  return JSON.parse(readText(p));
+  try {
+    return JSON.parse(readText(p));
+  } catch (e) {
+    // JSON.parse quotes the start of the text: name the file only
+    if (e instanceof SyntaxError) throw new Error(`${path.basename(p)} is not valid JSON`);
+    throw e;
+  }
 }
 
 const mtime = (p: string) => fs.statSync(p).mtimeMs;
@@ -332,6 +344,12 @@ export async function audit(reportPath: string, htmlPath?: string, online = fals
   htmlPath = htmlPath || path.join(base, "report.html");
   const results: Result[] = [];
   const res = (check: string, ok: unknown, msg: string) => void results.push([check, !!ok, msg]);
+  const outside = reportPathProblems(base, R);
+  if (outside.length) {
+    res("paths", false, `report.json names files outside the workspace or where keys are kept: ${JSON.stringify(outside)} ` +
+      "(every path is relative to the report's folder)");
+    return results;
+  }
 
   // ---- sources and their policies
   const ids = PS.usedSources(base, R);

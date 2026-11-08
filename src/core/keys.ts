@@ -22,17 +22,26 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { mode } from "./env.js";
+import { quotePlus } from "./py.js";
 
 const KNOWN = new Set<string>();
 export const KEY_FIELDS = ["api_key", "apikey", "api-key", "key", "registrationkey", "userid", "token", "access_token",
   "x-api-key", "authorization", "subscription-key", "user_token"];
 /** Patterns a pack adds for keys its API echoes in odd shapes, by pack id ("" = every pack). */
 const EXTRA_PATTERNS: { re: RegExp; pack: string }[] = [];
-const packScope = new AsyncLocalStorage<string>();
+const packScope = new AsyncLocalStorage<string[]>();
 
-/** Run fn as a call for one pack: that pack's own redaction patterns apply inside it. */
-export function withPackScope<T>(pack: string, fn: () => T): T {
-  return packScope.run(pack, fn);
+/** Run fn as a call for one or more packs: those packs' own redaction patterns apply inside it. */
+export function withPackScope<T>(pack: string | string[], fn: () => T): T {
+  return packScope.run(Array.isArray(pack) ? pack : [pack], fn);
+}
+
+/** Secrets of this server itself (never a pack's key): the signing secret, the bearer token, contact strings. */
+export const SERVER_SECRETS = ["DATA_ANALYST_SECRET", "DATA_ANALYST_AUTH_TOKEN", "NWS_USER_AGENT", "SEC_USER_AGENT"];
+
+/** Add the server's own secrets from the environment to the redaction set (call once at startup). */
+export function rememberServerSecrets(): void {
+  for (const env of SERVER_SECRETS) remember((process.env[env] || "").trim());
 }
 
 export type Auth = {
@@ -134,9 +143,58 @@ export function findAuthKey(auth: Auth): [string | null, string | null] {
   return [key, src];
 }
 
-/** Add a secret to the redaction set (keys passed in, tokens returned by an API). */
+/** The forms a secret takes in text: as is, URL-encoded (upper and lower hex, %20 and +), JSON-escaped. */
+function forms(secret: string): string[] {
+  const out = new Set([secret]);
+  try {
+    out.add(encodeURIComponent(secret));
+  } catch {
+    // a lone surrogate: it has no URL form
+  }
+  out.add(quotePlus(secret));
+  for (const v of [...out]) out.add(v.replace(/%[0-9A-F]{2}/g, (m) => m.toLowerCase()));
+  out.add(JSON.stringify(secret).slice(1, -1));
+  return [...out].filter((v) => v.length >= 6);
+}
+
+/** Add a secret to the redaction set (keys passed in, tokens returned by an API), in every form it can be echoed in. */
 export function remember(secret: string | null | undefined): void {
-  if (secret && secret.length >= 6) KNOWN.add(secret);
+  if (secret && secret.length >= 6) for (const f of forms(secret)) KNOWN.add(f);
+}
+
+const known = () => [...KNOWN].sort((a, b) => b.length - a.length);
+
+/** A file's text with every known secret (in every form) replaced: [text, changed]. Data patterns are left alone. */
+export function scrubText(text: string): [string, boolean] {
+  let out = text;
+  for (const k of known()) if (out.includes(k)) out = out.split(k).join("[REDACTED]");
+  return [out, out !== text];
+}
+
+/** scrubText for bytes (a raw response): unchanged bytes when no secret is in them. */
+export function scrubBytes(buf: Buffer): [Buffer, boolean] {
+  let out = buf;
+  let changed = false;
+  const mark = Buffer.from("[REDACTED]");
+  for (const k of known()) {
+    const kb = Buffer.from(k, "utf8");
+    if (out.indexOf(kb) < 0) continue;
+    const parts: Buffer[] = [];
+    let at = 0;
+    for (let i = out.indexOf(kb); i >= 0; i = out.indexOf(kb, at)) {
+      parts.push(out.subarray(at, i), mark);
+      at = i + kb.length;
+    }
+    parts.push(out.subarray(at));
+    out = Buffer.concat(parts);
+    changed = true;
+  }
+  return [out, changed];
+}
+
+/** Does the text hold a known secret, in any form? */
+export function holdsSecret(text: string | Buffer): boolean {
+  return [...KNOWN].some((k) => text.includes(k));
 }
 
 /** A pack whose API echoes keys in odd shapes adds a pattern (BLS: 32-hex tokens in error text). */
@@ -153,15 +211,18 @@ const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&");
 
 export function redact(value: unknown): string {
   let text = typeof value === "string" ? value : String(value);
-  for (const k of [...KNOWN].sort((a, b) => b.length - a.length)) text = text.split(k).join("[REDACTED]");
+  for (const k of known()) text = text.split(k).join("[REDACTED]");
   const names = KEY_FIELDS.map(esc).join("|");
   text = text.replace(new RegExp(`([?&](?:${names})=)[^&\\s'"#]+`, "gi"), "$1[REDACTED]");
   text = text.replace(new RegExp(`(["'](?:${names})["']\\s*:\\s*["'])[^"']+`, "gi"), "$1[REDACTED]");
   // a credential is a run of token characters; prose such as "Bearer <token>" is left alone
   text = text.replace(/(authorization:\s*(?:(?:bearer|basic|token)\s+)?)(?!(?:bearer|basic|token)\b)[A-Za-z0-9._~+/=-]{6,}/gi,
     "$1[REDACTED]");
-  const scope = packScope.getStore();
-  for (const p of EXTRA_PATTERNS) if (!p.pack || p.pack === scope) text = text.replace(p.re, "[REDACTED]");
+  // key headers written as lines (X-Api-Key: <value>); a value holds a digit, so prose after the colon is left alone
+  text = text.replace(/((?:x-api-key|api-key|x-api-token|(?:ocp-apim-)?subscription-key):\s*)(?=[A-Za-z0-9._~+/=-]*\d)[A-Za-z0-9._~+/=-]{8,}/gi,
+    "$1[REDACTED]");
+  const scope = packScope.getStore() || [];
+  for (const p of EXTRA_PATTERNS) if (!p.pack || scope.includes(p.pack)) text = text.replace(p.re, "[REDACTED]");
   return text;
 }
 

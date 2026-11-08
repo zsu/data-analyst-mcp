@@ -8,6 +8,7 @@ import path from "node:path";
 import { trail, withRun } from "./core/context.js";
 import { GUIDE_DIR, mode } from "./core/env.js";
 import * as gr from "./core/generic-rest.js";
+import * as guard from "./core/guard.js";
 import { DataError } from "./core/http.js";
 import { findAuthKey } from "./core/keys.js";
 import * as manual from "./core/manual.js";
@@ -362,6 +363,9 @@ function result(p: Pack, dir: string, tables: packages.TableMeta[], notes: strin
   citeRoute?: string; retrieved: string; requests: any[]; partial: boolean; dataset?: string; citation?: string;
   extraNote?: string; vintage?: string; extraFiles?: string[] }) {
   const { route, retrieved, requests, partial, extraNote } = o;
+  // deep packs write their own files: every file of the folder is scrubbed here, and the user is told
+  const scrubbed = packages.takeScrubbed(dir);
+  if (scrubbed.length) notes = [...notes, packages.scrubNote(scrubbed)];
   return {
     status: partial ? "partial" : "ok",
     summary: {
@@ -431,13 +435,22 @@ export async function runIngest(p: Pack, spec: any, given: string[], workspace: 
   checkShape(p, spec);
   const s = { workspace };
   const a = { spec, files: given };
-  const files = a.files.map((f) => path.resolve(s.workspace, f));
-  if (mode() === "remote" && files.some((f) => path.relative(s.workspace, f).startsWith(".."))) {
+  const remote = mode() === "remote";
+  if (remote && !a.files.every((f) => guard.workspaceFile(f, s.workspace))) {
     throw fail("invalid_request", "on this hosted server, ingest reads only files uploaded to this session",
       "Give the user the upload page (from manual_bundle), then call ingest with files: [\"uploads\"].");
   }
+  // a path the model names: never a key file or a file with a key in it (a source that echoes keys excepted: below)
+  for (const f of a.files) guard.checkReadable(f, { workspace: s.workspace, what: "ingest" });
+  const files = a.files.map((f) => path.resolve(s.workspace, f));
   const absent = files.filter((f) => !fs.existsSync(f));
   if (absent.length) throw fail("not_found", `not found: ${absent.join(", ")}`, "Give the paths of the downloaded files or their folder.");
+  const candidates = guard.checkFiles(a.files, { workspace: s.workspace, what: "ingest", contents: false });
+  // a source whose own responses echo the user's key (BEA, BLS): its files hold it by nature, and are redacted on output
+  const scan = (fs_: string[]) => {
+    if ((p.policy.auth as any)?.echoes_key !== true) guard.checkContents(fs_, "ingest");
+  };
+  if (p.deep) scan(candidates);
   return withRun(async () => {
     if (p.deep) {
       if (!p.deep.ingest) throw fail("not_supported", `${p.id} has no ingest`, p.policy.routes?.manual?.how || "See the playbook.");
@@ -458,6 +471,7 @@ export async function runIngest(p: Pack, spec: any, given: string[], workspace: 
     }
     const alt = new Set(items.flatMap((it) => (it.alt_filenames || []).map((x: string) => x.toLowerCase())));
     const vals = Object.values(found);
+    scan(vals);
     const route = vals.length && vals.every((f) => alt.has(path.basename(f).toLowerCase())) ? "keyless_file" : "manual_download";
     const local = manual.copyIn(found, path.join(packages.dataDir(s.workspace, p.id), "raw"));
     let spec: Spec = a.spec;
@@ -487,14 +501,18 @@ export async function runIngest(p: Pack, spec: any, given: string[], workspace: 
 export function readFile(s: Session, a: { path: string; max_bytes?: number }) {
   const abs = path.resolve(s.workspace, a.path);
   const rel = path.relative(s.workspace, abs);
-  if (rel.startsWith("..") || path.isAbsolute(rel)) {
-    throw fail("invalid_request", "read_file reads only inside this session's workspace", `Workspace: ${s.workspace}`);
+  if (!guard.workspaceFile(a.path, s.workspace)) {
+    throw fail("invalid_request", "read_file reads only inside this session's workspace (and never a key file)",
+      "Use a path from a fetch result's files (relative to the workspace).");
   }
   if (!fs.existsSync(abs) || !fs.statSync(abs).isFile()) {
     throw fail("not_found", `no file ${rel}`, "Use a path from a fetch result's files (relative to the workspace).");
   }
   const max = Math.min(a.max_bytes || READ_MAX, READ_MAX);
   const buf = fs.readFileSync(abs);
-  return { status: buf.length > max ? "partial" : "ok", path: rel, bytes: buf.length,
-    text: buf.subarray(0, max).toString("utf8"), ...(buf.length > max ? { note: `first ${max} of ${buf.length} bytes` } : {}) };
+  // an upload may hold a key the server never saw (a response the agency echoed it in): credential-shaped text goes too
+  const [text, masked] = guard.maskCredentials(buf.subarray(0, max).toString("utf8"));
+  return { status: buf.length > max ? "partial" : "ok", path: rel, bytes: buf.length, text,
+    ...(buf.length > max || masked ? { note: [buf.length > max ? `first ${max} of ${buf.length} bytes` : "",
+      masked ? "credential-shaped text was replaced with [REDACTED]" : ""].filter(Boolean).join("; ") } : {}) };
 }

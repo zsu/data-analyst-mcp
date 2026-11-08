@@ -95,7 +95,8 @@ while IFS=$'\t' read -r file method optional kvar place kname kprefix extras url
     return 0
   }
   args=(-sS -K - -A "data-analyst/1.0" -o "$HERE/$file.part" -w '%{http_code}')
-  # curl -L forwards custom headers (the key) to any host a redirect names: follow redirects only without one
+  # curl -L forwards custom headers (the key) to any host a redirect names: follow redirects only without one. A key
+  # in the POST body follows a 307/308 redirect
   [ "$place" = header ] || args+=(-L)
   if [ "$body" != "-" ]; then
     [ "$place" = body ] && body="$(subst "$body" "{API_KEY}" "$(esc "$key")")"
@@ -120,8 +121,13 @@ while IFS=$'\t' read -r file method optional kvar place kname kprefix extras url
     echo "saved $file"
   else
     msg=""
-    [ -f "$HERE/$file.part" ] && msg="$(head -c 300 "$HERE/$file.part" | tr -d '\r\n')"
+    [ -f "$HERE/$file.part" ] && msg="$(head -c 4000 "$HERE/$file.part" | tr -d '\r\n')"
+    # masked before it is shortened, so no part of a key or an extra value (an email) is left at the cut
     [ -n "$key" ] && msg="$(subst "$msg" "$key" "[KEY]")"
+    if [ "$extras" != "-" ]; then
+      for x in ${extras//,/ }; do v="V_$x"; [ -n "${!v:-}" ] && msg="$(subst "$msg" "${!v}" "[$x]")"; done
+    fi
+    msg="${msg:0:300}"
     rm -f "$HERE/$file.part"
     if [ "$optional" = 1 ]; then
       echo "not available (optional, HTTP ${code:-none}): $file"

@@ -11,7 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { workspaceRoot } from "../core/env.js";
 import { remember } from "../core/keys.js";
-import { serverSecret } from "./sign.js";
+import { derivedKey, legacySecret } from "./sign.js";
 
 export function stateDir(): string {
   const d = process.env.DATA_ANALYST_STATE_DIR || path.join(workspaceRoot(), "state");
@@ -37,8 +37,8 @@ function save(name: string, data: unknown): void {
 export const hash = (s: string) => crypto.createHash("sha256").update(s).digest("hex");
 
 // ---------------------------------------------------------------------- key encryption
-function keyFor(account: string): Buffer {
-  return crypto.createHmac("sha256", serverSecret()).update(`keys:${account}`).digest();
+function keyFor(account: string, legacy = false): Buffer {
+  return crypto.createHmac("sha256", legacy ? legacySecret() : derivedKey("keys")).update(`keys:${account}`).digest();
 }
 
 function encrypt(account: string, data: Record<string, string>): string {
@@ -48,11 +48,20 @@ function encrypt(account: string, data: Record<string, string>): string {
   return [iv, c.getAuthTag(), enc].map((b) => b.toString("base64")).join(".");
 }
 
-function decrypt(account: string, blob: string): Record<string, string> {
+function decryptWith(key: Buffer, blob: string): Record<string, string> {
   const [iv, tag, enc] = blob.split(".").map((x) => Buffer.from(x, "base64"));
-  const d = crypto.createDecipheriv("aes-256-gcm", keyFor(account), iv);
+  const d = crypto.createDecipheriv("aes-256-gcm", key, iv);
   d.setAuthTag(tag);
   return JSON.parse(Buffer.concat([d.update(enc), d.final()]).toString("utf8"));
+}
+
+/** Keys stored by an earlier version (one key for signing and encryption) still open; the next write re-encrypts them. */
+function decrypt(account: string, blob: string): Record<string, string> {
+  try {
+    return decryptWith(keyFor(account), blob);
+  } catch {
+    return decryptWith(keyFor(account, true), blob);
+  }
 }
 
 // ---------------------------------------------------------------------- accounts and their keys

@@ -18,7 +18,9 @@ export const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 export function isolate(): string {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), "da-mcp-home-"));
   for (const k of Object.keys(process.env)) {
-    if (k.endsWith("_API_KEY") || ["AQS_EMAIL", "HUD_USER_TOKEN", "DATA_ANALYST_RECORD"].includes(k)) delete process.env[k];
+    // <ENV>_FILE too: a developer's FRED_API_KEY_FILE would otherwise be read during the tests
+    if (k.endsWith("_API_KEY") || k.endsWith("_API_KEY_FILE") || k.endsWith("_TOKEN_FILE") ||
+      ["AQS_EMAIL", "HUD_USER_TOKEN", "DATA_ANALYST_RECORD"].includes(k)) delete process.env[k];
   }
   process.env.HOME = home;
   process.env.USERPROFILE = home;

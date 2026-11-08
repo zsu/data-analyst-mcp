@@ -14,7 +14,7 @@ const outputs: string[] = [];
 async function call(name: string, args: Record<string, unknown>): Promise<{ data: any; isError: boolean }> {
   const r: any = await client.callTool({ name, arguments: args });
   const text = r.content[0].text as string;
-  outputs.push(text);
+  for (const c of r.content) outputs.push(String(c.text ?? ""));
   return { data: JSON.parse(text), isError: !!r.isError };
 }
 

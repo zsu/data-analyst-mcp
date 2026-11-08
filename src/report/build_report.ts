@@ -18,6 +18,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { zipSync } from "fflate";
 import { GUIDE_DIR, ROOT } from "../core/env.js";
+import { reportPathProblems } from "../core/guard.js";
+import { holdsSecret } from "../core/keys.js";
 import * as manual from "../core/manual.js";
 import { pyJsonDumps } from "../core/py.js";
 import * as pol from "../core/policy.js";
@@ -36,6 +38,15 @@ const SCRIPT_KINDS: Record<string, string> = { bash: ".sh", powershell: ".ps1" }
 export class BuildError extends Error {}
 function fail(msg: string): never {
   throw new BuildError(msg);
+}
+
+/** JSON.parse with a message that names the file, never quotes its text. */
+function parseJson(text: string, name: string): any {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return fail(`${name} is not valid JSON`);
+  }
 }
 
 // ----------------------------------------------------------------------------- text helpers
@@ -499,12 +510,24 @@ function makePackage(ctx: Ctx): [string, Member[], Excluded[]] {
   const zp = path.join(ctx.base, "replication_package.zip");
   const files: Record<string, [Uint8Array, { level: 6 }]> = {};
   files["REPLICATION.md"] = [Buffer.from(replicationReadme(ctx, excluded), "utf8"), { level: 6 }];
+  knownKeys();
+  const leaked: string[] = [];
   for (const m of members) {
     const data = m.filter ? Buffer.from(PS.filteredCsv(m.path, m.filter[0], m.filter[1])[0], "utf8") : fs.readFileSync(m.path);
+    if (holdsSecret(data)) leaked.push(m.name);
     files[m.name] = [data, { level: 6 }];
   }
-  fs.writeFileSync(zp + ".part", zipSync(files));
-  fs.renameSync(zp + ".part", zp);
+  // checked before anything is written: a package with a key in it is never made, not even in part
+  if (leaked.length) {
+    fs.rmSync(zp, { force: true });
+    fail(`an API key is in ${str(leaked.slice(0, 5))}; no replication package was written (remove it and build again)`);
+  }
+  try {
+    fs.writeFileSync(zp + ".part", zipSync(files));
+    fs.renameSync(zp + ".part", zp);
+  } finally {
+    fs.rmSync(zp + ".part", { force: true });
+  }
   // a last guard: the policy check of core on everything that went in
   const names = members.map((m) => m.name);
   const bad = new Set<string>();
@@ -1003,7 +1026,10 @@ export function build(reportPath: string, outPath?: string): BuildResult {
   const base = path.dirname(path.resolve(reportPath));
   if (inside(base, ROOT)) fail(`${base} is inside the server's package folder; build reports in the session workspace`);
   MA.NOTES.length = 0;
-  let R = MA.merged(base, JSON.parse(readText(reportPath)));
+  let R = MA.merged(base, parseJson(readText(reportPath), "report.json"));
+  const outside = reportPathProblems(base, R);
+  if (outside.length) fail(`report.json names files outside the workspace or where keys are kept: ${str(outside)} ` +
+    "(every path is relative to the report's folder)");
   const mode = R.mode || "report";
   if (mode !== "report" && mode !== "paper") fail(`mode must be 'report' or 'paper', not '${mode}'`);
   outPath = outPath || path.join(base, "report.html");
@@ -1013,7 +1039,7 @@ export function build(reportPath: string, outPath?: string): BuildResult {
   const unknown = [...citedIds(JSON.stringify(R))].filter((i) => !REF_LABELS.has(i));
   if (unknown.length) fail(`[@citations] without a matching entry in references: ${str(unknown.sort())}`);
   const factsPath = path.join(base, R.facts || "facts.json");
-  const facts = fs.existsSync(factsPath) ? JSON.parse(readText(factsPath)) : {};
+  const facts = fs.existsSync(factsPath) ? parseJson(readText(factsPath), R.facts || "facts.json") : {};
   let used: [string, string][];
   [R, used] = fillFacts(R, facts, mode);
   ctx.R = R;
@@ -1107,6 +1133,7 @@ export function build(reportPath: string, outPath?: string): BuildResult {
   const leaks = scanText(page, knownKeys(), false, "report.html");
   if (leaks.length) {
     fs.rmSync(outPath, { force: true });
+    fs.rmSync(path.join(base, pkg), { force: true });
     fail("an API key or credential appeared in the report content; nothing was written (" + leaks.slice(0, 3).join("; ") + ")");
   }
   fs.writeFileSync(outPath, page, "utf8");

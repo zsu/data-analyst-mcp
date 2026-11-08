@@ -3,8 +3,11 @@
  *
  *   POST/GET/DELETE /mcp   MCP (one Session, with its own temporary workspace, per MCP session)
  *   GET  /files/:token     a signed download of a workspace file (fetched CSVs, manual bundles); 24 hours
- *   GET|PUT /upload/:token the page where the user uploads files a manual bundle downloaded
- *   /keys/:token           (accounts on) the user's write-only key page
+ *   GET  /upload#<token>   the page where the user uploads files a manual bundle downloaded (24 hours); its script
+ *                          calls GET|PUT /upload/api with the token as a bearer header
+ *   GET  /keys#<token>     (accounts on) the user's write-only key page (1 hour); GET|POST /keys/api
+ *   The tokens of these two pages are in the URL fragment, which browsers never send: no access log or Referer has
+ *   them. Every response is no-store, no-referrer, never framed, and runs no script without its own CSP nonce.
  *   OAuth endpoints        (accounts on) /.well-known/*, /authorize, /token, /register, /revoke, /oauth/consent
  *   GET  /healthz
  *
@@ -24,13 +27,16 @@ import { requireBearerAuth } from "@modelcontextprotocol/sdk/server/auth/middlew
 import { getOAuthProtectedResourceMetadataUrl, mcpAuthRouter } from "@modelcontextprotocol/sdk/server/auth/router.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
+import { setOwnHost } from "../analysis/cite.js";
+import { holdsCredential, workspaceFile } from "../core/guard.js";
+import { holdsSecret } from "../core/keys.js";
 import { safeName } from "../core/manual.js";
 import { allPacks } from "../core/packs.js";
 import { createServer } from "../server.js";
 import { Session } from "../session.js";
 import { grantCode, provider, type PendingAuth } from "./oauth.js";
 import { keysPage, newAccountPage, uploadPage } from "./pages.js";
-import { sign, verify } from "./sign.js";
+import { checkSecret, sign, verify } from "./sign.js";
 import * as store from "./store.js";
 
 export type RemoteOptions = { publicUrl: string; accounts?: boolean; authToken?: string; idleMinutes?: number;
@@ -39,7 +45,9 @@ export type RemoteOptions = { publicUrl: string; accounts?: boolean; authToken?:
 type Entry = { session: Session; transport: StreamableHTTPServerTransport };
 
 const FILE_TTL = 24 * 3600;
+const KEYS_TTL = 3600;
 const MAX_UPLOAD = 200 * 1024 * 1024;
+const SCAN_MAX = 64 * 1024 * 1024;
 
 export function createApp(o: RemoteOptions): { app: express.Express; close: () => void; sessions: Map<string, Entry> } {
   process.env.DATA_ANALYST_MODE = "remote";
@@ -49,7 +57,28 @@ export function createApp(o: RemoteOptions): { app: express.Express; close: () =
   const app = express();
   if (o.trustProxy) app.set("trust proxy", 1);
   app.disable("x-powered-by");
+  setOwnHost(o.publicUrl);
   const sessions = new Map<string, Entry>();
+
+  // every response: never cached, never framed, never sniffed, never sent on as a Referer; no script unless a page
+  // brings its own nonce (page())
+  app.use((_req, res, next) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'");
+    next();
+  });
+  /** An HTML page whose inline script runs only with this response's nonce. */
+  const page = (res: Response, html: (nonce: string) => string) => {
+    const nonce = crypto.randomBytes(16).toString("base64");
+    res.setHeader("Content-Security-Policy", `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; ` +
+      "connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
+    res.type("html").send(html(nonce));
+  };
+  const bearer = (req: Request) => String(req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+  const expired = (res: Response) => void res.status(403).json({ error: "this link expired: ask your assistant for a new one" });
 
   app.get("/healthz", (_req, res) => {
     res.json({ ok: true, sessions: sessions.size });
@@ -59,6 +88,7 @@ export function createApp(o: RemoteOptions): { app: express.Express; close: () =
   let auth: express.RequestHandler = (_req, _res, next) => next();
   if (o.accounts) {
     if (!process.env.DATA_ANALYST_SECRET) throw new Error("DATA_ANALYST_ACCOUNTS=1 needs DATA_ANALYST_SECRET (stored keys are encrypted with it)");
+    checkSecret();
     app.use(mcpAuthRouter({ provider, issuerUrl: base, resourceServerUrl: mcpUrl, resourceName: "data-analyst" }));
     auth = requireBearerAuth({ verifier: provider, resourceMetadataUrl: getOAuthProtectedResourceMetadataUrl(mcpUrl) });
     app.post("/oauth/consent", express.urlencoded({ extended: false, limit: "16kb" }), (req, res) => {
@@ -85,19 +115,31 @@ export function createApp(o: RemoteOptions): { app: express.Express; close: () =
       }
       return [...m.values()].sort((x, y) => (x.env < y.env ? -1 : 1));
     };
-    app.get("/keys/:t", async (req, res) => {
-      const t = verify<{ a: string }>(req.params.t, "keys");
-      if (!t || !store.accountExists(t.a)) return void res.status(403).type("text").send("This link expired: ask your assistant for a new one.");
-      res.type("html").send(keysPage(await keyVars(), store.keyNames(t.a), req.originalUrl));
+    // the page itself carries no token; its script sends the one from the link's fragment (pages.ts)
+    app.get("/keys", (_req, res) => page(res, keysPage));
+    const keyAccount = (req: Request) => {
+      const t = verify<{ a: string }>(bearer(req), "keys");
+      return t && store.accountExists(t.a) ? t.a : null;
+    };
+    app.get("/keys/api", async (req, res) => {
+      const a = keyAccount(req);
+      if (!a) return expired(res);
+      res.json({ vars: await keyVars(), set: store.keyNames(a) });
     });
-    app.post("/keys/:t", express.urlencoded({ extended: false, limit: "64kb" }), async (req, res) => {
-      const t = verify<{ a: string }>(req.params.t, "keys");
-      if (!t || !store.accountExists(t.a)) return void res.status(403).type("text").send("This link expired: ask your assistant for a new one.");
+    app.post("/keys/api", express.json({ limit: "64kb" }), async (req, res) => {
+      const a = keyAccount(req);
+      if (!a) return expired(res);
+      const got = req.body?.keys;
+      if (!got || typeof got !== "object" || Array.isArray(got) ||
+        Object.values(got).some((v) => typeof v !== "string" || v.length > 4096)) {
+        return void res.status(400).json({ error: "keys must be an object of variable names to text values" });
+      }
       const vars = new Set((await keyVars()).map((v) => v.env));
-      const upd = Object.fromEntries(Object.entries<string>(req.body || {}).filter(([k, v]) => vars.has(k) && v !== ""));
-      const saved = store.setKeys(t.a, upd);
-      res.type("html").send(keysPage(await keyVars(), saved, req.originalUrl, saved));
+      const upd = Object.fromEntries(Object.entries(got as Record<string, string>).filter(([k, v]) => vars.has(k) && v !== ""));
+      res.json({ vars: await keyVars(), set: store.setKeys(a, upd) });
     });
+    // links issued before the token moved into the fragment
+    app.get("/keys/:t", (req, res) => void res.redirect(302, `/keys#${encodeURIComponent(req.params.t)}`));
   } else if (o.authToken) {
     const want = Buffer.from(o.authToken);
     auth = (req, res, next) => {
@@ -118,11 +160,12 @@ export function createApp(o: RemoteOptions): { app: express.Express; close: () =
       const rel = path.relative(session.workspace, abs).replaceAll("\\", "/");
       return at(`/files/${sign({ k: "file", s: session.id, p: rel }, FILE_TTL)}`);
     };
-    session.uploadUrl = at(`/upload/${sign({ k: "upload", s: session.id }, FILE_TTL)}`);
+    // the token is in the fragment: a browser never sends it to a server, so it is in no access log or Referer
+    session.uploadUrl = at(`/upload#${sign({ k: "upload", s: session.id }, FILE_TTL)}`);
     if (session.account) {
       const account = session.account;
       // a fresh one-hour link each time a result shows it
-      Object.defineProperty(session, "keysUrl", { get: () => at(`/keys/${sign({ k: "keys", a: account }, 3600)}`) });
+      Object.defineProperty(session, "keysUrl", { get: () => at(`/keys#${sign({ k: "keys", a: account }, KEYS_TTL)}`) });
       session.keyProvider = store.keyProvider(account);
     }
   }
@@ -167,28 +210,43 @@ export function createApp(o: RemoteOptions): { app: express.Express; close: () =
     const entry = t && sessions.get(t.s);
     if (!t || !entry) return void res.status(404).type("text").send("This link expired or its session ended.");
     const abs = path.resolve(entry.session.workspace, t.p);
-    if (path.relative(entry.session.workspace, abs).startsWith("..") || !fs.existsSync(abs)) return void res.status(404).end();
+    if (!workspaceFile(t.p, entry.session.workspace) || !fs.existsSync(abs) || !fs.statSync(abs).isFile()) {
+      return void res.status(404).end();
+    }
+    // a last check: a file with a key in it is never handed out (fetched data is scrubbed when it is written)
+    const buf = fs.readFileSync(abs);
+    if (holdsSecret(buf) || (buf.length <= SCAN_MAX && holdsCredential(buf))) {
+      return void res.status(409).type("text").send("This file holds an API key or credential, so it is not served. " +
+        "Ask your assistant to remove it from the file first.");
+    }
     res.download(abs, path.basename(abs));
   });
 
-  app.get("/upload/:t", (req, res) => {
-    const t = verify<{ s: string }>(req.params.t, "upload");
-    const entry = t && sessions.get(t.s);
-    if (!t || !entry) return void res.status(404).type("text").send("This link expired or its session ended.");
-    const dir = path.join(entry.session.workspace, "uploads");
-    res.type("html").send(uploadPage(`${req.originalUrl}?`, fs.existsSync(dir) ? fs.readdirSync(dir) : []));
-  });
-
-  app.put("/upload/:t", express.raw({ type: () => true, limit: MAX_UPLOAD }), (req, res) => {
-    const t = verify<{ s: string }>(req.params.t, "upload");
-    const entry = t && sessions.get(t.s);
-    if (!t || !entry) return void res.status(404).end();
+  const uploadSession = (token: string) => {
+    const t = verify<{ s: string }>(token, "upload");
+    return (t && sessions.get(t.s)) || null;
+  };
+  const upload = (entry: Entry | null, req: Request, res: Response) => {
+    if (!entry) return void res.status(404).json({ error: "this link expired or its session ended" });
     const dir = path.join(entry.session.workspace, "uploads");
     fs.mkdirSync(dir, { recursive: true });
     const name = safeName(path.basename(String(req.query.name || "upload.bin")));
     fs.writeFileSync(path.join(dir, name), req.body as Buffer);
     res.json({ ok: true, path: `uploads/${name}`, bytes: (req.body as Buffer).length });
+  };
+  const raw = express.raw({ type: () => true, limit: MAX_UPLOAD });
+
+  app.get("/upload", (_req, res) => page(res, uploadPage));
+  app.get("/upload/api", (req, res) => {
+    const entry = uploadSession(bearer(req));
+    if (!entry) return void res.status(404).json({ error: "this link expired or its session ended" });
+    const dir = path.join(entry.session.workspace, "uploads");
+    res.json({ files: fs.existsSync(dir) ? fs.readdirSync(dir).sort() : [] });
   });
+  app.put("/upload/api", raw, (req, res) => upload(uploadSession(bearer(req)), req, res));
+  // links issued before the token moved into the fragment
+  app.get("/upload/:t", (req, res) => void res.redirect(302, `/upload#${encodeURIComponent(req.params.t)}`));
+  app.put("/upload/:t", raw, (req, res) => upload(uploadSession(req.params.t), req, res));
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     res.status(err?.status || 500).json({ error: err?.status === 413 ? "too large" : "server error" });

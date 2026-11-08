@@ -19,24 +19,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { unzipSync } from "fflate";
 import { findKey, secretValues } from "../core/keys.js";
+import { CREDENTIAL_PATTERNS } from "../core/secret_patterns.js";
 import type { Policy } from "../core/policy.js";
 import { allPolicies } from "./policyset.js";
 
 const CHUNK = 1 << 22;
 // patterns run on latin1 text (one char per byte), as Python's bytes patterns do
-const GUID = String.raw`[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}`;
-const PLACE = String.raw`(?!\{API_KEY\}|\[REDACTED\]|__[A-Z_]+__)`;
-const BASE_PATTERNS = [
-  new RegExp(String.raw`\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)['"]?\s*[=:]\s*['"]?` + PLACE + String.raw`[A-Za-z0-9-]{16,}`, "g"),
-  new RegExp(String.raw`(?:api[_-]?key|registrationkey|subscription-key|user_token|access_token)['"]?\s*[=:]\s*['"]` +
-    PLACE + String.raw`(?:[A-Za-z0-9-]{16,}|` + GUID + String.raw`)['"]`, "gi"),
-  new RegExp(String.raw`registrationkey['"]?\s*[=:]\s*['"]?` + PLACE + String.raw`[0-9a-f]{20,}`, "gi"),
-  new RegExp(String.raw`[?&](?:api_key|apikey|api-key|registrationkey|token|access_token|user_token|subscription-key)=` +
-    PLACE + String.raw`[A-Za-z0-9-]{16,}`, "gi"),
-  new RegExp(String.raw`[?&]userid=` + GUID, "gi"),
-  new RegExp(String.raw`"ParameterName"\s*:\s*"USERID"\s*,\s*"ParameterValue"\s*:\s*"` + GUID, "gi"),
-  new RegExp(String.raw`authorization['"]?\s*[:=]\s*['"]?(?:bearer\s+|token\s+|basic\s+)?` + PLACE + String.raw`[A-Za-z0-9._-]{30,}`, "gi"),
-];
+const BASE_PATTERNS = CREDENTIAL_PATTERNS;
 const HEX32 = /(?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])/gi;
 
 const asciiLower = (s: string) => s.replace(/[A-Z]+/g, (x) => x.toLowerCase());

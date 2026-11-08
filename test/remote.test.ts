@@ -63,7 +63,7 @@ async function ready(c: Client, source: string): Promise<void> {
 beforeAll(() => {
   isolate();
   process.env.DATA_ANALYST_STATE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "state-"));
-  process.env.DATA_ANALYST_SECRET = "test-secret-" + crypto.randomBytes(8).toString("hex");
+  process.env.DATA_ANALYST_SECRET = "test-secret-" + crypto.randomBytes(16).toString("hex");
   fixtures("cdc");
 });
 afterAll(() => running.forEach((r) => r.close()));
@@ -97,13 +97,26 @@ describe("remote, open", () => {
     const bad = await call(c, "ingest", { source: "cdc", spec: CDC, files: [os.homedir()] });
     expect(bad.code).toBe("invalid_request");
     const b = await call(c, "manual_bundle", { sources: [{ source: "cdc", spec: CDC }] });
-    expect(b.upload_page).toMatch(/\/upload\//);
+    // the token is in the fragment (never sent to a server, so never in an access log); the page carries none
+    expect(b.upload_page).toMatch(new RegExp(`^${r.url}/upload#`));
+    const token = b.upload_page.split("#")[1];
+    const shell = await fetch(b.upload_page);
+    expect(await shell.text()).not.toContain(token);
+    expect(shell.headers.get("content-security-policy")).toMatch(/script-src 'nonce-/);
     expect(b.links["manual_download/INSTRUCTIONS.md"]).toMatch(/\/files\//);
     const idx = JSON.parse(fs.readFileSync(path.join(process.env.DATA_ANALYST_FIXTURES!, "index.json"), "utf8"));
     const f = Object.entries<any>(idx).find(([k]) => k.includes("bi63-dtpu") && k.includes("New+York"))![1];
     const body = fs.readFileSync(path.join(process.env.DATA_ANALYST_FIXTURES!, typeof f === "string" ? f : f.file));
-    const up = await fetch(`${b.upload_page}?&name=ny_causes_2017.json`, { method: "PUT", body });
+    expect((await fetch(`${r.url}/upload/api?name=x.json`, { method: "PUT", body })).status).toBe(404);
+    const up = await fetch(`${r.url}/upload/api?name=ny_causes_2017.json`, { method: "PUT", body,
+      headers: { Authorization: `Bearer ${token}` } });
     expect(up.status).toBe(200);
+    const listed = await (await fetch(`${r.url}/upload/api`, { headers: { Authorization: `Bearer ${token}` } })).json() as any;
+    expect(listed.files).toEqual(["ny_causes_2017.json"]);
+    // a link issued before the token moved into the fragment still opens the page
+    const old = await fetch(`${r.url}/upload/${token}`, { redirect: "manual" });
+    expect(old.status).toBe(302);
+    expect(old.headers.get("location")).toBe(`/upload#${token}`);
     const ing = await call(c, "ingest", { source: "cdc", spec: CDC, files: ["uploads"] });
     expect(ing.status).toBe("ok");
     expect(ing.summary.route).toBe("manual_download");
@@ -148,8 +161,14 @@ describe("remote, OAuth accounts and per-user keys", () => {
     const authz = new URL(meta.authorization_endpoint);
     Object.entries({ client_id: client.client_id, redirect_uri: redirect, response_type: "code", code_challenge: challenge,
       code_challenge_method: "S256", state: "st8" }).forEach(([k, v]) => authz.searchParams.set(k, v));
-    const consent = await (await fetch(authz)).text();
+    const consentRes = await fetch(authz);
+    for (const [h, v] of [["cache-control", "no-store"], ["referrer-policy", "no-referrer"], ["x-frame-options", "DENY"],
+      ["x-content-type-options", "nosniff"]]) expect(consentRes.headers.get(h)).toBe(v);
+    expect(consentRes.headers.get("content-security-policy")).toContain("frame-ancestors 'none'");
+    const consent = await consentRes.text();
     expect(consent).toContain("Test assistant");
+    // the page names where the sign-in goes back to, not only the client's self-chosen name
+    expect(consent).toContain("<code>127.0.0.1:9</code>");
     const pending = /name="pending" value="([^"]+)"/.exec(consent)![1].replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)));
     const made = await (await fetch(`${r.url}/oauth/consent`, { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ pending, account_code: "" }) })).text();
@@ -175,18 +194,38 @@ describe("remote, OAuth accounts and per-user keys", () => {
     const nass = { requests: [{ name: "corn_va", endpoint: "query", params: { commodity_desc: "corn", year__GE: 2012, state_alpha: "va" } }] };
     const missing = await call(c, "fetch", { source: "usda-nass", spec: nass });
     expect(missing.code).toBe("key_missing");
-    expect(missing.keys_url).toMatch(new RegExp(`^${r.url}/keys/`));
+    expect(missing.keys_url).toMatch(new RegExp(`^${r.url}/keys#`));
     expect(missing.fix).toContain(missing.keys_url);
     const [entry] = [...r.sessions.values()];
     const page = entry.session.keysUrl as string;
-    expect(page).toMatch(/\/keys\//);
-    const form = await (await fetch(page)).text();
-    expect(form).toContain("FRED_API_KEY");
-    expect(form).not.toContain(FAKE);
-    const saved = await (await fetch(page, { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ FRED_API_KEY: FAKE }) })).text();
-    expect(saved).toContain("Stored now: FRED_API_KEY");
+    expect(page).toMatch(/\/keys#/);
+    const token = page.split("#")[1];
+    // the page is a shell: no token, no key names until its script asks with the token
+    const shell = await fetch(page);
+    const html = await shell.text();
+    expect(html).toContain("Your API keys");
+    expect(html).not.toContain(token);
+    const csp = shell.headers.get("content-security-policy")!;
+    const nonce = /'nonce-([^']+)'/.exec(csp)![1];
+    expect(html).toContain(`<script nonce="${nonce}">`);
+    expect(shell.headers.get("cache-control")).toBe("no-store");
+    const auth = { Authorization: `Bearer ${token}` };
+    expect((await fetch(`${r.url}/keys/api`)).status).toBe(403);
+    expect((await fetch(`${r.url}/keys/api`, { headers: { Authorization: `Bearer ${token.slice(0, -2)}AA` } })).status).toBe(403);
+    const form = await (await fetch(`${r.url}/keys/api`, { headers: auth })).json() as any;
+    expect(form.vars.map((v: any) => v.env)).toContain("FRED_API_KEY");
+    expect(form.set).toEqual([]);
+    const post = (body: unknown) => fetch(`${r.url}/keys/api`, { method: "POST", body: JSON.stringify(body),
+      headers: { ...auth, "content-type": "application/json" } });
+    expect((await post({ keys: { FRED_API_KEY: [FAKE, FAKE] } })).status).toBe(400);
+    const savedRes = await post({ keys: { FRED_API_KEY: FAKE, NOT_A_PACK_KEY: "x".repeat(20) } });
+    const saved = await savedRes.text();
+    expect(JSON.parse(saved).set).toEqual(["FRED_API_KEY"]);
     expect(saved).not.toContain(FAKE);
+    // a link issued before the token moved into the fragment still opens the page
+    const old = await fetch(`${r.url}/keys/${token}`, { redirect: "manual" });
+    expect(old.status).toBe(302);
+    expect(old.headers.get("location")).toBe(`/keys#${token}`);
     k = await call(c, "check_key", { source: "fred" });
     expect(k.key.configured).toBe(true);
     expect(k.key.where).toBe("your stored key");
@@ -194,6 +233,17 @@ describe("remote, OAuth accounts and per-user keys", () => {
     for (const f of fs.readdirSync(process.env.DATA_ANALYST_STATE_DIR!)) {
       expect(fs.readFileSync(path.join(process.env.DATA_ANALYST_STATE_DIR!, f), "utf8")).not.toContain(FAKE);
     }
+    // a workspace file that holds the key is never handed out, and the model cannot read the state folder
+    const planted = path.join(entry.session.workspace, "planted.txt");
+    fs.writeFileSync(planted, `echoed: ${FAKE}`);
+    expect((await fetch(entry.session.linker(planted))).status).toBe(409);
+    const st = await call(c, "read_file", { path: path.join(process.env.DATA_ANALYST_STATE_DIR!, "accounts.json") });
+    expect(st.code).toBe("invalid_request");
+    const rf = await c.callTool({ name: "read_file", arguments: { path: "planted.txt" } }) as any;
+    expect(rf.content[0].text).not.toContain(FAKE);
+    // the model cannot make the server open its own pages (the keys page)
+    const own = await call(c, "cite", { url: page.replace("#", "/"), id: "own" });
+    expect(own.status).toBe("error");
     // another account does not see it; the account code reconnects to the same keys
     const { tokens: t2 } = await signIn(r.url, meta, "");
     const c2 = await connect(r.url, { Authorization: `Bearer ${t2.access_token}` });

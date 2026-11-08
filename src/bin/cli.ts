@@ -7,6 +7,7 @@
  *   --version | --help
  */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import readline from "node:readline";
 import { Writable } from "node:stream";
@@ -82,8 +83,24 @@ async function setup(source?: string): Promise<number> {
   data.env = { ...(data.env || {}), ...stored };
   fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
   fs.writeFileSync(file, JSON.stringify(data, null, 2), { mode: 0o600 });
+  try {
+    fs.chmodSync(file, 0o600);                  // the mode above applies only to a new file
+  } catch {
+    // a file system without modes (Windows): nothing to tighten
+  }
   console.log(`Stored ${Object.keys(stored).join(" and ")} in ${file}. Your assistant can fetch ${source} now.`);
+  console.log(denyHint(path.dirname(file)));
   return 0;
+}
+
+/** The Claude Code rule that keeps an assistant's own file tools out of the key folder (printed, never written). */
+export function denyHint(dir: string): string {
+  const home = os.homedir();
+  const rel = path.relative(home, dir);
+  const p = !rel.startsWith("..") && !path.isAbsolute(rel) ? `~/${rel.replaceAll("\\", "/")}` : `/${dir.replaceAll("\\", "/")}`;
+  return "The server never shows this key to your assistant. An assistant with its own file tools (Claude Code) could " +
+    "still open the file: to block that, add these to \"permissions\": {\"deny\": [...]} in ~/.claude/settings.json:\n" +
+    `  "Read(${p}/**)", "Edit(${p}/**)"`;
 }
 
 function askVisible(prompt: string): Promise<string> {

@@ -33,6 +33,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Cache } from "./cache.js";
+import { workspaceFile } from "./guard.js";
 import { Client, DataError } from "./http.js";
 import type { Pack, Row, Spec, SpecRequest, Tables } from "./packs.js";
 import { parsePyJson, pyJsonDumps, pyQuote, pyStr, pyUrlencode, sleep } from "./py.js";
@@ -165,7 +166,11 @@ export function expandForEach(spec: Spec, base: string): Spec {
       reqs.push(r);
       continue;
     }
-    const csvPath = path.isAbsolute(fe.csv || "") ? fe.csv : path.join(base, fe.csv || "");
+    if (!workspaceFile(fe.csv || "", base)) {
+      throw new DataError(`request ${JSON.stringify(r.name)}: for_each csv ${JSON.stringify(fe.csv)} is outside the workspace ` +
+        "(give the path, relative to the workspace, of a table a fetch or compute wrote)", "bad_request");
+    }
+    const csvPath = path.resolve(base, fe.csv || "");
     if (!fs.existsSync(csvPath)) {
       throw new DataError(`request ${JSON.stringify(r.name)}: for_each csv ${JSON.stringify(fe.csv)} not found (fetch that ` +
         "table first; the path is relative to the workspace)", "bad_request");

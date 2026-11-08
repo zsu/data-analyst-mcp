@@ -100,7 +100,13 @@ export function privateAddress(addr: string): boolean {
   return true;                                             // not an address at all: refuse
 }
 
-/** Refuse a URL whose host is or resolves to a private address. */
+const OWN_HOSTS = new Set<string>();
+/** Hosted mode: this server's own public host, whose pages (the keys page, signed links) are never opened. */
+export function setOwnHost(publicUrl: string): void {
+  OWN_HOSTS.add(new URL(publicUrl).hostname.toLowerCase());
+}
+
+/** Refuse a URL whose host is or resolves to a private address, or is this server itself. */
 export async function checkPublicHost(url: string): Promise<void> {
   let host: string;
   try {
@@ -108,6 +114,7 @@ export async function checkPublicHost(url: string): Promise<void> {
   } catch {
     throw new CiteError(`not a valid URL: ${url}`);
   }
+  if (OWN_HOSTS.has(host.toLowerCase())) throw new CiteError("refused: this server's own pages are never opened", url);
   if (net.isIP(host)) {
     if (privateAddress(host)) throw new CiteError(`refused: ${host} is a private or loopback address; this server opens public pages only`, url);
     return;
@@ -137,7 +144,7 @@ const guardedLookup: net.LookupFunction = (hostname, options, cb) => {
 };
 
 /** GET with redirects followed by hand, every connection through the guarded lookup (remote mode). */
-async function guardedGet(url: string, timeout: number): Promise<{ status: number; body: Buffer; contentType: string }> {
+export async function guardedGet(url: string, timeout: number): Promise<{ status: number; body: Buffer; contentType: string }> {
   let cur = url;
   for (let hop = 0; hop < 6; hop++) {
     await checkPublicHost(cur);

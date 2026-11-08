@@ -135,7 +135,9 @@ foreach ($line in (Lines $Items)) {
         Write-Host "saved $file"
     } else {
         if (Test-Path -LiteralPath $part) { Remove-Item -LiteralPath $part -Force }
+        # masked before it is shortened, so no part of a key or an extra value (an email) is left at the cut
         if ($key) { $msg = $msg.Replace($key, '[KEY]') }
+        if ($extras) { foreach ($x in $extras.Split(',')) { if ($Vals[$x]) { $msg = $msg.Replace($Vals[$x], "[$x]") } } }
         if ($msg.Length -gt 300) { $msg = $msg.Substring(0, 300) }
         if ($optional -eq '1') {
             Write-Host "not available (optional, HTTP $code): $file"

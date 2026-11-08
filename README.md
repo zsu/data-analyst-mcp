@@ -236,8 +236,30 @@ its `source_brief`.
 
 The files are read again on each lookup, so a key stored during a session works without a restart.
 
-No key value ever appears in a tool result: every output is redacted, and a test checks this. The hosted server
-reads keys only from its environment and from each user's encrypted store (see [docs/hosting.md](docs/hosting.md)).
+What the server guarantees, and tests check:
+
+- **No key in any result.** Every tool result, error, prompt and resource is redacted for every key the server can
+  find, in every form it can be echoed in (as is, URL-encoded, JSON-escaped).
+- **No tool reads a key file.** A path the model names (`ingest`, a `for_each` table, `report.json` paths,
+  `read_file`) is refused when it is one of the files above, a `.env` file, `~/.ssh`, `~/.aws` or a similar place,
+  or when the file holds a key.
+- **No key in a written file.** A key an agency echoes is replaced with `[REDACTED]` in every file written to the
+  workspace (the result says which), and never reaches the download cache or a replication package.
+- **A key goes only to its agency:** never along a next-page link to another site, never from https to http. On a
+  redirect to another host, a key in the URL or a header is dropped; a key in the request body (BLS) follows a
+  307/308 redirect wherever it points.
+
+**What the server cannot stop:** an assistant that has its own file or shell tools (Claude Code does) can open the
+key files itself. `setup` prints the Claude Code rule that blocks this; add it to the `permissions.deny` list of your
+`~/.claude/settings.json`, for example:
+
+```json
+{ "permissions": { "deny": ["Read(~/.config/data-analyst/**)", "Edit(~/.config/data-analyst/**)"] } }
+```
+
+Prefer `setup` (or a secret manager through `<VAR>_FILE`) over the `env` block of `~/.claude/settings.json`: that
+file is one Claude Code reads anyway. The hosted server reads keys only from its environment and from each user's
+encrypted store (see [docs/hosting.md](docs/hosting.md)).
 
 ## Hosted mode (claude.ai connector)
 

@@ -10,7 +10,8 @@
  * - a token bucket per host (rps, burst), optional per-minute error and byte budgets (BEA locks keys out).
  * - retries on 429/500/502/503/504 and network errors with jittered exponential backoff; Retry-After is honoured
  *   up to MAX_RETRY_AFTER seconds, beyond that the call fails at once (kind "rate", with retryAfter set).
- * - redirects are followed by hand so credentials never go to another host or from https to http.
+ * - redirects are followed by hand: query and header credentials never go to another host or from https to http; a
+ *   key in a JSON body (BLS) follows a 307/308 redirect wherever it points.
  * - checkError(status, body) catches APIs that answer HTTP 200 with an error.
  * - every request is recorded (credential-free URL, status, bytes, sha256) in the call's trail (context.ts).
  * - DATA_ANALYST_FIXTURES=<dir> serves responses from <dir>/index.json (offline tests;
@@ -182,6 +183,13 @@ export function recordFixture(d: string, method: string, r: Response, body: Buff
 
 const BUCKETS = new Map<string, TokenBucket>();
 
+/** The site of a host: its last two labels, without the port (api.bls.gov and data.bls.gov are one site). */
+export function site(netloc: string): string {
+  const host = netloc.toLowerCase().replace(/^.*@/, "").replace(/:\d+$/, "").replace(/\.$/, "");
+  if (/^\[.*\]$/.test(host) || /^\d+(\.\d+){3}$/.test(host)) return host;
+  return host.split(".").slice(-2).join(".");
+}
+
 export type ClientOptions = {
   name: string; auth?: keys.Auth; key?: string | null; rps?: number; burst?: number; retries?: number;
   timeout?: number; deadline?: number; checkError?: ((status: number, body: Buffer) => string | null | undefined) | null;
@@ -205,7 +213,7 @@ export class Client {
   base: string; name: string; auth: keys.Auth; retries: number; timeout: number; deadline: number;
   retryHtml400: number; checkError: ClientOptions["checkError"]; headers: Record<string, string>; ua: string;
   errorBudget: Budget; byteBudget: Budget; bucket: TokenBucket; key: string | null; keySource: string | null;
-  cache: ResponseCache | null;
+  cache: ResponseCache | null; keyHome: ReturnType<typeof urlsplit> | null = null;
 
   constructor(baseUrl = "", o: ClientOptions) {
     this.base = baseUrl.replace(/\/+$/, "");
@@ -249,8 +257,22 @@ export class Client {
     return [a.placement === "query" ? a.param || "api_key" : null, ...Object.keys(a.extra || {})].filter(Boolean) as string[];
   }
 
+  /**
+   * May a key go to this URL? Only to the agency's own site (the base URL's, or the first keyed URL's for a client
+   * without a base): a next-page link or any other URL taken from a response may point anywhere, and a key must
+   * never follow it there. Never from https down to http.
+   */
+  keyAllowed(url: string): boolean {
+    const to = urlsplit(url);
+    this.keyHome ??= urlsplit(this.base || url);
+    const home = this.keyHome;
+    if (home.scheme === "https" && to.scheme !== "https") return false;
+    return site(to.netloc) === site(home.netloc);
+  }
+
   private withKey(url: string, headers: Record<string, string>, body: any): [string, Record<string, string>, any] {
     const a = this.auth;
+    if (!this.keyAllowed(url)) return [url, headers, body];
     for (const [param, env] of Object.entries(a.extra || {})) {
       const [v] = keys.findKey(env);
       if (v) url += (url.includes("?") ? "&" : "?") + pyUrlencode({ [param]: v });
@@ -281,7 +303,8 @@ export class Client {
       await resp.arrayBuffer().catch(() => undefined);
       const next = new URL(loc, cur).toString();
       const from = urlsplit(cur), to = urlsplit(next);
-      if (from.netloc.toLowerCase() !== to.netloc.toLowerCase() || (from.scheme === "https" && to.scheme !== "https")) {
+      const leaves = from.netloc.toLowerCase() !== to.netloc.toLowerCase() || (from.scheme === "https" && to.scheme !== "https");
+      if (leaves) {
         headers = Object.fromEntries(Object.entries(headers).filter(([k]) => !secretHeaders.has(k.toLowerCase())));
         if (secretParams.size && to.query) {
           const q = parseQsl(to.query).filter(([k]) => !secretParams.has(k.toLowerCase()));
@@ -292,6 +315,7 @@ export class Client {
         method = "GET";
         body = undefined;
       }
+      // a 307/308 keeps the method and the body, and a key sent in the body follows the redirect wherever it points
     }
     throw new DataError(`${this.name}: too many redirects`, "network");
   }
@@ -327,9 +351,11 @@ export class Client {
     if (data) hdrs["Content-Type"] ??= "application/json";
     if (process.env.DATA_ANALYST_FIXTURES) return this.finish(fixture(method, shown, recBody), method, ok, !!o.allow404, recBody);
     if (keys.restricted()) throw new DataError(`${this.name}: DATA_ACCESS_FORCE=restricted: network access is switched off`, "network");
-    // the cache key is the credential-free URL (and the body hash): no secret is ever part of it
-    const cacheKey = this.cache ? `${method} ${shown}` + (recBody ? ` ${sha(recBody).slice(0, 16)}` : "") : "";
-    const hit = this.cache ? this.cache.get(cacheKey) : null;
+    // the cache key is the credential-free URL (and the body hash): no secret is ever part of it. A response fetched
+    // with a user's own stored key (hosted mode) is never cached: the cache is shared by every user of the server
+    const cache = this.keySource === "your stored key" ? null : this.cache;
+    const cacheKey = cache ? `${method} ${shown}` + (recBody ? ` ${sha(recBody).slice(0, 16)}` : "") : "";
+    const hit = cache ? cache.get(cacheKey) : null;
     if (hit) {
       const r = new Response(200, hit[1]?.headers || {}, hit[0], shown, true);
       return this.finish(r, method, ok, !!o.allow404, recBody);
@@ -357,9 +383,10 @@ export class Client {
       if (ok.includes(r.status) || (o.allow404 && r.status === 404)) {
         this.byteBudget.spend(r.body.length);
         const done = this.finish(r, method, ok, !!o.allow404, recBody);
-        if (this.cache && r.status === 200) {
+        if (cache && r.status === 200) {
           const ct = r.headers["content-type"];
-          this.cache.put(cacheKey, r.body, { url: shown, headers: ct ? { "content-type": ct } : {} });
+          // an echoed key never reaches the cache folder
+          cache.put(cacheKey, keys.scrubBytes(r.body)[0], { url: shown, headers: ct ? { "content-type": ct } : {} });
         }
         return done;
       }

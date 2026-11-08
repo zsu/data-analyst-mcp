@@ -66,7 +66,13 @@ export const provider: OAuthServerProvider = {
   async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
     const pending = sign({ k: "consent", client: client.client_id, redirect: params.redirectUri, state: params.state,
       challenge: params.codeChallenge, scopes: params.scopes, resource: params.resource?.toString() }, CODE_S);
-    res.status(200).type("html").send(consentPage(client.client_name || "An assistant", pending));
+    let host = "";
+    try {
+      host = new URL(params.redirectUri).host;
+    } catch {
+      // the SDK checked the URI against the client's registered ones
+    }
+    res.status(200).type("html").send(consentPage(client.client_name || "An assistant", pending, host));
   },
 
   async challengeForAuthorizationCode(_client, code): Promise<string> {
