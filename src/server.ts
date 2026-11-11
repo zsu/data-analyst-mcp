@@ -17,7 +17,7 @@ import { TOOLS as ANALYSIS_TOOLS } from "./analysis/tools.js";
 import { TOOLS as REPORT_TOOLS } from "./report/tools.js";
 import { TOOLS as WORKSPACE_TOOLS } from "./workspace_tool.js";
 
-export const VERSION = "0.8.0";
+export const VERSION = "0.9.0";
 
 /** Local mode only (hosted sessions keep their workspace): how to get back an earlier workspace. */
 const REOPEN_LINE = `If files an earlier call made are missing (the server restarted in a new workspace), open_workspace lists the
