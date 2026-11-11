@@ -1,0 +1,4 @@
+{
+ "GET https://pubfs-rma.fpac.usda.gov/pub/Web_Data_Files/Reinsurance_Reports/standard_reinsurance_agreement_reports/2024_Standard_Reinsurance_Report_National.xls": "r001.bin",
+ "GET https://pubfs-rma.fpac.usda.gov/pub/Web_Data_Files/Reinsurance_Reports/standard_reinsurance_agreement_reports/2024_Standard_Reinsurance_Report_State.xls": "r002.bin"
+}

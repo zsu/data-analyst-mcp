@@ -73,7 +73,7 @@ describe("policies", () => {
       if (probs.length) bad[id] = probs;
     }
     expect(bad).toEqual({});
-    expect(packIds().length).toBe(76);
+    expect(packIds().length).toBe(77);
   });
   it("every playbook opens its spec examples with a JSON spec", () => {
     const bad: string[] = [];

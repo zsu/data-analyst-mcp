@@ -43,7 +43,7 @@ owns its pack data, code and recorded fixtures.
 
 ## Status
 - **Done (0.3):**
-  - 76 packs: 64 adapters in `src/adapters/`, 6 deep packs in `src/deep/`, 5 on endpoints.json alone, and
+  - 77 packs: 65 adapters in `src/adapters/`, 6 deep packs in `src/deep/`, 5 on endpoints.json alone, and
     census-geocoder;
   - published-table reading in `src/core/tabular.ts`: `$tsv`, `header_row: 0` (every line numbered),
     `header_lines` with `carry` (stacked headers), zip `member` and `prefer`, `skip_sheets`; header order is kept
@@ -126,6 +126,9 @@ owns its pack data, code and recorded fixtures.
       - census brief: 40k → 20.5k chars.
     - Not done: a background (worker) path for a long compute. No recipe on the measured run came near the
       60 s client limit.
+  - 0.9 adds rma (USDA Risk Management Agency): the crop insurance Summary of Business by year, state, county,
+    crop, plan and coverage level (`coverage`) and the reinsurance results (`reinsurance`). Headerless delimited
+    files are read with `delimiter` and `columns` on the endpoint (`tsvRecords`). Tests: test/packs/rma.test.ts.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**

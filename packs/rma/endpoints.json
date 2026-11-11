@@ -1,0 +1,44 @@
+{
+ "base_url": "https://pubfs-rma.fpac.usda.gov",
+ "timeout": 240,
+ "endpoints": {
+  "coverage": {
+   "path": "/pub/Web_Data_Files/Summary_of_Business/state_county_crop/sobcov_{year}.zip",
+   "method": "GET",
+   "description": "Federal crop insurance Summary of Business by commodity year, state, county, crop, insurance plan, coverage category, delivery type and coverage level: policies, units, insured quantity, liability, total premium, premium subsidy, indemnity and loss ratio, dollars (RMA, 1989 on; updated weekly for open years).",
+   "params": {
+    "year": {"in": "path", "required": true, "desc": "commodity year, 1989 on (the current and next years are partial)"},
+    "state": {"in": "spec", "desc": "keep these states (USPS abbreviation or 2-digit FIPS code; a list works)"},
+    "county": {"in": "spec", "desc": "keep these 3-digit county FIPS codes (999 is All Other Counties)"},
+    "commodity": {"in": "spec", "desc": "keep these commodities (name as published, e.g. Corn, Soybeans, or the 4-digit RMA code; case-insensitive)"},
+    "plan": {"in": "spec", "desc": "keep these insurance plans (abbreviation, e.g. RP, YP, RPHPE, APH, or the plan code)"},
+    "coverage_category": {"in": "spec", "desc": "keep A (buy-up), C (CAT), E (existing coverage policy) or L (limited)"},
+    "delivery_type": {"in": "spec", "desc": "keep RBUP, RCAT (reinsured, sold by companies), FBUP or FCAT (federal)"}
+   },
+   "records": "$zip:*.txt",
+   "delimiter": "|",
+   "columns": ["Commodity Year", "Location State Code", "Location State Abbreviation", "Location County Code",
+    "Location County Name", "Commodity Code", "Commodity Name", "Insurance Plan Code", "Insurance Plan Name Abbreviation",
+    "Coverage Category", "Delivery Type", "Coverage Level", "Policies Sold Count", "Policies Earning Premium Count",
+    "Policies Indemnified Count", "Units Earning Premium Count", "Units Indemnified Count", "Quantity Type",
+    "Net Reported Quantity", "Endorsed/Companion Acres", "Liability Amount", "Total Premium Amount", "Subsidy Amount",
+    "State/Private Subsidy", "Additional Subsidy", "EFA Premium Discount", "Indemnity Amount", "Loss Ratio"],
+   "paging": {"type": "none"},
+   "max_rows": 2000000
+  },
+  "reinsurance": {
+   "path": "/pub/Web_Data_Files/Reinsurance_Reports/standard_reinsurance_agreement_reports/{year}_Standard_Reinsurance_Report_{level}.xls",
+   "method": "GET",
+   "description": "Standard Reinsurance Agreement results by reinsurance year and fund (A assigned, C commercial), national or by state: gross liability, premium and indemnity, and the companies' retained liability, premium, indemnity and net underwriting gain or loss, dollars (RMA, 2014 on).",
+   "params": {
+    "year": {"in": "path", "required": true, "desc": "reinsurance year, 2014 on (the latest is not final)"},
+    "level": {"in": "path", "required": true, "desc": "National (totals by fund) or State (each state by fund)"},
+    "state": {"in": "spec", "desc": "keep these states (USPS abbreviation) in the State report"}
+   },
+   "records": "$xls",
+   "header_row": 7,
+   "paging": {"type": "none"},
+   "max_rows": 10000
+  }
+ }
+}

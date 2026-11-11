@@ -264,6 +264,11 @@
    "adapter.py"
   ]
  },
+ "rma": {
+  "python": [
+   "adapter.py"
+  ]
+ },
  "sba": {
   "python": [
    "adapter.py"

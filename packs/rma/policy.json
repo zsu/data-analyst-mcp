@@ -1,0 +1,94 @@
+{
+  "id": "rma",
+  "title": "USDA RMA federal crop insurance: Summary of Business (liability, premium, subsidy, indemnity) and reinsurance results",
+  "agency": "U.S. Department of Agriculture, Risk Management Agency",
+  "depth": "standard",
+  "domains": [
+    "agriculture",
+    "federal spending",
+    "insurance"
+  ],
+  "keywords": [
+    "rma",
+    "risk management agency",
+    "crop insurance",
+    "federal crop insurance",
+    "federal crop insurance corporation",
+    "fcic",
+    "premium subsidy",
+    "crop insurance subsidy",
+    "indemnity",
+    "indemnities",
+    "loss ratio",
+    "insured acres",
+    "liability",
+    "summary of business",
+    "revenue protection",
+    "yield protection",
+    "catastrophic coverage",
+    "coverage level",
+    "standard reinsurance agreement",
+    "underwriting gains",
+    "approved insurance providers"
+  ],
+  "questions": [
+    "federal crop insurance premium subsidies by state or crop",
+    "crop insurance indemnities and loss ratios over time",
+    "how much would raising the premium subsidy rate cost",
+    "insured acres and liability for corn in Iowa",
+    "crop insurance companies' underwriting gains",
+    "coverage levels farmers buy by crop"
+  ],
+  "homepage": "https://www.rma.usda.gov/tools-reports/summary-of-business",
+  "terms_url": "https://pubfs-rma.fpac.usda.gov/pub/Web_Data_Files/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "signup_url": null,
+    "echoes_key": false
+  },
+  "limits": {
+    "rps": 1,
+    "burst": 2,
+    "max_rows": 2000000
+  },
+  "routes": {
+    "api": {
+      "base": "https://pubfs-rma.fpac.usda.gov",
+      "probe": "https://pubfs-rma.fpac.usda.gov/pub/Web_Data_Files/Summary_of_Business/state_county_crop/",
+      "hosts": [
+        "pubfs-rma.fpac.usda.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://pubfs-rma.fpac.usda.gov/pub/Web_Data_Files/Summary_of_Business/state_county_crop/ (sobcov_<year>.zip) or .../Reinsurance_Reports/standard_reinsurance_agreement_reports/ (<year>_Standard_Reinsurance_Report_National.xls or _State.xls), download the file and upload it with ingest."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Open crop years are updated every week; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "RMA data are U.S. government works in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Agriculture, Risk Management Agency, {dataset}, pubfs-rma.fpac.usda.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which money? Total premium is the full premium; the subsidy is the federal share of it (farmer-paid premium = total premium - subsidy - state/private subsidy - additional subsidy - EFA discount); indemnities are losses paid. Program cost also includes delivery expense reimbursements and companies' underwriting gains (reinsurance), which the Summary of Business does not hold. Default: say which of these the number is.",
+    "Crop year or fiscal year? The Summary of Business is by commodity (crop) year, and reinsurance results by reinsurance year (July-June); federal outlays are by fiscal year (budget: treasury, omb). Default: crop year, said as such, and never added to fiscal-year outlays without saying so."
+  ],
+  "formats": [
+    "csv"
+  ],
+  "aliases": [
+    "RMA",
+    "FCIC",
+    "Summary of Business",
+    "crop insurance"
+  ]
+}

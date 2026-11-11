@@ -33,6 +33,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Economic forecasts and forecast benchmarks | philfed | fred, usda-outlook | SPF and Greenbook (5-year lag) forecasts; USDA WASDE and baseline for agriculture. |
 | Household balance sheets, consumer credit, bank lending surveys | fed-board | fred, nyfed | Fed Board Z.1, G.19, SLOOS, SCF; FRED for single-series histories. |
 | Farm income, crop supply and demand outlook | usda-outlook | usda-nass | WASDE projections, ERS farm income forecasts, USDA baseline; NASS for survey estimates. |
+| Federal crop insurance cost: premium subsidies, indemnities, liability, companies' underwriting gains | rma | usda-nass, treasury | Crop year (reinsurance year for gains), not fiscal year; FCIC outlays by fiscal year are in treasury and omb. |
 | Immigration: green cards, naturalizations, refugees, enforcement | dhs-ohss | census | OHSS Yearbook by fiscal year; counts are events, not people. |
 | Veterans: population, benefits, VA spending by place | va | census, usaspending | VetPop is a projection model; GDX for expenditures by state and district. |
 | Student loans: portfolio, delinquency, repayment plans, volume by school | fsa | college-scorecard, treasury | FSA data center (.xls); recipients are not additive across programs. |
@@ -181,6 +182,7 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | pbgc | standard | none | pensions, retirement, social insurance | PBGC Pension Insurance Data Tables (single-employer and multiemployer programs) |
 | philfed | standard | none | macroeconomic forecasts, economic outlook, inflation expectations, real-time data | Philadelphia Fed Real-Time Data Research Center (Survey of Professional Forecasters, Greenbook/Tealbook, Livingston Survey, Real-Time Data Set) |
 | regulations | standard | optional (DATA_GOV_API_KEY) | legislation, regulation, rulemaking | Regulations.gov (API v4) |
+| rma | standard | none | agriculture, federal spending, insurance | USDA RMA federal crop insurance: Summary of Business (liability, premium, subsidy, indemnity) and reinsurance results |
 | sba | standard | none | small business, federal lending, federal spending | SBA loan data: 7(a) and 504 loans (FOIA loan-level files), activity reports, disaster loans |
 | sec | standard | none | finance, corporations, securities | SEC EDGAR (XBRL financial data, filings, full-text search) |
 | senate-lobbying | standard | optional (LDA_API_KEY) | legislation, lobbying, influence | Lobbying Disclosure (LDA.gov API) |

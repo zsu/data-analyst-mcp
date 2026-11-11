@@ -2,9 +2,9 @@
 
 An MCP server for official U.S. government data. It asks the user the questions that change a headline
 number before fetching anything, gets the data from the agency at call time, packages it (CSV, data
-dictionary, provenance) and cites every result. It covers 76 sources.
+dictionary, provenance) and cites every result. It covers 77 sources.
 
-> **Status: 0.3.** All 76 sources work, along with the analysis and audit tools, hosted mode (streamable HTTP, a
+> **Status: 0.3.** All 77 sources work, along with the analysis and audit tools, hosted mode (streamable HTTP, a
 > claude.ai connector) and per-user keys. The test suite runs offline on recorded fixtures.
 > One gap remains: usda-fna's three PDF endpoints need a PDF text reader, and return `not_supported`.
 > Four sources are manual only, because their sites refuse scripts: cdc-wonder, hud-ahar, foreign-assistance and

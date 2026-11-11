@@ -356,9 +356,19 @@ const delimited = (text: string, delimiter: string): (string | null)[][] =>
 /**
  * A tab-delimited text table (title lines above the header are common) as dicts: header at ep.header_row
  * (1-based, default 1), header_row 0 for every record numbered (rawGrid), or header_lines for a stacked header.
+ * ep.delimiter sets another one-character delimiter ("|"); ep.columns names the fields of a file with no header
+ * row, in order (a layout document's element list), and blank lines are skipped.
  */
 export function tsvRecords(ep: any, text: string): Row[] {
-  return gridRecords({ ...ep, sheet: 1 }, { tsv: delimited(text, "\t") });
+  const grid = delimited(text, ep.delimiter ? String(ep.delimiter) : "\t");
+  if (Array.isArray(ep.columns)) {
+    const cols: string[] = ep.columns.map(String);
+    const body = grid.filter((r) => r.some((v) => v !== null && v !== ""));
+    const wide = body.find((r) => r.length > cols.length);
+    if (wide) throw new DataError(`a record has ${wide.length} fields, the layout names ${cols.length} (the layout changed?)`, "api");
+    return withColumns(body.map((r) => Object.fromEntries(cols.map((c, i) => [c, r[i] ?? null]))), cols);
+  }
+  return gridRecords({ ...ep, sheet: 1 }, { tsv: grid });
 }
 
 /**
