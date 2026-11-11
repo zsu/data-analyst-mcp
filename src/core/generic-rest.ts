@@ -281,7 +281,7 @@ export function records(ep: any, resp: Body): any[] {
       const part = low.endsWith(".xlsx") ? sheetRecords(ep, z[n]) : low.endsWith(".xls") ? xlsRecords(ep, z[n])
         : low.endsWith(".txt") ? tsvRecords(ep, decodeText(z[n])) : csvRecords(ep, decodeText(z[n]));
       for (const c of columnsOf(part) || []) if (!order.includes(c)) order.push(c);
-      rows.push(...part);
+      for (const r of part) rows.push(r);   // not push(...part): a member can hold more rows than the stack takes
     }
     return order.length ? withColumns(rows, order) : rows;
   }

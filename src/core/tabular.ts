@@ -275,7 +275,7 @@ export function gridRecords(ep: any, sheets: Record<string, (string | null)[][]>
  * records are kept, so an adapter can read stacked blocks and a reader can find the header lines.
  */
 export function rawGrid(grid: (string | null)[][]): Row[] {
-  const width = Math.max(0, ...grid.map((r) => r.length));
+  const width = grid.reduce((w, r) => Math.max(w, r.length), 0);
   const rows = grid.map((r, i) => ({ row: i + 1, ...Object.fromEntries(r.map((v, j) => [`col${j + 1}`, v ?? ""])) }));
   return withColumns(rows, ["row", ...Array.from({ length: width }, (_, j) => `col${j + 1}`)]);
 }
@@ -310,7 +310,7 @@ export function publishedTable(grid: (string | null)[][], lines: number[], carry
   if (!["top", "all", "none"].includes(carry)) throw new DataError(`carry must be top, all or none (got ${JSON.stringify(carry)})`, "bad_request");
   const last = lines[lines.length - 1];
   if (grid.length < last) throw new DataError(`header_lines ${lines.join(",")}: the table has only ${grid.length} lines`, "bad_request");
-  const width = Math.max(0, ...grid.map((r) => r.length));
+  const width = grid.reduce((w, r) => Math.max(w, r.length), 0);
   const clean = (v: unknown) => (v === null || v === undefined ? "" : String(v).split(/\s+/).filter(Boolean).join(" "));
   const levels = lines.map((ln, k) => {
     const cells = Array.from({ length: width }, (_, i) => clean(grid[ln - 1][i]));
