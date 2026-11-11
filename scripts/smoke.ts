@@ -39,5 +39,5 @@ const r = await call("fetch", { source: "cdc", force: true, spec: { description:
     params: { dataset: "leading_death", $where: "state = 'Vermont' AND year = '2017'", $order: "deaths DESC" } }] } });
 console.log(`live fetch (${Date.now() - t0} ms):`, r.isError ? r.data : {
   status: r.data.status, rows: r.data.summary.tables[0].rows, first: r.data.summary.tables[0].preview_csv.slice(0, 2),
-  citation: r.data.citation.text, request: r.data.citation.request_urls[0] });
+  citation: r.data.citation.text, request: r.data.requests?.[0]?.url });
 await client.close();
