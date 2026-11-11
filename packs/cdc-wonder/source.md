@@ -17,7 +17,7 @@ origin, as grouped in the query.
 |---|---|---|
 | `export` | the uploaded WONDER export as published: one column per Group By field (name and code columns, e.g. `Year`, `Year Code`), then `Deaths`, `Population`, `Crude Rate`, `Age Adjusted Rate` ... as chosen; `Notes` (`Total` on total rows) | `database` (required: the WONDER database name), `query` (the query in words) |
 
-## Spec example
+## Spec examples
 ```json
 {"description": "Age-adjusted suicide death rates by state, 2023 (WONDER export)",
  "requests": [{"name": "suicide_2023", "endpoint": "export",

@@ -75,6 +75,20 @@ describe("policies", () => {
     expect(bad).toEqual({});
     expect(packIds().length).toBe(76);
   });
+  it("every playbook opens its spec examples with a JSON spec", () => {
+    const bad: string[] = [];
+    for (const id of packIds()) {
+      const md = fs.readFileSync(path.join(PACKS_DIR, id, "source.md"), "utf8");
+      const sec = md.split(/^## Spec examples\s*$/m)[1]?.split(/^## /m)[0] ?? "";
+      const m = sec.match(/```json\s*\n([\s\S]*?)```/);
+      try {
+        if (!m || typeof JSON.parse(m[1]) !== "object") bad.push(id);
+      } catch {
+        bad.push(id);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
   it("citations fill the retrieval date", async () => {
     const [cdc] = (await allPacks()).filter((p) => p.id === "cdc");
     const c = pol.citation(cdc.policy, "api", { retrieved: "2026-11-07" });

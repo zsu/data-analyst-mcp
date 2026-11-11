@@ -24,7 +24,7 @@ The file name is on the table's entry in https://www.uscourts.gov/statistics-rep
   June 30, 2026.
 - The date part is not zero-padded the same way in every series: copy it.
 
-## Spec example
+## Spec examples
 ```json
 {"description": "Bankruptcy filings by chapter and district, 12 months to September 30, 2026 (table F-2)",
  "requests": [{"name": "f2", "endpoint": "table",

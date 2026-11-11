@@ -20,7 +20,7 @@ Files of 2026-11-07 (as of September 30, 2026): `uploaded_resources/FOIA_7a_FY19
 `..._FY2000_FY2009_...`, `..._FY2010_FY2019_...`, `..._FY2020_Present_...`, `uploaded_resources/FOIA_504_FY1991_FY2009_asof_260930`,
 `..._504_FY2010_Present_...`. The as-of part changes each quarter: run `list_files` first.
 
-## Spec example
+## Spec examples
 ```json
 {"description": "504 loans in Vermont approved FY2024-2025",
  "requests": [{"name": "files", "endpoint": "list_files", "params": {"search": "7(a) & 504 FOIA"}},

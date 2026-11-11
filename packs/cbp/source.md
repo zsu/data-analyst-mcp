@@ -23,7 +23,7 @@ Columns:
 - By state (`-state`): Fiscal Year, Month Grouping, Month (abbv), Land Border Region, State, Demographic,
   Citizenship, Title of Authority, Encounter Count.
 
-## Spec example
+## Spec examples
 ```json
 {"description": "Southwest border encounters by month, FY2024 to date (file of November 2026)",
  "requests": [{"name": "files", "endpoint": "list_files"},
