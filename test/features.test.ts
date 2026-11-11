@@ -145,6 +145,7 @@ describe("library API", () => {
     const f = sdk.registerFacts(out, { pack: "cdc", add: [{ name: "deaths", table: "exhibits/all.csv",
       where: { cause_name: "All causes" }, column: "deaths", fmt: "num:0", label: "Deaths, NY 2017" }] } as any);
     expect(f.facts[0]).toMatchObject({ name: "deaths", text: "155,358" });
+    expect(f.facts_total).toBe(1);
     let e: any;
     try {
       await sdk.fetchSource("no-such", CDC, { out });

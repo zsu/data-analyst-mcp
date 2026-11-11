@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { withProgress } from "./core/context.js";
 import { GUIDE_DIR, mode, PACKS_DIR } from "./core/env.js";
 import { redact, redactDeep, rememberServerSecrets, withKeyProvider, withPackScope } from "./core/keys.js";
 import { knownKeys } from "./report/scan_secrets.js";
@@ -17,7 +18,7 @@ import { TOOLS as ANALYSIS_TOOLS } from "./analysis/tools.js";
 import { TOOLS as REPORT_TOOLS } from "./report/tools.js";
 import { TOOLS as WORKSPACE_TOOLS } from "./workspace_tool.js";
 
-export const VERSION = "0.9.0";
+export const VERSION = "0.10.0";
 
 /** Local mode only (hosted sessions keep their workspace): how to get back an earlier workspace. */
 const REOPEN_LINE = `If files an earlier call made are missing (the server restarted in a new workspace), open_workspace lists the
@@ -87,9 +88,58 @@ function remoteView(s: Session, out: any): any {
   return view;
 }
 
+/**
+ * Tools whose success hint (next) is the same text on every call: it is sent the first time in a session, then left
+ * out. A different text (another branch, a problem) is always sent, and so is every hint of the other tools (the
+ * gate, the audits, the report build).
+ */
+const HINT_ONCE = new Set(["find_sources", "record_decisions", "fetch", "ingest", "compute", "facts", "write_table"]);
+
+/** The result without the fixed hints this session already got (the links note of any tool, next of HINT_ONCE). */
+function withoutRepeats(s: Session, tool: string, out: any): any {
+  if (!out || typeof out !== "object" || Array.isArray(out)) return out;
+  const drop: string[] = [];
+  const once = (k: string) => {
+    if (typeof out[k] !== "string" || !out[k]) return;
+    if (s.hintsSent.has(out[k])) drop.push(k);
+    else s.hintsSent.add(out[k]);
+  };
+  once("links_note");
+  if (HINT_ONCE.has(tool) && out.status === "ok") once("next");
+  return drop.length ? Object.fromEntries(Object.entries(out).filter(([k]) => !drop.includes(k))) : out;
+}
+
 /** A result as the text the client gets: every string redacted, then the JSON text once more. */
-function render(s: Session, out: unknown): string {
-  return redact(JSON.stringify(redactDeep(remoteView(s, out))));
+function render(s: Session, out: unknown, tool = ""): string {
+  return redact(JSON.stringify(redactDeep(withoutRepeats(s, tool, remoteView(s, out)))));
+}
+
+/** How often a call that is still running tells a client that asked for progress so (ms). */
+export const PROGRESS_BEAT_MS = { value: 10_000 };
+
+/**
+ * Run a tool call for a client that asked for progress (a progressToken on the request): each step the call
+ * reports (core/context.ts progress) and a line every PROGRESS_BEAT_MS while it runs go out as
+ * notifications/progress, so the client sees the call is alive. They go to the client, never into the result.
+ */
+async function reported<T>(extra: any, token: string | number, fn: () => Promise<T>): Promise<T> {
+  let n = 0;
+  const started = Date.now();
+  const send = (message: string) => {
+    try {
+      void Promise.resolve(extra.sendNotification({ method: "notifications/progress",
+        params: { progressToken: token, progress: ++n, message: redact(message).slice(0, 200) } })).catch(() => undefined);
+    } catch {
+      /* a client that is gone */
+    }
+  };
+  const beat = setInterval(() => send(`still working (${Math.round((Date.now() - started) / 1000)} s)`), PROGRESS_BEAT_MS.value);
+  beat.unref?.();
+  try {
+    return await withProgress(send, fn);
+  } finally {
+    clearInterval(beat);
+  }
 }
 
 const LAST_RESORT = JSON.stringify({ status: "error", code: "unexpected", message: "internal error (details withheld)",
@@ -107,14 +157,14 @@ export function callPacks(a: any): string[] {
   return [...ids];
 }
 
-function wrap<A>(s: Session, fn: Handler<A>) {
-  return async (a: A) => {
+function wrap<A>(s: Session, fn: Handler<A>, tool = "") {
+  return async (a: A, extra?: any) => {
     const call = async () => {
       let text: string;
       let isError = false;
       try {
         const out = s.keyProvider ? await withKeyProvider(s.keyProvider, () => fn(s, a)) : await fn(s, a);
-        text = render(s, out);
+        text = render(s, out, tool);
       } catch (e) {
         isError = true;
         try {
@@ -128,7 +178,9 @@ function wrap<A>(s: Session, fn: Handler<A>) {
     };
     // a pack's own redaction patterns (keys its API echoes) apply only inside calls for that pack
     const packs = callPacks(a);
-    const r = packs.length ? await withPackScope(packs, call) : await call();
+    const run = async () => (packs.length ? withPackScope(packs, call) : call());
+    const token = extra?._meta?.progressToken;
+    const r = token !== undefined && typeof extra?.sendNotification === "function" ? await reported(extra, token, run) : await run();
     s.lastSeen = Date.now();
     return r;
   };
@@ -179,7 +231,7 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { topic: z.enum(["workflow", "routing", "compute", "report", "style", "report_patterns", "report_schema"]).optional(),
       section: z.union([z.string(), z.array(z.string())]).optional().describe("A section title (or its number) of the topic") },
     annotations: READ,
-  }, wrap(s, T.guide));
+  }, wrap(s, T.guide, "guide"));
 
   server.registerTool("find_sources", {
     title: "Find sources",
@@ -189,7 +241,7 @@ export function createServer(session = new Session()): McpServer {
       "source). Without one: every source with its agency, key need and example questions.",
     inputSchema: { question: z.string().optional() },
     annotations: READ,
-  }, wrap(s, T.findSources));
+  }, wrap(s, T.findSources, "find_sources"));
 
   server.registerTool("source_brief", {
     title: "Source brief",
@@ -201,7 +253,7 @@ export function createServer(session = new Session()): McpServer {
       sections: z.array(z.string()).optional().describe("Only these playbook sections, by title, e.g. [\"Access\"]"),
       full: z.boolean().optional().describe("The whole playbook") },
     annotations: READ,
-  }, wrap(s, T.sourceBrief));
+  }, wrap(s, T.sourceBrief, "source_brief"));
 
   server.registerTool("request_schema", {
     title: "Request schema",
@@ -210,7 +262,7 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { source: z.string(), names: z.array(z.string()).optional(), search: z.string().optional(),
       detail: z.boolean().optional().describe("Long column lists and catalogs in full (default: shortened)") },
     annotations: READ,
-  }, wrap(s, T.requestSchema));
+  }, wrap(s, T.requestSchema, "request_schema"));
 
   server.registerTool("record_decisions", {
     title: "Record decisions",
@@ -231,7 +283,7 @@ export function createServer(session = new Session()): McpServer {
         "answer that are not statistics); dollar_basis_ok {reason}; rounding_ties_ok [{fact, reason}]"),
     },
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  }, wrap(s, T.recordDecisions));
+  }, wrap(s, T.recordDecisions, "record_decisions"));
 
   server.registerTool("check_key", {
     title: "Check key",
@@ -241,7 +293,7 @@ export function createServer(session = new Session()): McpServer {
       "the key was not tested) or unclear. Sources without a live check say tested: false. live: false skips the call.",
     inputSchema: { source: z.string(), live: z.boolean().optional().describe("false: only say whether a key is set up (no call)") },
     annotations: { readOnlyHint: true, openWorldHint: true },
-  }, wrap(s, T.checkKey));
+  }, wrap(s, T.checkKey, "check_key"));
 
   server.registerTool("fetch", {
     title: "Fetch data",
@@ -252,7 +304,7 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { source: z.string(), spec: specSchema, force: z.boolean().optional().describe("Fetch again even if the workspace has this exact request") },
     // it writes the fetched files into the workspace (not read-only), never anything else; the same spec gives the same files
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
-  }, wrap(s, T.fetchData));
+  }, wrap(s, T.fetchData, "fetch"));
 
   server.registerTool("manual_bundle", {
     title: "Manual download bundle",
@@ -262,7 +314,7 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { sources: z.array(z.object({ source: z.string(), spec: specSchema })).min(1),
       reason: z.string().optional().describe("Why the user downloads by hand (shown in INSTRUCTIONS.md)") },
     annotations: { ...WRITE, idempotentHint: true },
-  }, wrap(s, T.manualBundle));
+  }, wrap(s, T.manualBundle, "manual_bundle"));
 
   server.registerTool("ingest", {
     title: "Ingest downloaded files",
@@ -271,7 +323,7 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { source: z.string(), spec: specSchema,
       files: z.array(z.string()).min(1).describe("Paths of the downloaded files or their folder") },
     annotations: { ...WRITE, idempotentHint: true },
-  }, wrap(s, T.ingest));
+  }, wrap(s, T.ingest, "ingest"));
 
   server.registerTool("read_file", {
     title: "Read workspace file",
@@ -281,13 +333,13 @@ export function createServer(session = new Session()): McpServer {
     inputSchema: { path: z.string().describe("Relative to the workspace, or a path a fetch result listed"),
       max_bytes: z.number().optional(), match: z.string().optional().describe('e.g. "^(COW|ESR|POWSP),"') },
     annotations: READ,
-  }, wrap(s, T.readFile));
+  }, wrap(s, T.readFile, "read_file"));
 
   // open_workspace reopens folders on this computer: hosted sessions keep theirs, so it is not listed there
   for (const t of [...ANALYSIS_TOOLS, ...REPORT_TOOLS, ...(hosted ? [] : WORKSPACE_TOOLS)]) {
     server.registerTool(t.name, { title: t.title, description: t.description, inputSchema: t.inputSchema,
       annotations: { ...(t.annotations ?? WRITE), ...(t.annotations?.readOnlyHint ? {} : { destructiveHint: false }) } },
-      wrap(s, t.handler));
+      wrap(s, t.handler, t.name));
   }
 
   server.registerPrompt("analyze", {

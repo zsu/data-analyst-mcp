@@ -50,8 +50,8 @@ describe("answer workflow, end to end", () => {
       { name: "heart_share_ny_2017", table: "exhibits/ny_2017.csv", where: { cause_name: "Heart disease" }, column: "share",
         fmt: "pct:1", label: "Heart disease share of deaths, New York, 2017" }] });
     expect(r.status, JSON.stringify(r)).toBe("ok");
-    const deathsText = r.facts?.find?.((f: any) => f.name === "deaths_ny_2017")?.text ?? "155,358";
-    const shareText = r.facts?.find?.((f: any) => f.name === "heart_share_ny_2017")?.text;
+    const deathsText = r.summary.added.deaths_ny_2017.text;
+    const shareText = r.summary.added.heart_share_ny_2017.text;
     expect(shareText).toMatch(/%$|percent/);
 
     r = await call("write_table", { path: "exhibits/benchmark.csv",

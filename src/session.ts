@@ -28,6 +28,8 @@ export class Session {
   /** Packs whose request_schema spec_format was already sent (it is the same every call). */
   specFormatSent = new Set<string>();
   schemas = new Map<string, Set<string>>();
+  /** Fixed hint texts (a result's next, the links note) already sent: each is sent once per session. */
+  hintsSent = new Set<string>();
   /** Remote mode: the signed-in account whose stored keys this session uses (OAuth subject). */
   account: string | null = null;
   /** Remote mode: a download URL for a file in the workspace (null in local mode: paths are shown). */

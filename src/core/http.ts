@@ -21,7 +21,7 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { trail } from "./context.js";
+import { progress, trail } from "./context.js";
 import * as keys from "./keys.js";
 import { parseQsl, parsePyJson, pyJsonDumps, pyUrlencode, sleep, urlsplit, urlunsplit } from "./py.js";
 
@@ -323,6 +323,8 @@ export class Client {
   private record(r: Response, method: string, body: Buffer | null): void {
     trail().push({ method, url: r.url, status: r.status, bytes: r.body.length, sha256: sha(r.body), cached: r.cached,
       fetched_at: new Date().toISOString().replace(/\.\d{3}Z$/, "+00:00") });
+    // r.url is the credential-free URL; the query stays out of the progress line
+    progress(`${this.name}: ${method} ${r.url.split("?")[0]} -> ${r.status}${r.cached ? " (cached)" : ""}`);
     const rec = process.env.DATA_ANALYST_RECORD;
     if (rec && !process.env.DATA_ANALYST_FIXTURES) recordFixture(rec, method, r, body);
   }
@@ -397,7 +399,9 @@ export class Client {
           throw new DataError(`${this.name}: HTTP ${r.status}, Retry-After ${wait.toFixed(0)}s exceeds ${MAX_RETRY_AFTER}s; ` +
             "wait and run again", "rate", r.status, Math.ceil(wait));
         }
-        await sleep((wait ?? Client.backoff(attempt)) * 1000);
+        const pause = wait ?? Client.backoff(attempt);
+        progress(`${this.name}: HTTP ${r.status}, trying again in ${Math.ceil(pause)} s`);
+        await sleep(pause * 1000);
         continue;
       }
       if (r.status === 400 && attempt < this.retryHtml400 && htmlPage(r.body)) {

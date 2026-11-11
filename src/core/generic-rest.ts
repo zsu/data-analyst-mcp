@@ -33,6 +33,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Cache } from "./cache.js";
+import { progress } from "./context.js";
 import { workspaceFile } from "./guard.js";
 import { Client, DataError } from "./http.js";
 import type { Pack, Row, Spec, SpecRequest, Tables } from "./packs.js";
@@ -426,6 +427,7 @@ async function fetchPatiently(c: Client, ep: any, params: Record<string, unknown
     } catch (e) {
       if (wait === null || !(e instanceof DataError) || e.kind !== "http" || ![500, 502, 503, 504].includes(e.status ?? 0) ||
         process.env.DATA_ANALYST_FIXTURES) throw e;
+      progress(`the source is busy (HTTP ${e.status}); trying again in ${wait} s`);
       await sleep(wait * 1000);
     }
   }
@@ -470,7 +472,8 @@ export async function fetchSpec(pack: Pack, spec: Spec, client?: Client): Promis
   const tables: Tables = {};
   const notes: string[] = [];
   const miss = new Misses();
-  for (const r of spec.requests) {
+  for (const [i, r] of spec.requests.entries()) {
+    if (spec.requests.length > 1) progress(`${pack.id}: request ${i + 1} of ${spec.requests.length} (${r.name})`);
     const [ep, params0, probs] = resolve(pack, r);
     if (probs.length) throw new DataError(probs.join("; "), "bad_request");
     let params = params0;

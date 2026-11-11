@@ -15,6 +15,7 @@ import os from "node:os";
 import path from "node:path";
 import v8 from "node:v8";
 import { Worker } from "node:worker_threads";
+import { progress } from "../core/context.js";
 import { rerunWorkspace, type RerunResult } from "./rerun.js";
 
 /** How long a tool call waits for the rerun before answering "in progress" (seconds; under the 60 s clients wait). */
@@ -155,6 +156,7 @@ export async function awaitRerun(workspace: string, until = Date.now() + rerunWa
   const job = startRerun(workspace);
   if (!job) return rerunWorkspace(path.resolve(workspace));
   if (job.finished === undefined) {
+    progress("replaying the exhibit recipes (the rerun)");
     const left = until - Date.now();
     let timer: NodeJS.Timeout | undefined;
     await Promise.race([job.done, new Promise<void>((r) => (timer = setTimeout(r, Math.max(0, left))))]);

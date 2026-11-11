@@ -34,21 +34,39 @@ export function computeTool(s: Session, a: any) {
   };
 }
 
-export function factsTool(s: Session, a: any) {
+/** The facts tool. `all`: list every fact on every call (the library, which has no earlier results to look back on). */
+export function factsTool(s: Session, a: any, all = false) {
+  const file = path.join(s.workspace, "facts.json");
+  const read = (): Record<string, any> => {
+    try {
+      return JSON.parse(fs.readFileSync(file, "utf8"));
+    } catch {
+      return {};                                   // none yet
+    }
+  };
+  // a call that changes nothing lists the facts and writes nothing (a rewritten facts.json would start the rerun over)
+  if (!a?.add?.length && !a?.derived?.length && !a?.remove?.length) {
+    const saved = read();
+    const names = Object.keys(saved);
+    return { status: "ok", summary: { added: {} },
+      facts: names.map((n) => ({ name: n, value: saved[n]?.value ?? null, text: saved[n]?.text ?? null })),
+      facts_total: names.length, files: fs.existsSync(file) ? [file] : [], notes: [] };
+  }
   try {
     const r = registerFacts(s.workspace, a);
     // each fact as the answer must print it (the audit matches the text exactly)
-    let saved: Record<string, any> = {};
-    try {
-      saved = JSON.parse(fs.readFileSync(path.join(s.workspace, "facts.json"), "utf8"));
-    } catch { /* none yet */ }
-    // compact: each fact's value and the text the model quotes, and only value/text/pack for the ones just added (the
-    // rest of each record is its own input echoed back)
-    const facts = (r.names as string[]).map((n) => ({ name: n, value: saved[n]?.value ?? null, text: saved[n]?.text ?? null }));
+    const saved = read();
+    // compact: value, text (what the model quotes) and pack of the facts this call registered (the rest of each
+    // record is its own input echoed back). The facts of earlier calls are unchanged and were returned then: they
+    // are listed again only by a call that registers none (no arguments lists every fact).
     const added = Object.fromEntries(Object.entries(r.added).map(([n, rec]: [string, any]) =>
       [n, { value: rec?.value ?? null, text: rec?.text ?? null, ...(rec && "pack" in rec ? { pack: rec.pack } : {}) }]));
-    return { status: "ok", summary: { added }, facts, files: [r.file], notes: r.notes,
-      next: "Quote each fact's text in the answer exactly (or {{name}} / {{name|fmt}} in report.json)." };
+    const names = r.names as string[];
+    const listed = Object.keys(added).length && !all ? {}
+      : { facts: names.map((n) => ({ name: n, value: saved[n]?.value ?? null, text: saved[n]?.text ?? null })) };
+    return { status: "ok", summary: { added }, ...listed, facts_total: names.length, files: [r.file], notes: r.notes,
+      next: "Quote each fact's text in the answer exactly (or {{name}} / {{name|fmt}} in report.json). facts with no " +
+        "arguments lists every fact registered so far." };
   } catch (e) {
     if (e instanceof FactError) {
       throw fail("invalid_request", e.message, "Fix the facts the message names; nothing was saved. Each table fact is " +
@@ -150,7 +168,8 @@ export const TOOLS: ToolDef[] = [
       "a derivation: written as an expression over fact names (\"deaths_2024 / deaths_2020 - 1\") it is computed here, so " +
       "leave value out; a prose derivation needs value. Refuses empty cells and NaN, an ambiguous pack, unknown formats and " +
       "units slips (a share given to pct100, millions given to usd_b ...); nothing is saved when any fact is refused. " +
-      "Returns each fact with its text (the value as the answer prints it: quote it exactly) and notes (rounding ties). " +
+      "Returns this call's facts with their text (the value as the answer prints it: quote it exactly) and notes " +
+      "(rounding ties); with no arguments, every fact registered so far. " +
       "fmt codes: raw, num:0, pct:1 (share 0-1), pct100:1 (already percent), pp:1, pp100:1, bp:0, dollars:0, thousands:-3, " +
       "millions:1, billions:1, usd_b:1 (value in dollars), usd_b_scaled:1 (already billions), ratio:2, index:1, year; " +
       "prefixes signed:, abs:, from_millions: ...; suffix :abs. pack is inferred from data/<id>/ or the exhibit's lineage.",

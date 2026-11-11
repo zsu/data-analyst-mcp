@@ -1,6 +1,6 @@
 {
   "name": "data-analyst-mcp",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "MCP server for U.S. government data: asks the critical questions first, fetches from the agency, cites every number.",
   "type": "module",
   "bin": {

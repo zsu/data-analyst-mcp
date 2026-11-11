@@ -20,3 +20,20 @@ export function withRun<T>(fn: () => T): T {
 export function trail(): SourceRecord[] {
   return (store.getStore() ?? fallback).sources;
 }
+
+type Reporter = (message: string) => void;
+const reporter = new AsyncLocalStorage<Reporter>();
+
+/** Run fn with a progress reporter: the server gives one to a tool call whose client asked for progress. */
+export function withProgress<T>(report: Reporter, fn: () => T): T {
+  return reporter.run(report, fn);
+}
+
+/** Say what a long call is doing now. Nothing happens when the client did not ask for progress; never throws. */
+export function progress(message: string): void {
+  try {
+    reporter.getStore()?.(message);
+  } catch {
+    /* a progress line never fails the call */
+  }
+}

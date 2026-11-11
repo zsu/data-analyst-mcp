@@ -114,7 +114,8 @@ export const compute = safe((out: string, args: analysisCompute.ComputeArgs) =>
 
 /** Register the numbers an answer cites (facts.json); the facts tool's result, with each fact's text to quote. */
 export const registerFacts = safe((out: string, args: Parameters<typeof analysisFacts.registerFacts>[1]) =>
-  analysisTools.factsTool(at(out), args) as { status: string; facts: { name: string; value: unknown; text: string }[] });
+  analysisTools.factsTool(at(out), args, true) as { status: string; facts: { name: string; value: unknown; text: string }[];
+    facts_total: number });
 
 /** benchmark.csv, sensitivity.csv or published/<name>.csv. */
 export const writeTable = safe((out: string, args: Parameters<typeof writeMethodTable>[1]) =>

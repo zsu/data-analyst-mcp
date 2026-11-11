@@ -129,6 +129,20 @@ owns its pack data, code and recorded fixtures.
   - 0.9 adds rma (USDA Risk Management Agency): the crop insurance Summary of Business by year, state, county,
     crop, plan and coverage level (`coverage`) and the reinsurance results (`reinsurance`). Headerless delimited
     files are read with `delimiter` and `columns` on the endpoint (`tsvRecords`). Tests: test/packs/rma.test.ts.
+  - 0.10 adds (tests: test/progress-hints.test.ts):
+    - A fixed success hint (`next`) is sent once per session for the tools in `HINT_ONCE` (`src/server.ts`,
+      `Session.hintsSent`): find_sources, record_decisions, fetch, ingest, compute, facts, write_table. A different
+      text is always sent. The gate, the audits and build_report keep every hint. The hosted `links_note` is also
+      sent once.
+    - `facts` returns the facts of the call in `summary.added`, and `facts_total`. A call that changes nothing
+      lists every fact and writes nothing (so it does not restart the rerun). The library's `registerFacts` still
+      lists every fact on each call.
+    - Progress: a call whose client sends a `progressToken` gets `notifications/progress` (`reported` in
+      `src/server.ts`, `progress` in `src/core/context.ts`): each HTTP request (URL without its query), each request
+      of a multi-request fetch, each retry wait, the rerun wait, and a line every `PROGRESS_BEAT_MS` (10 s) while
+      the call runs. Progress never enters a result.
+    - Not done: concurrent requests inside one fetch. They run in sequence; 38 adapters have their own fetch and
+      40 have request hooks, and the effect on each agency's rate limit cannot be checked offline.
 - **Checks.** Every test file passes and `npm run typecheck` is clean.
   - test/e2e.test.ts runs the whole answer workflow through MCP to AUDIT PASSED.
 - **Open:**
