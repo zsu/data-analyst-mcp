@@ -490,6 +490,8 @@ describe("answer gate", () => {
       "| Notes | 37.3% |\n| **Total** | 100.0% |\n\nAll 100 percent of 9 lines.")).toEqual(["382", "37.3%", "100 percent", "9"]);
     expect(toks("EO 14296 and Executive Orders 14134 to 14371, E.O. 13810 and Proclamation 10886 were 238 orders.")).toEqual(["238"]);
     expect(toks("the per-1,000 ratio is 19.4")).toEqual(["19.4"]);
+    expect(toks("IRS Publication 1304 and Pub. 16, Forms 1040 and 990-PF, Form 1099-K and Circular 230 show " +
+      "1,377 returns; 4 forms cost 12 percent")).toEqual(["1,377", "4", "12 percent"]);
     expect(toks("IPUMS CPS extract 30: workers 16 and over, ages 25 to 64, children under 15 who live alone, " +
       "aged 65 were 9.7 percent; under 15 percent; under 50 bills")).toEqual(["9.7 percent", "15 percent", "50"]);
     expect(toks("Adults 25+; NIPA Handbook ch. 13 and sec. 4.2; beyond 1.645 standard errors; 48.3 percent")).toEqual(["48.3 percent"]);

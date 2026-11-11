@@ -101,6 +101,9 @@ const EXEMPT: Rule[] = [
   R_(String.raw`(?i)\b(?:versions?|vintages?|editions?|waves?|releases?)\s+\d+(?:\s*(?:,|,?\s*(?:and|or))\s*\d+)*\b` +
     String.raw`(?!\s*(?:%|percent))`),                                        // version 1; file versions 4, 4 and 3
   R_(String.raw`(?i)\bcongress(?:es)?\s*(?:=\s*)?\d{2,3}\b(?!\s*(?:%|percent))`),     // congress 118
+  // agency document numbers: Publication 1304, Pub. 16, Forms 1040 and 990-PF, Circular 230
+  R_(String.raw`\b(?:Publications?|Pubs?\.|Forms?|Circulars?|Bulletins?)\s+(?:No\.\s*)?\d+(?:-[A-Z]{1,3})?` +
+    String.raw`(?:\s*(?:,|,?\s*(?:and|or))\s*\d+(?:-[A-Z]{1,3})?)*\b(?!\s*(?:%|percent))`),
   R_(String.raw`(?i)\b(?:foot)?notes?\s+\d+[a-z]?(?:\s*(?:,|and|to|–|-)\s*\d+[a-z]?)*\b`),   // footnote 5
   R_(String.raw`(?i)(?:=|equals?)\s*100\b(?!\s*(?:%|percent))`),             // an index base: (U.S. = 100), 2017=100
   // a confidence level is a convention, not a statistic: "90 percent margin of error", "significant at 90%"
