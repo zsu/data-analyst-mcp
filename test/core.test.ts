@@ -102,5 +102,14 @@ describe("routing", () => {
     expect((await route("unemployment rate by month"))[0].source).toBe("bls");
     expect((await route("leading causes of death by state"))[0].source).toBe("cdc");
     expect((await route("FEMA disaster declarations in Vermont")).map((r) => r.source)).toContain("fema");
+    expect((await route("GDP price index"))[0].source).toBe("bea");
+    expect((await route("PCE price index monthly"))[0].source).toBe("bea");
+  });
+
+  it("says when a source that requires a key has a keyless route", async () => {
+    const hits = await route("GDP price index and state population", 8);
+    expect(hits.find((h) => h.source === "bea")).toMatchObject({ auth: "required", keyless: expect.stringContaining("bulk route") });
+    expect(hits.find((h) => h.source === "census")).toBeDefined();
+    expect(hits.find((h) => h.source === "census")!.keyless).toBeUndefined();
   });
 });

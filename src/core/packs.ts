@@ -207,7 +207,12 @@ function vocab(P: any): Vocab {
 const subset = (a: Set<string>, b: Set<string>) => [...a].every((x) => b.has(x));
 
 export type RouteHit = { source: string; title: string; score: number; depth: string; auth: string; matched: string[];
-  ready: boolean };
+  ready: boolean; keyless?: string };
+
+/** For a source whose key is required: the routes that work without one (a key-free API or bulk files). */
+export function keylessRoutes(p: Pack): string[] {
+  return p.policy.auth.required === "required" ? ["api_keyless", "bulk"].filter((k) => k in (p.policy.routes || {})) : [];
+}
 
 /** Rank packs for a question by weighted keyword overlap (a hint, not a decision). */
 export async function route(question: string, limit = 6): Promise<RouteHit[]> {
@@ -248,7 +253,8 @@ export async function route(question: string, limit = 6): Promise<RouteHit[]> {
     if (q.has(p.id) || question.toLowerCase().includes(p.id.replaceAll("-", " "))) score += 5;
     if (score) {
       ranked.push({ source: p.id, title: p.policy.title, score: Math.round(score * 10) / 10, depth: p.policy.depth,
-        auth: p.policy.auth.required, matched: why.slice(0, 4), ready: !p.missing.length });
+        auth: p.policy.auth.required, matched: why.slice(0, 4), ready: !p.missing.length,
+        ...(keylessRoutes(p).length ? { keyless: `${keylessRoutes(p).join(" and ")} route, no key needed (source_brief key_only lists what needs the key)` } : {}) });
     }
   }
   return ranked.sort((a, b) => b.score - a.score).slice(0, limit);

@@ -14,7 +14,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Market interest rates, yield curve | treasury-yields | fred | Treasury par yields; FRED for long histories and policy rates. Average rates on outstanding debt are in treasury. |
 | GDP, income, consumption, PCE inflation | bea | fred | BEA is the producer; FRED for vintages (ALFRED). |
 | Jobs, unemployment, payrolls, JOLTS | bls | dol, fred | BLS CPS/CES/JOLTS; DOL weekly UI claims; FRED for long series. |
-| Consumer prices, inflation, real dollars | bls | bea, fred | CPI-U from BLS; PCE price index from BEA; name the deflator. |
+| Consumer prices, inflation, real dollars | bls | bea, fred | CPI-U from BLS; PCE and GDP price indexes (the GDP deflator) from BEA, the producer (FRED republishes them); name the deflator. |
 | Wages and earnings | bls | ipums, opm | BLS ECI, CES, OEWS; IPUMS CPS/ACS for distributions by group (weighted, with SEs). |
 | Federal workforce: headcount, hires, separations, pay | opm | bls, ipums, usaspending | OPM FWD (coverage gaps: USPS, intelligence agencies; pay withheld for ~45% of records); BLS ECI or IPUMS for private comparisons. |
 | Demographics, poverty, income by place | census | ipums, bea | ACS tables with margins of error; ACS PUMS (census) or IPUMS microdata for custom tabulations; BEA regional income. |

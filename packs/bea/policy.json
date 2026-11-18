@@ -42,7 +42,11 @@
     "gdi",
     "share of gdp", "wages per full-time equivalent", "compensation per employee",
     "percent of gdp",
-    "gdp deflator"
+    "gdp deflator",
+    "gdp price index",
+    "pce price index",
+    "chain-type price index",
+    "implicit price deflator"
   ],
   "questions": [
     "real GDP growth by quarter",
