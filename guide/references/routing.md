@@ -83,6 +83,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Federal mineral and energy revenue, disbursements to states, production on federal lands | onrr | eia, treasury | Revenue by where the resource is; offshore and Native American revenue have no state. |
 | Border encounters by month, region, citizenship | cbp | dhs-ohss | Monthly files replaced each month; encounters are events, not people. |
 | SBA 7(a) and 504 loans by state, industry, lender | sba | usaspending, fdic | Loan-level FOIA files, streamed and filtered. |
+| Credit program losses: SBA charge-off rates by approval cohort | sba | omb | sba `cohorts` totals a whole FOIA file per ApprovalFY; omb Federal Credit Supplement for the subsidy and default assumptions. |
 | Long histories, many indicators at once, data vintages | fred | the producing agency's pack | FRED re-publishes; cite the original source too; ALFRED for as-of vintages. |
 
 ## Use instead

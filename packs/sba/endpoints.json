@@ -29,6 +29,23 @@
    "records": "$csv",
    "paging": {"type": "none"},
    "max_rows": 1000000
+  },
+  "cohorts": {
+   "path": "/sites/default/files/{file}.csv",
+   "method": "GET",
+   "description": "Totals per approval fiscal year (cohort) of one FOIA file, optionally by more columns (group_by), summed while reading with the same filters as foia (none needed): loan counts by status, GrossApproval and SBAGuaranteedApproval dollars (all loans and disbursed loans; 504 files have no guaranty column), and GrossChargeOffAmount. One row per ApprovalFY x group.",
+   "params": {
+    "file": {"in": "path", "raw": true, "required": true, "desc": "the file's path under /sites/default/files without .csv, from list_files, e.g. uploaded_resources/FOIA_7a_FY2010_FY2019_asof_260930"},
+    "state": {"in": "spec", "desc": "keep loans with this ProjectState (two letters; a list works)"},
+    "fiscal_year": {"in": "spec", "desc": "keep these ApprovalFY values (a year or a list)"},
+    "from": {"in": "spec", "desc": "first ApprovalFY to keep"},
+    "to": {"in": "spec", "desc": "last ApprovalFY to keep"},
+    "naics": {"in": "spec", "desc": "keep NaicsCode values starting with these digits (e.g. 72; a list works)"},
+    "group_by": {"in": "spec", "desc": "extra grouping columns, any of BorrState, ProjectState, ProcessingMethod, naics2 (first 2 NAICS digits), NaicsCode, BusinessType, BusinessAge, FixedorVariableInterestInd, TermInMonths, RevolverStatus, SoldSecMrktInd, loan_status_code"}
+   },
+   "records": "$csv",
+   "paging": {"type": "none"},
+   "max_rows": 200000
   }
  }
 }
