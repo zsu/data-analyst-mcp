@@ -1,15 +1,6 @@
-# data-analyst-mcp
+# US Economic Analysis MCP Server (`data-analyst-mcp`)
 
-An MCP server for official U.S. government data. It asks the user the questions that change a headline
-number before fetching anything, gets the data from the agency at call time, packages it (CSV, data
-dictionary, provenance) and cites every result. It covers 77 sources.
-
-> **Status: 0.3.** All 77 sources work, along with the analysis and audit tools, hosted mode (streamable HTTP, a
-> claude.ai connector) and per-user keys. The test suite runs offline on recorded fixtures.
-> One gap remains: usda-fna's three PDF endpoints need a PDF text reader, and return `not_supported`.
-> Four sources are manual only, because their sites refuse scripts: cdc-wonder, hud-ahar, foreign-assistance and
-> cpsc's NEISS endpoint (`manual_bundle` gives the links, `ingest` reads the saved file).
-> The package is not published to npm yet.
+A **Model Context Protocol (MCP) server for U.S. economic analysis** and **official U.S. government data** across 77 federal agencies (FRED, BLS, BEA, Census, Treasury, Congress.gov, FDA, CDC, EPA, and more).
 
 ## Install
 
