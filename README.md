@@ -66,7 +66,7 @@ DATA_GOV_API_KEY = "your-key"
 
 Leave out the `env` block if you have no keys, or if you store them with `setup` (step 2).
 
-**Until the package is published to npm**, build it and point the client at the build:
+**To run from a clone instead of npm**, build it and point the client at the build:
 
 ```bash
 git clone https://github.com/zsu/data-analyst-mcp.git
@@ -283,3 +283,13 @@ npm run smoke
 
 - `npm test` runs offline, on recorded fixtures.
 - `npm run smoke` drives the built server over stdio and makes one live fetch.
+
+## Related
+
+- [data-analyst](https://github.com/zsu/data-analyst): the same U.S. government data workflow as an Agent Skill
+  (Claude Code, Claude Desktop, claude.ai, Codex), for assistants that load skills rather than MCP servers.
+- [rsi-skill](https://github.com/zsu/rsi-skill): recursive self-improvement for Claude Code and Agent Skills.
+- Project page: [zsu.github.io/data-analyst-mcp](https://zsu.github.io/data-analyst-mcp/). npm:
+  [data-analyst-mcp](https://www.npmjs.com/package/data-analyst-mcp).
+
+MIT licensed; see [LICENSE](LICENSE).

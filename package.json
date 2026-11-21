@@ -1,6 +1,7 @@
 {
   "name": "data-analyst-mcp",
   "version": "0.11.0",
+  "mcpName": "io.github.zsu/data-analyst-mcp",
   "description": "MCP server for U.S. government data: asks the critical questions first, fetches from the agency, cites every number.",
   "type": "module",
   "bin": {
@@ -51,6 +52,10 @@
     "./package.json": "./package.json"
   },
   "license": "MIT",
+  "author": "zsu",
+  "homepage": "https://zsu.github.io/data-analyst-mcp/",
+  "bugs": { "url": "https://github.com/zsu/data-analyst-mcp/issues" },
   "repository": { "type": "git", "url": "git+https://github.com/zsu/data-analyst-mcp.git" },
-  "keywords": ["mcp", "model-context-protocol", "government-data", "data.gov","census", "bea"]
+  "keywords": ["mcp", "mcp-server", "model-context-protocol", "government-data", "economic-data", "economics",
+    "open-data", "data.gov", "fred", "bls", "bea", "census", "treasury", "cdc", "claude", "ai-agents"]
 }

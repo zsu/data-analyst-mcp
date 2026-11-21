@@ -1,0 +1,59 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.zsu/data-analyst-mcp",
+  "title": "US Government Data Analyst",
+  "description": "U.S. government economic data (FRED, BLS, BEA, Census, Treasury and more), cited and audited.",
+  "repository": {
+    "url": "https://github.com/zsu/data-analyst-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://zsu.github.io/data-analyst-mcp/",
+  "version": "0.11.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "data-analyst-mcp",
+      "version": "0.11.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DATA_GOV_API_KEY",
+          "description": "Free api.data.gov key (Congress.gov, FDA, FEC, GovInfo and 6 more); optional",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "FRED_API_KEY",
+          "description": "Free FRED key for search, vintages and GeoFRED; optional",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "BLS_API_KEY",
+          "description": "Free BLS key for higher limits and annual averages; optional",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "BEA_API_KEY",
+          "description": "Free BEA key for the API-only datasets; optional",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "CENSUS_API_KEY",
+          "description": "Free Census key; without it Census offers a manual download; optional",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

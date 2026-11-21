@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>US Government Data MCP Server: FRED, BLS, BEA, Census</title>
+  <meta name="description" content="Open-source Model Context Protocol (MCP) server for official U.S. government data from 77 federal sources: FRED, BLS, BEA, Census, Treasury, CDC, FDA, EPA and more. Every number is cited and audited.">
+  <meta name="keywords" content="MCP server, Model Context Protocol, US government data, economic data, FRED, BLS, BEA, Census, Treasury, data.gov, Claude, Cursor, open data">
+  <link rel="canonical" href="https://zsu.github.io/data-analyst-mcp/">
+  <!-- Google Search Console: paste the HTML-tag verification line for https://zsu.github.io/data-analyst-mcp/ here, e.g.
+       <meta name="google-site-verification" content="..."> -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="US Government Data MCP Server: FRED, BLS, BEA, Census">
+  <meta property="og:description" content="Open-source Model Context Protocol (MCP) server for official U.S. government data from 77 federal sources: FRED, BLS, BEA, Census, Treasury, CDC, FDA, EPA and more. Every number is cited and audited.">
+  <meta property="og:url" content="https://zsu.github.io/data-analyst-mcp/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": "data-analyst-mcp", "description": "Open-source Model Context Protocol (MCP) server for official U.S. government data from 77 federal sources: FRED, BLS, BEA, Census, Treasury, CDC, FDA, EPA and more. Every number is cited and audited.", "url": "https://zsu.github.io/data-analyst-mcp/", "codeRepository": "https://github.com/zsu/data-analyst-mcp", "programmingLanguage": "TypeScript", "license": "https://opensource.org/licenses/MIT", "author": {"@type": "Person", "name": "zsu", "url": "https://github.com/zsu"}, "keywords": "MCP server, Model Context Protocol, US government data, economic data, FRED, BLS, BEA, Census, Treasury, data.gov, Claude, Cursor, open data"}</script>
+  <style>
+:root{--bg:#fbfbf9;--fg:#1d1f22;--muted:#5b6068;--line:#e3e3de;--card:#ffffff;--accent:#1f5fbf;--code:#f2f2ee}
+@media (prefers-color-scheme:dark){:root{--bg:#141619;--fg:#e8e9eb;--muted:#a0a6ae;--line:#2c3036;--card:#1b1e22;--accent:#7fb0ff;--code:#22262b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:780px;margin:0 auto;padding:48px 16px 64px}
+header p.kicker{margin:0 0 8px;color:var(--muted);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 16px}
+h2{font-size:22px;margin:40px 0 12px}
+p.lede{font-size:19px;color:var(--fg);margin:0 0 20px}
+a{color:var(--accent)}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 8px}
+.links a{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);text-decoration:none;font-weight:600}
+.links a.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em}
+ul,ol{padding-left:22px}
+li{margin:4px 0}
+.tags{color:var(--muted);font-size:15px}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="kicker">MCP server · npm · MIT</p>
+      <h1>U.S. government economic data MCP server</h1>
+      <p class="lede"><code>data-analyst-mcp</code> is an open-source <strong>Model Context Protocol (MCP) server</strong> that gives Claude, Cursor, VS Code, Codex and any other MCP client access to <strong>official U.S. government data</strong> from 77 federal sources, including FRED, BLS, BEA, Census, Treasury, CDC, FDA and EPA. It asks the questions that change the answer first, fetches straight from the agency, and cites every number.</p>
+    </header>
+    <nav class="links" aria-label="Project links">
+      <a class="primary" href="https://github.com/zsu/data-analyst-mcp">View on GitHub</a>
+      <a href="https://www.npmjs.com/package/data-analyst-mcp">npm package</a>
+      <a href="https://github.com/zsu/data-analyst-mcp/blob/main/docs/hosting.md">Hosting guide</a>
+    </nav>
+
+    <h2>Install</h2>
+    <p>Requires Node.js 22 or later. Most sources need no API key.</p>
+    <p><strong>Claude Code</strong></p>
+    <pre><code>claude mcp add data-analyst -- npx -y data-analyst-mcp</code></pre>
+    <p><strong>Claude Desktop, Cursor and other MCP clients</strong></p>
+    <pre><code>{
+  "mcpServers": {
+    "data-analyst": { "command": "npx", "args": ["-y", "data-analyst-mcp"] }
+  }
+}</code></pre>
+    <p>Free API keys raise rate limits for FRED, BLS, BEA, Census and api.data.gov sources. Store one with
+    <code>npx -y data-analyst-mcp setup &lt;source&gt;</code>; the key never appears in a tool result.</p>
+
+    <h2>Questions it answers</h2>
+    <ul>
+      <li>How has the unemployment rate compared with CPI inflation since 2020?</li>
+      <li>What is the median household income in each county of Ohio?</li>
+      <li>Which drugs had the most reported adverse events last year?</li>
+      <li>How much did each federal agency spend in fiscal year 2024?</li>
+      <li>How many unhealthy air-quality days did Phoenix have in 2023?</li>
+    </ul>
+
+    <h2>What makes it different</h2>
+    <ul>
+      <li><strong>Asks before it fetches.</strong> The server blocks <code>fetch</code> until the model has read the
+      source's brief and recorded how each critical question (which measure, which years, which population) was settled.</li>
+      <li><strong>Every number is cited.</strong> Each result carries a citation with the publisher, page and retrieval date,
+      and the list of upstream requests.</li>
+      <li><strong>Audited answers.</strong> <code>audit_answer</code> checks that every number in the answer is a registered
+      fact and that the analysis reproduces; <code>build_report</code> writes an HTML report and a replication ZIP.</li>
+      <li><strong>Keys stay private.</strong> Results are redacted for every key the server can find, and keys go only to
+      their own agency.</li>
+      <li><strong>Local or hosted.</strong> Runs over stdio, or as a streamable-HTTP server with OAuth for claude.ai and teams.</li>
+    </ul>
+
+    <h2>Data sources</h2>
+    <p class="tags">FRED · BLS · BEA · Census · Treasury and Treasury yields · Federal Reserve Board · New York Fed ·
+    Philadelphia Fed · USAspending · Congress.gov · Federal Register · GovInfo · SEC · FEC · FDIC · CFPB · CDC · CMS ·
+    Medicaid · FDA · NIH · ClinicalTrials.gov · EPA and EPA AQS · NOAA · NWS · USGS · EIA · NREL · USDA NASS, FoodData
+    and Outlook · HUD · IPUMS · OPM · DOL · IRS SOI · SBA · BTS · NHTSA · FBI · BJS · USPTO · NCES · NAEP ·
+    World Bank and more (77 in all).</p>
+
+    <footer>
+      <p>MIT licensed. Source and issues on <a href="https://github.com/zsu/data-analyst-mcp">GitHub</a>. Other projects:
+      <a href="https://zsu.github.io/data-analyst/">data-analyst</a> (the same workflow as an Agent Skill) · <a href="https://zsu.github.io/rsi-skill/">rsi-skill</a>.</p>
+    </footer>
+  </main>
+</body>
+</html>
