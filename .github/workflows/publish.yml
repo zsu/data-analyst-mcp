@@ -23,7 +23,14 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      - run: npm publish --access public
+      - name: Publish to npm (skipped when this version is already there, so a re-run can finish the registry step)
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "data-analyst-mcp@$VERSION" version >/dev/null 2>&1; then
+            echo "data-analyst-mcp@$VERSION is already on npm; skipping npm publish"
+          else
+            npm publish --access public
+          fi
 
       # List the release in the official MCP Registry (registry.modelcontextprotocol.io), which many MCP
       # directories mirror. Signs in with this workflow's GitHub OIDC token, so no secret is stored.
@@ -49,5 +56,16 @@ jobs:
         run: |
           VERSION="${GITHUB_REF#refs/tags/v}"
           jq --arg v "$VERSION" '.version = $v | .packages[0].version = $v' server.json > server.tmp && mv server.tmp server.json
+      # The registry checks mcpName in the published npm package, and a new version can take minutes to appear.
+      - name: Wait for the npm version to be visible
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          for i in $(seq 1 40); do
+            got="$(curl -fsS "https://registry.npmjs.org/data-analyst-mcp/$VERSION" | jq -r '.mcpName // empty' || true)"
+            if [ -n "$got" ]; then echo "npm has $VERSION with mcpName $got"; exit 0; fi
+            echo "waiting for data-analyst-mcp@$VERSION on npm ($i/40)"; sleep 15
+          done
+          echo "::error::data-analyst-mcp@$VERSION with mcpName is not on npm after 10 minutes"; exit 1
       - run: ./mcp-publisher login github-oidc
+      - run: ./mcp-publisher validate
       - run: ./mcp-publisher publish
