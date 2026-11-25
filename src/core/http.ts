@@ -47,7 +47,8 @@ export class DataError extends Error {
   }
 }
 
-function htmlPage(body: Buffer): boolean {
+/** The body is an HTML page (an error, block or challenge page where data was expected). */
+export function htmlPage(body: Buffer): boolean {
   const head = body.subarray(0, 300).toString("latin1").trimStart().toLowerCase();
   return head.startsWith("<!doctype html") || head.startsWith("<html") || head.includes("<html");
 }

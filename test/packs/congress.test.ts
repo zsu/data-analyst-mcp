@@ -176,6 +176,21 @@ describe("congress", () => {
     expect(await C.refusedHostsProbe(house)).toBe("");
   });
 
+  it("an HTML challenge page with HTTP 200 counts as a refused host", async () => {
+    const page = Buffer.from("<!DOCTYPE html>\n<html><head><title>Challenge</title></head><body></body></html>");
+    C.internals.client = (() => ({ name: "senate-lis", async get() { return { status: 200, body: page }; } })) as any;
+    const senate = { requests: [{ name: "v", endpoint: "bill_votes", params: { congress: 119, billType: "hr", billNumber: 1 } }] };
+    const probe = await C.refusedHostsProbe(senate);
+    expect(probe).toContain("HTML page instead of XML");
+    expect(probe).toContain('"chamber": "house"');
+    const req = { name: "s", endpoint: "roll_call", params: { chamber: "senate", congress: 119, session: 1, roll: 1 } };
+    const s = newSession();
+    await prepare(s, SRC, { requests: [req] });
+    const f = await failure(T.fetchData(s, { source: SRC, spec: { requests: [req] } }));
+    expect(f.message).toContain("HTML page instead of XML");
+    expect(f.message).not.toContain("not valid XML");
+  });
+
   it("writes a manual bundle", async () => {
     const r: any = await T.manualBundle(newSession(), { sources: [{ source: SRC, spec: SPEC }] });
     const items = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(r.bundle, "manifest.json"), "utf8")).items

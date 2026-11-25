@@ -17,7 +17,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { PACKS_DIR } from "../core/env.js";
 import * as gr from "../core/generic-rest.js";
-import { Client, DataError } from "../core/http.js";
+import { Client, DataError, htmlPage } from "../core/http.js";
 import type { Adapter, Pack, Row, Spec, SpecRequest, Tables } from "../core/packs.js";
 import { readJson } from "../core/policy.js";
 import { parsePyJson, pyStr, urlsplit } from "../core/py.js";
@@ -136,6 +136,9 @@ function normalize(req: SpecRequest, _ep: any, rows: Row[]): Row[] {
 }
 
 // ---------------------------------------------------------------------- XML votes
+const SENATE_ROUTE = 'Senate vote XML cannot be fetched from here; House votes can (bill_votes with "chamber": ' +
+  '"house"), and source.md (Access) gives the Congressional Record route for Senate roll calls';
+
 async function xml(url: string): Promise<El> {
   const u = urlsplit(url);
   const base = `${u.scheme}://${u.netloc}`;
@@ -143,11 +146,16 @@ async function xml(url: string): Promise<El> {
   const c = internals.client(base, base === CLERK ? "house-clerk" : "senate-lis");
   let body: Buffer;
   try {
-    body = (await c.get(u.path)).body;
+    const r = await c.get(u.path);
+    body = r.body;
+    // A bot filter can answer HTTP 200 with an HTML challenge page instead of the XML: that is a refusal too.
+    if (htmlPage(body)) {
+      throw new DataError(`${c.name}: ${u.netloc} answered ${u.path} with an HTML page instead of XML (a bot challenge ` +
+        "or block page: the host refused this request)", "blocked", r.status);
+    }
   } catch (e) {
     if (e instanceof DataError && e.kind === "blocked" && base === SENATE) {
-      throw new DataError(`${e.message}. Senate vote XML cannot be fetched from here; House votes can (bill_votes with ` +
-        '"chamber": "house"), and source.md (Access) gives the Congressional Record route for Senate roll calls', "blocked", e.status);
+      throw new DataError(`${e.message}. ${SENATE_ROUTE}`, "blocked", e.status);
     }
     throw e;
   }
@@ -182,12 +190,9 @@ export async function refusedHostsProbe(spec: Spec): Promise<string> {
   };
   if (!(spec.requests || []).some((r) => r && typeof r === "object" && senate(r))) return "";
   try {
-    await internals.client(SENATE, "senate-lis").get(urlsplit(senateMenuUrl(119, 1)).path);
+    await xml(senateMenuUrl(119, 1));
   } catch (e) {
-    if (e instanceof DataError && e.kind === "blocked") {
-      return `${e.message}. Senate vote XML cannot be fetched from here; House votes can (bill_votes with ` +
-        '"chamber": "house"), and source.md (Access) gives the Congressional Record route for Senate roll calls';
-    }
+    if (e instanceof DataError && e.kind === "blocked") return e.message;
   }
   return "";
 }
