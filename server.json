@@ -8,12 +8,12 @@
     "source": "github"
   },
   "websiteUrl": "https://zsu.github.io/data-analyst-mcp/",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "data-analyst-mcp",
-      "version": "0.12.0",
+      "version": "0.13.0",
       "transport": {
         "type": "stdio"
       },
