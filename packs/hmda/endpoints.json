@@ -1,0 +1,115 @@
+{
+ "base_url": "https://ffiec.cfpb.gov/v2/data-browser-api/view",
+ "timeout": 90,
+ "endpoints": {
+  "aggregations": {
+   "path": "/aggregations",
+   "method": "GET",
+   "description": "HMDA counts and total loan amounts (dollars) for one geography kind (states, counties or msamds; exactly one), one row per year x place x combination of the filter values asked. The pack sends one call per year and place (the API sums a list into one figure) and checks that every filter was applied. At most two filters: actions_taken and one more.",
+   "params": {
+    "years": {
+     "required": true,
+     "desc": "HMDA activity year, 2018 on (the latest year is published each spring): one, a list or a range (\"2018-2024\"); the pack sends one call per year"
+    },
+    "states": {
+     "desc": "two-letter state or territory codes (one or a list); one call per state"
+    },
+    "counties": {
+     "desc": "5-digit state+county FIPS codes (one or a list); one call per county"
+    },
+    "msamds": {
+     "desc": "5-digit MSA or metropolitan division codes (one or a list); for the largest metro areas use the division codes; one call per code"
+    },
+    "actions_taken": {
+     "desc": "required. 1 originated, 2 approved not accepted, 3 denied, 4 withdrawn, 5 closed incomplete, 6 purchased loan, 7 preapproval denied, 8 preapproval approved not accepted; one or a list (each value gets its own rows)",
+     "required": true
+    },
+    "loan_types": {
+     "desc": "1 conventional, 2 FHA-insured, 3 VA-guaranteed, 4 USDA RHS or FSA-guaranteed; one or a list"
+    },
+    "loan_purposes": {
+     "desc": "1 home purchase, 2 home improvement, 31 refinancing, 32 cash-out refinancing, 4 other, 5 not applicable; one or a list"
+    },
+    "lien_statuses": {
+     "desc": "1 first lien, 2 subordinate lien"
+    },
+    "construction_methods": {
+     "desc": "1 site-built, 2 manufactured home"
+    },
+    "total_units": {
+     "desc": "dwelling units: 1, 2, 3, 4, 5-24, 25-49, 50-99, 100-149, >149"
+    },
+    "dwelling_categories": {
+     "desc": "'Single Family (1-4 Units):Site-Built', 'Single Family (1-4 Units):Manufactured', 'Multifamily:Site-Built', 'Multifamily:Manufactured'"
+    },
+    "loan_products": {
+     "desc": "loan type and lien, e.g. 'Conventional:First Lien', 'FHA:First Lien', 'VA:First Lien', 'FSA/RHS:First Lien', 'Conventional:Subordinate Lien'"
+    },
+    "races": {
+     "desc": "derived race of the applicants, e.g. 'White', 'Black or African American', 'Asian', 'Joint', 'Race Not Available'"
+    },
+    "ethnicities": {
+     "desc": "derived ethnicity: 'Hispanic or Latino', 'Not Hispanic or Latino', 'Joint', 'Ethnicity Not Available'"
+    },
+    "sexes": {
+     "desc": "derived sex: 'Male', 'Female', 'Joint', 'Sex Not Available'"
+    }
+   },
+   "records": "aggregations",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000
+  },
+  "nationwide": {
+   "path": "/nationwide/aggregations",
+   "method": "GET",
+   "description": "HMDA counts and total loan amounts (dollars) for the whole country, one row per year x combination of the filter values asked. At most two filters: actions_taken and one more.",
+   "params": {
+    "years": {
+     "required": true,
+     "desc": "HMDA activity year, 2018 on (the latest year is published each spring): one, a list or a range (\"2018-2024\"); the pack sends one call per year"
+    },
+    "actions_taken": {
+     "desc": "required. 1 originated, 2 approved not accepted, 3 denied, 4 withdrawn, 5 closed incomplete, 6 purchased loan, 7 preapproval denied, 8 preapproval approved not accepted; one or a list (each value gets its own rows)",
+     "required": true
+    },
+    "loan_types": {
+     "desc": "1 conventional, 2 FHA-insured, 3 VA-guaranteed, 4 USDA RHS or FSA-guaranteed; one or a list"
+    },
+    "loan_purposes": {
+     "desc": "1 home purchase, 2 home improvement, 31 refinancing, 32 cash-out refinancing, 4 other, 5 not applicable; one or a list"
+    },
+    "lien_statuses": {
+     "desc": "1 first lien, 2 subordinate lien"
+    },
+    "construction_methods": {
+     "desc": "1 site-built, 2 manufactured home"
+    },
+    "total_units": {
+     "desc": "dwelling units: 1, 2, 3, 4, 5-24, 25-49, 50-99, 100-149, >149"
+    },
+    "dwelling_categories": {
+     "desc": "'Single Family (1-4 Units):Site-Built', 'Single Family (1-4 Units):Manufactured', 'Multifamily:Site-Built', 'Multifamily:Manufactured'"
+    },
+    "loan_products": {
+     "desc": "loan type and lien, e.g. 'Conventional:First Lien', 'FHA:First Lien', 'VA:First Lien', 'FSA/RHS:First Lien', 'Conventional:Subordinate Lien'"
+    },
+    "races": {
+     "desc": "derived race of the applicants, e.g. 'White', 'Black or African American', 'Asian', 'Joint', 'Race Not Available'"
+    },
+    "ethnicities": {
+     "desc": "derived ethnicity: 'Hispanic or Latino', 'Not Hispanic or Latino', 'Joint', 'Ethnicity Not Available'"
+    },
+    "sexes": {
+     "desc": "derived sex: 'Male', 'Female', 'Joint', 'Sex Not Available'"
+    }
+   },
+   "records": "aggregations",
+   "paging": {
+    "type": "none"
+   },
+   "max_rows": 20000
+  }
+ }
+}

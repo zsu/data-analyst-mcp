@@ -1,6 +1,6 @@
 # US Economic Analysis MCP Server (`data-analyst-mcp`)
 
-A **Model Context Protocol (MCP) server for U.S. economic analysis** and **official U.S. government data** across 78 federal agencies (FRED, BLS, BEA, Census, Treasury, Congress.gov, FDA, CDC, EPA, and more).
+A **Model Context Protocol (MCP) server for U.S. economic analysis** and **official U.S. government data** across 79 federal agencies (FRED, BLS, BEA, Census, Treasury, Congress.gov, FDA, CDC, EPA, and more).
 
 ## Install
 

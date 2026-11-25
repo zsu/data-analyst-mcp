@@ -10,7 +10,7 @@ loan-level Public Use Database, read from FHFA's published files.
 - Not here: Case-Shiller or Zillow indexes (not federal); FRED also carries many FHFA HPI series (USSTHPI
   all-transactions U.S., HPIPONM226S purchase-only U.S. SA monthly, <ST>STHPI by state) and is simpler for one
   series: use fred when the question needs only those. Mortgage originations and denials by lender
-  (HMDA: not covered; the cfpb pack holds complaints only); FHA loan limits (not covered; the hud pack has Fair
+  (hmda); FHA loan limits (not covered; the hud pack has Fair
   Market Rents and income limits only).
 
 ## Endpoints and datasets

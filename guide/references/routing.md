@@ -39,6 +39,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Student loans: portfolio, delinquency, repayment plans, volume by school | fsa | college-scorecard, treasury | FSA data center (.xls); recipients are not additive across programs. |
 | Private pension insurance | pbgc | fed-board | PBGC data tables; single- and multiemployer programs are separate. |
 | House prices and conforming loan limits | fhfa | fred, hud | FHFA HPI flavors differ; loan limits by county and units. |
+| Mortgage lending volume: FHA, VA and USDA guaranteed originations, denials, refinancing | hmda | omb, fhfa, census | HMDA Data Browser (2018 on) by year, state, county or metro and loan type or purpose; omb Federal Credit Supplement for subsidy rates; reported lending, not the whole market. |
 | Unemployment insurance trust funds | dol | treasury | ETA 2112 state trust fund flows and balances; Treasury for Title XII advances and federal accounts. |
 | TANF and child care program spending and caseloads | acf | usaspending, census | ACF files are manual downloads (the site refuses scripts). |
 | Health insurance, access to care, health care spending by group | ipums | census, cdc, cms | IPUMS NHIS (insurance, access, conditions) and MEPS (spending by payer); ACS tables for state coverage; CMS for Medicare program data. |
@@ -117,6 +118,9 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | fred | BLS detail with preliminary flags, footnotes and gaps | bls | The bls pack keeps BLS's own flags. |
 | fred | BEA tables with line numbers and vintages | bea | The bea pack reads BEA tables as published. |
 | fred | Treasury daily statements and auctions | treasury | Treasury Fiscal Data. |
+| hmda | House prices and house price indexes | fhfa | FHFA's House Price Index; HMDA has loan amounts, not prices. |
+| hmda | Complaints about mortgage servicers or lenders | cfpb | The CFPB complaint database; HMDA is lending activity. |
+| hmda | Federal outlays or credit subsidy costs of FHA, VA or USDA loan programs | omb | Budget figures come from the budget; HMDA gives the lending volume behind them. |
 | ipums | A tabulation from one or a few recent ACS PUMS years, one CPS month or one CPS ASEC year (standard errors from 2005 on) | census | The census pack serves the same Census files with the census key, in seconds, public domain (shareable), with ACS PUMS replicate weights and the ASEC's from Census's replicate weight file. |
 | treasury | Market yields and the daily par yield curve | treasury-yields | Daily Treasury par yield curve rates. |
 | treasury | Historical budget tables in percent of GDP, the President's budget | omb | OMB Historical Tables by budget edition. |
@@ -166,6 +170,7 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 | fsa | standard | none | education, student loans, federal credit, higher education finance | Federal Student Aid Data Center (student loan portfolio, Title IV volume by school) |
 | govinfo | standard | optional (DATA_GOV_API_KEY) | legislation, regulation, government publications | GovInfo (Government Publishing Office API) |
 | gsa-calc | standard | none | federal procurement, contracting, labor rates | GSA CALC+ Labor Ceiling Rates (Quick Rate API) |
+| hmda | standard | none | housing, credit, finance, mortgage lending | HMDA mortgage lending data (FFIEC HMDA Data Browser API: applications and originations by loan type, purpose, applicant and place) |
 | hud | standard | required (HUD_USER_TOKEN) | housing | HUD Fair Market Rents and Income Limits API (HUD User) |
 | hud-ahar | standard | none | homelessness, housing | HUD Annual Homelessness Assessment Report (AHAR) data: Point-in-Time and Housing Inventory Counts |
 | ipums | deep | required (IPUMS_API_KEY) | labor, earnings, income, poverty, demographics, immigration, health insurance, health care spending, access to care, survey microdata | IPUMS microdata (USA/ACS, CPS and other collections) |

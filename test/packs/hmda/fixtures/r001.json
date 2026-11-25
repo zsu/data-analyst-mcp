@@ -1,0 +1,1 @@
+{"parameters":{"actions_taken":"1","loan_types":"2,3,4"},"aggregations":[{"count":56719,"sum":1.0189045E10,"actions_taken":"1","loan_types":"4"},{"count":864640,"sum":2.3875181E11,"actions_taken":"1","loan_types":"2"},{"count":560363,"sum":1.98959635E11,"actions_taken":"1","loan_types":"3"}],"servedFrom":"cache"}

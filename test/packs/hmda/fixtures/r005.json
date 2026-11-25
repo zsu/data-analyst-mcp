@@ -1,0 +1,1 @@
+{"parameters":{"state":"OH","actions_taken":"1,3","loan_types":"2"},"aggregations":[{"count":8873,"sum":1.565695E9,"actions_taken":"3","loan_types":"2"},{"count":28854,"sum":5.75765E9,"actions_taken":"1","loan_types":"2"}],"servedFrom":"cache"}

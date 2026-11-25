@@ -1,0 +1,9 @@
+{
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/nationwide/aggregations?years=2022&actions_taken=1&loan_types=2%2C3%2C4": "r001.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/nationwide/aggregations?years=2023&actions_taken=1&loan_types=2%2C3%2C4": "r002.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/nationwide/aggregations?years=2024&actions_taken=1&loan_types=2%2C3%2C4": "r003.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/aggregations?years=2023&states=TX&actions_taken=1%2C3&loan_types=2": "r004.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/aggregations?years=2023&states=OH&actions_taken=1%2C3&loan_types=2": "r005.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/aggregations?years=2023&msamds=35620&actions_taken=1&loan_types=2": "r006.json",
+ "GET https://ffiec.cfpb.gov/v2/data-browser-api/view/aggregations?years=2023&msamds=35614&actions_taken=1&loan_types=2": "r007.json"
+}

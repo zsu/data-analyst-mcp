@@ -1,0 +1,1 @@
+{"parameters":{"state":"TX","actions_taken":"1,3","loan_types":"2"},"aggregations":[{"count":14545,"sum":4.254995E9,"actions_taken":"3","loan_types":"2"},{"count":85804,"sum":2.485085E10,"actions_taken":"1","loan_types":"2"}],"servedFrom":"cache"}

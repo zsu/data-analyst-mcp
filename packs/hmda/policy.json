@@ -1,0 +1,133 @@
+{
+  "id": "hmda",
+  "title": "HMDA mortgage lending data (FFIEC HMDA Data Browser API: applications and originations by loan type, purpose, applicant and place)",
+  "agency": "Federal Financial Institutions Examination Council (HMDA data published by the Consumer Financial Protection Bureau)",
+  "depth": "standard",
+  "domains": [
+    "housing",
+    "credit",
+    "finance",
+    "mortgage lending"
+  ],
+  "keywords": [
+    "hmda",
+    "home mortgage disclosure act",
+    "mortgage originations",
+    "mortgage applications",
+    "mortgage denials",
+    "denial rate",
+    "fha loans",
+    "va loans",
+    "usda guaranteed loans",
+    "rhs loans",
+    "fha share",
+    "government-backed mortgages",
+    "home purchase loans",
+    "refinance",
+    "cash-out refinance",
+    "mortgage lending by race",
+    "manufactured home loans",
+    "multifamily loans",
+    "loan amount",
+    "mortgage volume"
+  ],
+  "questions": [
+    "how many FHA-insured home purchase loans were originated in each state in 2024",
+    "the dollar volume of VA-guaranteed mortgages originated nationwide, 2018-2024",
+    "mortgage denial rates by race in a county",
+    "FHA share of home purchase originations by state",
+    "refinance versus home purchase originations over time",
+    "USDA guaranteed mortgage originations in rural states"
+  ],
+  "homepage": "https://ffiec.cfpb.gov/data-browser/",
+  "terms_url": "https://ffiec.cfpb.gov/documentation/api/data-browser/",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 2,
+    "burst": 4,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 20000
+  },
+  "routes": {
+    "api": {
+      "base": "https://ffiec.cfpb.gov/v2/data-browser-api/view",
+      "probe": "https://ffiec.cfpb.gov/v2/data-browser-api/view/nationwide/aggregations?years=2023&actions_taken=1&loan_types=2",
+      "hosts": [
+        "ffiec.cfpb.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://ffiec.cfpb.gov/data-browser/data/ (Data Browser: pick the year, geography and up to two filters, View Summary Table, Download), or the national loan-level and aggregate files at https://ffiec.cfpb.gov/data-publication/, and upload the files."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "Each year's data are republished (snapshot, then one- and three-year datasets) and the newest year is added each spring; data/ is reused within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "HMDA public data are U.S. government works in the public domain (17 U.S.C. 105), published for public use."
+  },
+  "notices": [
+    "HMDA covers the lenders above the reporting thresholds (most mortgage lending, not all): counts are reported lending, not every mortgage in the country, and purchased loans (action 6) repeat loans another lender originated."
+  ],
+  "retention": null,
+  "citation": "Federal Financial Institutions Examination Council, Home Mortgage Disclosure Act data, HMDA Data Browser ({dataset}), ffiec.cfpb.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which loans: originated loans only (actions_taken 1, the default for volumes), or applications with their outcomes (1-5, for denial rates)? Purchased loans (6) repeat loans already reported by the originator and are left out by default.",
+    "Which loan purpose: home purchase only (1), refinancing (31, 32), or all purposes? Default: the purpose the question names; otherwise home purchase for housing-market questions and all purposes for total volume, stated in the answer.",
+    "Which data vintage? Each year is first published as a snapshot and revised in later one- and three-year datasets; the Data Browser serves the latest it holds. Default: the Data Browser's figures, with the retrieval date."
+  ],
+  "formats": [
+    "json"
+  ],
+  "aliases": [
+    "HMDA",
+    "Home Mortgage Disclosure Act",
+    "HMDA Data Browser",
+    "FFIEC HMDA"
+  ],
+  "use_instead": [
+    {
+      "question": "House prices and house price indexes",
+      "source": "fhfa",
+      "terms": [
+        "house price"
+      ],
+      "why": "FHFA's House Price Index; HMDA has loan amounts, not prices."
+    },
+    {
+      "question": "Complaints about mortgage servicers or lenders",
+      "source": "cfpb",
+      "terms": [
+        "complaints"
+      ],
+      "why": "The CFPB complaint database; HMDA is lending activity."
+    },
+    {
+      "question": "Federal outlays or credit subsidy costs of FHA, VA or USDA loan programs",
+      "source": "omb",
+      "terms": [
+        "outlays",
+        "credit subsidy"
+      ],
+      "why": "Budget figures come from the budget; HMDA gives the lending volume behind them."
+    }
+  ]
+}
