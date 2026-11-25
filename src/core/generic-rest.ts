@@ -248,10 +248,25 @@ export function mergeForEach(spec: Spec, tables: Tables): Tables {
 // ---------------------------------------------------------------------- fetching
 type Body = { body: Buffer; text(): string; json(): any };
 
+/** What a body is when it is a workbook, an archive or a PDF rather than text (null otherwise). */
+export function binaryKind(body: Uint8Array): string | null {
+  const b = Buffer.from(body.buffer, body.byteOffset, Math.min(body.byteLength, 4096));
+  if (b.subarray(0, 8).equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]))) return "a legacy Excel (.xls) workbook";
+  if (b.subarray(0, 4).equals(Buffer.from("PK\x03\x04", "latin1"))) return "a zip archive (an .xlsx workbook or zipped files)";
+  if (b.subarray(0, 5).toString("latin1") === "%PDF-") return "a PDF";
+  return null;
+}
+
+function textBody(resp: Body, what: string): string {
+  const kind = binaryKind(resp.body);
+  if (kind) throw new DataError(`expected ${what} text, got ${kind}: use the endpoint or file that serves ${what} (or the workbook's own endpoint)`, "api");
+  return resp.text();
+}
+
 export function records(ep: any, resp: Body): any[] {
   const p: string = ep.records ?? "";
-  if (p === "$csv") return csvRecords(ep, resp.text());
-  if (p === "$tsv") return tsvRecords(ep, resp.text());
+  if (p === "$csv") return csvRecords(ep, textBody(resp, "CSV"));
+  if (p === "$tsv") return tsvRecords(ep, textBody(resp, "TSV"));
   if (p === "$xlsx") return sheetRecords(ep, resp.body);
   if (p === "$xls") {
     if (resp.body.subarray(0, 4).equals(Buffer.from("PK\x03\x04", "latin1"))) return sheetRecords(ep, resp.body);
@@ -572,7 +587,11 @@ export function parseUpload(pack: Pack, req: SpecRequest, files: string[]): Row[
   for (const f of [...files].sort((a, b) => (natural(a) < natural(b) ? -1 : 1))) {
     const data = fs.readFileSync(f);
     const r: Body = { body: data, text: () => decodeText(data), json: () => parsePyJson(data.toString("utf8").replace(/^﻿/, "")) };
-    rows = rows.concat(f.toLowerCase().endsWith(".csv") && ep.records !== "$csv" ? readCsv(r.text()) : records(ep, r));
+    if (f.toLowerCase().endsWith(".csv") && ep.records !== "$csv") {
+      const kind = binaryKind(data);
+      if (kind) throw new DataError(`${path.basename(f)} is ${kind}, not CSV text: upload the CSV export, or the file under its own extension`, "api");
+      rows = rows.concat(readCsv(r.text()));
+    } else rows = rows.concat(records(ep, r));
   }
   let out = clean(rows, ep);
   if (pack.adapter?.normalize) out = pack.adapter.normalize(req, ep, out);
