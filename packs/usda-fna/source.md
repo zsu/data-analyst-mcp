@@ -190,7 +190,10 @@ SNAP State Options Report and State Activity Reports:
   - www.fna.usda.gov: the Program Data listing pages and workbooks, and the PDFs (files redirect to
     fna-bwbufwdzbabpezgc.z01.azurefd.us);
   - publicdashboards.dl.usda.gov: the Tableau dashboard's CSV exports.
-- Plain scripted requests are answered (verified 2026-10-30). The pack sends one request a second.
+- Plain scripted requests were answered on 2026-10-30. On 2026-11-25 www.fna.usda.gov answered HTTP 403 (an
+  "Access Denied" page from its edge network) to every scripted request, Program Data pages and workbooks included,
+  while publicdashboards.dl.usda.gov still answered. When `fetch` fails with that 403, use `manual_bundle` (the
+  workbook links below); retrying does not help. The pack sends one request a second.
   `options_by_state` makes one call per two agencies (27 calls for all 53); `option_states` makes one per selection.
   A Program Data request makes two calls (the listing page, then the 15-230 KB workbook);
   `snap_state_monthly` downloads the 1.6 MB SNAP zip once per request.
