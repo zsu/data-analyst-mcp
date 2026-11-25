@@ -23,8 +23,8 @@ compensation and pension recipients and dollars, plus the NCVAS Geographic Distr
 |---|---|---|
 | `query` | JSON rows of one data.va.gov dataset | `dataset` (alias or 4x4 id), `$select`, `$where`, `$group`, `$order`, `$q` |
 | `csv` | the same as CSV (for downloading by hand) | same |
-| `gdx_state_direct`, `gdx_state_indirect` | GDX workbook, state sheets (direct: compensation & pension, DIC and survivors pension, insurance, adapted housing; indirect: medical VA care and community care, education, readiness & employment, loan guaranty, construction, memorial, autos) | `fy` (two digits, default `25`) |
-| `gdx_county_direct`, `gdx_county_indirect`, `gdx_cd_direct`, `gdx_cd_indirect` | the county and congressional-district sheets (119th Congress in FY25) | `fy` |
+| `gdx_state_direct`, `gdx_state_indirect` | GDX workbook, state sheets (direct: compensation & pension, DIC and survivors pension, insurance, adapted housing; indirect: medical VA care and community care, education, readiness & employment, loan guaranty, construction, memorial, autos) | `fy` (two digits, default `25`); `sheet`, `header_row` for another year's layout |
+| `gdx_county_direct`, `gdx_county_indirect`, `gdx_cd_direct`, `gdx_cd_indirect` | the county and congressional-district sheets (119th Congress in FY25) | `fy`, `sheet`, `header_row` |
 
 Catalog aliases (29; `request_schema` with `search: "pension"` finds them). VetPop2023
 projections, one row per September 30 from 2023 to 2053: `vetpop_national` (wubk-nag4, sex x 15 age
@@ -104,8 +104,10 @@ fy2024-fy2075). VetPop2023 estimates 2000-2023, wide (one `fy2000` ... `fy2023` 
   `St_CD` such as `AL01`; county sheets: a non-empty `County`) before summing or ranking. The first column
   `col1` is always empty. Layouts change by year: FY2024 has state sheets in thousands of dollars ($000s) but
   county and district sheets in dollars, other program categories and a different third sheet name; FY2023
-  and earlier have one sheet per state in $000s. The endpoints are verified only on FY25: for another year,
-  read the workbook's second row (units) and headers first. GDX is NCVAS's estimate of where money went
+  and earlier have one sheet per state in $000s (FY2015 adds a summary sheet "State Level Expenditures",
+  header on line 3, with compensation and pension combined). The default sheet and header line are the FY25
+  layout: for another year pass `sheet` (a name or number from the error's sheet list) and `header_row`
+  (`0` returns every line numbered, to find the header), and read the units row before using the figures. GDX is NCVAS's estimate of where money went
   (allocated by recipient residence or facility), not an accounting of obligations. GDX FY21 and FY22 on
   data.va.gov (qhqa-74yq, 2hnn-8vkt) hold only the title page: use the workbooks.
 - Paging uses `$limit`/`$offset` with a stable `$order` (default `:id`); a `$group` query needs its own

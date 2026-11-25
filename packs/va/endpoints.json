@@ -82,6 +82,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {
@@ -104,6 +112,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {
@@ -126,6 +142,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {
@@ -148,6 +172,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {
@@ -170,6 +202,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {
@@ -192,6 +232,14 @@
      "in": "path",
      "required": true,
      "desc": "two-digit fiscal year of the GDX workbook, e.g. 25 (layout verified for FY25; other years differ)"
+    },
+    "sheet": {
+     "in": "records",
+     "desc": "another sheet of the workbook, by name or 1-based number (older workbooks: FY2015 has 'State Level Expenditures' and one sheet per state; the error lists the sheets); with it, check the units row and headers"
+    },
+    "header_row": {
+     "in": "records",
+     "desc": "1-based header line of the sheet (default 3, the FY25 layout); 0 returns every line numbered, to find the header of another year's layout"
     }
    },
    "defaults": {

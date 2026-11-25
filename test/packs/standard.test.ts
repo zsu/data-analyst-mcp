@@ -7,6 +7,7 @@ import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import * as gr from "../../src/core/generic-rest.js";
 import { load } from "../../src/core/packs.js";
+import { gridRecords } from "../../src/core/tabular.js";
 import * as T from "../../src/tools.js";
 import { csv, failure, fetchOk, fixtures, isolate, newSession, prepare } from "../helpers.js";
 
@@ -242,6 +243,26 @@ describe("nyfed", () => {
 });
 
 describe("va", () => {
+  it("a GDX request can name another year's sheet and header line", async () => {
+    // FY2015 layout (GDX_FY15.xlsx): a summary sheet "State Level Expenditures" in $000s, header on line 3
+    const sheets = {
+      "State Level Expenditures": [["FY15 Summary of Expenditures by State"], ["Expenditures in $000s"],
+        ["State", "Veteran Population*", "Total Expenditure", "Compensation & Pension"], [],
+        ["Totals", "21578655.1963652", "167209899.94241998", "75787356.196999997"],
+        ["Alabama", "411717.46801293152", "3248127.3765828996", "1856515.1199999999"]],
+      AK: [["Alaska"]],
+    };
+    const p = await load("va");
+    const ep = p.endpoints.endpoints.gdx_state_direct;
+    expect(() => gridRecords(gr.withRecordParams(ep, { fy: "15" }), sheets)).toThrow(/no sheet "State Direct Exp".*State Level Expenditures/);
+    const rows = gridRecords(gr.withRecordParams(ep, { fy: "15", sheet: "State Level Expenditures", header_row: 3 }), sheets);
+    expect(rows.map((r) => [r.State, r["Compensation & Pension"]])).toEqual([["Totals", "75787356.196999997"],
+      ["Alabama", "1856515.1199999999"]]);
+    for (const k of ["gdx_state_indirect", "gdx_county_direct", "gdx_county_indirect", "gdx_cd_direct", "gdx_cd_indirect"]) {
+      expect(p.endpoints.endpoints[k].params.sheet.in).toBe("records");
+    }
+  });
+
   const SPEC = { description: "Texas veterans by sex, VetPop2023, FY2023-FY2026", requests: [{ name: "tx_all_veterans", endpoint: "query",
     params: { dataset: "vetpop_state_pos", $where: "state = 'Texas' AND pos = '(a) All Veterans (b+c)' AND date <= '2026-09-30'", $order: "date, sex" } }] };
   const STATE_TOTALS = { description: "Veterans by state, VetPop2023 projection for 2025-09-30", requests: [{ name: "veterans_by_state_2025",
