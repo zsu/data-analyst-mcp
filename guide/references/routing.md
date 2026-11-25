@@ -57,6 +57,7 @@ Use `find_sources` with the question for a ranked suggestion.
 | Agriculture | usda-nass | bls, world-bank | NASS Quick Stats. |
 | SNAP, WIC and school meals: participation, costs, state policy options | usda-fna | census, usaspending | FNA Program Data (monthly, by state); SNAP State Options Report; State Activity Reports (FY 2019-2023 tidy). |
 | Characteristics of SNAP households: income, earnings, children, elderly, benefit amounts | snapqc | usda-fna, ipums | SNAP QC public-use microdata (FY 2014 on), weighted with FYWGT; caseload totals from usda-fna; IPUMS CPS/ACS for SNAP-reporting households. |
+| Eligibility limits set as a percent of poverty (Medicaid, CHIP, ACA credits, SNAP, school meals) | aspe | census, ipums, usda-fna | HHS poverty guidelines by year, area (48 states and DC, AK, HI) and household size; the guideline year a program uses differs by program; Census poverty thresholds are a different measure. |
 | Transportation | bts | nhtsa | BTS statistics; NHTSA for vehicle safety. |
 | Environment, air and water quality | epa | epa-aqs, usgs, noaa | EPA envirofacts/ECHO; AQS monitor data; USGS water. |
 | Weather and climate | noaa | nws | NOAA NCEI history; NWS is forecasts and the last week of observations only. |
@@ -92,6 +93,8 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 
 | Not in | Question | Use | Why |
 |---|---|---|---|
+| aspe | People or families in poverty, poverty rates by place or group | census | The official poverty rate uses the Census Bureau's poverty thresholds (ACS, CPS ASEC); the guidelines are only income limits. |
+| aspe | Number of people with income below a percent of poverty (eligible population) | ipums | Microdata give income relative to the poverty line person by person; this pack gives the line itself. |
 | bea | CPI, jobs, unemployment, wages by occupation | bls | BLS produces these. |
 | bea | Budget data by fiscal year | treasury | Treasury Fiscal Data. |
 | bea | Market interest rates | treasury-yields | Daily Treasury yields. |
@@ -127,6 +130,7 @@ Questions a pack does not answer, and the pack that does (each pack's policy.jso
 |---|---|---|---|---|
 | acf | standard | none | welfare, cash assistance, child care, safety net, state spending, federal grants to states | HHS Administration for Children and Families program data (TANF financial and caseload data, CCDF expenditures) |
 | actuaries | standard | none | social security, medicare, health spending, entitlement programs, long-term fiscal outlook | Social Security and Medicare Trustees Reports and National Health Expenditure data (SSA and CMS actuaries) |
+| aspe | standard | none | poverty, program eligibility, safety net, health coverage | HHS poverty guidelines (ASPE Poverty Guidelines API: the federal poverty level by year, area and household size) |
 | bea | deep | required (BEA_API_KEY) | economy, national accounts, income, regional economy, international trade | Bureau of Economic Analysis (BEA) Data API and bulk files |
 | bjs | standard | none | crime, criminal justice, public safety, corrections | Bureau of Justice Statistics: National Crime Victimization Survey and corrections statistics |
 | bls | deep | optional (BLS_API_KEY) | labor, employment, prices, inflation, wages, productivity | Bureau of Labor Statistics Public Data API |

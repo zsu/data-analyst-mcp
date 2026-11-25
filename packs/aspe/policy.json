@@ -1,0 +1,117 @@
+{
+  "id": "aspe",
+  "title": "HHS poverty guidelines (ASPE Poverty Guidelines API: the federal poverty level by year, area and household size)",
+  "agency": "U.S. Department of Health and Human Services, Office of the Assistant Secretary for Planning and Evaluation",
+  "depth": "standard",
+  "domains": [
+    "poverty",
+    "program eligibility",
+    "safety net",
+    "health coverage"
+  ],
+  "keywords": [
+    "poverty guidelines",
+    "poverty guideline",
+    "federal poverty level",
+    "federal poverty guidelines",
+    "fpl",
+    "percent of poverty",
+    "percent of fpl",
+    "138 percent of poverty",
+    "200 percent of poverty",
+    "400 percent of poverty",
+    "income eligibility",
+    "eligibility threshold",
+    "means test",
+    "aspe",
+    "hhs poverty"
+  ],
+  "questions": [
+    "the federal poverty level for a family of four in 2025",
+    "the income limit at 138 percent of the federal poverty level for Medicaid expansion",
+    "how much the poverty guidelines rose from 2015 to 2025",
+    "the SNAP gross income limit at 130 percent of poverty by household size",
+    "poverty guidelines for Alaska and Hawaii",
+    "income at 400 percent of poverty for ACA premium tax credits"
+  ],
+  "homepage": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines",
+  "terms_url": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/poverty-guidelines-api",
+  "auth": {
+    "env": null,
+    "required": "none",
+    "placement": "none",
+    "param": null,
+    "prefix": "",
+    "home": null,
+    "signup_url": null,
+    "echoes_key": false,
+    "key_only": [],
+    "extra": {},
+    "demo_key": null
+  },
+  "limits": {
+    "rps": 4,
+    "burst": 4,
+    "daily_quota": null,
+    "errors_per_min": null,
+    "bytes_per_min": null,
+    "max_rows": 2000
+  },
+  "routes": {
+    "api": {
+      "base": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api",
+      "probe": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api/2025/us/4",
+      "hosts": [
+        "aspe.hhs.gov"
+      ]
+    },
+    "manual": {
+      "how": "Open https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines (the current year's tables) or Prior HHS Poverty Guidelines and Federal Register References on the same site, copy the guideline for each household size, and record them with write_table as published/<name>.csv naming the page."
+    }
+  },
+  "cache": {
+    "mode": "run_only",
+    "ttl_hours": null,
+    "why": "A new year's guidelines are added each January; data/ is reused only within a run."
+  },
+  "redistribution": {
+    "mode": "allowed",
+    "why": "The poverty guidelines are published by HHS, a U.S. government work in the public domain (17 U.S.C. 105)."
+  },
+  "notices": [],
+  "retention": null,
+  "citation": "U.S. Department of Health and Human Services, Office of the Assistant Secretary for Planning and Evaluation, HHS Poverty Guidelines ({dataset}), aspe.hhs.gov, retrieved {retrieved_long}.",
+  "audit_hooks": [],
+  "clarify": [
+    "Which guideline year does the program use? HHS publishes each year's guidelines in January. Medicaid and CHIP use the current year's; ACA premium tax credits use the guidelines of the year before the coverage year; SNAP sets its income limits each October 1 from the guidelines published that January. Default: the year the program rule names, stated in the answer.",
+    "Which area? The guidelines for the 48 contiguous states and DC (us) differ from Alaska's and Hawaii's (higher). Default: us, with ak and hi only when the question covers those states.",
+    "Guidelines or Census poverty thresholds? The guidelines are the administrative measure for eligibility; the official poverty rate uses the Census Bureau's thresholds (by family size and number of children). Default: guidelines for eligibility and income limits; census for counts of people in poverty."
+  ],
+  "formats": [
+    "json"
+  ],
+  "aliases": [
+    "ASPE",
+    "HHS poverty guidelines",
+    "federal poverty level",
+    "FPL"
+  ],
+  "use_instead": [
+    {
+      "question": "People or families in poverty, poverty rates by place or group",
+      "source": "census",
+      "terms": [
+        "poverty rate"
+      ],
+      "why": "The official poverty rate uses the Census Bureau's poverty thresholds (ACS, CPS ASEC); the guidelines are only income limits."
+    },
+    {
+      "question": "Number of people with income below a percent of poverty (eligible population)",
+      "source": "ipums",
+      "terms": [
+        "poverty"
+      ],
+      "why": "Microdata give income relative to the poverty line person by person; this pack gives the line itself."
+    }
+  ]
+}

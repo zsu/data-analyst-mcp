@@ -1,0 +1,19 @@
+{
+ "base_url": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api",
+ "timeout": 60,
+ "endpoints": {
+  "guidelines": {
+   "path": "/{year}/{state}/{household_size}",
+   "method": "GET",
+   "description": "HHS poverty guidelines (the federal poverty level used for program eligibility): one row per guideline year, area (48 contiguous states and DC, Alaska, Hawaii) and household size, in dollars of annual income. The pack sends one call per combination and checks that the API answered the year, area and size asked for.",
+   "params": {
+    "year": {"in": "path", "required": true, "desc": "guideline year, 1983 to the current year: one (2025), a list ([2015, 2024]) or a range (\"2015-2024\")"},
+    "state": {"in": "path", "desc": "area: us (48 contiguous states and DC), ak (Alaska), hi (Hawaii); one or a list; default us"},
+    "household_size": {"in": "path", "desc": "persons in the household, 1 to 20: one, a list or a range (\"1-8\"); default 1-8. Above 8 the guideline adds the published amount for each additional person"}
+   },
+   "records": "data",
+   "paging": {"type": "none"},
+   "max_rows": 2000
+  }
+ }
+}

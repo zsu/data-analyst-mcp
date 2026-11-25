@@ -9,6 +9,11 @@
    "adapter.py"
   ]
  },
+ "aspe": {
+  "python": [
+   "adapter.py"
+  ]
+ },
  "bea": {
   "python": [
    "fetch.py"
