@@ -106,6 +106,14 @@ describe("routing", () => {
     expect((await route("PCE price index monthly"))[0].source).toBe("bea");
   });
 
+  it("ranks bls first for CPI components, not house price or re-publishing packs", async () => {
+    expect((await route("CPI food at home"))[0].source).toBe("bls");
+    expect((await route("consumer price index for food at home"))[0].source).toBe("bls");
+    expect((await route("food away from home prices"))[0].source).toBe("bls");
+    expect((await route("house price index"))[0].source).toBe("fhfa");
+    expect((await route("retail gasoline price weekly"))[0].source).toBe("eia");
+  });
+
   it("says when a source that requires a key has a keyless route", async () => {
     const hits = await route("GDP price index and state population", 8);
     expect(hits.find((h) => h.source === "bea")).toMatchObject({ auth: "required", keyless: expect.stringContaining("bulk route") });
